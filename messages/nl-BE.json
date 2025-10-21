@@ -2,53 +2,53 @@
   "nav": {
     "home": "Home",
     "services": "Diensten",
-    "about": "Over Ons",
+  "about": "Over ons",
     "contact": "Contact",
     "recommendations": "Aanbevelingen"
   },
   "home": {
     "hero": {
-      "title": "DAKRENOVATIE EN BOUW",
+  "title": "DAKRENOVATIE EN DAKBOUW",
       "subtitle": "UITSTEKENDE DAKEN ZIJN ONZE MISSIE!",
-      "cta": "Meer Weten"
+  "cta": "Meer informatie"
     },
     "services": {
       "title": "DAKOPLOSSINGEN",
       "construction": {
-        "title": "DAKBOUW",
-        "description": "Wij bieden volledige dakbouw en renovatie van A tot Z. Herstel van dakconstructies, plaatsing van isolatiematerialen, installatie van dakbedekking en montage van dakaccessoires."
+  "title": "DAKCONSTRUCTIE",
+  "description": "Wij bieden volledige dakconstructie en renovatie van A tot Z: herstel van dakstructuren, plaatsing van isolatiematerialen, installatie van dakbedekking en montage van dakaccessoires."
       },
       "painting": {
         "title": "DAKSCHILDERWERK",
-        "description": "Wij besteden veel aandacht aan het schilderen en voorbereiden van het dak om vlekkeloze verfbestendigheid en visuele uitstraling op lange termijn te garanderen!"
+  "description": "We besteden veel zorg aan de voorbereiding en het schilderen van daken om langdurige kleurvastheid en een perfecte uitstraling te garanderen."
       },
       "maintenance": {
         "title": "DAKONDERHOUD",
-        "description": "Professioneel dakonderhoud - sneeuwruiming van daken, bladeren verwijderen uit goten, dakreparaties en schadedetectie."
+  "description": "Professioneel dakonderhoud: sneeuwruimen, goten reinigen, dakreparaties en opsporen van beschadigingen."
       }
     },
     "solutions": {
       "title": "PROFESSIONELE DAKOPLOSSINGEN!",
       "renovation": "Dakrenovatie",
-      "profiling": "Plaatprofielinstallatie",
+  "profiling": "Staande-naad dakmontage",
       "repair": "Dakreparatie",
-      "drainage": "Installatie van afvoersystemen",
+  "drainage": "Goot- en afwateringssysteem installatie",
       "painting": "Dakschilderwerk",
-      "cleaning": "Sneeuw- en bladverwijdering"
+  "cleaning": "Sneeuw- en bladruiming"
     }
   },
   "contact": {
-    "title": "NEEM CONTACT MET ONS OP",
+    "title": "NEEM CONTACT OP",
     "form": {
       "name": "Naam",
-      "phone": "Tel.nr",
+  "phone": "Telefoon",
       "email": "E-mail",
       "message": "Hoe kunnen we helpen?",
-      "submit": "AANMELDEN",
+  "submit": "Bericht verzenden",
       "required": "(verplicht)"
     },
-    "consultation": "Gratis consultatie met onze dakspecialist!",
-    "cta": "Meld u aan zodat we u kunnen helpen!",
+  "consultation": "Een consultatie met onze dakspecialist is gratis!",
+  "cta": "Neem contact met ons op zodat we u kunnen helpen!",
     "company": "SIA UpLift"
   },
   "footer": {

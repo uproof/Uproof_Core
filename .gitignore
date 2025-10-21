@@ -7,3 +7,5 @@ dist
 build
 .vercel
 .turbo
+# Do not commit any Markdown docs
+*.md
