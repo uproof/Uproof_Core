@@ -1,0 +1,58 @@
+{
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "about": "About Us",
+    "contact": "Contact",
+    "recommendations": "Recommendations"
+  },
+  "home": {
+    "hero": {
+      "title": "ROOF RENOVATION AND CONSTRUCTION",
+      "subtitle": "EXCELLENT ROOFS ARE OUR MISSION!",
+      "cta": "Learn More"
+    },
+    "services": {
+      "title": "ROOFING SOLUTIONS",
+      "construction": {
+        "title": "ROOF CONSTRUCTION",
+        "description": "We offer full-cycle roof construction and renovation from A to Z. Roof structure restoration, insulation material installation, roof covering installation, and roof accessories mounting."
+      },
+      "painting": {
+        "title": "ROOF PAINTING",
+        "description": "We pay great attention to painting and roof preparation to ensure flawless paint durability and visual appearance in the long term!"
+      },
+      "maintenance": {
+        "title": "ROOF MAINTENANCE",
+        "description": "Professional roof maintenance - snow removal from roofs, leaf cleaning from gutters, roof repairs, and damage detection."
+      }
+    },
+    "solutions": {
+      "title": "PROFESSIONAL ROOFING SOLUTIONS!",
+      "renovation": "Roof Renovation",
+      "profiling": "Metal Profile Installation",
+      "repair": "Roof Repair",
+      "drainage": "Drainage System Installation",
+      "painting": "Roof Painting",
+      "cleaning": "Snow and Leaf Removal"
+    }
+  },
+  "contact": {
+    "title": "GET IN TOUCH",
+    "form": {
+      "name": "Name",
+      "phone": "Phone",
+      "email": "Email",
+      "message": "How can we help?",
+      "submit": "SEND MESSAGE",
+      "required": "(required)"
+    },
+    "consultation": "Consultation with our roofing specialist is free!",
+    "cta": "Contact us so we can help you!",
+    "company": "SIA UpLift"
+  },
+  "footer": {
+    "company": "SIA UpLift",
+    "rights": "All rights reserved"
+  }
+}

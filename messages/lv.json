@@ -1,0 +1,58 @@
+{
+  "nav": {
+    "home": "Sākums",
+    "services": "Pakalpojumi",
+    "about": "Par mums",
+    "contact": "Kontakti",
+    "recommendations": "Ieteikumi"
+  },
+  "home": {
+    "hero": {
+      "title": "JUMTA RENOVĀCIJA UN BŪVNIECĪBA",
+      "subtitle": "LIELISKI JUMTI IR MŪSU MISIJA!",
+      "cta": "Uzzināt vairāk"
+    },
+    "services": {
+      "title": "JUMTU RISINĀJUMI",
+      "construction": {
+        "title": "JUMTA BŪVNIECĪBA",
+        "description": "Piedāvājam pilna cikla jumta būvniecību un renovāciju no A līdz Z. Jumta konstrukciju atjaunošana, izolācijas materiālu ieklāšana, jumta seguma ieklāšana un jumta aksesuāru montāža."
+      },
+      "painting": {
+        "title": "JUMTA KRĀSOŠANA",
+        "description": "Krāsošanai un jumta sagatavošanai pievēršam ļoti lielu rūpību, lai nodrošinātu nevainojamu krāsas noturību un vizuālo izskatu ilgtermiņā!"
+      },
+      "maintenance": {
+        "title": "JUMTA APKOPE",
+        "description": "Profesionāla jumta apkope - jumta tīrīšana no sniega, noteku tīrīšana no lapām, jumta labošana un bojājumu noteikšana."
+      }
+    },
+    "solutions": {
+      "title": "PROFESIONĀLI JUMTA RISINĀJUMI!",
+      "renovation": "Jumta renovācija",
+      "profiling": "Valcprofila montāža",
+      "repair": "Jumta labošana",
+      "drainage": "Noteksistēmu uzstādīšana",
+      "painting": "Jumta krāsošana",
+      "cleaning": "Sniega un lapu tīrīšana"
+    }
+  },
+  "contact": {
+    "title": "SAZINIES AR MUMS",
+    "form": {
+      "name": "Vārds",
+      "phone": "Tel.nr",
+      "email": "E-pasts",
+      "message": "Kā varam palīdzēt?",
+      "submit": "PIETEIKTIES",
+      "required": "(obligāts)"
+    },
+    "consultation": "Konsultācija ar mūsu jumtu speciālistu ir bez maksas!",
+    "cta": "Piesakies, lai varam Jums palīdzēt!",
+    "company": "SIA UpLift"
+  },
+  "footer": {
+    "company": "SIA UpLift",
+    "rights": "Visas tiesības aizsargātas"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "nav": {
+    "home": "Home",
+    "services": "Diensten",
+    "about": "Over Ons",
+    "contact": "Contact",
+    "recommendations": "Aanbevelingen"
+  },
+  "home": {
+    "hero": {
+      "title": "DAKRENOVATIE EN BOUW",
+      "subtitle": "UITSTEKENDE DAKEN ZIJN ONZE MISSIE!",
+      "cta": "Meer Weten"
+    },
+    "services": {
+      "title": "DAKOPLOSSINGEN",
+      "construction": {
+        "title": "DAKBOUW",
+        "description": "Wij bieden volledige dakbouw en renovatie van A tot Z. Herstel van dakconstructies, plaatsing van isolatiematerialen, installatie van dakbedekking en montage van dakaccessoires."
+      },
+      "painting": {
+        "title": "DAKSCHILDERWERK",
+        "description": "Wij besteden veel aandacht aan het schilderen en voorbereiden van het dak om vlekkeloze verfbestendigheid en visuele uitstraling op lange termijn te garanderen!"
+      },
+      "maintenance": {
+        "title": "DAKONDERHOUD",
+        "description": "Professioneel dakonderhoud - sneeuwruiming van daken, bladeren verwijderen uit goten, dakreparaties en schadedetectie."
+      }
+    },
+    "solutions": {
+      "title": "PROFESSIONELE DAKOPLOSSINGEN!",
+      "renovation": "Dakrenovatie",
+      "profiling": "Plaatprofielinstallatie",
+      "repair": "Dakreparatie",
+      "drainage": "Installatie van afvoersystemen",
+      "painting": "Dakschilderwerk",
+      "cleaning": "Sneeuw- en bladverwijdering"
+    }
+  },
+  "contact": {
+    "title": "NEEM CONTACT MET ONS OP",
+    "form": {
+      "name": "Naam",
+      "phone": "Tel.nr",
+      "email": "E-mail",
+      "message": "Hoe kunnen we helpen?",
+      "submit": "AANMELDEN",
+      "required": "(verplicht)"
+    },
+    "consultation": "Gratis consultatie met onze dakspecialist!",
+    "cta": "Meld u aan zodat we u kunnen helpen!",
+    "company": "SIA UpLift"
+  },
+  "footer": {
+    "company": "SIA UpLift",
+    "rights": "Alle rechten voorbehouden"
+  }
+}
