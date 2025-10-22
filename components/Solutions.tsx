@@ -2,22 +2,22 @@
 
 import {useTranslations} from 'next-intl';
 import {motion} from 'framer-motion';
-import {CheckCircleIcon} from '@heroicons/react/24/solid';
+import Image from 'next/image';
 
 export default function Solutions() {
   const t = useTranslations('home.solutions');
 
   const solutions = [
-    { key: 'renovation', icon: '🏗️' },
-    { key: 'profiling', icon: '🔧' },
-    { key: 'repair', icon: '🛠️' },
-    { key: 'drainage', icon: '💧' },
-    { key: 'painting', icon: '🎨' },
-    { key: 'cleaning', icon: '❄️' },
+    { key: 'renovation', image: '/images/icons/renovation.svg' },
+    { key: 'profiling', image: '/images/icons/profiling.svg' },
+    { key: 'repair', image: '/images/icons/repair.svg' },
+    { key: 'drainage', image: '/images/icons/drainage.svg' },
+    { key: 'painting', image: '/images/icons/painting.svg' },
+    { key: 'cleaning', image: '/images/icons/cleaning.svg' },
   ];
 
   return (
-    <section className="relative py-28 bg-gradient-to-br from-gray-900 via-primary-900 to-gray-800 text-white overflow-hidden">
+    <section className="relative py-20 bg-gradient-to-br from-gray-900 via-primary-900 to-gray-800 text-white overflow-hidden">
       {/* Diagonal accent */}
       <div className="absolute top-0 left-0 w-full h-32 bg-white transform -skew-y-2 -translate-y-16"></div>
       <div className="absolute bottom-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary-800/30 to-transparent"></div>
@@ -28,15 +28,15 @@ export default function Solutions() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
-          <h2 className="text-5xl md:text-6xl font-bold mb-6 uppercase tracking-tight">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 uppercase tracking-tight">
             {t('title')}
           </h2>
           <div className="w-24 h-1 bg-primary-400 mx-auto"></div>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {solutions.map((solution, index) => (
             <motion.div
               key={solution.key}
@@ -44,12 +44,31 @@ export default function Solutions() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.08 }}
-              className="group relative"
+              className="group relative h-full"
             >
-              <div className="flex items-center space-x-4 bg-white/10 backdrop-blur-sm p-6 transition-all duration-500 hover:bg-white/20 hover:shadow-2xl hover:shadow-primary-500/20 hover:-translate-y-1 border border-white/10 hover:border-primary-400/50">
-                <span className="text-4xl transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">{solution.icon}</span>
-                <CheckCircleIcon className="w-7 h-7 text-primary-400 flex-shrink-0" />
-                <span className="text-lg font-semibold tracking-wide">{t(solution.key)}</span>
+              <div className="flex flex-col items-center justify-center bg-white/10 backdrop-blur-sm p-8 h-full min-h-[220px] transition-all duration-500 hover:bg-white/20 hover:shadow-2xl hover:shadow-primary-500/20 hover:-translate-y-2 border border-white/10 hover:border-primary-400/50">
+                {/* Icon/Image Placeholder */}
+                <div className="relative w-20 h-20 mb-4 flex items-center justify-center bg-white/20 rounded-lg group-hover:bg-white/30 transition-all duration-300">
+                  <div className="relative w-12 h-12">
+                    <Image
+                      src={solution.image}
+                      alt={t(solution.key)}
+                      fill
+                      className="object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+                      sizes="48px"
+                      onError={(e) => {
+                        // Fallback to a simple icon if image not found
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                      }}
+                    />
+                  </div>
+                </div>
+                
+                {/* Title */}
+                <h3 className="text-center text-lg font-semibold tracking-wide leading-snug">
+                  {t(solution.key)}
+                </h3>
               </div>
             </motion.div>
           ))}
