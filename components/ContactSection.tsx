@@ -27,20 +27,38 @@ export default function ContactSection() {
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
     
-    // Simulate form submission - replace with actual API call
     try {
-      // Example: await fetch('/api/contact', { method: 'POST', body: JSON.stringify(data) })
-      console.log('Form data:', data);
+      // Using Web3Forms API - FREE service to receive emails
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_KEY || 'YOUR_WEB3FORMS_KEY_HERE',
+          name: data.name,
+          phone: data.phone,
+          email: data.email,
+          message: data.message,
+          subject: 'New Contact Form Submission from UpRoof Website'
+        })
+      });
+
+      const result = await response.json();
       
-      setTimeout(() => {
+      if (result.success) {
         setSubmitSuccess(true);
         setIsSubmitting(false);
         reset();
         setTimeout(() => setSubmitSuccess(false), 5000);
-      }, 1000);
+      } else {
+        throw new Error('Form submission failed');
+      }
     } catch (error) {
       console.error('Error submitting form:', error);
       setIsSubmitting(false);
+      alert('There was an error sending your message. Please try again or contact us directly.');
     }
   };
 
