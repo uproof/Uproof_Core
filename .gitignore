@@ -27,3 +27,4 @@ public/videos/README.md
 
 # Keep only main README.md
 # README.md is NOT ignored (it should be in git)
+.vscode/

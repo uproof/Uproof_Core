@@ -16,6 +16,9 @@ export default function AdminDashboard({params: {locale}}: {params: {locale: str
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
+  const [loginAttempts, setLoginAttempts] = useState(0);
+  const [isLocked, setIsLocked] = useState(false);
+  const [lockoutTime, setLockoutTime] = useState<number | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -24,18 +27,77 @@ export default function AdminDashboard({params: {locale}}: {params: {locale: str
     if (auth === 'true') {
       setIsAuthenticated(true);
     }
+    
+    // Check for existing lockout
+    const lockedUntil = localStorage.getItem('adminLockout');
+    if (lockedUntil) {
+      const lockTime = parseInt(lockedUntil);
+      if (Date.now() < lockTime) {
+        setIsLocked(true);
+        setLockoutTime(lockTime);
+      } else {
+        localStorage.removeItem('adminLockout');
+        localStorage.removeItem('adminAttempts');
+      }
+    }
+    
+    // Get previous attempts
+    const attempts = localStorage.getItem('adminAttempts');
+    if (attempts) {
+      setLoginAttempts(parseInt(attempts));
+    }
+    
     setLoading(false);
   }, []);
 
+  // Auto-unlock after timeout
+  useEffect(() => {
+    if (isLocked && lockoutTime) {
+      const timer = setInterval(() => {
+        if (Date.now() >= lockoutTime) {
+          setIsLocked(false);
+          setLockoutTime(null);
+          setLoginAttempts(0);
+          localStorage.removeItem('adminLockout');
+          localStorage.removeItem('adminAttempts');
+        }
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [isLocked, lockoutTime]);
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (isLocked) {
+      return;
+    }
+    
+    const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'UpRoof2025Admin';
+    
     // Simple password check (in production, use proper authentication)
-    if (password === 'UpRoof2025Admin') {
+    if (password === adminPassword) {
       sessionStorage.setItem('adminAuth', 'true');
       setIsAuthenticated(true);
       setError('');
+      setLoginAttempts(0);
+      localStorage.removeItem('adminAttempts');
+      localStorage.removeItem('adminLockout');
     } else {
-      setError('Incorrect password');
+      const newAttempts = loginAttempts + 1;
+      setLoginAttempts(newAttempts);
+      localStorage.setItem('adminAttempts', newAttempts.toString());
+      
+      if (newAttempts >= 5) {
+        // Lock for 15 minutes after 5 failed attempts
+        const lockUntil = Date.now() + 15 * 60 * 1000;
+        localStorage.setItem('adminLockout', lockUntil.toString());
+        setIsLocked(true);
+        setLockoutTime(lockUntil);
+        setError('Too many failed attempts. Locked for 15 minutes.');
+      } else {
+        setError(`Incorrect password (${newAttempts}/5 attempts)`);
+      }
     }
   };
 
@@ -79,16 +141,26 @@ export default function AdminDashboard({params: {locale}}: {params: {locale: str
             </div>
             
             {error && (
-              <div className="bg-red-50 text-red-600 px-4 py-3 rounded-lg text-sm">
-                {error}
+              <div className={`px-4 py-3 rounded-lg text-sm ${isLocked ? 'bg-red-100 text-red-800' : 'bg-red-50 text-red-600'}`}>
+                <strong>{error}</strong>
+                {isLocked && lockoutTime && (
+                  <p className="mt-2 text-xs">
+                    Time remaining: {Math.ceil((lockoutTime - Date.now()) / 60000)} minutes
+                  </p>
+                )}
               </div>
             )}
             
             <button
               type="submit"
-              className="w-full bg-primary-600 text-white py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors"
+              disabled={isLocked}
+              className={`w-full py-3 rounded-lg font-semibold transition-colors ${
+                isLocked 
+                  ? 'bg-gray-400 text-gray-700 cursor-not-allowed' 
+                  : 'bg-primary-600 text-white hover:bg-primary-700'
+              }`}
             >
-              Login
+              {isLocked ? 'Account Locked' : 'Login'}
             </button>
           </form>
           

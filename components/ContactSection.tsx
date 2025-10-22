@@ -4,6 +4,7 @@ import {useTranslations} from 'next-intl';
 import {useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {EnvelopeIcon, PhoneIcon} from '@heroicons/react/24/outline';
+import {sanitizeInput, sanitizeEmail, sanitizePhone} from '@/lib/sanitize';
 
 type FormData = {
   name: string;
@@ -27,6 +28,30 @@ export default function ContactSection() {
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
     
+    // Sanitize all inputs
+    const sanitizedData = {
+      name: sanitizeInput(data.name),
+      email: sanitizeEmail(data.email),
+      phone: sanitizePhone(data.phone),
+      message: sanitizeInput(data.message)
+    };
+    
+    // Validate sanitized data
+    if (!sanitizedData.name || !sanitizedData.email || !sanitizedData.message) {
+      alert('Please fill in all required fields correctly.');
+      setIsSubmitting(false);
+      return;
+    }
+    
+    // Validate API key is configured
+    const apiKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
+    
+    if (!apiKey || apiKey === 'YOUR_WEB3FORMS_KEY_HERE') {
+      alert('Contact form is not configured yet. Please contact us directly at karlis.uproof@gmail.com or call +371 25612440');
+      setIsSubmitting(false);
+      return;
+    }
+    
     try {
       // Using Web3Forms API - FREE service to receive emails
       const response = await fetch('https://api.web3forms.com/submit', {
@@ -36,11 +61,11 @@ export default function ContactSection() {
           'Accept': 'application/json'
         },
         body: JSON.stringify({
-          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_KEY || 'YOUR_WEB3FORMS_KEY_HERE',
-          name: data.name,
-          phone: data.phone,
-          email: data.email,
-          message: data.message,
+          access_key: apiKey,
+          name: sanitizedData.name,
+          phone: sanitizedData.phone,
+          email: sanitizedData.email,
+          message: sanitizedData.message,
           subject: 'New Contact Form Submission from UpRoof Website'
         })
       });
@@ -58,7 +83,7 @@ export default function ContactSection() {
     } catch (error) {
       console.error('Error submitting form:', error);
       setIsSubmitting(false);
-      alert('There was an error sending your message. Please try again or contact us directly.');
+      alert('There was an error sending your message. Please try again or contact us directly at karlis.uproof@gmail.com or +371 25612440');
     }
   };
 
