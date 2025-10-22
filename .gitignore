@@ -7,5 +7,23 @@ dist
 build
 .vercel
 .turbo
-# Do not commit any Markdown docs
-*.md
+
+# Security: Do not commit environment files or sensitive data
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Do not commit documentation files (except README.md)
+ADMIN_ACCESS.md
+DEPLOYMENT_GUIDE.md
+DEPLOYMENT_OPTIONS.md
+IMPROVEMENTS.md
+PROJECT_SUMMARY.md
+QUICK_REFERENCE.md
+SEO_AND_DOMAIN_GUIDE.md
+public/videos/README.md
+
+# Keep only main README.md
+# README.md is NOT ignored (it should be in git)
