@@ -10,6 +10,7 @@ import {
   ArrowRightOnRectangleIcon,
   ChartBarIcon
 } from '@heroicons/react/24/outline';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function AdminDashboard({params: {locale}}: {params: {locale: string}}) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -189,6 +190,7 @@ export default function AdminDashboard({params: {locale}}: {params: {locale: str
             </div>
           </div>
           <div className="flex items-center gap-4">
+            <LanguageSwitcher />
             <Link
               href={`/${locale}`}
               className="text-gray-600 hover:text-gray-900 flex items-center gap-2"

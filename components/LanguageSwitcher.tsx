@@ -1,15 +1,13 @@
 'use client';
 
-import {usePathname, useRouter} from '@/i18n/routing';
+import {useRouter, usePathname} from 'next/navigation';
 import {useLocale} from 'next-intl';
 import {useState, useRef, useEffect} from 'react';
 import {ChevronDownIcon, GlobeAltIcon} from '@heroicons/react/24/outline';
-import {useParams} from 'next/navigation';
 
 export default function LanguageSwitcher() {
   const router = useRouter();
   const pathname = usePathname();
-  const params = useParams();
   const currentLocale = useLocale();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -23,7 +21,14 @@ export default function LanguageSwitcher() {
   const currentLanguage = languages.find((lang) => lang.code === currentLocale) || languages[0];
 
   const handleLanguageChange = (newLocale: string) => {
-    router.replace(pathname, {locale: newLocale as any});
+    // Get the current pathname without the locale prefix
+    const pathWithoutLocale = pathname.replace(`/${currentLocale}`, '') || '/';
+    
+    // Construct the new path with the new locale
+    const newPath = `/${newLocale}${pathWithoutLocale}`;
+    
+    // Navigate to the new path
+    router.push(newPath);
     setIsOpen(false);
   };
 
