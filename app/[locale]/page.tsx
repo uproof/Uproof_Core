@@ -26,7 +26,7 @@ export default function HomePage({params: {locale}}: Props) {
 
   return (
     <main className="min-h-screen">
-      <Header />
+  <Header showText={false} largeLogo={true} />
       <Hero />
       <Services />
       <StatsBar stats={stats} />

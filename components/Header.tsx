@@ -8,7 +8,12 @@ import {Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline';
 import LanguageSwitcher from './LanguageSwitcher';
 import Image from 'next/image';
 
-export default function Header() {
+type HeaderProps = {
+  showText?: boolean;
+  largeLogo?: boolean;
+};
+
+export default function Header({showText = true, largeLogo = false}: HeaderProps) {
   const t = useTranslations('nav');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -30,18 +35,20 @@ export default function Header() {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="relative h-12 w-12 transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+              <div className={`relative ${largeLogo ? 'h-16 w-16' : 'h-14 w-14'} transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
                 <Image
                   src="/logo.svg"
                   alt="UpRoof logo"
                   fill
-                  sizes="48px"
+                  sizes={largeLogo ? '64px' : '56px'}
                   className="object-contain"
                 />
               </div>
-              <span className="text-2xl font-bold text-gray-900 group-hover:text-primary-600 transition-colors duration-300">
-                UpRoof
-              </span>
+              {showText && (
+                <span className="text-2xl font-bold text-gray-900 group-hover:text-primary-600 transition-colors duration-300">
+                  UpRoof
+                </span>
+              )}
             </Link>
           </div>
 
