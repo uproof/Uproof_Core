@@ -31,6 +31,25 @@
     },
     "contact": {"title": "Sazinies ar mums"}
   },
+  "projects": {
+    "items": {
+      "metalRoof": {
+        "title": "Staande-naad metalen dak – privātmāja",
+        "location": "Rīga, Latvija",
+        "description": "Pilna cikla jumta būvniecība ar valcprofila segumu: konstrukcijas, siltināšana un seguma montāža."
+      },
+      "roofPainting": {
+        "title": "Jumta krāsošana – daudzdzīvokļu nams",
+        "location": "Jelgava, Latvija",
+        "description": "Jumta mehāniskā tīrīšana, grunts un divkārtēja krāsošana ilgtermiņa noturībai."
+      },
+      "roofMaintenance": {
+        "title": "Jumta apkope un noteku tīrīšana",
+        "location": "Sigulda, Latvija",
+        "description": "Sniega novākšana, bojājumu pārbaude un noteksistēmu tīrīšana drošai ekspluatācijai."
+      }
+    }
+  },
   "home": {
     "hero": {
       "title": "JUMTA RENOVĀCIJA UN BŪVNIECĪBA",

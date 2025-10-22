@@ -8,27 +8,46 @@
     "blog": "Blog"
   },
   "pages": {
-    "services": {"title": "Diensten voor daken"},
+    "services": {"title": "Onze dakdiensten"},
     "projects": {"title": "Voltooide projecten"},
     "about": {
       "title": "Over UpRoof",
-      "description": "UpRoof biedt professionele dakoplossingen: constructie, schilderen en onderhoud. Ons team werkt nauwkeurig en betrouwbaar, met naleving van hoge kwaliteitsnormen.",
+      "description": "UpRoof biedt professionele dakoplossingen: bouw, schilderen en onderhoud. Ons team werkt nauwkeurig en betrouwbaar, met hoge kwaliteitsnormen.",
       "values": {
         "quality": {
           "title": "Kwaliteit",
-          "description": "We gebruiken beproefde materialen en technologieën voor duurzame resultaten."
+          "description": "Wij gebruiken bewezen materialen en technologieën voor langdurige resultaten."
         },
         "reliability": {
           "title": "Betrouwbaarheid",
-          "description": "We houden ons aan deadlines, bieden duidelijke communicatie en garanties."
+          "description": "Wij halen deadlines, bieden duidelijke communicatie en garanties."
         },
         "safety": {
           "title": "Veiligheid",
-          "description": "We werken veilig en verantwoordelijk, zowel op projecten als bij materiaalkeuze."
+          "description": "Wij werken veilig en verantwoord zowel op projecten als bij materiaalselectie."
         }
       }
     },
-    "contact": {"title": "Contacteer ons"}
+    "contact": {"title": "Neem contact op"}
+  },
+  "projects": {
+    "items": {
+      "metalRoof": {
+        "title": "Staande naad metalen dak – privéwoning",
+        "location": "Riga, Letland",
+        "description": "Volledige dakconstructie met metalen profielbedekking: structuur, isolatie en dekmontage."
+      },
+      "roofPainting": {
+        "title": "Dakschilderwerk – appartementengebouw",
+        "location": "Jelgava, Letland",
+        "description": "Mechanische dakreiniging, grondlaag en dubbele coating voor langdurige duurzaamheid."
+      },
+      "roofMaintenance": {
+        "title": "Dakonderhoud en gootreiniging",
+        "location": "Sigulda, Letland",
+        "description": "Sneeuwverwijdering, schadinspectie en afvoersysteemreiniging voor veilig gebruik."
+      }
+    }
   },
   "home": {
     "hero": {

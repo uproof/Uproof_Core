@@ -31,6 +31,25 @@
     },
     "contact": {"title": "Contact Us"}
   },
+  "projects": {
+    "items": {
+      "metalRoof": {
+        "title": "Standing Seam Metal Roof – Private House",
+        "location": "Riga, Latvia",
+        "description": "Full-cycle roof construction with metal profile covering: structure, insulation, and covering installation."
+      },
+      "roofPainting": {
+        "title": "Roof Painting – Apartment Building",
+        "location": "Jelgava, Latvia",
+        "description": "Mechanical roof cleaning, primer application, and double coating for long-term durability."
+      },
+      "roofMaintenance": {
+        "title": "Roof Maintenance and Gutter Cleaning",
+        "location": "Sigulda, Latvia",
+        "description": "Snow removal, damage inspection, and drainage system cleaning for safe operation."
+      }
+    }
+  },
   "home": {
     "hero": {
       "title": "ROOF RENOVATION AND CONSTRUCTION",
