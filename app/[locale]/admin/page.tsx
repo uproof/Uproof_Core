@@ -224,7 +224,12 @@ export default function AdminDashboard({params: {locale}}: {params: {locale: str
                 <div className="bg-primary-100 p-3 rounded-lg group-hover:bg-primary-200 transition-colors">
                   <DocumentTextIcon className="w-8 h-8 text-primary-600" />
                 </div>
-                <span className="text-sm font-semibold text-primary-600">Coming Soon</span>
+                <span className="text-sm font-semibold text-green-600 flex items-center gap-1">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  Active
+                </span>
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Blog Posts</h3>
               <p className="text-gray-600 mb-4">Create, edit, and manage blog articles</p>
@@ -242,7 +247,12 @@ export default function AdminDashboard({params: {locale}}: {params: {locale: str
                 <div className="bg-green-100 p-3 rounded-lg group-hover:bg-green-200 transition-colors">
                   <HomeIcon className="w-8 h-8 text-green-600" />
                 </div>
-                <span className="text-sm font-semibold text-green-600">Coming Soon</span>
+                <span className="text-sm font-semibold text-green-600 flex items-center gap-1">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  Active
+                </span>
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Homepage</h3>
               <p className="text-gray-600 mb-4">Edit hero, services, stats, and FAQ content</p>
@@ -270,22 +280,37 @@ export default function AdminDashboard({params: {locale}}: {params: {locale: str
         </div>
 
         {/* Info Box */}
-        <div className="mt-12 bg-blue-50 border border-blue-200 rounded-xl p-6">
+        <div className="mt-12 bg-green-50 border border-green-200 rounded-xl p-6">
           <div className="flex items-start gap-4">
-            <div className="bg-blue-100 p-3 rounded-lg">
-              <svg className="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <div className="bg-green-100 p-3 rounded-lg">
+              <svg className="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
             <div>
-              <h3 className="text-lg font-bold text-blue-900 mb-2">Admin Features In Development</h3>
-              <p className="text-blue-700">
-                The blog editor and homepage content manager are currently being developed. 
-                These features will allow you to create and edit content directly from this dashboard.
-                For now, you can navigate through the dashboard to see the planned structure.
+              <h3 className="text-lg font-bold text-green-900 mb-2">Admin Dashboard Active</h3>
+              <p className="text-green-700 mb-3">
+                Welcome to your admin dashboard! You can now manage your website content:
               </p>
-              <p className="text-blue-700 mt-2 font-semibold">
-                Default Password: UpRoof2025Admin
+              <ul className="text-green-700 space-y-2 mb-3">
+                <li className="flex items-start gap-2">
+                  <span className="text-green-600 font-bold">✓</span>
+                  <span><strong>Blog Management:</strong> Create, edit, and delete blog posts with multilingual support</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-600 font-bold">✓</span>
+                  <span><strong>Homepage Editor:</strong> Customize hero section, services, stats, and FAQ</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-orange-600 font-bold">⏳</span>
+                  <span><strong>Pages Editor:</strong> Edit About, Services pages (Coming Soon)</span>
+                </li>
+              </ul>
+              <p className="text-green-700 font-semibold border-t border-green-200 pt-3 mt-3">
+                🔐 Current Password: UpRoof2025Admin
+              </p>
+              <p className="text-green-600 text-sm mt-1">
+                Change password in environment variables for production deployment
               </p>
             </div>
           </div>
