@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="maintenanceSky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#059669;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#10b981;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#maintenanceSky)"/>
+  <polygon points="150,350 400,200 650,350" fill="#1f2937" stroke="#111827" stroke-width="3"/>
+  <polygon points="400,200 650,350 650,370 400,220" fill="#374151"/>
+  <rect x="320" y="370" width="160" height="180" fill="#4b5563"/>
+  <rect x="200" y="300" width="400" height="10" fill="#6b7280"/>
+  <g stroke="#10b981" stroke-width="3" fill="none">
+    <path d="M 200 310 Q 250 330 300 310"/>
+    <path d="M 300 310 Q 350 330 400 310"/>
+    <path d="M 400 310 Q 450 330 500 310"/>
+    <path d="M 500 310 Q 550 330 600 310"/>
+  </g>
+  <circle cx="550" cy="280" r="40" fill="#fbbf24" stroke="#f59e0b" stroke-width="2"/>
+  <path d="M 550 260 L 560 270 L 550 280 L 540 270 Z" fill="#dc2626"/>
+  <text x="400" y="560" font-family="Arial, sans-serif" font-size="32" font-weight="bold" text-anchor="middle" fill="white">MAINTENANCE</text>
+</svg>

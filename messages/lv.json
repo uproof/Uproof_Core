@@ -2,15 +2,41 @@
   "nav": {
     "home": "Sākums",
     "services": "Pakalpojumi",
+    "projects": "Projekti",
     "about": "Par mums",
     "contact": "Kontakti",
+    "blog": "Blogs",
     "recommendations": "Ieteikumi"
+  },
+  "pages": {
+    "services": {"title": "Mūsu jumtu pakalpojumi"},
+    "projects": {"title": "Pabeigtie projekti"},
+    "about": {
+      "title": "Par UpRoof",
+      "description": "UpRoof nodrošina profesionālus jumtu risinājumus: būvniecību, krāsošanu un apkopi. Mūsu komanda strādā precīzi un uzticami, ievērojot augstus kvalitātes standartus.",
+      "values": {
+        "quality": {
+          "title": "Kvalitāte",
+          "description": "Izmantojam pārbaudītus materiālus un tehnoloģijas ilgmūžīgam rezultātam."
+        },
+        "reliability": {
+          "title": "Uzticamība",
+          "description": "Ievērojam termiņus, sniedzam skaidru komunikāciju un garantijas."
+        },
+        "safety": {
+          "title": "Drošība",
+          "description": "Strādājam droši un atbildīgi gan objektos, gan materiālu izvēlē."
+        }
+      }
+    },
+    "contact": {"title": "Sazinies ar mums"}
   },
   "home": {
     "hero": {
       "title": "JUMTA RENOVĀCIJA UN BŪVNIECĪBA",
       "subtitle": "LIELISKI JUMTI IR MŪSU MISIJA!",
-      "cta": "Uzzināt vairāk"
+      "cta": "Uzzināt vairāk",
+      "learnMore": "Uzzināt vairāk"
     },
     "services": {
       "title": "JUMTU RISINĀJUMI",
@@ -35,6 +61,29 @@
       "drainage": "Noteksistēmu uzstādīšana",
       "painting": "Jumta krāsošana",
       "cleaning": "Sniega un lapu tīrīšana"
+    },
+    "faq": {
+      "title": "JAUTĀJUMI UN ATBILDES",
+      "q1": {
+        "question": "Kādus pakalpojumus mēs piedāvājam?",
+        "answer": "Mēs specializējamies visaptverošos jumtu risinājumos, ieskaitot jumtu diagnostiku, remontu, projektēšanu, izolāciju, renovāciju, apkopi un sniega tīrīšanu. Mūsu pieredzējusī komanda apstrādā gan dzīvojamo, gan komerciālo projektu ar pilnu garantijas segumu."
+      },
+      "q2": {
+        "question": "Vai mēs sniedzam garantiju?",
+        "answer": "Jā, mēs sniedzam visaptverošu garantijas segumu visiem mūsu jumtu darbiem. Mēs piedāvājam līdz 10 gadu garantiju atkarībā no izvēlētajiem materiāliem un pakalpojumiem, dodot jums pilnīgu mieru."
+      },
+      "q3": {
+        "question": "Cik ātri var veikt jumta diagnostiku?",
+        "answer": "Mēs izmantojam modernu diagnostikas aprīkojumu, lai efektīvi novērtētu jumta stāvokli. Lielākajai daļai projektu mēs varam pabeigt rūpīgu inspekciju un sniegt detalizētu novērtējumu 1-2 darba dienu laikā pēc sākotnējās saskarsmes."
+      },
+      "q4": {
+        "question": "Ar kādiem jumtu veidiem mēs strādājam?",
+        "answer": "Mēs strādājam ar visiem jumtu sistēmu veidiem, ieskaitot plakanos jumtus, slīpos jumtus, metāla jumtus, dakstiņu jumtus un modernās membrānu sistēmas. Mūsu komanda regulāri atjaunina savas zināšanas, lai nodrošinātu labākos risinājumus katram jumta veidam."
+      },
+      "q5": {
+        "question": "Vai jumta remontu var veikt ziemā?",
+        "answer": "Jā, mēs varam veikt lielāko daļu jumta remontu visu gadu. Lai gan daži materiāli vislabāk darbojas siltākā laikā, mums ir īpašas tehnikas un materiāli, kas ļauj droši pabeigt ārkārtas remontus pat aukstā laikā."
+      }
     }
   },
   "contact": {
@@ -45,8 +94,14 @@
       "email": "E-pasts",
       "message": "Kā varam palīdzēt?",
       "submit": "PIETEIKTIES",
-      "required": "(obligāts)"
+      "sending": "SŪTA...",
+      "required": "(obligāts)",
+      "nameError": "Vārds ir obligāts",
+      "phoneError": "Tālruņa numurs ir obligāts",
+      "messageError": "Ziņojums ir obligāts"
     },
+    "formTitle": "Sūtiet mums ziņojumu",
+    "successMessage": "Paldies! Mēs sazināsimies ar jums 2 stundu laikā.",
     "consultation": "Konsultācija ar mūsu jumtu speciālistu ir bez maksas!",
     "cta": "Piesakies, lai varam Jums palīdzēt!",
     "company": "SIA UpLift"

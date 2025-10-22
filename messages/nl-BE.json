@@ -2,57 +2,112 @@
   "nav": {
     "home": "Home",
     "services": "Diensten",
-  "about": "Over ons",
+    "projects": "Projecten",
+    "about": "Over ons",
     "contact": "Contact",
-    "recommendations": "Aanbevelingen"
+    "blog": "Blog"
+  },
+  "pages": {
+    "services": {"title": "Diensten voor daken"},
+    "projects": {"title": "Voltooide projecten"},
+    "about": {
+      "title": "Over UpRoof",
+      "description": "UpRoof biedt professionele dakoplossingen: constructie, schilderen en onderhoud. Ons team werkt nauwkeurig en betrouwbaar, met naleving van hoge kwaliteitsnormen.",
+      "values": {
+        "quality": {
+          "title": "Kwaliteit",
+          "description": "We gebruiken beproefde materialen en technologieën voor duurzame resultaten."
+        },
+        "reliability": {
+          "title": "Betrouwbaarheid",
+          "description": "We houden ons aan deadlines, bieden duidelijke communicatie en garanties."
+        },
+        "safety": {
+          "title": "Veiligheid",
+          "description": "We werken veilig en verantwoordelijk, zowel op projecten als bij materiaalkeuze."
+        }
+      }
+    },
+    "contact": {"title": "Contacteer ons"}
   },
   "home": {
     "hero": {
-  "title": "DAKRENOVATIE EN DAKBOUW",
-      "subtitle": "UITSTEKENDE DAKEN ZIJN ONZE MISSIE!",
-  "cta": "Meer informatie"
+      "title": "Dakrenovatie en -BOUW",
+      "subtitle": "Uitstekende daken zijn onze missie!",
+      "cta": "Een dak bouwen",
+      "learnMore": "Meer informatie"
     },
     "services": {
-      "title": "DAKOPLOSSINGEN",
+      "title": "Onze diensten",
       "construction": {
-  "title": "DAKCONSTRUCTIE",
-  "description": "Wij bieden volledige dakconstructie en renovatie van A tot Z: herstel van dakstructuren, plaatsing van isolatiematerialen, installatie van dakbedekking en montage van dakaccessoires."
+        "title": "Dak CONSTRUCTIE",
+        "description": "Wij bieden volledige dakconstructie en -renovatie van A tot Z. Renovatie van dakconstructies, installatie van isolatie, dakbedekking en installatie van daktoebehoren."
       },
       "painting": {
-        "title": "DAKSCHILDERWERK",
-  "description": "We besteden veel zorg aan de voorbereiding en het schilderen van daken om langdurige kleurvastheid en een perfecte uitstraling te garanderen."
+        "title": "Dak schilderen",
+        "description": "We besteden veel zorg aan het schilderen en de voorbereiding van het dak om ervoor te zorgen dat de verf lang mooi blijft!"
       },
       "maintenance": {
-        "title": "DAKONDERHOUD",
-  "description": "Professioneel dakonderhoud: sneeuwruimen, goten reinigen, dakreparaties en opsporen van beschadigingen."
+        "title": "Dak onderhoud",
+        "description": "Professioneel dakonderhoud - sneeuwruimen, bladeren verwijderen, dakreparaties en schade opsporen."
       }
     },
     "solutions": {
-      "title": "PROFESSIONELE DAKOPLOSSINGEN!",
+      "title": "Dakoplossingen",
       "renovation": "Dakrenovatie",
-  "profiling": "Staande-naad dakmontage",
-      "repair": "Dakreparatie",
-  "drainage": "Goot- en afwateringssysteem installatie",
-      "painting": "Dakschilderwerk",
-  "cleaning": "Sneeuw- en bladruiming"
+      "profiling": "Montage van het rolprofiel",
+      "repair": "Reparaties aan daken",
+      "drainage": "Installatie van afvoersystemen",
+      "painting": "Dak schilderen",
+      "cleaning": "Sneeuw en bladeren ruimen"
+    },
+    "faq": {
+      "title": "VRAGEN EN ANTWOORDEN",
+      "q1": {
+        "question": "Welke diensten bieden wij aan?",
+        "answer": "Wij zijn gespecialiseerd in uitgebreide dakoplossingen, waaronder dakdiagnose, reparatie, ontwerp, isolatie, renovatie, onderhoud en sneeuwverwijdering. Ons ervaren team behandelt zowel residentiële als commerciële projecten met volledige garantiedekking."
+      },
+      "q2": {
+        "question": "Bieden wij garantie?",
+        "answer": "Ja, wij bieden uitgebreide garantiedekking voor al ons dakwerk. Wij bieden garanties tot 10 jaar, afhankelijk van de gekozen materialen en diensten, waardoor u complete gemoedsrust heeft."
+      },
+      "q3": {
+        "question": "Hoe snel kan dakdiagnose worden uitgevoerd?",
+        "answer": "Wij gebruiken geavanceerde diagnostische apparatuur om de daktoestand efficiënt te beoordelen. Voor de meeste projecten kunnen wij binnen 1-2 werkdagen na het eerste contact een grondige inspectie voltooien en een gedetailleerde beoordeling geven."
+      },
+      "q4": {
+        "question": "Met welke soorten daken werken wij?",
+        "answer": "Wij werken met alle soorten daksystemen, waaronder platte daken, hellende daken, metalen daken, pannendaken en moderne membraansystemen. Ons team actualiseert regelmatig hun kennis om de beste oplossingen voor elk daktype te bieden."
+      },
+      "q5": {
+        "question": "Kunnen dakreparaties in de winter worden uitgevoerd?",
+        "answer": "Ja, wij kunnen het hele jaar door de meeste dakreparaties uitvoeren. Hoewel sommige materialen het beste werken in warmer weer, hebben wij gespecialiseerde technieken en materialen waarmee wij zelfs bij koude omstandigheden veilig noodreparaties kunnen uitvoeren."
+      }
     }
   },
   "contact": {
-    "title": "NEEM CONTACT OP",
+    "title": "Contacteer ons",
     "form": {
       "name": "Naam",
-  "phone": "Telefoon",
+      "phone": "Tel.",
       "email": "E-mail",
-      "message": "Hoe kunnen we helpen?",
-  "submit": "Bericht verzenden",
-      "required": "(verplicht)"
+      "message": "Kunnen we helpen?",
+      "submit": "Inloggen",
+      "sending": "VERZENDEN...",
+      "required": "(verplicht)",
+      "nameError": "Naam is verplicht",
+      "phoneError": "Telefoonnummer is verplicht",
+      "messageError": "Bericht is verplicht"
     },
-  "consultation": "Een consultatie met onze dakspecialist is gratis!",
-  "cta": "Neem contact met ons op zodat we u kunnen helpen!",
-    "company": "SIA UpLift"
+    "formTitle": "Stuur ons een bericht",
+    "successMessage": "Dank u! Wij nemen binnen 2 uur contact met u op.",
+    "consultation": "Het gesprek met onze dakspecialist is gratis!",
+    "cta": "Meld je aan zodat we je kunnen helpen!",
+    "company": "UpRoof dakconstructie bedrijf"
   },
   "footer": {
-    "company": "SIA UpLift",
+    "company": "UpRoof dakconstructie bedrijf",
+    "tagline": "Professionele dakbedekkingsoplossingen!",
     "rights": "Alle rechten voorbehouden"
   }
 }

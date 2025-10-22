@@ -2,15 +2,41 @@
   "nav": {
     "home": "Home",
     "services": "Services",
+    "projects": "Projects",
     "about": "About Us",
     "contact": "Contact",
+    "blog": "Blog",
     "recommendations": "Recommendations"
+  },
+  "pages": {
+    "services": {"title": "Our Roofing Services"},
+    "projects": {"title": "Completed Projects"},
+    "about": {
+      "title": "About UpRoof",
+      "description": "UpRoof provides professional roofing solutions: construction, painting, and maintenance. Our team works precisely and reliably, adhering to high quality standards.",
+      "values": {
+        "quality": {
+          "title": "Quality",
+          "description": "We use proven materials and technologies for long-lasting results."
+        },
+        "reliability": {
+          "title": "Reliability",
+          "description": "We meet deadlines, provide clear communication and guarantees."
+        },
+        "safety": {
+          "title": "Safety",
+          "description": "We work safely and responsibly both on projects and in material selection."
+        }
+      }
+    },
+    "contact": {"title": "Contact Us"}
   },
   "home": {
     "hero": {
       "title": "ROOF RENOVATION AND CONSTRUCTION",
       "subtitle": "EXCELLENT ROOFS ARE OUR MISSION!",
-      "cta": "Learn More"
+      "cta": "Get Started",
+      "learnMore": "Learn More"
     },
     "services": {
       "title": "ROOFING SOLUTIONS",
@@ -35,6 +61,29 @@
       "drainage": "Drainage System Installation",
       "painting": "Roof Painting",
       "cleaning": "Snow and Leaf Removal"
+    },
+    "faq": {
+      "title": "QUESTIONS AND ANSWERS",
+      "q1": {
+        "question": "What services do we offer?",
+        "answer": "We specialize in comprehensive roofing solutions including roof diagnostics, repair, design, insulation, renovation, maintenance and snow removal. Our experienced team handles both residential and commercial projects with full warranty coverage."
+      },
+      "q2": {
+        "question": "Do we provide a warranty?",
+        "answer": "Yes, we provide comprehensive warranty coverage for all our roofing work. We offer warranties of up to 10 years depending on the materials and services chosen, giving you complete peace of mind."
+      },
+      "q3": {
+        "question": "How quickly can roof diagnostics be performed?",
+        "answer": "We use advanced diagnostic equipment to assess roof conditions efficiently. For most projects, we can complete a thorough inspection and provide a detailed assessment within 1-2 business days after initial contact."
+      },
+      "q4": {
+        "question": "What types of roofs do we work with?",
+        "answer": "We work with all types of roofing systems including flat roofs, pitched roofs, metal roofing, tile roofing, and modern membrane systems. Our team regularly updates their knowledge to provide the best solutions for each roof type."
+      },
+      "q5": {
+        "question": "Can roof repairs be carried out in winter?",
+        "answer": "Yes, we can perform most roof repairs year-round. While some materials work best in warmer weather, we have specialized techniques and materials that allow us to safely complete emergency repairs even in cold conditions."
+      }
     }
   },
   "contact": {
@@ -45,8 +94,14 @@
       "email": "Email",
       "message": "How can we help?",
       "submit": "SEND MESSAGE",
-      "required": "(required)"
+      "sending": "SENDING...",
+      "required": "(required)",
+      "nameError": "Name is required",
+      "phoneError": "Phone number is required",
+      "messageError": "Message is required"
     },
+    "formTitle": "Send us a message",
+    "successMessage": "Thank you! We will contact you within 2 hours.",
     "consultation": "Consultation with our roofing specialist is free!",
     "cta": "Contact us so we can help you!",
     "company": "SIA UpLift"
