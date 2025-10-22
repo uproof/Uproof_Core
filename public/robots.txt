@@ -1,0 +1,22 @@
+# Robots.txt for UpRoof
+# Replace uproof.lv with your actual domain
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /[locale]/admin/
+
+# Sitemap
+Sitemap: https://uproof.lv/sitemap.xml
+
+# Common bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Yandex
+Allow: /

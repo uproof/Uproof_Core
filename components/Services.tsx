@@ -78,12 +78,14 @@ export default function Services() {
                 
                 {/* Roofmaster-style buttons */}
                 <div className="flex gap-4 flex-wrap">
-                  <Link
-                    href={service.link}
+                  <a
+                    href="https://wa.me/37125612440"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="bg-primary-600 text-white px-8 py-3 text-sm font-bold uppercase hover:bg-primary-700 transition-all shadow-lg hover:scale-105"
                   >
                     ORDER NOW
-                  </Link>
+                  </a>
                   <Link
                     href={service.link}
                     className="bg-gray-200 text-gray-900 px-8 py-3 text-sm font-bold uppercase hover:bg-gray-300 transition-all"

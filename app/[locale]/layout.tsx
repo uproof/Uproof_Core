@@ -11,24 +11,58 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'UpRoof | Professional Roofing Services | Jumtu būvniecība',
-  description: 'Professional roofing services in Latvia. Roof construction, painting, maintenance, and repairs. Expert roofing solutions from A to Z. Profesionāli jumta risinājumi Latvijā.',
-  keywords: 'roofing, roof construction, roof painting, roof maintenance, Latvia, Latvija, jumtu būvniecība, jumta krāsošana, jumta apkope',
-  authors: [{name: 'UpRoof'}],
-  icons: {
-    icon: '/favicon.svg',
+  metadataBase: new URL('https://uproof.lv'), // Replace with your actual domain
+  title: {
+    default: 'UpRoof | Professional Roofing Services in Latvia | Jumtu būvniecība',
+    template: '%s | UpRoof'
+  },
+  description: 'Professional roofing services in Latvia. Roof construction, painting, maintenance, and repairs. Expert roofing solutions from A to Z. Profesionāli jumta risinājumi Latvijā. ✓ Quality ✓ Reliability ✓ Safety',
+  keywords: ['roofing', 'roof construction', 'roof repair', 'Latvia', 'jumta būvniecība', 'jumta remonts', 'jumta krāsošana', 'jumta apkope', 'roofing Latvia', 'Latvian roofing company', 'professional roofers'],
+  authors: [{ name: 'UpRoof', url: 'https://uproof.lv' }],
+  creator: 'UpRoof',
+  publisher: 'UpRoof',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
   },
   openGraph: {
-    title: 'UpRoof | Professional Roofing Services',
-    description: 'Expert roofing solutions - construction, painting, and maintenance',
     type: 'website',
     locale: 'lv_LV',
     alternateLocale: ['en_US', 'nl_BE'],
+    url: 'https://uproof.lv',
+    title: 'UpRoof | Professional Roofing Services in Latvia',
+    description: 'Expert roofing construction, painting, and maintenance services. Quality workmanship with guaranteed results.',
     siteName: 'UpRoof',
+    images: [
+      {
+        url: '/images/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'UpRoof - Professional Roofing Services',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'UpRoof | Professional Roofing Services',
+    description: 'Expert roofing solutions in Latvia. Construction, painting, and maintenance.',
+    images: ['/images/og-image.jpg'],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: 'your-google-verification-code', // Add after Google Search Console setup
+    yandex: 'your-yandex-verification-code',
   },
 };
 
