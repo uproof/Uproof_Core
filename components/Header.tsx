@@ -30,12 +30,12 @@ export default function Header() {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="relative h-10 w-10 transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+              <div className="relative h-12 w-12 transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
                 <Image
                   src="/logo.svg"
                   alt="UpRoof logo"
                   fill
-                  sizes="40px"
+                  sizes="48px"
                   className="object-contain"
                 />
               </div>
