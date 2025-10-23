@@ -1,7 +1,7 @@
 'use client';
 
-import {useRouter, usePathname} from 'next/navigation';
 import {useLocale} from 'next-intl';
+import {useRouter, usePathname} from '@/i18n/routing';
 import {useState, useRef, useEffect} from 'react';
 import {ChevronDownIcon, GlobeAltIcon} from '@heroicons/react/24/outline';
 
@@ -21,14 +21,16 @@ export default function LanguageSwitcher() {
   const currentLanguage = languages.find((lang) => lang.code === currentLocale) || languages[0];
 
   const handleLanguageChange = (newLocale: string) => {
-    // Get the current pathname without the locale prefix
-    const pathWithoutLocale = pathname.replace(`/${currentLocale}`, '') || '/';
+    // Don't navigate if clicking the current language
+    if (newLocale === currentLocale) {
+      setIsOpen(false);
+      return;
+    }
     
-    // Construct the new path with the new locale
-    const newPath = `/${newLocale}${pathWithoutLocale}`;
-    
-    // Navigate to the new path
-    router.push(newPath);
+    // Use next-intl router with pathname and locale option
+    // pathname from usePathname() is already locale-independent (e.g., '/' or '/services')
+    // The router will automatically add the locale prefix
+    router.push(pathname, {locale: newLocale});
     setIsOpen(false);
   };
 

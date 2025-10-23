@@ -36,7 +36,7 @@ export default function Solutions() {
           <div className="w-24 h-1 bg-primary-400 mx-auto"></div>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {solutions.map((solution, index) => (
             <motion.div
               key={solution.key}
@@ -46,16 +46,16 @@ export default function Solutions() {
               transition={{ duration: 0.5, delay: index * 0.08 }}
               className="group relative h-full"
             >
-              <div className="flex flex-col items-center justify-center bg-white/10 backdrop-blur-sm p-8 h-full min-h-[260px] transition-all duration-500 hover:bg-white/20 hover:shadow-2xl hover:shadow-primary-500/20 hover:-translate-y-2 border border-white/10 hover:border-primary-400/50">
+              <div className="flex flex-col items-center justify-center bg-white/10 backdrop-blur-sm p-3 h-full min-h-[140px] transition-all duration-500 hover:bg-white/20 hover:shadow-2xl hover:shadow-primary-500/20 hover:-translate-y-2 border border-white/10 hover:border-primary-400/50">
                 {/* Icon/Image Placeholder */}
-                <div className="relative w-32 h-32 mb-6 flex items-center justify-center bg-white/20 rounded-lg group-hover:bg-white/30 transition-all duration-300">
-                  <div className="relative w-20 h-20">
+                <div className="relative w-full aspect-square mb-2 flex items-center justify-center bg-white/20 rounded-lg group-hover:bg-white/30 transition-all duration-300 p-3">
+                  <div className="relative w-full h-full">
                     <Image
                       src={solution.image}
                       alt={t(solution.key)}
                       fill
                       className="object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
-                      sizes="80px"
+                      sizes="(max-width: 640px) 40vw, (max-width: 1024px) 25vw, 15vw"
                       onError={(e) => {
                         // Fallback to a simple icon if image not found
                         const target = e.target as HTMLImageElement;
@@ -66,7 +66,7 @@ export default function Solutions() {
                 </div>
                 
                 {/* Title */}
-                <h3 className="text-center text-lg font-semibold tracking-wide leading-snug">
+                <h3 className="text-center text-xs font-semibold tracking-wide leading-tight">
                   {t(solution.key)}
                 </h3>
               </div>

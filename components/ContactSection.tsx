@@ -32,13 +32,21 @@ export default function ContactSection() {
     const sanitizedData = {
       name: sanitizeInput(data.name),
       email: sanitizeEmail(data.email),
-      phone: sanitizePhone(data.phone),
+      phone: sanitizePhone(data.phone || ''),
       message: sanitizeInput(data.message)
     };
     
-    // Validate sanitized data
+    // Validate required fields (name, email, message are required)
     if (!sanitizedData.name || !sanitizedData.email || !sanitizedData.message) {
       alert('Please fill in all required fields correctly.');
+      setIsSubmitting(false);
+      return;
+    }
+    
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(sanitizedData.email)) {
+      alert('Please enter a valid email address.');
       setIsSubmitting(false);
       return;
     }
@@ -128,16 +136,34 @@ export default function ContactSection() {
 
               <div>
                 <label htmlFor="phone" className="block text-sm font-bold text-gray-900 mb-2 uppercase">
-                  {t('form.phone')} *
+                  {t('form.phone')}
                 </label>
                 <input
-                  {...register('phone', { required: true })}
+                  {...register('phone')}
                   type="tel"
                   id="phone"
                   className="w-full px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                 />
                 {errors.phone && (
                   <p className="text-red-600 text-sm mt-1">{t('form.phoneError')}</p>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="email" className="block text-sm font-bold text-gray-900 mb-2 uppercase">
+                  {t('form.email')} *
+                </label>
+                <input
+                  {...register('email', { 
+                    required: true,
+                    pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
+                  })}
+                  type="email"
+                  id="email"
+                  className="w-full px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+                />
+                {errors.email && (
+                  <p className="text-red-600 text-sm mt-1">{t('form.emailError') || 'Valid email is required'}</p>
                 )}
               </div>
 

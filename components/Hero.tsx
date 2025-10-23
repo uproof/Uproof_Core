@@ -32,10 +32,9 @@ export default function Hero() {
           onLoadedData={() => setIsVideoLoaded(true)}
         >
           <source src="/videos/hero-video.mp4" type="video/mp4" />
-          {/* Fallback - you can add a poster image */}
         </video>
         
-        {/* Dark overlay for text readability - Roofmaster style */}
+        {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70" />
       </div>
       
