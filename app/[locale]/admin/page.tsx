@@ -4,7 +4,6 @@ import {
   PencilSquareIcon,
   DocumentTextIcon,
   HomeIcon,
-  ArrowRightOnRectangleIcon,
   ChartBarIcon
 } from '@heroicons/react/24/outline';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
