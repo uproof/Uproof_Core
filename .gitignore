@@ -15,16 +15,9 @@ build
 .env.test.local
 .env.production.local
 
-# Do not commit documentation files (except README.md)
-ADMIN_ACCESS.md
-DEPLOYMENT_GUIDE.md
-DEPLOYMENT_OPTIONS.md
-IMPROVEMENTS.md
-PROJECT_SUMMARY.md
-QUICK_REFERENCE.md
-SEO_AND_DOMAIN_GUIDE.md
-public/videos/README.md
+# Ignore all Markdown documentation from repo except root README.md
+*.md
+!/README.md
 
-# Keep only main README.md
-# README.md is NOT ignored (it should be in git)
+public/videos/README.md
 .vscode/

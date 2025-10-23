@@ -1,7 +1,4 @@
-'use client';
-
-import {useState, useEffect} from 'react';
-import {useRouter} from 'next/navigation';
+import {redirect} from 'next/navigation';
 import Link from 'next/link';
 import {
   PencilSquareIcon,
@@ -11,168 +8,13 @@ import {
   ChartBarIcon
 } from '@heroicons/react/24/outline';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import {isAdminAuthenticated} from '@/lib/adminAuth';
+import AdminLogout from '@/components/AdminLogout';
 
 export default function AdminDashboard({params: {locale}}: {params: {locale: string}}) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [loginAttempts, setLoginAttempts] = useState(0);
-  const [isLocked, setIsLocked] = useState(false);
-  const [lockoutTime, setLockoutTime] = useState<number | null>(null);
-  const router = useRouter();
-
-  useEffect(() => {
-    // Check if already authenticated
-    const auth = sessionStorage.getItem('adminAuth');
-    if (auth === 'true') {
-      setIsAuthenticated(true);
-    }
-    
-    // Check for existing lockout
-    const lockedUntil = localStorage.getItem('adminLockout');
-    if (lockedUntil) {
-      const lockTime = parseInt(lockedUntil);
-      if (Date.now() < lockTime) {
-        setIsLocked(true);
-        setLockoutTime(lockTime);
-      } else {
-        localStorage.removeItem('adminLockout');
-        localStorage.removeItem('adminAttempts');
-      }
-    }
-    
-    // Get previous attempts
-    const attempts = localStorage.getItem('adminAttempts');
-    if (attempts) {
-      setLoginAttempts(parseInt(attempts));
-    }
-    
-    setLoading(false);
-  }, []);
-
-  // Auto-unlock after timeout
-  useEffect(() => {
-    if (isLocked && lockoutTime) {
-      const timer = setInterval(() => {
-        if (Date.now() >= lockoutTime) {
-          setIsLocked(false);
-          setLockoutTime(null);
-          setLoginAttempts(0);
-          localStorage.removeItem('adminLockout');
-          localStorage.removeItem('adminAttempts');
-        }
-      }, 1000);
-      return () => clearInterval(timer);
-    }
-  }, [isLocked, lockoutTime]);
-
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (isLocked) {
-      return;
-    }
-    
-    const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'UpRoof2025Admin';
-    
-    // Simple password check (in production, use proper authentication)
-    if (password === adminPassword) {
-      sessionStorage.setItem('adminAuth', 'true');
-      setIsAuthenticated(true);
-      setError('');
-      setLoginAttempts(0);
-      localStorage.removeItem('adminAttempts');
-      localStorage.removeItem('adminLockout');
-    } else {
-      const newAttempts = loginAttempts + 1;
-      setLoginAttempts(newAttempts);
-      localStorage.setItem('adminAttempts', newAttempts.toString());
-      
-      if (newAttempts >= 5) {
-        // Lock for 15 minutes after 5 failed attempts
-        const lockUntil = Date.now() + 15 * 60 * 1000;
-        localStorage.setItem('adminLockout', lockUntil.toString());
-        setIsLocked(true);
-        setLockoutTime(lockUntil);
-        setError('Too many failed attempts. Locked for 15 minutes.');
-      } else {
-        setError(`Incorrect password (${newAttempts}/5 attempts)`);
-      }
-    }
-  };
-
-  const handleLogout = () => {
-    sessionStorage.removeItem('adminAuth');
-    setIsAuthenticated(false);
-    setPassword('');
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-600 to-primary-800">
-        <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">UpRoof Admin</h1>
-            <p className="text-gray-600">Enter password to continue</p>
-          </div>
-          
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
-                placeholder="Enter admin password"
-                required
-              />
-            </div>
-            
-            {error && (
-              <div className={`px-4 py-3 rounded-lg text-sm ${isLocked ? 'bg-red-100 text-red-800' : 'bg-red-50 text-red-600'}`}>
-                <strong>{error}</strong>
-                {isLocked && lockoutTime && (
-                  <p className="mt-2 text-xs">
-                    Time remaining: {Math.ceil((lockoutTime - Date.now()) / 60000)} minutes
-                  </p>
-                )}
-              </div>
-            )}
-            
-            <button
-              type="submit"
-              disabled={isLocked}
-              className={`w-full py-3 rounded-lg font-semibold transition-colors ${
-                isLocked 
-                  ? 'bg-gray-400 text-gray-700 cursor-not-allowed' 
-                  : 'bg-primary-600 text-white hover:bg-primary-700'
-              }`}
-            >
-              {isLocked ? 'Account Locked' : 'Login'}
-            </button>
-          </form>
-          
-          <div className="mt-6 text-center">
-            <Link href={`/${locale}`} className="text-sm text-primary-600 hover:text-primary-700">
-              ← Back to website
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
+  const ok = isAdminAuthenticated();
+  if (!ok) {
+    redirect(`/${locale}/admin/login`);
   }
 
   return (
@@ -198,13 +40,7 @@ export default function AdminDashboard({params: {locale}}: {params: {locale: str
               <HomeIcon className="w-5 h-5" />
               View Website
             </Link>
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-2 px-4 py-2 text-red-600 hover:text-red-700 border border-red-200 rounded-lg hover:bg-red-50 transition-colors"
-            >
-              <ArrowRightOnRectangleIcon className="w-5 h-5" />
-              Logout
-            </button>
+            <AdminLogout locale={locale} />
           </div>
         </div>
       </header>
@@ -306,11 +142,8 @@ export default function AdminDashboard({params: {locale}}: {params: {locale: str
                   <span><strong>Pages Editor:</strong> Edit About, Services pages (Coming Soon)</span>
                 </li>
               </ul>
-              <p className="text-green-700 font-semibold border-t border-green-200 pt-3 mt-3">
-                🔐 Current Password: UpRoof2025Admin
-              </p>
               <p className="text-green-600 text-sm mt-1">
-                Change password in environment variables for production deployment
+                Set strong ADMIN_PASSWORD and ADMIN_TOKEN_SECRET in your .env.local (not committed)
               </p>
             </div>
           </div>
