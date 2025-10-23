@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://uproof.lv'; // Replace with your actual GoDaddy domain
+  const baseUrl = 'https://uproof.eu'; // Replace with your actual GoDaddy domain
   const locales = ['lv', 'en', 'nl-BE'];
   const paths = ['', '/services', '/projects', '/about', '/contact', '/blog'];
   

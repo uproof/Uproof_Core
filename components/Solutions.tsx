@@ -46,16 +46,16 @@ export default function Solutions() {
               transition={{ duration: 0.5, delay: index * 0.08 }}
               className="group relative h-full"
             >
-              <div className="flex flex-col items-center justify-center bg-white/10 backdrop-blur-sm p-8 h-full min-h-[220px] transition-all duration-500 hover:bg-white/20 hover:shadow-2xl hover:shadow-primary-500/20 hover:-translate-y-2 border border-white/10 hover:border-primary-400/50">
+              <div className="flex flex-col items-center justify-center bg-white/10 backdrop-blur-sm p-8 h-full min-h-[260px] transition-all duration-500 hover:bg-white/20 hover:shadow-2xl hover:shadow-primary-500/20 hover:-translate-y-2 border border-white/10 hover:border-primary-400/50">
                 {/* Icon/Image Placeholder */}
-                <div className="relative w-20 h-20 mb-4 flex items-center justify-center bg-white/20 rounded-lg group-hover:bg-white/30 transition-all duration-300">
-                  <div className="relative w-12 h-12">
+                <div className="relative w-32 h-32 mb-6 flex items-center justify-center bg-white/20 rounded-lg group-hover:bg-white/30 transition-all duration-300">
+                  <div className="relative w-20 h-20">
                     <Image
                       src={solution.image}
                       alt={t(solution.key)}
                       fill
                       className="object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
-                      sizes="48px"
+                      sizes="80px"
                       onError={(e) => {
                         // Fallback to a simple icon if image not found
                         const target = e.target as HTMLImageElement;
