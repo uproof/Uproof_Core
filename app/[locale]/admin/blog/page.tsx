@@ -1,6 +1,6 @@
 'use client';
 
-import {useState, useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {useRouter} from 'next/navigation';
 import Link from 'next/link';
 import {
@@ -11,51 +11,28 @@ import {
   EyeIcon
 } from '@heroicons/react/24/outline';
 
-// Sample blog posts (same as blog listing page)
-const initialBlogPosts = [
-  {
-    id: 1,
-    title: 'Top 5 Roofing Materials for 2025',
-    excerpt: 'Discover the most durable and cost-effective roofing materials...',
-    category: 'Materials',
-    status: 'published',
-    date: '2025-01-15'
-  },
-  {
-    id: 2,
-    title: 'How to Maintain Your Roof in Winter',
-    excerpt: 'Essential tips for keeping your roof in perfect condition...',
-    category: 'Maintenance',
-    status: 'published',
-    date: '2025-01-10'
-  },
-  {
-    id: 3,
-    title: 'Signs Your Roof Needs Repair',
-    excerpt: 'Learn to identify the warning signs that indicate...',
-    category: 'Tips',
-    status: 'published',
-    date: '2025-01-05'
-  }
-];
+type Post = {id: number; title: string; excerpt: string; category: string; date: string; readTime?: string; author?: string; content?: string; status?: 'published' | 'draft'};
 
 export default function BlogManagement({params: {locale}}: {params: {locale: string}}) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [posts, setPosts] = useState(initialBlogPosts);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [showForm, setShowForm] = useState(false);
+  const [editing, setEditing] = useState<Post | null>(null);
+  const [form, setForm] = useState<Partial<Post>>({ title: '', excerpt: '', category: 'General', content: '' });
   const router = useRouter();
 
   useEffect(() => {
-    const auth = sessionStorage.getItem('adminAuth');
-    if (auth !== 'true') {
-      router.push(`/${locale}/admin`);
-    } else {
-      setIsAuthenticated(true);
-    }
-    setLoading(false);
+    // Fetch posts
+    const run = async () => {
+      const res = await fetch('/api/admin/blog');
+      const data = await res.json();
+      if (data?.posts) setPosts(data.posts);
+      setLoading(false);
+    };
+    run();
   }, [locale, router]);
 
-  if (loading || !isAuthenticated) {
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
@@ -67,45 +44,88 @@ export default function BlogManagement({params: {locale}}: {params: {locale: str
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link
-              href={`/${locale}/admin`}
-              className="text-gray-600 hover:text-gray-900"
-            >
-              <ArrowLeftIcon className="w-6 h-6" />
-            </Link>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Blog Management</h1>
-              <p className="text-sm text-gray-600">Create and manage blog posts</p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <Link
+                href={`/${locale}/admin`}
+                className="text-gray-600 hover:text-gray-900"
+              >
+                <ArrowLeftIcon className="w-6 h-6" />
+              </Link>
+              <div>
+                <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Blog Management</h1>
+                <p className="text-xs sm:text-sm text-gray-600">Create and manage blog posts</p>
+              </div>
             </div>
+            <button 
+              onClick={() => { setEditing(null); setForm({ title: '', excerpt: '', category: 'General', content: '' }); setShowForm(true); }} 
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-3 sm:py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-semibold"
+            >
+              <PlusIcon className="w-5 h-5" />
+              New Post
+            </button>
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
-            <PlusIcon className="w-5 h-5" />
-            New Post
-          </button>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Coming Soon Message */}
-        <div className="mb-8 bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-          <div className="flex items-start gap-4">
-            <div className="bg-yellow-100 p-3 rounded-lg">
-              <svg className="w-6 h-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-              </svg>
+        {/* Create/Edit Form */}
+        {showForm && (
+          <div className="mb-8 bg-white border border-gray-200 rounded-xl p-4 sm:p-6">
+            <h3 className="text-lg font-bold text-gray-900 mb-4">{editing ? 'Edit Post' : 'New Post'}</h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                <input className="w-full border rounded-lg px-3 py-3 text-base" value={form.title || ''} onChange={e=>setForm({...form, title: e.target.value})} />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                <input className="w-full border rounded-lg px-3 py-3 text-base" value={form.category || ''} onChange={e=>setForm({...form, category: e.target.value})} />
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">Excerpt</label>
+                <textarea className="w-full border rounded-lg px-3 py-3 text-base" rows={3} value={form.excerpt || ''} onChange={e=>setForm({...form, excerpt: e.target.value})} />
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">Content (HTML)</label>
+                <textarea className="w-full border rounded-lg px-3 py-3 text-base" rows={6} value={form.content || ''} onChange={e=>setForm({...form, content: e.target.value})} />
+              </div>
             </div>
-            <div>
-              <h3 className="text-lg font-bold text-yellow-900 mb-2">Blog Editor Coming Soon</h3>
-              <p className="text-yellow-700">
-                The blog editor with rich text editing, image upload, and full CRUD functionality is currently in development.
-                This preview shows the planned interface for managing blog posts.
-              </p>
+            <div className="mt-4 flex flex-col sm:flex-row gap-2">
+              <button
+                onClick={async () => {
+                  if (!form.title || !form.excerpt) return alert('Title and Excerpt are required');
+                  if (editing) {
+                    const res = await fetch(`/api/admin/blog/${editing.id}`, {method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(form)});
+                    if (res.ok) {
+                      const data = await res.json();
+                      setPosts(prev => prev.map(p => p.id === data.post.id ? data.post : p));
+                      setShowForm(false); setEditing(null);
+                    }
+                  } else {
+                    const res = await fetch('/api/admin/blog', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(form)});
+                    if (res.ok) {
+                      const data = await res.json();
+                      setPosts(prev => [data.post, ...prev]);
+                      setShowForm(false);
+                    }
+                  }
+                }}
+                className="px-4 py-3 sm:py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-semibold text-sm min-h-[44px] sm:min-h-0"
+              >
+                {editing ? 'Save Changes' : 'Create Post'}
+              </button>
+              <button 
+                onClick={() => { setShowForm(false); setEditing(null); }} 
+                className="px-4 py-3 sm:py-2 border border-gray-300 rounded-lg hover:bg-gray-50 font-semibold text-sm min-h-[44px] sm:min-h-0"
+              >
+                Cancel
+              </button>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Stats */}
         <div className="grid md:grid-cols-4 gap-6 mb-8">
@@ -116,7 +136,7 @@ export default function BlogManagement({params: {locale}}: {params: {locale: str
           <div className="bg-white rounded-xl shadow p-6">
             <div className="text-sm text-gray-600 mb-1">Published</div>
             <div className="text-3xl font-bold text-green-600">
-              {posts.filter(p => p.status === 'published').length}
+              {posts.filter(p => (p.status ?? 'published') === 'published').length}
             </div>
           </div>
           <div className="bg-white rounded-xl shadow p-6">
@@ -168,9 +188,15 @@ export default function BlogManagement({params: {locale}}: {params: {locale: str
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                        {post.status}
-                      </span>
+                        {((post.status ?? 'published') === 'published') ? (
+                          <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                            published
+                          </span>
+                        ) : (
+                          <span className="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                            draft
+                          </span>
+                        )}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-500">
                       {new Date(post.date).toLocaleDateString()}
@@ -184,10 +210,14 @@ export default function BlogManagement({params: {locale}}: {params: {locale: str
                         >
                           <EyeIcon className="w-5 h-5" />
                         </Link>
-                        <button className="text-primary-600 hover:text-primary-900" title="Edit">
+                        <button onClick={() => { setEditing(post); setForm(post); setShowForm(true); }} className="text-primary-600 hover:text-primary-900" title="Edit">
                           <PencilSquareIcon className="w-5 h-5" />
                         </button>
-                        <button className="text-red-600 hover:text-red-900" title="Delete">
+                        <button onClick={async () => {
+                          if (!confirm('Delete this post?')) return;
+                          const res = await fetch(`/api/admin/blog/${post.id}`, {method: 'DELETE'});
+                          if (res.ok) setPosts(prev => prev.filter(p => p.id !== post.id));
+                        }} className="text-red-600 hover:text-red-900" title="Delete">
                           <TrashIcon className="w-5 h-5" />
                         </button>
                       </div>

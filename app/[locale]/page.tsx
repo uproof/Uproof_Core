@@ -6,7 +6,7 @@ import Services from '@/components/Services';
 import Solutions from '@/components/Solutions';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
-import StatsBar from '@/components/StatsBar';
+import Reviews from '@/components/Reviews';
 import FAQ from '@/components/FAQ';
 
 type Props = {
@@ -16,20 +16,12 @@ type Props = {
 export default function HomePage({params: {locale}}: Props) {
   unstable_setRequestLocale(locale);
 
-  // Stats matching Roofmaster style - update with real data
-  const stats = [
-    {value: '22+', label: 'Years Experience'},
-    {value: '662', label: 'Projects Completed'},
-    {value: '98%', label: 'Client Satisfaction'},
-    {value: '68', label: 'Cities Served'},
-  ];
-
   return (
     <main className="min-h-screen">
   <Header showText={false} largeLogo={true} />
       <Hero />
       <Services />
-      <StatsBar stats={stats} />
+      <Reviews />
       <Solutions />
       <FAQ />
       <ContactSection />

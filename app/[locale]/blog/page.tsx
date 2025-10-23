@@ -4,68 +4,21 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
 import {Link} from '@/i18n/routing';
+import blogData from '@/data/blog.json';
 
 type Props = {
   params: {locale: string};
 };
 
-// Sample blog posts - replace with real data from CMS or API
-const blogPosts = [
-  {
-    id: 1,
-    title: 'Top 5 Roofing Materials for 2025',
-    excerpt: 'Discover the most durable and cost-effective roofing materials that will protect your home for decades.',
-    image: '/images/blog/roofing-materials.jpg',
-    date: '2025-01-15',
-    category: 'Materials',
-    readTime: '5 min read'
-  },
-  {
-    id: 2,
-    title: 'How to Maintain Your Roof in Winter',
-    excerpt: 'Essential tips for keeping your roof in perfect condition during the harsh winter months.',
-    image: '/images/blog/winter-maintenance.jpg',
-    date: '2025-01-10',
-    category: 'Maintenance',
-    readTime: '4 min read'
-  },
-  {
-    id: 3,
-    title: 'Signs Your Roof Needs Repair',
-    excerpt: 'Learn to identify the warning signs that indicate your roof requires professional attention.',
-    image: '/images/blog/roof-repair.jpg',
-    date: '2025-01-05',
-    category: 'Tips',
-    readTime: '6 min read'
-  },
-  {
-    id: 4,
-    title: 'Energy-Efficient Roofing Solutions',
-    excerpt: 'Reduce your energy bills with modern roofing technologies and insulation techniques.',
-    image: '/images/blog/energy-efficient.jpg',
-    date: '2024-12-28',
-    category: 'Innovation',
-    readTime: '7 min read'
-  },
-  {
-    id: 5,
-    title: 'The Complete Roof Installation Guide',
-    excerpt: 'Everything you need to know about the roof installation process from start to finish.',
-    image: '/images/blog/installation-guide.jpg',
-    date: '2024-12-20',
-    category: 'Guides',
-    readTime: '10 min read'
-  },
-  {
-    id: 6,
-    title: 'Flat Roof vs Pitched Roof: Pros and Cons',
-    excerpt: 'Compare the advantages and disadvantages of different roof types to make the right choice.',
-    image: '/images/blog/roof-types.jpg',
-    date: '2024-12-15',
-    category: 'Comparison',
-    readTime: '5 min read'
-  }
-];
+const blogPosts = blogData as Array<{
+  id: number;
+  title: string;
+  excerpt: string;
+  image: string;
+  date: string;
+  category: string;
+  readTime?: string;
+}>;
 
 export default function BlogPage({params: {locale}}: Props) {
   unstable_setRequestLocale(locale);

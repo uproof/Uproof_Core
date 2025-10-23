@@ -1,6 +1,6 @@
 'use client';
 
-import {useState, useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {useRouter} from 'next/navigation';
 import Link from 'next/link';
 import {
@@ -12,21 +12,21 @@ import {
 } from '@heroicons/react/24/outline';
 
 export default function HomepageEditor({params: {locale}}: {params: {locale: string}}) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [messages, setMessages] = useState<any | null>(null);
   const router = useRouter();
 
   useEffect(() => {
-    const auth = sessionStorage.getItem('adminAuth');
-    if (auth !== 'true') {
-      router.push(`/${locale}/admin`);
-    } else {
-      setIsAuthenticated(true);
-    }
-    setLoading(false);
+    const run = async () => {
+      const res = await fetch(`/api/admin/messages/${locale}`);
+      const data = await res.json();
+      if (data?.messages) setMessages(data.messages);
+      setLoading(false);
+    };
+    run();
   }, [locale, router]);
 
-  if (loading || !isAuthenticated) {
+  if (loading || !messages) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
@@ -56,26 +56,38 @@ export default function HomepageEditor({params: {locale}}: {params: {locale: str
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Coming Soon Message */}
-        <div className="mb-8 bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-          <div className="flex items-start gap-4">
-            <div className="bg-yellow-100 p-3 rounded-lg">
-              <svg className="w-6 h-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-              </svg>
+        {/* Hero Editor */}
+        <div className="mb-8 bg-white border border-gray-200 rounded-xl p-6">
+          <h3 className="text-lg font-bold text-gray-900 mb-4">Hero Section</h3>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+              <input className="w-full border rounded-lg px-3 py-2" value={messages.home?.hero?.title || ''} onChange={e => setMessages((m: any) => ({...m, home: {...m.home, hero: {...m.home.hero, title: e.target.value}}}))} />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-yellow-900 mb-2">Homepage Editor Coming Soon</h3>
-              <p className="text-yellow-700">
-                The homepage content editor is currently in development. This will allow you to edit hero text, stats, 
-                services descriptions, FAQ content, and more directly from this interface.
-              </p>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Subtitle</label>
+              <input className="w-full border rounded-lg px-3 py-2" value={messages.home?.hero?.subtitle || ''} onChange={e => setMessages((m: any) => ({...m, home: {...m.home, hero: {...m.home.hero, subtitle: e.target.value}}}))} />
             </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">CTA Label</label>
+              <input className="w-full border rounded-lg px-3 py-2" value={messages.home?.hero?.cta || ''} onChange={e => setMessages((m: any) => ({...m, home: {...m.home, hero: {...m.home.hero, cta: e.target.value}}}))} />
+            </div>
+          </div>
+          <div className="mt-4">
+            <button
+              onClick={async () => {
+                const res = await fetch(`/api/admin/messages/${locale}`, {method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(messages)});
+                if (res.ok) alert('Saved!');
+              }}
+              className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+            >
+              Save Hero
+            </button>
           </div>
         </div>
 
-        {/* Section Cards */}
-        <div className="grid md:grid-cols-2 gap-6">
+  {/* Section Cards (placeholders for future feature expansion) */}
+  <div className="grid md:grid-cols-2 gap-6">
           {/* Hero Section */}
           <div className="bg-white rounded-xl shadow-md p-6">
             <div className="flex items-center gap-3 mb-4">

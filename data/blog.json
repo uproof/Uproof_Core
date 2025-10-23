@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "title": "Top 5 Roofing Materials ",
+    "excerpt": "Discover the most durable and cost-effective roofing materials that will protect your home for decades.",
+    "image": "/images/blog/roofing-materials.jpg",
+    "date": "2025-01-15",
+    "status": "published",
+    "category": "Materials",
+    "readTime": "5 min read",
+    "author": "UpRoof Team",
+    "content": "<h2>Introduction</h2><p>Choosing the right roofing material is one of the most important decisions for any homeowner. In 2025, we have more options than ever before, with materials that offer superior durability, energy efficiency, and aesthetic appeal.</p>"
+  },
+  {
+    "id": 2,
+    "title": "How to Maintain Your Roof in Winter",
+    "excerpt": "Essential tips for keeping your roof in perfect condition during the harsh winter months.",
+    "image": "/images/blog/winter-maintenance.jpg",
+    "date": "2025-01-10",
+    "status": "published",
+    "category": "Maintenance",
+    "readTime": "4 min read",
+    "author": "UpRoof Team",
+    "content": "<h2>Winter Roof Maintenance Guide</h2><p>Winter can be tough on your roof. Snow, ice, and freezing temperatures can cause serious damage if you're not prepared.</p>"
+  },
+  {
+    "id": 3,
+    "title": "Signs Your Roof Needs Repair",
+    "excerpt": "Learn to identify the warning signs that indicate your roof requires professional attention.",
+    "image": "/images/blog/roof-repair.jpg",
+    "date": "2025-01-05",
+    "status": "published",
+    "category": "Tips",
+    "readTime": "6 min read",
+    "author": "UpRoof Team",
+    "content": "<h2>Warning Signs Your Roof Needs Repair</h2><p>Catching roof problems early can save you thousands in repair costs.</p>"
+  }
+]
