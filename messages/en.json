@@ -141,6 +141,67 @@
     "cta": "Contact us so we can help you!",
     "company": "SIA UpLift"
   },
+  "cookies": {
+    "title": "We Value Your Privacy",
+    "description": "We use cookies to improve your browsing experience, analyze site traffic, and personalize content. You can choose which cookies to accept.",
+    "necessary": {
+      "title": "Necessary Cookies",
+      "required": "Always Active"
+    },
+    "analytics": {
+      "title": "Analytics Cookies"
+    },
+    "acceptAll": "Accept All",
+    "rejectAll": "Necessary Only",
+    "savePreferences": "Save Preferences",
+    "learnMore": "Learn more in our",
+    "privacyPolicy": "Privacy Policy"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last Updated",
+    "intro": {
+      "title": "Introduction",
+      "content": "At UpRoof (SIA UpLift), we respect your privacy and are committed to protecting your personal data. This privacy policy explains how we collect, use, and protect your information when you visit our website or use our services."
+    },
+    "dataCollected": {
+      "title": "Information We Collect",
+      "intro": "We collect the following types of information:",
+      "items": {
+        "contact": "Contact information (name, email, phone number) when you submit inquiries",
+        "technical": "Technical data (IP address, browser type, device information)",
+        "usage": "Usage data (pages visited, time spent, referring pages)"
+      }
+    },
+    "cookies": {
+      "title": "Cookies and Tracking",
+      "intro": "We use cookies to improve your experience on our website:",
+      "necessary": {
+        "title": "Necessary Cookies",
+        "description": "Essential for the website to function properly. These include session management and security features."
+      },
+      "analytics": {
+        "title": "Analytics Cookies",
+        "description": "Help us understand how visitors use our website through Vercel Analytics. This includes page views, navigation patterns, and performance metrics. No personally identifiable information is collected."
+      }
+    },
+    "rights": {
+      "title": "Your Rights (GDPR)",
+      "intro": "Under GDPR, you have the following rights:",
+      "items": {
+        "access": "Right to access your personal data",
+        "rectification": "Right to correct inaccurate data",
+        "erasure": "Right to request deletion of your data",
+        "restriction": "Right to restrict processing of your data",
+        "portability": "Right to data portability",
+        "objection": "Right to object to processing"
+      }
+    },
+    "contact": {
+      "title": "Contact Us",
+      "content": "If you have any questions about this privacy policy or wish to exercise your rights, please contact us:"
+    }
+  },
   "footer": {
     "company": "SIA UpLift",
     "rights": "All rights reserved"

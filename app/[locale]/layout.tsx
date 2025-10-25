@@ -4,6 +4,7 @@ import {Inter} from 'next/font/google';
 import type {Metadata} from 'next';
 import {SpeedInsights} from '@vercel/speed-insights/next';
 import {Analytics} from '@vercel/analytics/react';
+import CookieConsent from '@/components/CookieConsent';
 import '../globals.css';
 
 const inter = Inter({ 
@@ -104,6 +105,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>
+        <CookieConsent />
         <SpeedInsights />
         <Analytics />
       </body>

@@ -140,6 +140,67 @@
     "cta": "Meld je aan zodat we je kunnen helpen!",
     "company": "UpRoof dakconstructie bedrijf"
   },
+  "cookies": {
+    "title": "We Waarderen Uw Privacy",
+    "description": "We gebruiken cookies om uw browse-ervaring te verbeteren, siteverkeer te analyseren en inhoud te personaliseren. U kunt kiezen welke cookies u accepteert.",
+    "necessary": {
+      "title": "Noodzakelijke Cookies",
+      "required": "Altijd Actief"
+    },
+    "analytics": {
+      "title": "Analytische Cookies"
+    },
+    "acceptAll": "Alles Accepteren",
+    "rejectAll": "Alleen Noodzakelijk",
+    "savePreferences": "Voorkeuren Opslaan",
+    "learnMore": "Meer informatie in ons",
+    "privacyPolicy": "Privacybeleid"
+  },
+  "privacy": {
+    "title": "Privacybeleid",
+    "lastUpdated": "Laatst bijgewerkt",
+    "intro": {
+      "title": "Inleiding",
+      "content": "Bij UpRoof (SIA UpLift) respecteren wij uw privacy en zijn wij toegewijd aan de bescherming van uw persoonlijke gegevens. Dit privacybeleid legt uit hoe wij uw informatie verzamelen, gebruiken en beschermen wanneer u onze website bezoekt of onze diensten gebruikt."
+    },
+    "dataCollected": {
+      "title": "Informatie die wij verzamelen",
+      "intro": "Wij verzamelen de volgende soorten informatie:",
+      "items": {
+        "contact": "Contactgegevens (naam, e-mail, telefoonnummer) wanneer u aanvragen indient",
+        "technical": "Technische gegevens (IP-adres, browsertype, apparaatinformatie)",
+        "usage": "Gebruiksgegevens (bezochte pagina's, bestede tijd, verwijzende pagina's)"
+      }
+    },
+    "cookies": {
+      "title": "Cookies en tracking",
+      "intro": "Wij gebruiken cookies om uw ervaring op onze website te verbeteren:",
+      "necessary": {
+        "title": "Noodzakelijke cookies",
+        "description": "Essentieel voor het correct functioneren van de website. Deze omvatten sessiebeheer en beveiligingsfuncties."
+      },
+      "analytics": {
+        "title": "Analytische cookies",
+        "description": "Helpen ons te begrijpen hoe bezoekers onze website gebruiken via Vercel Analytics. Dit omvat paginaweergaven, navigatiepatronen en prestatiegegevens. Er worden geen persoonlijk identificeerbare gegevens verzameld."
+      }
+    },
+    "rights": {
+      "title": "Uw rechten (AVG)",
+      "intro": "Onder de AVG heeft u de volgende rechten:",
+      "items": {
+        "access": "Recht op toegang tot uw persoonlijke gegevens",
+        "rectification": "Recht op correctie van onjuiste gegevens",
+        "erasure": "Recht om verwijdering van uw gegevens te verzoeken",
+        "restriction": "Recht om de verwerking van uw gegevens te beperken",
+        "portability": "Recht op gegevensoverdraagbaarheid",
+        "objection": "Recht om bezwaar te maken tegen verwerking"
+      }
+    },
+    "contact": {
+      "title": "Neem contact met ons op",
+      "content": "Als u vragen heeft over dit privacybeleid of uw rechten wilt uitoefenen, neem dan contact met ons op:"
+    }
+  },
   "footer": {
     "company": "UpRoof dakconstructie bedrijf",
     "tagline": "Professionele dakbedekkingsoplossingen!",

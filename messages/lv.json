@@ -141,6 +141,67 @@
     "cta": "Piesakies, lai varam Jums palīdzēt!",
     "company": "SIA UpLift"
   },
+  "cookies": {
+    "title": "Mēs Vērtējam Jūsu Privātumu",
+    "description": "Mēs izmantojam sīkdatnes, lai uzlabotu jūsu pārlūkošanas pieredzi, analizētu vietnes apmeklējumu un personalizētu saturu. Jūs varat izvēlēties, kuras sīkdatnes pieņemt.",
+    "necessary": {
+      "title": "Nepieciešamās Sīkdatnes",
+      "required": "Vienmēr Aktīvas"
+    },
+    "analytics": {
+      "title": "Analītikas Sīkdatnes"
+    },
+    "acceptAll": "Pieņemt Visas",
+    "rejectAll": "Tikai Nepieciešamās",
+    "savePreferences": "Saglabāt Preferences",
+    "learnMore": "Uzziniet vairāk mūsu",
+    "privacyPolicy": "Privātuma Politikā"
+  },
+  "privacy": {
+    "title": "Privātuma Politika",
+    "lastUpdated": "Pēdējo reizi atjaunināts",
+    "intro": {
+      "title": "Ievads",
+      "content": "UpRoof (SIA UpLift) respektē jūsu privātumu un ir apņēmusies aizsargāt jūsu personas datus. Šī privātuma politika izskaidro, kā mēs vācam, izmantojam un aizsargājam jūsu informāciju, kad jūs apmeklējat mūsu vietni vai izmantojat mūsu pakalpojumus."
+    },
+    "dataCollected": {
+      "title": "Informācija, ko mēs vācam",
+      "intro": "Mēs vācam šādus informācijas veidus:",
+      "items": {
+        "contact": "Kontaktinformāciju (vārds, e-pasts, tālruņa numurs), kad jūs iesniedzat pieprasījumus",
+        "technical": "Tehniskos datus (IP adrese, pārlūkprogrammas tips, ierīces informācija)",
+        "usage": "Lietošanas datus (apmeklētās lapas, pavadītais laiks, atsauces lapas)"
+      }
+    },
+    "cookies": {
+      "title": "Sīkdatnes un izsekošana",
+      "intro": "Mēs izmantojam sīkdatnes, lai uzlabotu jūsu pieredzi mūsu vietnē:",
+      "necessary": {
+        "title": "Nepieciešamās Sīkdatnes",
+        "description": "Nepieciešamas, lai vietne darbotos pareizi. Tās ietver sesijas pārvaldību un drošības funkcijas."
+      },
+      "analytics": {
+        "title": "Analītikas Sīkdatnes",
+        "description": "Palīdz mums saprast, kā apmeklētāji izmanto mūsu vietni, izmantojot Vercel Analytics. Tas ietver lapu skatījumus, navigācijas modeļus un veiktspējas rādītājus. Netiek vākta personiski identificējama informācija."
+      }
+    },
+    "rights": {
+      "title": "Jūsu tiesības (GDPR)",
+      "intro": "Saskaņā ar GDPR jums ir šādas tiesības:",
+      "items": {
+        "access": "Tiesības piekļūt saviem personas datiem",
+        "rectification": "Tiesības labot neprecīzus datus",
+        "erasure": "Tiesības pieprasīt savu datu dzēšanu",
+        "restriction": "Tiesības ierobežot savu datu apstrādi",
+        "portability": "Tiesības uz datu pārnesamību",
+        "objection": "Tiesības iebilst pret apstrādi"
+      }
+    },
+    "contact": {
+      "title": "Sazinieties ar mums",
+      "content": "Ja jums ir kādi jautājumi par šo privātuma politiku vai vēlaties izmantot savas tiesības, lūdzu, sazinieties ar mums:"
+    }
+  },
   "footer": {
     "company": "SIA UpLift",
     "rights": "Visas tiesības aizsargātas"
