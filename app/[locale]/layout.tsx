@@ -104,8 +104,8 @@ export default async function LocaleLayout({
       <body className="font-sans">
         <NextIntlClientProvider messages={messages}>
           {children}
+           <CookieConsent />
         </NextIntlClientProvider>
-        <CookieConsent />
         <SpeedInsights />
         <Analytics />
       </body>
