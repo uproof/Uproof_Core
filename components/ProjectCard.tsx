@@ -27,7 +27,7 @@ export default function ProjectCard({titleKey, locationKey, year, services, desc
       {/* Image with overlay */}
       <div className="relative aspect-[16/9] w-full overflow-hidden">
         <Image
-          src={image || '/images/projects/placeholder.jpg'}
+          src={image || '/images/projects/placeholder.jpg'} // or .png
           alt={t(titleKey)}
           fill
           sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"

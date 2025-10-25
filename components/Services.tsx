@@ -12,19 +12,19 @@ export default function Services() {
     {
       title: t('construction.title'),
       description: t('construction.description'),
-      image: '/images/services/construction.jpg',
+      image: '/images/services/construction.jpg', // or .png
       link: '/services#construction'
     },
     {
       title: t('painting.title'),
       description: t('painting.description'),
-      image: '/images/services/painting.jpg',
+      image: '/images/services/painting.jpg', // or .png
       link: '/services#painting'
     },
     {
       title: t('maintenance.title'),
       description: t('maintenance.description'),
-      image: '/images/services/maintenance.jpg',
+      image: '/images/services/maintenance.jpg', // or .png
       link: '/services#maintenance'
     },
   ];
