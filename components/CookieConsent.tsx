@@ -52,6 +52,10 @@ export default function CookieConsent() {
     localStorage.setItem('cookie-consent', JSON.stringify(allConsent));
     localStorage.setItem('cookie-consent-date', new Date().toISOString());
     setPreferences(allConsent);
+    // Notify listeners (e.g., GTM loader)
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('cookie-consent', {detail: allConsent}));
+    }
     enableAnalytics();
     setShowBanner(false);
   };
@@ -66,6 +70,10 @@ export default function CookieConsent() {
     localStorage.setItem('cookie-consent', JSON.stringify(necessaryOnly));
     localStorage.setItem('cookie-consent-date', new Date().toISOString());
     setPreferences(necessaryOnly);
+    // Notify listeners (e.g., GTM loader)
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('cookie-consent', {detail: necessaryOnly}));
+    }
     setShowBanner(false);
   };
 
@@ -73,6 +81,11 @@ export default function CookieConsent() {
     localStorage.setItem('cookie-consent', JSON.stringify(preferences));
     localStorage.setItem('cookie-consent-date', new Date().toISOString());
     
+    // Notify listeners (e.g., GTM loader)
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('cookie-consent', {detail: preferences}));
+    }
+
     if (preferences.analytics) {
       enableAnalytics();
     }

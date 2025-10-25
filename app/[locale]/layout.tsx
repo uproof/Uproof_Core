@@ -5,6 +5,7 @@ import type {Metadata} from 'next';
 import {SpeedInsights} from '@vercel/speed-insights/next';
 import {Analytics} from '@vercel/analytics/react';
 import CookieConsent from '@/components/CookieConsent';
+import GTM from '@/components/GTM';
 import '../globals.css';
 
 const inter = Inter({ 
@@ -102,6 +103,7 @@ export default async function LocaleLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body className="font-sans">
+        <GTM gtmId={process.env.NEXT_PUBLIC_GTM_ID || ''} />
         <NextIntlClientProvider messages={messages}>
           {children}
            <CookieConsent />
