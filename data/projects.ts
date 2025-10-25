@@ -16,7 +16,7 @@ export const projects: Project[] = [
     year: 2025,
     services: ['construction', 'profiling'],
     descriptionKey: 'projects.items.metalRoof.description',
-    image: '/images/projects/project-1.svg'
+    image: '/images/projects/project-1.png'
   },
   {
     id: 'paint-456',
@@ -25,7 +25,7 @@ export const projects: Project[] = [
     year: 2024,
     services: ['painting', 'maintenance'],
     descriptionKey: 'projects.items.roofPainting.description',
-    image: '/images/projects/project-2.svg'
+    image: '/images/projects/project-2.png'
   },
   {
     id: 'maint-789',
@@ -34,6 +34,6 @@ export const projects: Project[] = [
     year: 2025,
     services: ['maintenance'],
     descriptionKey: 'projects.items.roofMaintenance.description',
-    image: '/images/projects/project-3.svg'
+    image: '/images/projects/project-3.png'
   }
 ];
