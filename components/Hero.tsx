@@ -29,6 +29,7 @@ export default function Hero() {
           loop
           muted
           playsInline
+          preload="metadata"
           onLoadedData={() => setIsVideoLoaded(true)}
         >
           <source src="/videos/hero-video.mp4" type="video/mp4" />

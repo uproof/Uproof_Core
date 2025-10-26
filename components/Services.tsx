@@ -63,6 +63,8 @@ export default function Services() {
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                   sizes="(min-width: 768px) 50vw, 100vw"
+                  priority={index === 0}
+                  loading={index === 0 ? 'eager' : 'lazy'}
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-primary-900/20 to-transparent"></div>
               </div>

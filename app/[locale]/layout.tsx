@@ -12,6 +12,7 @@ const inter = Inter({
   subsets: ['latin', 'latin-ext'],
   variable: '--font-inter',
   display: 'swap',
+  preload: true,
 });
 
 export const metadata: Metadata = {

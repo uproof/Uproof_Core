@@ -56,6 +56,7 @@ export default function Solutions() {
                       fill
                       className="object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
                       sizes="(max-width: 640px) 40vw, (max-width: 1024px) 25vw, 15vw"
+                      loading="lazy"
                       onError={(e) => {
                         // Fallback to a simple icon if image not found
                         const target = e.target as HTMLImageElement;
