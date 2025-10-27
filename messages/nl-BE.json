@@ -8,8 +8,12 @@
     "blog": "Blog"
   },
   "pages": {
-    "services": {"title": "Onze dakdiensten"},
-    "projects": {"title": "Voltooide projecten"},
+    "services": {
+      "title": "Onze dakdiensten"
+    },
+    "projects": {
+      "title": "Voltooide projecten"
+    },
     "about": {
       "title": "Over UpRoof",
       "description": "UpRoof biedt professionele dakoplossingen: bouw, schilderen en onderhoud. Ons team werkt nauwkeurig en betrouwbaar, met hoge kwaliteitsnormen.",
@@ -28,7 +32,9 @@
         }
       }
     },
-    "contact": {"title": "Neem contact op"}
+    "contact": {
+      "title": "Neem contact op"
+    }
   },
   "projects": {
     "items": {
@@ -84,19 +90,19 @@
       "title": "VRAGEN EN ANTWOORDEN",
       "q1": {
         "question": "Welke diensten bieden wij aan?",
-        "answer": "Wij zijn gespecialiseerd in uitgebreide dakoplossingen, waaronder dakdiagnose, reparatie, ontwerp, isolatie, renovatie, onderhoud en sneeuwverwijdering. Ons ervaren team behandelt zowel residentiële als commerciële projecten met volledige garantiedekking."
+        "answer": "Wij zijn gespecialiseerd in hoogwaardige dakconstructie, van het bouwen en renoveren van dakconstructies tot het plaatsen van dakbedekking met alle benodigde accessoires en extra details. Voor uw gemak bieden wij alle oplossingen voor uw dak, waaronder schoorsteenrenovatie, dakraaminstallatie, installatie van afvoersystemen, veiligheidsvoorzieningen en meer. Voor montage van staande naad metalen daken bieden wij 10 jaar garantie!"
       },
       "q2": {
-        "question": "Bieden wij garantie?",
-        "answer": "Ja, wij bieden uitgebreide garantiedekking voor al ons dakwerk. Wij bieden garanties tot 10 jaar, afhankelijk van de gekozen materialen en diensten, waardoor u complete gemoedsrust heeft."
+        "question": "Met welke soorten daken werken wij?",
+        "answer": "Wij werken met hellende daken en renovatie. De meest gebruikte materialen zijn staande naad metalen daken, metalen plaatdaken en pannendaken, maar wij kunnen ook uw speciale materiaal plaatsen. Ons team bestaat uit verschillende ploegen, elk gespecialiseerd in een bepaald daktype en regelmatig hun kennis bijwerkend om de beste oplossingen te bieden voor elk daktype."
       },
       "q3": {
-        "question": "Hoe snel kan dakdiagnose worden uitgevoerd?",
-        "answer": "Wij gebruiken geavanceerde diagnostische apparatuur om de daktoestand efficiënt te beoordelen. Voor de meeste projecten kunnen wij binnen 1-2 werkdagen na het eerste contact een grondige inspectie voltooien en een gedetailleerde beoordeling geven."
+        "question": "Bieden wij garantie?",
+        "answer": "Wij bieden garantie op al ons werk. Voor montage van staande naad metalen daken bieden wij 10 jaar garantie en daarnaast 50 jaar fabrieksgarantie op de gebruikte materialen."
       },
       "q4": {
-        "question": "Met welke soorten daken werken wij?",
-        "answer": "Wij werken met alle soorten daksystemen, waaronder platte daken, hellende daken, metalen daken, pannendaken en moderne membraansystemen. Ons team actualiseert regelmatig hun kennis om de beste oplossingen voor elk daktype te bieden."
+        "question": "Hoe snel kan dakdiagnose worden uitgevoerd?",
+        "answer": "Wij gebruiken geavanceerde diagnostische apparatuur om de daktoestand efficiënt te beoordelen. Voor de meeste projecten kunnen wij binnen 1-2 werkdagen na het eerste contact een grondige inspectie voltooien en een gedetailleerde beoordeling geven."
       },
       "q5": {
         "question": "Kunnen dakreparaties in de winter worden uitgevoerd?",
@@ -109,7 +115,7 @@
     "subtitle": "Echte feedback van tevreden klanten",
     "review1": {
       "name": "Dita Major",
-      "text": "Zeer goede service! We moesten de schoorsteen verwijderen, het schoorsteengat in het dak en de muur afdichten, evenals de bevestigingen verwijderen waar de schoorsteen aan de buitenmuur was bevestigd, en de gaten daar ook afdichten. Ze inspecterden ook het dak en dichten de scheuren waar water doorheen lekte. Vervolgens verwijderden ze al het materiaal en lieten een volledig schone, mooie plek achter, en ze plaatsten ook netjes de verwijderde schoorsteenpijp terug waar het nodig was. Fantastische houding tegenover ons als klant, zeer plezierige samenwerking. We zullen zeker weer naar hen toe gaan als de noodzaak zich voordoet!"
+      "text": "Zeer goede service! We moesten de schoorsteen verwijderen, het schoorsteengat in het dak en de muur afdichten, evenals de bevestigingen verwijderen waar de schoorsteen aan de buitenmuur was bevestigd, en de gaten daar ook afdichten. Ze inspecteerden ook het dak en dichten de scheuren waar water doorheen lekte. Vervolgens verwijderden ze al het materiaal en lieten een volledig schone, mooie plek achter, en ze plaatsten ook netjes de verwijderde schoorsteenpijp terug waar het nodig was. Fantastische houding tegenover ons als klant, zeer plezierige samenwerking. We zullen zeker weer naar hen toe gaan als de noodzaak zich voordoet!"
     },
     "review2": {
       "name": "XBRAND STUDIO",
