@@ -1,79 +1,64 @@
 'use client';
 
-import {useTranslations} from 'next-intl';
-import {motion} from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 
 export default function Solutions() {
   const t = useTranslations('home.solutions');
 
   const solutions = [
-    { key: 'renovation', image: '/images/icons/renovation.svg' },
-    { key: 'profiling', image: '/images/icons/profiling.svg' },
-    { key: 'repair', image: '/images/icons/repair.svg' },
-    { key: 'drainage', image: '/images/icons/drainage.svg' },
-    { key: 'painting', image: '/images/icons/painting.svg' },
-    { key: 'cleaning', image: '/images/icons/cleaning.svg' },
+    { key: 'renovation', image: '/images/icons/renovation.webp' },
+    { key: 'profiling', image: '/images/icons/profiling.webp' },
+    { key: 'repair', image: '/images/icons/repair.webp' },
+    { key: 'drainage', image: '/images/icons/drainage.webp' },
+    { key: 'painting', image: '/images/icons/painting.webp' },
+    { key: 'cleaning', image: '/images/icons/cleaning.webp' },
   ];
 
   return (
-    <section className="relative py-20 bg-gradient-to-br from-gray-900 via-primary-900 to-gray-800 text-white overflow-hidden">
-      {/* Diagonal accent */}
-      <div className="absolute top-0 left-0 w-full h-32 bg-white transform -skew-y-2 -translate-y-16"></div>
-      <div className="absolute bottom-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary-800/30 to-transparent"></div>
-      
+    <section className="relative bg-gradient-to-br from-gray-900 via-primary-900 to-gray-800 text-white overflow-hidden py-16">
+      {/* Top accent */}
+      <div className="absolute top-0 left-0 w-full h-24 bg-white transform -skew-y-2 -translate-y-12 pointer-events-none" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 uppercase tracking-tight">
+        {/* Title */}
+        <div className="text-center mb-10">
+          <h2 className="text-4xl md:text-5xl font-bold uppercase tracking-tight">
             {t('title')}
           </h2>
-          <div className="w-24 h-1 bg-primary-400 mx-auto"></div>
-        </motion.div>
+          <div className="w-24 h-1 bg-primary-400 mx-auto mt-4" />
+        </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-          {solutions.map((solution, index) => (
-            <motion.div
+        {/* 2×3 grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 grid-rows-2 gap-6 w-full h-[70vh]">
+          {solutions.map((solution) => (
+            <div
               key={solution.key}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.08 }}
-              className="group relative h-full"
+              className="relative h-full rounded-2xl overflow-hidden border border-white/10 bg-white/10"
             >
-              <div className="flex flex-col items-center justify-center bg-white/10 backdrop-blur-sm p-3 h-full min-h-[140px] transition-all duration-500 hover:bg-white/20 hover:shadow-2xl hover:shadow-primary-500/20 hover:-translate-y-2 border border-white/10 hover:border-primary-400/50">
-                {/* Icon/Image Placeholder */}
-                <div className="relative w-full aspect-square mb-2 flex items-center justify-center bg-white/20 rounded-lg group-hover:bg-white/30 transition-all duration-300 p-3">
-                  <div className="relative w-full h-full">
-                    <Image
-                      src={solution.image}
-                      alt={t(solution.key)}
-                      fill
-                      className="object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
-                      sizes="(max-width: 640px) 40vw, (max-width: 1024px) 25vw, 15vw"
-                      loading="lazy"
-                      onError={(e) => {
-                        // Fallback to a simple icon if image not found
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = 'none';
-                      }}
-                    />
-                  </div>
+              <div className="relative flex flex-col h-full">
+                <div className="relative flex-1">
+                  <Image
+                    src={solution.image}
+                    alt={t(solution.key)}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 50vw, 33vw"
+                  />
                 </div>
-                
-                {/* Title */}
-                <h3 className="text-center text-xs font-semibold tracking-wide leading-tight">
-                  {t(solution.key)}
-                </h3>
+
+                <div className="shrink-0 p-4 text-center bg-black/30 backdrop-blur-sm">
+                  <h3 className="text-base sm:text-lg font-semibold tracking-wide leading-tight">
+                    {t(solution.key)}
+                  </h3>
+                </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
+
+        {/* Optional bottom gradient tint */}
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-gray-900/40 to-transparent pointer-events-none" />
       </div>
     </section>
   );

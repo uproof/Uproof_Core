@@ -12,9 +12,9 @@
     "services": {"title": "Mūsu jumtu pakalpojumi"},
     "projects": {"title": "Pabeigtie projekti"},
     "about": {
-      "title": "Par UpRoof",
-      "description": "UpRoof nodrošina profesionālus jumtu risinājumus: būvniecību, krāsošanu un apkopi. Mūsu komanda strādā precīzi un uzticami, ievērojot augstus kvalitātes standartus.",
-      "values": {
+  "title": "Par UpRoof",
+  "description": "UpRoof ir jumtu būvniecības eksperti ar ilggadēju pieredzi un aizrautību pret savu darbu. Mēs piedāvājam pilna cikla jumta risinājumus – no projektēšanas un materiālu izvēles līdz montāžai, krāsošanai un ilgtermiņa apkopei. Mūsu komanda sastāv no sertificētiem speciālistiem, kuri rūpējas par katru detaļu, lai nodrošinātu augstāko kvalitāti, drošību un estētiku. UpRoof klientiem sniedz individuālu pieeju, skaidru komunikāciju un garantētu rezultātu. Mēs lepojamies ar paveiktajiem projektiem un esam uzticams partneris gan privātmāju, gan uzņēmumu jumtu būvniecībā.",
+    "values": {
         "quality": {
           "title": "Kvalitāte",
           "description": "Izmantojam pārbaudītus materiālus un tehnoloģijas ilgmūžīgam rezultātam."
@@ -26,6 +26,34 @@
         "safety": {
           "title": "Drošība",
           "description": "Strādājam droši un atbildīgi gan objektos, gan materiālu izvēlē."
+        },
+        "certified": {
+          "title": "Sertificēts būvuzņēmums",
+          "description": "Mūsu speciālisti ir sertificēti un uzņēmums atbilst visām prasībām."
+        },
+        "guarantee": {
+          "title": "10 gadu garantija",
+          "description": "Piedāvājam 10 gadu garantiju visiem veiktajiem darbiem."
+        },
+        "contract": {
+          "title": "Līguma skaidrība",
+          "description": "Līgumā atrunāti visi nosacījumi, materiāli, metodes un rezultāts."
+        },
+        "fixedcost": {
+          "title": "Nemainīgas izmaksas",
+          "description": "Garantējam izmaksu nemainīgumu darba procesa gaitā."
+        },
+        "payment": {
+          "title": "Samaksa pēc darba uzsākšanas",
+          "description": "Sāksim darbu un tikai pēc tam prasīsim samaksu."
+        },
+        "partners": {
+          "title": "Sadarbības partneri",
+          "description": "Mūsu partneri ir lielākie namu apsaimniekotāji Latvijā."
+        },
+        "insurance": {
+          "title": "Drošība un apdrošināšana",
+          "description": "Ievērojam visus darba drošības pasākumus un esam apdrošināti."
         }
       }
     },

@@ -12,31 +12,49 @@
     "services": {"title": "Our Roofing Services"},
     "projects": {"title": "Completed Projects"},
     "about": {
-      "title": "About UpRoof",
-      "description": "UpRoof provides professional roofing solutions: construction, painting, and maintenance. Our team works precisely and reliably, adhering to high quality standards.",
-      "values": {
+  "title": "About UpRoof",
+  "description": "UpRoof are roofing experts with years of experience and a passion for quality. We deliver complete roofing solutions – from design and material selection to installation, painting, and long-term maintenance. Our certified specialists pay attention to every detail, ensuring the highest standards of quality, safety, and aesthetics. UpRoof offers a personal approach, clear communication, and guaranteed results. We take pride in our completed projects and are a trusted partner for both private homes and businesses.",
+    "values": {
         "quality": {
-          "title": "Quality",
-          "description": "We use proven materials and technologies for long-lasting results."
+          "title": "QUALITY",
+          "description": "We use proven materials and techniques for lasting results."
         },
         "reliability": {
-          "title": "Reliability",
-          "description": "We meet deadlines, provide clear communication and guarantees."
+          "title": "RELIABILITY",
+          "description": "We meet deadlines, provide clear communication, and offer guarantees."
         },
         "safety": {
-          "title": "Safety",
-          "description": "We work safely and responsibly both on projects and in material selection."
+          "title": "SAFETY",
+          "description": "We work safely and responsibly both on-site and in material selection."
+        },
+        "certified": {
+          "title": "CERTIFIED COMPANY",
+          "description": "Our specialists are certified and the company meets all requirements."
+        },
+        "guarantee": {
+          "title": "10-YEAR GUARANTEE",
+          "description": "We offer a 10-year guarantee on all completed work."
+        },
+        "contract": {
+          "title": "CONTRACT CLARITY",
+          "description": "All terms, materials, methods, and results are specified in the contract."
+        },
+        "fixedcost": {
+          "title": "FIXED COSTS",
+          "description": "We guarantee cost stability throughout the work process."
+        },
+        "payment": {
+          "title": "PAYMENT AFTER START",
+          "description": "We start work and only then request payment."
+        },
+        "partners": {
+          "title": "PARTNERSHIPS",
+          "description": "Our partners are the largest property managers in Latvia."
+        },
+        "insurance": {
+          "title": "SAFETY & INSURANCE",
+          "description": "We follow all safety measures and are insured."
         }
-      }
-    },
-    "contact": {"title": "Contact Us"}
-  },
-  "projects": {
-    "items": {
-      "metalRoof": {
-        "title": "Standing Seam Metal Roof – Private House",
-        "location": "Riga, Latvia",
-        "description": "Full-cycle roof construction with metal profile covering: structure, insulation, and covering installation."
       },
       "roofPainting": {
         "title": "Roof Painting – Apartment Building",
