@@ -15,44 +15,59 @@
       "title": "Voltooide projecten"
     },
     "about": {
-      "title": "Over UpRoof",
-      "description": "UpRoof biedt professionele dakoplossingen: bouw, schilderen en onderhoud. Ons team werkt nauwkeurig en betrouwbaar, met hoge kwaliteitsnormen.",
-      "values": {
+  "title": "Over UpRoof",
+  "description": "UpRoof is een team van dakexperts met jarenlange ervaring en passie voor vakmanschap. Wij bieden volledige dakoplossingen – van ontwerp en materiaalkeuze tot montage, schilderwerk en langdurig onderhoud. Onze gecertificeerde specialisten letten op elk detail en garanderen de hoogste kwaliteit, veiligheid en esthetiek. UpRoof staat voor een persoonlijke aanpak, duidelijke communicatie en gegarandeerde resultaten. Wij zijn trots op onze gerealiseerde projecten en zijn een betrouwbare partner voor zowel particulieren als bedrijven.",
+    "values": {
         "quality": {
-          "title": "Kwaliteit",
-          "description": "Wij gebruiken bewezen materialen en technologieën voor langdurige resultaten."
+          "title": "KWALITEIT",
+          "description": "We gebruiken bewezen materialen en technieken voor een duurzaam resultaat."
         },
         "reliability": {
-          "title": "Betrouwbaarheid",
-          "description": "Wij halen deadlines, bieden duidelijke communicatie en garanties."
+          "title": "BETROUWBAARHEID",
+          "description": "We respecteren deadlines, communiceren duidelijk en bieden garanties."
         },
         "safety": {
-          "title": "Veiligheid",
-          "description": "Wij werken veilig en verantwoord zowel op projecten als bij materiaalselectie."
+          "title": "VEILIGHEID",
+          "description": "We werken veilig en verantwoord, zowel op locatie als bij materiaalkeuze."
+        },
+        "certified": {
+          "title": "GECERTIFICEERD BEDRIJF",
+          "description": "Onze specialisten zijn gecertificeerd en het bedrijf voldoet aan alle eisen."
+        },
+        "guarantee": {
+          "title": "10 JAAR GARANTIE",
+          "description": "Wij bieden 10 jaar garantie op al het uitgevoerde werk."
+        },
+        "contract": {
+          "title": "DUidelijk CONTRACT",
+          "description": "Alle voorwaarden, materialen, methoden en resultaten zijn vastgelegd in het contract."
+        },
+        "fixedcost": {
+          "title": "VASTE KOSTEN",
+          "description": "Wij garanderen stabiele kosten gedurende het werkproces."
+        },
+        "payment": {
+          "title": "BETALING NA START",
+          "description": "Wij starten het werk en vragen pas daarna betaling."
+        },
+        "partners": {
+          "title": "PARTNERS",
+          "description": "Onze partners zijn de grootste vastgoedbeheerders in Letland."
+        },
+        "insurance": {
+          "title": "VEILIGHEID & VERZEKERING",
+          "description": "Wij volgen alle veiligheidsmaatregelen en zijn verzekerd."
         }
-      }
     },
-    "contact": {
-      "title": "Neem contact op"
-    }
-  },
-  "projects": {
-    "items": {
-      "metalRoof": {
-        "title": "Staande naad metalen dak – privéwoning",
-        "location": "Riga, Letland",
-        "description": "Volledige dakconstructie met metalen profielbedekking: structuur, isolatie en dekmontage."
-      },
-      "roofPainting": {
-        "title": "Dakschilderwerk – appartementengebouw",
-        "location": "Jelgava, Letland",
-        "description": "Mechanische dakreiniging, grondlaag en dubbele coating voor langdurige duurzaamheid."
-      },
-      "roofMaintenance": {
-        "title": "Dakonderhoud en gootreiniging",
-        "location": "Sigulda, Letland",
-        "description": "Sneeuwverwijdering, schadinspectie en afvoersysteemreiniging voor veilig gebruik."
-      }
+    "roofPainting": {
+      "title": "Dakschilderwerk – appartementengebouw",
+      "location": "Jelgava, Letland",
+      "description": "Mechanische dakreiniging, grondlaag en dubbele coating voor langdurige duurzaamheid."
+    },
+    "roofMaintenance": {
+      "title": "Dakonderhoud en gootreiniging",
+      "location": "Sigulda, Letland",
+      "description": "Sneeuwverwijdering, schadinspectie en afvoersysteemreiniging voor veilig gebruik."
     }
   },
   "home": {
@@ -212,4 +227,5 @@
     "tagline": "Professionele dakbedekkingsoplossingen!",
     "rights": "Alle rechten voorbehouden"
   }
+}
 }
