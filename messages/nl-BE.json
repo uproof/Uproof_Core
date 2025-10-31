@@ -57,7 +57,8 @@
         "insurance": {
           "title": "VEILIGHEID & VERZEKERING",
           "description": "Wij volgen alle veiligheidsmaatregelen en zijn verzekerd."
-        }
+            }
+          }
     },
     "roofPainting": {
       "title": "Dakschilderwerk – appartementengebouw",
@@ -222,10 +223,9 @@
       "content": "Als u vragen heeft over dit privacybeleid of uw rechten wilt uitoefenen, neem dan contact met ons op:"
     }
   },
-  "footer": {
-    "company": "UpRoof dakconstructie bedrijf",
-    "tagline": "Professionele dakbedekkingsoplossingen!",
-    "rights": "Alle rechten voorbehouden"
+    "footer": {
+      "company": "UpRoof dakconstructie bedrijf",
+      "tagline": "Professionele dakbedekkingsoplossingen!",
+      "rights": "Alle rechten voorbehouden"
+    }
   }
-}
-}
