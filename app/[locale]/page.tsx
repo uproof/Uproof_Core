@@ -6,8 +6,9 @@ import Services from '@/components/Services';
 import Solutions from '@/components/Solutions';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
-import Reviews from '@/components/Reviews';
-import FAQ from '@/components/FAQ';
+import dynamic from 'next/dynamic';
+const Reviews = dynamic(() => import('@/components/Reviews'), { ssr: false });
+const FAQ = dynamic(() => import('@/components/FAQ'), { ssr: false });
 
 type Props = {
   params: {locale: string};

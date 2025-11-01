@@ -43,8 +43,8 @@ export default function GTM({gtmId}: Props) {
 
   return (
     <>
-      {/* Head script - Next.js will place this in head with afterInteractive strategy */}
-      <Script id="gtm-script" strategy="afterInteractive">
+  {/* Load GTM after the page is interactive & idle to reduce INP impact */}
+  <Script id="gtm-script" strategy="lazyOnload">
         {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=

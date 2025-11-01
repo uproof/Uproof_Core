@@ -4,8 +4,9 @@ import {Inter} from 'next/font/google';
 import type {Metadata} from 'next';
 import {SpeedInsights} from '@vercel/speed-insights/next';
 import {Analytics} from '@vercel/analytics/react';
-import CookieConsent from '@/components/CookieConsent';
-import GTM from '@/components/GTM';
+import dynamic from 'next/dynamic';
+const CookieConsent = dynamic(() => import('@/components/CookieConsent'), { ssr: false });
+const GTM = dynamic(() => import('@/components/GTM'), { ssr: false });
 import '../globals.css';
 
 const inter = Inter({ 

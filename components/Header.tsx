@@ -3,7 +3,7 @@
 import {useTranslations} from 'next-intl';
 import {usePathname} from 'next/navigation';
 import {Link} from '@/i18n/routing';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import {Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline';
 import LanguageSwitcher from './LanguageSwitcher';
 import Image from 'next/image';
@@ -19,11 +19,20 @@ export default function Header({showText = true, largeLogo = false}: HeaderProps
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const next = window.scrollY > 20;
+        setScrolled(prev => (prev !== next ? next : prev));
+        ticking = false;
+      });
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    // initialize immediately
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll as EventListener);
   }, []);
 
   return (
@@ -54,23 +63,23 @@ export default function Header({showText = true, largeLogo = false}: HeaderProps
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:space-x-1">
-            <Link href="/" className="px-3 py-1.5 text-gray-900 hover:text-primary-500 transition-colors font-bold relative group">
+            <Link href="/" prefetch={false} className="px-3 py-1.5 text-gray-900 hover:text-primary-500 transition-colors font-bold relative group">
               {t('home')}
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 group-hover:w-full transition-all duration-300"></span>
             </Link>
-            <Link href="/services" className="px-3 py-1.5 text-gray-900 hover:text-primary-500 transition-colors font-bold relative group">
+            <Link href="/services" prefetch={false} className="px-3 py-1.5 text-gray-900 hover:text-primary-500 transition-colors font-bold relative group">
               {t('services')}
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 group-hover:w-full transition-all duration-300"></span>
             </Link>
-            <Link href="/projects" className="px-3 py-1.5 text-gray-900 hover:text-primary-500 transition-colors font-bold relative group">
+            <Link href="/projects" prefetch={false} className="px-3 py-1.5 text-gray-900 hover:text-primary-500 transition-colors font-bold relative group">
               {t('projects')}
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 group-hover:w-full transition-all duration-300"></span>
             </Link>
-            <Link href="/about" className="px-3 py-1.5 text-gray-900 hover:text-primary-500 transition-colors font-bold relative group">
+            <Link href="/about" prefetch={false} className="px-3 py-1.5 text-gray-900 hover:text-primary-500 transition-colors font-bold relative group">
               {t('about')}
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 group-hover:w-full transition-all duration-300"></span>
             </Link>
-            <Link href="/blog" className="px-3 py-1.5 text-gray-900 hover:text-primary-500 transition-colors font-bold relative group">
+            <Link href="/blog" prefetch={false} className="px-3 py-1.5 text-gray-900 hover:text-primary-500 transition-colors font-bold relative group">
               {t('blog') || 'Blog'}
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 group-hover:w-full transition-all duration-300"></span>
             </Link>
@@ -87,6 +96,7 @@ export default function Header({showText = true, largeLogo = false}: HeaderProps
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
               className="text-gray-700 hover:text-primary-600 p-2"
             >
               {mobileMenuOpen ? (
@@ -102,19 +112,19 @@ export default function Header({showText = true, largeLogo = false}: HeaderProps
         {mobileMenuOpen && (
           <div className="md:hidden py-6 border-t mt-4 border-gray-100">
             <div className="flex flex-col space-y-4">
-              <Link href="/" className="text-gray-900 hover:text-primary-600 transition-colors font-semibold px-2 py-2 hover:bg-primary-50">
+              <Link href="/" prefetch={false} className="text-gray-900 hover:text-primary-600 transition-colors font-semibold px-2 py-2 hover:bg-primary-50">
                 {t('home')}
               </Link>
-              <Link href="/services" className="text-gray-900 hover:text-primary-600 transition-colors font-semibold px-2 py-2 hover:bg-primary-50">
+              <Link href="/services" prefetch={false} className="text-gray-900 hover:text-primary-600 transition-colors font-semibold px-2 py-2 hover:bg-primary-50">
                 {t('services')}
               </Link>
-              <Link href="/projects" className="text-gray-900 hover:text-primary-600 transition-colors font-semibold px-2 py-2 hover:bg-primary-50">
+              <Link href="/projects" prefetch={false} className="text-gray-900 hover:text-primary-600 transition-colors font-semibold px-2 py-2 hover:bg-primary-50">
                 {t('projects')}
               </Link>
-              <Link href="/about" className="text-gray-900 hover:text-primary-600 transition-colors font-semibold px-2 py-2 hover:bg-primary-50">
+              <Link href="/about" prefetch={false} className="text-gray-900 hover:text-primary-600 transition-colors font-semibold px-2 py-2 hover:bg-primary-50">
                 {t('about')}
               </Link>
-              <Link href="/contact" className="text-gray-900 hover:text-primary-600 transition-colors font-semibold px-2 py-2 hover:bg-primary-50">
+              <Link href="/contact" prefetch={false} className="text-gray-900 hover:text-primary-600 transition-colors font-semibold px-2 py-2 hover:bg-primary-50">
                 {t('contact')}
               </Link>
               <div className="pt-2">
