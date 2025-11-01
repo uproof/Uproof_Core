@@ -17,8 +17,6 @@ export default function Solutions() {
 
   return (
   <section className="relative bg-gradient-to-br from-gray-900 via-primary-900 to-gray-800 text-white overflow-hidden py-16" style={{contentVisibility: 'auto'}}>
-      {/* Top accent */}
-      <div className="absolute top-0 left-0 w-full h-24 bg-white transform -skew-y-2 -translate-y-12 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Title */}
