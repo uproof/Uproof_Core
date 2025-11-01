@@ -23,10 +23,6 @@
           "title": "Uzticamība",
           "description": "Ievērojam termiņus, sniedzam skaidru komunikāciju un garantijas."
         },
-        "safety": {
-          "title": "Drošība",
-          "description": "Strādājam droši un atbildīgi gan objektos, gan materiālu izvēlē."
-        },
         "certified": {
           "title": "Sertificēts būvuzņēmums",
           "description": "Mūsu speciālisti ir sertificēti un uzņēmums atbilst visām prasībām."
@@ -61,20 +57,60 @@
   },
   "projects": {
     "items": {
-      "metalRoof": {
-        "title": "Staande-naad metalen dak – privātmāja",
-        "location": "Rīga, Latvija",
-        "description": "Pilna cikla jumta būvniecība ar valcprofila segumu: konstrukcijas, siltināšana un seguma montāža."
-      },
-      "roofPainting": {
-        "title": "Jumta krāsošana – daudzdzīvokļu nams",
+      "fullCycleConstruction": {
+        "title": "Pilna cikla jumta būvniecība ar valcprofilu",
         "location": "Jelgava, Latvija",
-        "description": "Jumta mehāniskā tīrīšana, grunts un divkārtēja krāsošana ilgtermiņa noturībai."
+        "description": "Pilna cikla jumta būvniecība ar valcprofila segumu, konstrukcijas atjaunošanu, jumta siltināšanu, skursteņu apdari ar skārdu, vēja kastes izbūvi, noteksistēmas montāžu."
       },
-      "roofMaintenance": {
-        "title": "Jumta apkope un noteku tīrīšana",
-        "location": "Sigulda, Latvija",
-        "description": "Sniega novākšana, bojājumu pārbaude un noteksistēmu tīrīšana drošai ekspluatācijai."
+      "renovationMetalRoof": {
+        "title": "Jumta renovācija ar valcprofilu",
+        "location": "Latvija",
+        "description": "Jumta renovācija ar valcprofila segumu, jumta logu montāža un vēja kastes atjaunošana."
+      },
+      "ventilatedRidge": {
+        "title": "Ventilējamās kores montāža",
+        "location": "Latvija",
+        "description": "Ventilējamās kores montāža valcprofila jumtam izmantojot bez skrūvju montāžu."
+      },
+      "roofReplacement": {
+        "title": "Jumta seguma nomaiņa",
+        "location": "Latvija",
+        "description": "Jumta seguma nomaiņa, skursteņa pieslēguma montāža un vēja kastes atjaunošana."
+      },
+      "tiledRoof": {
+        "title": "Dakstiņa jumta montāža",
+        "location": "Latvija",
+        "description": "Dakstiņa jumta montāža privātmājai."
+      },
+      "skylightInstallation": {
+        "title": "Jumta logu montāža",
+        "location": "Jaunciems, Latvija",
+        "description": "Jumta logu montāža valcprofila jumtam Jaunciemā."
+      },
+      "cathedralPainting": {
+        "title": "Katedrāles jumta krāsošana",
+        "location": "Latgale, Latvija",
+        "description": "Jumta krāsošana katedrāles valcprofila jumtam Latgalē."
+      },
+      "apartmentPainting": {
+        "title": "Daudzdzīvokļu mājas jumta krāsošana",
+        "location": "Grīziņkalns, Latvija",
+        "description": "Daudzīvokļu mājas jumta krāsošana Grīziņkalnā."
+      },
+      "privatePainting": {
+        "title": "Privātmājas metāla jumta krāsošana",
+        "location": "Baldone, Latvija",
+        "description": "Privātmājas metāla jumta krāsošana Baldonē."
+      },
+      "galvanizedProfilingFacade": {
+        "title": "Cinkota valcprofila montāža",
+        "location": "Carnikava, Latvija",
+        "description": "Cinkota valcprofila montāža un koka fasādes atjaunošana Carnikavā."
+      },
+      "rigaPainting": {
+        "title": "Daudzdzīvokļu mājas krāsošana",
+        "location": "Rīga, Latvija",
+        "description": "Daudzdzīvokļu mājas krāsošana Rīgā."
       }
     }
   },
@@ -89,15 +125,39 @@
       "title": "JUMTU RISINĀJUMI",
       "construction": {
         "title": "JUMTA BŪVNIECĪBA",
-        "description": "Piedāvājam pilna cikla jumta būvniecību un renovāciju no A līdz Z. Jumta konstrukciju atjaunošana, izolācijas materiālu ieklāšana, jumta seguma ieklāšana un jumta aksesuāru montāža."
+        "description": "Piedāvājam pilna cikla jumta būvniecību un renovāciju ar <bold>10 gadu garantiju</bold>. Jumta konstrukciju atjaunošana, izolācijas materiālu ieklāšana, jumta seguma ieklāšana, jumta logu montāža, jumta noteksistēmas montāža un citu jumta aksesuāru montāža."
       },
       "painting": {
         "title": "JUMTA KRĀSOŠANA",
-        "description": "Krāsošanai un jumta sagatavošanai pievēršam ļoti lielu rūpību, lai nodrošinātu nevainojamu krāsas noturību un vizuālo izskatu ilgtermiņā!"
+        "description": "Metāla jumta krāsošana lieliem un maziem jumtiem izmantojot trīs līmeņu tīrīšanu, rūsas apstrādi un trīs kārtu krāsošanu izcilam rezultātam un krāsas noturībai"
       },
       "maintenance": {
         "title": "JUMTA APKOPE",
-        "description": "Profesionāla jumta apkope - jumta tīrīšana no sniega, noteku tīrīšana no lapām, jumta labošana un bojājumu noteikšana."
+        "description": "Profesionāla jumta apkope - jumta tīrīšana no sniega, noteku tīrīšana no lapām, jumta labošana un bojājumu noteikšana, skursteņu atjaunošana, jumta drošības elementu uzstādīšana"
+      },
+      "metalProfile": {
+        "title": "VALCPROFILA MONTĀŽA",
+        "description": "Valcprofila montāža izmantojot pilnībā hermētiskus skārda dubultlocījumu risinājumus visos savienojumos, pieslēgumos ar logiem un skursteņiem. Esam spējīgi paveikt arī īpaši sarežģītus valcprofila darbus ar nestandarta risinājumiem."
+      },
+      "tiledRoof": {
+        "title": "DAKSTIŅA JUMTU MONTĀŽA",
+        "description": "Māla vai betona dakstiņu montāža kombinācijā ar mūsu skārda apstrādes prasmēm rada jumtu kas pilnībā hermētiski kalpos mūžīgi. Nodrošinam pareizu zemseguma ventilāciju un dakstiņu jumtu pabeidzam ar hermētiskiem valcēta skārda pieslēgumiem pie sienām, logiem un citās sarežģītās vietās."
+      },
+      "skylights": {
+        "title": "JUMTA LOGU MONTĀŽA",
+        "description": "Piedāvājam Roto un Velux jumta logu montāžu gan jaunos projektos gan arī ar tiem papildinot jau esošus jumtus, lai iegūtu papildus gaismu jumta stāvā, bet vienlaikus nezaudējot jumta funkcionalitāti."
+      },
+      "gutterSystem": {
+        "title": "JUMTA NOTEKSISTĒMAS MONTĀŽA",
+        "description": "Noteksistēmas uzstādam gan viegli gan sarežģīti pieejamās vietās un augstumos. Rūpējamies, lai notekas vienmēr strādātu ar ūdens paškrites mehānismu, tādā veidā padarot to funkcionalitāti ilgmūžīgu. Veicam arī vēja kastes atjaunošanas darbus, ja tas nepieciešams veiksmīgai noteksistēmas ierīkošanai."
+      },
+      "snowRemoval": {
+        "title": "SNIEGA UN LEDUS TĪRĪŠANA NO JUMTA",
+        "description": "Nodarbojamies ar profesionālu un drošu sniega tīrīšanu no īpašumiem visā Latvijā. Sniegotās ziemās krītošs ledus uz garāmgājēiem ir bīstams, tāpēc mēs palīdzam jumtus padarīt drošākus. Vienmēr rūpējamies par kontrolētu sniega nogādāšanu zemē, satiksmes regulēšanu un nodrošinam arī sniega aizvešanu un teritorijas sakopšanu."
+      },
+      "leafCleaning": {
+        "title": "JUMTA TĪRĪŠANA NO LAPĀM UN NOTEKSISTĒMAS TĪRĪŠANA",
+        "description": "Sakrājušās lapas un zari aizsprosto jumta teknes un kavē ūdens novadīšanu. Bet lapas un zari uz jumta uzskrāj mitrumu, kas paātrina jumta bojāšanos un rūsēšanu. Tāpēc mēs vienmēr iesakām pirms ziemas jumtu pienācīgi apkopt, lai tas kalpotu labāk un ilgāk."
       }
     },
     "solutions": {

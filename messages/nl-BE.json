@@ -26,10 +26,6 @@
           "title": "BETROUWBAARHEID",
           "description": "We respecteren deadlines, communiceren duidelijk en bieden garanties."
         },
-        "safety": {
-          "title": "VEILIGHEID",
-          "description": "We werken veilig en verantwoord, zowel op locatie als bij materiaalkeuze."
-        },
         "certified": {
           "title": "GECERTIFICEERD BEDRIJF",
           "description": "Onze specialisten zijn gecertificeerd en het bedrijf voldoet aan alle eisen."
@@ -71,10 +67,69 @@
       "description": "Sneeuwverwijdering, schadinspectie en afvoersysteemreiniging voor veilig gebruik."
     }
   },
+  "projects": {
+    "items": {
+      "fullCycleConstruction": {
+        "title": "Volledige daakconstuctie met staande-naad profiel",
+        "location": "Jelgava, Letland",
+        "description": "Volledige daakconstructie met staande-naad dakbedekking, structuurherstel, dakisolatie, schoorsteenbekledding met tin, gootinstallatie en afvoersysteemmontage."
+      },
+      "renovationMetalRoof": {
+        "title": "Dakrenovatie met staande-naad profiel",
+        "location": "Letland",
+        "description": "Dakrenovatie met staande-naad dakbedekking, dakraaminstallatie en windkastenherstel."
+      },
+      "ventilatedRidge": {
+        "title": "Geventileerde nokinstallatie",
+        "location": "Letland",
+        "description": "Geventileerde nokinstallatie op staande-naad dak met schroefloze montagemethode."
+      },
+      "roofReplacement": {
+        "title": "Dakbedekking vervanging",
+        "location": "Letland",
+        "description": "Dakbedekking vervanging, schoorsteenflashing installatie en windkastenherstel."
+      },
+      "tiledRoof": {
+        "title": "Pannendak installatie",
+        "location": "Letland",
+        "description": "Pannendak installatie voor privéwoning."
+      },
+      "skylightInstallation": {
+        "title": "Dakraaminstallatie",
+        "location": "Jaunciems, Letland",
+        "description": "Dakraaminstallatie op staande-naad dak in Jaunciems."
+      },
+      "cathedralPainting": {
+        "title": "Kathedraal dakschildering",
+        "location": "Latgale, Letland",
+        "description": "Dakschildering van kathedraal staande-naad dak in Latgale."
+      },
+      "apartmentPainting": {
+        "title": "Appartementengebouw dakschildering",
+        "location": "Grīziņkalns, Letland",
+        "description": "Dakschildering van appartementengebouw in Grīziņkalns."
+      },
+      "privatePainting": {
+        "title": "Privéwoning metaal dakschildering",
+        "location": "Baldone, Letland",
+        "description": "Privéwoning metaal dakschildering in Baldone."
+      },
+      "galvanizedProfilingFacade": {
+        "title": "Gegalvaniseerde staande-naad profiel installatie",
+        "location": "Carnikava, Letland",
+        "description": "Gegalvaniseerde staande-naad profiel installatie en houtgevelbekleding herstel in Carnikava."
+      },
+      "rigaPainting": {
+        "title": "Appartementengebouw schildering",
+        "location": "Riga, Letland",
+        "description": "Appartementengebouw schildering in Riga."
+      }
+    }
+  },
   "home": {
     "hero": {
-      "title": "Dakrenovatie en -BOUW",
-      "subtitle": "Uitstekende daken zijn onze missie!",
+      "title": "DAKRENOVATIE EN -BOUW",
+      "subtitle": "UITSTEKENDE DAKEN ZIJN ONZE MISSIE!",
       "cta": "Een dak bouwen",
       "learnMore": "Meer informatie"
     },
@@ -82,15 +137,39 @@
       "title": "Onze diensten",
       "construction": {
         "title": "Dak CONSTRUCTIE",
-        "description": "Wij bieden volledige dakconstructie en -renovatie van A tot Z. Renovatie van dakconstructies, installatie van isolatie, dakbedekking en installatie van daktoebehoren."
+        "description": "Wij bieden volledige dakconstructie en renovatie met een <bold>garantie van 10 jaar</bold>. Renovatie van dakconstructies, installatie van isolatiemateriaal, plaatsing van dakbedekking, installatie van dakramen, installatie van afvoersystemen en installatie van andere dakaccessoires."
       },
       "painting": {
         "title": "Dak schilderen",
-        "description": "We besteden veel zorg aan het schilderen en de voorbereiding van het dak om ervoor te zorgen dat de verf lang mooi blijft!"
+        "description": "Schilderen van metalen daken voor grote en kleine daken met drietraps reiniging, roestbehandeling en drielaags schilderen voor uitstekende resultaten en verfduurbaarheid"
       },
       "maintenance": {
         "title": "Dak onderhoud",
-        "description": "Professioneel dakonderhoud - sneeuwruimen, bladeren verwijderen, dakreparaties en schade opsporen."
+        "description": "Professioneel dakonderhoud - sneeuwverwijdering van daken, bladeren verwijderen uit goten, dakreparaties, schadeopsporing, schoorsteenrenovatie en installatie van dak veiligheidselementen"
+      },
+      "metalProfile": {
+        "title": "STAANDE-NAAD PROFIEL INSTALLATIE",
+        "description": "Staande-naad profiel installatie met volledig hermitische tinnen dubbelplooioplossingen in alle verbindingen en aansluitingen op ramen en schoorstenen. We zijn in staat complexe staande-naad werkzaamheden met niet-standaard oplossingen uit te voeren."
+      },
+      "tiledRoof": {
+        "title": "PANNENDAK INSTALLATIE",
+        "description": "Montage van klei- of betonnen dakpannen in combinatie met onze tinbewerking creëert daken die volledig hermitisch zijn en eeuwig zullen dienen. Wij zorgen voor goede onderlaag ventilatie en ronden pannendaken af met hermitische gewalste tinnen verbindingen bij muren, ramen en andere ingewikkelde plaatsen."
+      },
+      "skylights": {
+        "title": "DAKRAAM INSTALLATIE",
+        "description": "Wij bieden Roto en Velux dakraaminstallatie in nieuwe projecten en voegen ze ook toe aan bestaande daken om extra licht op zolderniveau te krijgen, terwijl de dakfunctionaliteit behouden blijft."
+      },
+      "gutterSystem": {
+        "title": "AFVOERSYSTEEM INSTALLATIE",
+        "description": "Wij installeren afvoersystemen op gemakkelijk en moeilijk toegankelijke locaties en hoogtes. Wij zorgen ervoor dat goten altijd werken met het zelfstroom-mechanisme van water, waardoor hun functionaliteit duurzaam is. We voeren ook herstellingswerkzaamheden aan windkasten uit indien nodig voor succesvolle gootinstallatie."
+      },
+      "snowRemoval": {
+        "title": "SNEEUW- EN IJSVERWIJDERING VAN DAK",
+        "description": "Wij voeren professionele en veilige sneeuwverwijdering van eigendommen in heel Letland uit. In sneeuwrijke winters is vallend ijs op voetgangers gevaarlijk, daarom helpen wij daken veiliger te maken. Wij zorgen altijd voor gecontroleerde sneeuwverwijdering naar de grond, verkeersregeling en zorgen ook voor sneeuwafvoer en terreinreiniging."
+      },
+      "leafCleaning": {
+        "title": "DAKREINIGING EN GOOTREININGING",
+        "description": "Opgehoopte bladeren en takken verstoppen dakgoten en belemmeren waterafvoer. Maar bladeren en takken op het dak slaan vocht op, wat dakbeschadiging en roestvorming versnelt. Daarom adviseren wij altijd om vóór de winter het dak goed te onderhouden zodat het beter en langer meegaat."
       }
     },
     "solutions": {

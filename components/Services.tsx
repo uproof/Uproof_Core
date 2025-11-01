@@ -5,29 +5,73 @@ import {motion} from 'framer-motion';
 import Image from 'next/image';
 import {Link} from '@/i18n/routing';
 
-export default function Services() {
+type ServicesProps = {
+  limit?: number;
+};
+
+export default function Services({ limit }: ServicesProps) {
   const t = useTranslations('home.services');
 
   const services = [
     {
       title: t('construction.title'),
-      description: t('construction.description'),
+      description: t.rich('construction.description', {
+        bold: (chunks) => <strong>{chunks}</strong>,
+      }),
       image: '/images/services/construction.webp',
       link: '/services#construction'
     },
     {
       title: t('painting.title'),
-      description: t('painting.description'),
-      image: '/images/services/painting.webp',
+      description: t.rich('painting.description'),
+      image: '/images/services/Painting.webp',
       link: '/services#painting'
     },
     {
       title: t('maintenance.title'),
-      description: t('maintenance.description'),
+      description: t.rich('maintenance.description'),
       image: '/images/services/maintenance.webp',
       link: '/services#maintenance'
     },
+    {
+      title: t('metalProfile.title'),
+      description: t.rich('metalProfile.description'),
+      image: '/images/services/metalprofile.webp',
+      link: '/services#metalProfile'
+    },
+    {
+      title: t('tiledRoof.title'),
+      description: t.rich('tiledRoof.description'),
+      image: '/images/services/tiledroofs.webp',
+      link: '/services#tiledRoof'
+    },
+    {
+      title: t('skylights.title'),
+      description: t.rich('skylights.description'),
+      image: '/images/services/skylights.webp',
+      link: '/services#skylights'
+    },
+    {
+      title: t('gutterSystem.title'),
+      description: t.rich('gutterSystem.description'),
+      image: '/images/services/guttersystem.webp',
+      link: '/services#gutterSystem'
+    },
+    {
+      title: t('snowRemoval.title'),
+      description: t.rich('snowRemoval.description'),
+      image: '/images/services/snowremoval.webp',
+      link: '/services#snowRemoval'
+    },
+    {
+      title: t('leafCleaning.title'),
+      description: t.rich('leafCleaning.description'),
+      image: '/images/services/leafcleaning.webp',
+      link: '/services#leafCleaning'
+    },
   ];
+
+  const visibleServices = typeof limit === 'number' ? services.slice(0, limit) : services;
 
   return (
     <section id="services" className="py-12 sm:py-16 md:py-20 bg-gray-50">
@@ -46,7 +90,7 @@ export default function Services() {
         </motion.div>
 
         <div className="space-y-6 sm:space-y-8">
-          {services.map((service, index) => (
+          {visibleServices.map((service, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}

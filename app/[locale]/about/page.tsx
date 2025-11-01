@@ -51,7 +51,7 @@ export default function AboutPage({params: {locale}}: {params: {locale: string}}
 
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-3 gap-8">
-          {['quality','reliability','safety','certified','guarantee','contract','fixedcost','payment','partners','insurance'].map((key) => (
+          {['quality','reliability','certified','guarantee','contract','fixedcost','payment','partners','insurance'].map((key) => (
             <div key={key} className="bg-white rounded-2xl shadow p-6">
               <h3 className="text-xl font-extrabold mb-2 uppercase tracking-wide">{t(`values.${key}.title`)}</h3>
               <p className="text-gray-600">{t(`values.${key}.description`)}</p>

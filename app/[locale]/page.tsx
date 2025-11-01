@@ -19,8 +19,8 @@ export default function HomePage({params: {locale}}: Props) {
   return (
     <main className="min-h-screen">
   <Header showText={false} largeLogo={true} />
-      <Hero />
-      <Services />
+  <Hero />
+  <Services limit={3} />
       <Reviews />
       <Solutions />
       <FAQ />

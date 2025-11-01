@@ -23,10 +23,6 @@
           "title": "RELIABILITY",
           "description": "We meet deadlines, provide clear communication, and offer guarantees."
         },
-        "safety": {
-          "title": "SAFETY",
-          "description": "We work safely and responsibly both on-site and in material selection."
-        },
         "certified": {
           "title": "CERTIFIED COMPANY",
           "description": "Our specialists are certified and the company meets all requirements."
@@ -68,6 +64,65 @@
       }
     }
   },
+  "projects": {
+    "items": {
+      "fullCycleConstruction": {
+        "title": "Full-Cycle Roof Construction with Metal Profile",
+        "location": "Jelgava, Latvia",
+        "description": "Full-cycle roof construction with metal profile covering, structure restoration, roof insulation, chimney cladding with tin, gutter system installation and drainage system mounting."
+      },
+      "renovationMetalRoof": {
+        "title": "Roof Renovation with Metal Profile",
+        "location": "Latvia",
+        "description": "Roof renovation with metal profile covering, skylight installation and wind box restoration."
+      },
+      "ventilatedRidge": {
+        "title": "Ventilated Ridge Installation",
+        "location": "Latvia",
+        "description": "Ventilated ridge installation on metal profile roof using screw-free mounting method."
+      },
+      "roofReplacement": {
+        "title": "Roof Covering Replacement",
+        "location": "Latvia",
+        "description": "Roof covering replacement, chimney flashing installation and wind box restoration."
+      },
+      "tiledRoof": {
+        "title": "Tile Roof Installation",
+        "location": "Latvia",
+        "description": "Tile roof installation for private house."
+      },
+      "skylightInstallation": {
+        "title": "Skylight Installation",
+        "location": "Jaunciems, Latvia",
+        "description": "Skylight installation on metal profile roof in Jaunciems."
+      },
+      "cathedralPainting": {
+        "title": "Cathedral Roof Painting",
+        "location": "Latgale, Latvia",
+        "description": "Roof painting of cathedral metal profile roof in Latgale."
+      },
+      "apartmentPainting": {
+        "title": "Apartment Building Roof Painting",
+        "location": "Grīziņkalns, Latvia",
+        "description": "Multi-apartment building roof painting in Grīziņkalns."
+      },
+      "privatePainting": {
+        "title": "Private House Metal Roof Painting",
+        "location": "Baldone, Latvia",
+        "description": "Private house metal roof painting in Baldone."
+      },
+      "galvanizedProfilingFacade": {
+        "title": "Galvanized Metal Profile Installation",
+        "location": "Carnikava, Latvia",
+        "description": "Galvanized metal profile installation and wood facade restoration in Carnikava."
+      },
+      "rigaPainting": {
+        "title": "Multi-Apartment Building Painting",
+        "location": "Riga, Latvia",
+        "description": "Multi-apartment building painting in Riga."
+      }
+    }
+  },
   "home": {
     "hero": {
       "title": "ROOF RENOVATION AND CONSTRUCTION",
@@ -79,15 +134,39 @@
       "title": "ROOFING SOLUTIONS",
       "construction": {
         "title": "ROOF CONSTRUCTION",
-        "description": "We offer full-cycle roof construction and renovation from A to Z. Roof structure restoration, insulation material installation, roof covering installation, and roof accessories mounting."
+        "description": "We offer full-cycle roof construction and renovation with a <bold>10-year guarantee</bold>. Roof structure restoration, insulation installation, roof covering installation, skylight installation, gutter system installation, and installation of other roof accessories."
       },
       "painting": {
         "title": "ROOF PAINTING",
-        "description": "We pay great attention to painting and roof preparation to ensure flawless paint durability and visual appearance in the long term!"
+        "description": "Metal roof painting for large and small roofs using three-level cleaning, rust treatment, and three-layer painting for excellent results and paint durability"
       },
       "maintenance": {
         "title": "ROOF MAINTENANCE",
-        "description": "Professional roof maintenance - snow removal from roofs, leaf cleaning from gutters, roof repairs, and damage detection."
+        "description": "Professional roof maintenance - snow removal from roofs, leaf cleaning from gutters, roof repairs, damage detection, chimney restoration, and installation of roof safety elements"
+      },
+      "metalProfile": {
+        "title": "METAL PROFILE INSTALLATION",
+        "description": "Metal profile installation using fully hermetic tin double-fold solutions in all joints, connections with windows and chimneys. We are capable of performing complex metal profile work with non-standard solutions."
+      },
+      "tiledRoof": {
+        "title": "TILE ROOF INSTALLATION",
+        "description": "Clay or concrete tile installation combined with our tin processing skills creates roofs that are completely hermetic and will serve for a lifetime. We ensure proper underlay ventilation and complete tile roofs with hermetic rolled tin connections at walls, windows, and other complex locations."
+      },
+      "skylights": {
+        "title": "SKYLIGHT INSTALLATION",
+        "description": "We offer Roto and Velux skylight installations in new projects and also adding them to existing roofs to gain additional light in the attic, while maintaining roof functionality."
+      },
+      "gutterSystem": {
+        "title": "GUTTER SYSTEM INSTALLATION",
+        "description": "We install drainage systems in both easily and complexly accessible locations and heights. We ensure that gutters always operate with the water self-flow mechanism, making their functionality long-lasting. We also perform wind box restoration work when necessary for successful gutter installation."
+      },
+      "snowRemoval": {
+        "title": "SNOW AND ICE REMOVAL FROM ROOF",
+        "description": "We engage in professional and safe snow removal from properties throughout Latvia. In snowy winters, falling ice on pedestrians is dangerous, so we help make roofs safer. We always care for controlled snow removal to the ground, traffic regulation, and also provide snow disposal and territory cleaning."
+      },
+      "leafCleaning": {
+        "title": "ROOF CLEANING AND GUTTER CLEANING",
+        "description": "Accumulated leaves and branches block roof gutters and impede water drainage. But leaves and branches on the roof accumulate moisture, which accelerates roof damage and corrosion. Therefore, we always recommend proper roof maintenance before winter so it will work better and longer."
       }
     },
     "solutions": {

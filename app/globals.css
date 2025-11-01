@@ -10,7 +10,7 @@
 @layer base {
   html {
     @apply scroll-smooth;
-    zoom: 1.2;
+    zoom: 1.0;
   }
   
   body {
