@@ -74,7 +74,7 @@ export default function Services({ limit }: ServicesProps) {
   const visibleServices = typeof limit === 'number' ? services.slice(0, limit) : services;
 
   return (
-    <section id="services" className="py-12 sm:py-16 md:py-20 bg-gray-50">
+    <section id="services" className="py-12 sm:py-16 md:py-20 bg-gray-50" style={{contentVisibility: 'auto'}}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -107,6 +107,7 @@ export default function Services({ limit }: ServicesProps) {
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                   sizes="(min-width: 768px) 50vw, 100vw"
+                  quality={65}
                   priority={index === 0}
                   loading={index === 0 ? 'eager' : 'lazy'}
                 />

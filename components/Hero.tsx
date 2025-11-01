@@ -30,6 +30,7 @@ export default function Hero() {
           muted
           playsInline
           preload="metadata"
+          poster="/images/hero-roof.svg"
           onLoadedData={() => setIsVideoLoaded(true)}
         >
           <source src="/videos/hero-video.mp4" type="video/mp4" />

@@ -6,9 +6,9 @@ import Services from '@/components/Services';
 import Solutions from '@/components/Solutions';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
-import dynamic from 'next/dynamic';
-const Reviews = dynamic(() => import('@/components/Reviews'), { ssr: false });
-const FAQ = dynamic(() => import('@/components/FAQ'), { ssr: false });
+import nextDynamic from 'next/dynamic';
+const Reviews = nextDynamic(() => import('@/components/Reviews'), { ssr: false });
+const FAQ = nextDynamic(() => import('@/components/FAQ'), { ssr: false });
 
 type Props = {
   params: {locale: string};
@@ -30,5 +30,9 @@ export default function HomePage({params: {locale}}: Props) {
     </main>
   );
 }
+
+// Prefer static generation to reduce TTFB and stabilize LCP
+export const dynamic = 'force-static';
+export const revalidate = 3600; // Re-generate once per hour
 
 
