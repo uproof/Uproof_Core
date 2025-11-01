@@ -1,7 +1,6 @@
 "use client";
 
 import {motion} from 'framer-motion';
-import VantaBackground from './VantaBackground';
 import clsx from 'clsx';
 
 type Props = {
@@ -15,11 +14,7 @@ export default function PageHeader({title, subtitle, cta, useVanta = false}: Pro
   return (
     <section className="relative pt-28 pb-16 overflow-hidden bg-white">
       <div className="absolute inset-0">
-        {useVanta ? (
-          <VantaBackground effect="NET" className="rounded-none" options={{backgroundColor: 0xffffff}} />
-        ) : (
-          <div className="absolute inset-0 bg-gradient-to-b from-primary-50 to-white" />
-        )}
+        <div className="absolute inset-0 bg-gradient-to-b from-primary-50 to-white" />
         {/* subtle grid overlay */}
         <div className="absolute inset-0 bg-grid-pattern opacity-10" />
       </div>
