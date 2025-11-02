@@ -104,8 +104,38 @@ export default function AdminDashboard({params: {locale}}: {params: {locale: str
             </div>
           </Link>
 
-          {/* Content Editor */}
-          <div className="bg-white rounded-xl shadow-md p-6 opacity-75">
+          {/* Projects Manager - Coming Soon */}
+          <div className="bg-white rounded-xl shadow-md p-6 opacity-60">
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-orange-100 p-3 rounded-lg">
+                <PencilSquareIcon className="w-8 h-8 text-orange-600" />
+              </div>
+              <span className="text-sm font-semibold text-orange-600">Coming Soon</span>
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Projects Manager</h3>
+            <p className="text-gray-600 mb-4">Manage portfolio projects and gallery</p>
+            <div className="flex items-center text-gray-400 font-semibold">
+              Coming Soon
+            </div>
+          </div>
+
+          {/* Services Editor - Coming Soon */}
+          <div className="bg-white rounded-xl shadow-md p-6 opacity-60">
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-blue-100 p-3 rounded-lg">
+                <PencilSquareIcon className="w-8 h-8 text-blue-600" />
+              </div>
+              <span className="text-sm font-semibold text-blue-600">Coming Soon</span>
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Services Editor</h3>
+            <p className="text-gray-600 mb-4">Edit service descriptions and offerings</p>
+            <div className="flex items-center text-gray-400 font-semibold">
+              Coming Soon
+            </div>
+          </div>
+
+          {/* Pages Editor - Coming Soon */}
+          <div className="bg-white rounded-xl shadow-md p-6 opacity-60">
             <div className="flex items-center justify-between mb-4">
               <div className="bg-purple-100 p-3 rounded-lg">
                 <PencilSquareIcon className="w-8 h-8 text-purple-600" />
@@ -113,46 +143,44 @@ export default function AdminDashboard({params: {locale}}: {params: {locale: str
               <span className="text-sm font-semibold text-purple-600">Coming Soon</span>
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">Pages Editor</h3>
-            <p className="text-gray-600 mb-4">Edit About, Services, and other pages</p>
+            <p className="text-gray-600 mb-4">Edit About, Contact, and other pages</p>
+            <div className="flex items-center text-gray-400 font-semibold">
+              Coming Soon
+            </div>
+          </div>
+
+          {/* Site Settings - Coming Soon */}
+          <div className="bg-white rounded-xl shadow-md p-6 opacity-60">
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-red-100 p-3 rounded-lg">
+                <PencilSquareIcon className="w-8 h-8 text-red-600" />
+              </div>
+              <span className="text-sm font-semibold text-red-600">Coming Soon</span>
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Site Settings</h3>
+            <p className="text-gray-600 mb-4">Configure company info and SEO</p>
+            <div className="flex items-center text-gray-400 font-semibold">
+              Coming Soon
+            </div>
+          </div>
+
+          {/* Messages - Coming Soon */}
+          <div className="bg-white rounded-xl shadow-md p-6 opacity-60">
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-indigo-100 p-3 rounded-lg">
+                <PencilSquareIcon className="w-8 h-8 text-indigo-600" />
+              </div>
+              <span className="text-sm font-semibold text-indigo-600">Coming Soon</span>
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Messages</h3>
+            <p className="text-gray-600 mb-4">View contact form submissions</p>
             <div className="flex items-center text-gray-400 font-semibold">
               Coming Soon
             </div>
           </div>
         </div>
 
-        {/* Info Box */}
-        <div className="mt-12 bg-green-50 border border-green-200 rounded-xl p-6">
-          <div className="flex items-start gap-4">
-            <div className="bg-green-100 p-3 rounded-lg">
-              <svg className="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div>
-              <h3 className="text-lg font-bold text-green-900 mb-2">Admin Dashboard Active</h3>
-              <p className="text-green-700 mb-3">
-                Welcome to your admin dashboard! You can now manage your website content:
-              </p>
-              <ul className="text-green-700 space-y-2 mb-3">
-                <li className="flex items-start gap-2">
-                  <span className="text-green-600 font-bold">✓</span>
-                  <span><strong>Blog Management:</strong> Create, edit, and delete blog posts with multilingual support</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-green-600 font-bold">✓</span>
-                  <span><strong>Homepage Editor:</strong> Customize hero section, services, stats, and FAQ</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-orange-600 font-bold">⏳</span>
-                  <span><strong>Pages Editor:</strong> Edit About, Services pages (Coming Soon)</span>
-                </li>
-              </ul>
-              <p className="text-green-600 text-sm mt-1">
-                Set strong ADMIN_PASSWORD and ADMIN_TOKEN_SECRET in your .env.local (not committed)
-              </p>
-            </div>
-          </div>
-        </div>
+
       </main>
     </div>
   );
