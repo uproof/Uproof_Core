@@ -104,80 +104,120 @@ export default function AdminDashboard({params: {locale}}: {params: {locale: str
             </div>
           </Link>
 
-          {/* Projects Manager - Coming Soon */}
-          <div className="bg-white rounded-xl shadow-md p-6 opacity-60">
-            <div className="flex items-center justify-between mb-4">
-              <div className="bg-orange-100 p-3 rounded-lg">
-                <PencilSquareIcon className="w-8 h-8 text-orange-600" />
+          {/* Projects Manager */}
+          <Link href={`/${locale}/admin/projects`}>
+            <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow cursor-pointer group">
+              <div className="flex items-center justify-between mb-4">
+                <div className="bg-orange-100 p-3 rounded-lg group-hover:bg-orange-200 transition-colors">
+                  <PencilSquareIcon className="w-8 h-8 text-orange-600" />
+                </div>
+                <span className="text-sm font-semibold text-green-600 flex items-center gap-1">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  Active
+                </span>
               </div>
-              <span className="text-sm font-semibold text-orange-600">Coming Soon</span>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Projects Manager</h3>
+              <p className="text-gray-600 mb-4">Manage portfolio projects and gallery</p>
+              <div className="flex items-center text-orange-600 font-semibold">
+                Manage Projects
+                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+              </div>
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Projects Manager</h3>
-            <p className="text-gray-600 mb-4">Manage portfolio projects and gallery</p>
-            <div className="flex items-center text-gray-400 font-semibold">
-              Coming Soon
-            </div>
-          </div>
+          </Link>
 
-          {/* Services Editor - Coming Soon */}
-          <div className="bg-white rounded-xl shadow-md p-6 opacity-60">
-            <div className="flex items-center justify-between mb-4">
-              <div className="bg-blue-100 p-3 rounded-lg">
-                <PencilSquareIcon className="w-8 h-8 text-blue-600" />
+          {/* Services Editor */}
+          <Link href={`/${locale}/admin/services`}>
+            <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow cursor-pointer group">
+              <div className="flex items-center justify-between mb-4">
+                <div className="bg-blue-100 p-3 rounded-lg group-hover:bg-blue-200 transition-colors">
+                  <PencilSquareIcon className="w-8 h-8 text-blue-600" />
+                </div>
+                <span className="text-sm font-semibold text-green-600 flex items-center gap-1">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  Active
+                </span>
               </div>
-              <span className="text-sm font-semibold text-blue-600">Coming Soon</span>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Services Editor</h3>
+              <p className="text-gray-600 mb-4">Edit service descriptions and offerings</p>
+              <div className="flex items-center text-blue-600 font-semibold">
+                Edit Services
+                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+              </div>
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Services Editor</h3>
-            <p className="text-gray-600 mb-4">Edit service descriptions and offerings</p>
-            <div className="flex items-center text-gray-400 font-semibold">
-              Coming Soon
-            </div>
-          </div>
+          </Link>
 
-          {/* Pages Editor - Coming Soon */}
-          <div className="bg-white rounded-xl shadow-md p-6 opacity-60">
-            <div className="flex items-center justify-between mb-4">
-              <div className="bg-purple-100 p-3 rounded-lg">
-                <PencilSquareIcon className="w-8 h-8 text-purple-600" />
+          {/* Pages Editor */}
+          <Link href={`/${locale}/admin/pages`}>
+            <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow cursor-pointer group">
+              <div className="flex items-center justify-between mb-4">
+                <div className="bg-purple-100 p-3 rounded-lg group-hover:bg-purple-200 transition-colors">
+                  <PencilSquareIcon className="w-8 h-8 text-purple-600" />
+                </div>
+                <span className="text-sm font-semibold text-green-600 flex items-center gap-1">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  Active
+                </span>
               </div>
-              <span className="text-sm font-semibold text-purple-600">Coming Soon</span>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Pages Editor</h3>
+              <p className="text-gray-600 mb-4">Edit About, Contact, and other pages</p>
+              <div className="flex items-center text-purple-600 font-semibold">
+                Edit Pages
+                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+              </div>
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Pages Editor</h3>
-            <p className="text-gray-600 mb-4">Edit About, Contact, and other pages</p>
-            <div className="flex items-center text-gray-400 font-semibold">
-              Coming Soon
-            </div>
-          </div>
+          </Link>
 
-          {/* Site Settings - Coming Soon */}
-          <div className="bg-white rounded-xl shadow-md p-6 opacity-60">
-            <div className="flex items-center justify-between mb-4">
-              <div className="bg-red-100 p-3 rounded-lg">
-                <PencilSquareIcon className="w-8 h-8 text-red-600" />
+          {/* Site Settings */}
+          <Link href={`/${locale}/admin/settings`}>
+            <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow cursor-pointer group">
+              <div className="flex items-center justify-between mb-4">
+                <div className="bg-red-100 p-3 rounded-lg group-hover:bg-red-200 transition-colors">
+                  <PencilSquareIcon className="w-8 h-8 text-red-600" />
+                </div>
+                <span className="text-sm font-semibold text-green-600 flex items-center gap-1">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  Active
+                </span>
               </div>
-              <span className="text-sm font-semibold text-red-600">Coming Soon</span>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Site Settings</h3>
+              <p className="text-gray-600 mb-4">Configure company info and SEO</p>
+              <div className="flex items-center text-red-600 font-semibold">
+                Configure Settings
+                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+              </div>
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Site Settings</h3>
-            <p className="text-gray-600 mb-4">Configure company info and SEO</p>
-            <div className="flex items-center text-gray-400 font-semibold">
-              Coming Soon
-            </div>
-          </div>
+          </Link>
 
-          {/* Messages - Coming Soon */}
-          <div className="bg-white rounded-xl shadow-md p-6 opacity-60">
-            <div className="flex items-center justify-between mb-4">
-              <div className="bg-indigo-100 p-3 rounded-lg">
-                <PencilSquareIcon className="w-8 h-8 text-indigo-600" />
+          {/* Messages */}
+          <Link href={`/${locale}/admin/messages`}>
+            <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow cursor-pointer group">
+              <div className="flex items-center justify-between mb-4">
+                <div className="bg-indigo-100 p-3 rounded-lg group-hover:bg-indigo-200 transition-colors">
+                  <PencilSquareIcon className="w-8 h-8 text-indigo-600" />
+                </div>
+                <span className="text-sm font-semibold text-green-600 flex items-center gap-1">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  Active
+                </span>
               </div>
-              <span className="text-sm font-semibold text-indigo-600">Coming Soon</span>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Messages</h3>
+              <p className="text-gray-600 mb-4">View contact form submissions</p>
+              <div className="flex items-center text-indigo-600 font-semibold">
+                View Messages
+                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+              </div>
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Messages</h3>
-            <p className="text-gray-600 mb-4">View contact form submissions</p>
-            <div className="flex items-center text-gray-400 font-semibold">
-              Coming Soon
-            </div>
-          </div>
+          </Link>
         </div>
 
 

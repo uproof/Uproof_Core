@@ -61,6 +61,21 @@ export default function ContactSection() {
     }
     
     try {
+      // Save to admin contact messages database
+      const msgResponse = await fetch('/api/admin/contact-messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: sanitizedData.name,
+          email: sanitizedData.email,
+          phone: sanitizedData.phone || undefined,
+          subject: sanitizedData.name + ' - Contact Form Submission',
+          message: sanitizedData.message,
+        })
+      });
+
       // Using Web3Forms API - FREE service to receive emails
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
