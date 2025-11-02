@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { unstable_setRequestLocale } from 'next-intl/server';
 import Header from '@/components/Header';
 import Link from 'next/link';
 import { ArrowLeftIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
@@ -14,7 +13,6 @@ type Service = {
 };
 
 export default function ServicesEditor({ params: { locale } }: { params: { locale: string } }) {
-  unstable_setRequestLocale(locale);
   const t = useTranslations();
   const [services, setServices] = useState<Service[]>([]);
   const [editingKey, setEditingKey] = useState<string | null>(null);

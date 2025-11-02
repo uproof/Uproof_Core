@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { unstable_setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import { ArrowLeftIcon, CheckIcon } from '@heroicons/react/24/outline';
 
@@ -22,7 +21,6 @@ type SiteSettings = {
 };
 
 export default function SiteSettings({ params: { locale } }: { params: { locale: string } }) {
-  unstable_setRequestLocale(locale);
   const t = useTranslations();
   const [settings, setSettings] = useState<SiteSettings>({
     companyName: '',

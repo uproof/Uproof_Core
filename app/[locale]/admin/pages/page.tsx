@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { unstable_setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import { ArrowLeftIcon, CheckIcon } from '@heroicons/react/24/outline';
 
@@ -26,7 +25,6 @@ const PAGES: Page[] = [
 ];
 
 export default function PagesEditor({ params: { locale } }: { params: { locale: string } }) {
-  unstable_setRequestLocale(locale);
   const t = useTranslations();
   const [pages, setPages] = useState<Page[]>(PAGES);
   const [editingSlug, setEditingSlug] = useState<string | null>(null);

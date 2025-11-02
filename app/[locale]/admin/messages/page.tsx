@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { unstable_setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import { ArrowLeftIcon, TrashIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
 import { format } from 'date-fns';
@@ -19,7 +18,6 @@ type Message = {
 };
 
 export default function Messages({ params: { locale } }: { params: { locale: string } }) {
-  unstable_setRequestLocale(locale);
   const t = useTranslations();
   const [messages, setMessages] = useState<Message[]>([]);
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
