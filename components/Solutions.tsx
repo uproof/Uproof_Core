@@ -16,7 +16,7 @@ export default function Solutions() {
   ];
 
   return (
-  <section className="relative bg-gradient-to-br from-gray-900 via-primary-900 to-gray-800 text-white overflow-hidden py-16" style={{contentVisibility: 'auto'}}>
+  <section className="relative bg-gradient-to-br from-gray-900 via-primary-900 to-gray-800 text-white lg:overflow-hidden py-16" style={{contentVisibility: 'auto'}}>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Title */}
@@ -27,15 +27,16 @@ export default function Solutions() {
           <div className="w-24 h-1 bg-primary-400 mx-auto mt-4" />
         </div>
 
-  {/* 2×3 grid (a bit taller to show more image content) */}
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 grid-rows-2 gap-6 w-full h-[80vh] sm:h-[88vh] lg:h-[95vh]">
+  {/* Responsive grid: stack on mobile, 2x3 on large screens; avoid fixed heights on mobile */}
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 gap-6 w-full">
           {solutions.map((solution) => (
             <div
               key={solution.key}
-              className="relative h-full rounded-2xl overflow-hidden border border-white/10 bg-white/10"
+              className="relative rounded-2xl overflow-hidden border border-white/10 bg-white/10"
             >
-              <div className="relative flex flex-col h-full">
-                <div className="relative flex-1">
+              <div className="relative">
+                {/* Fixed aspect ratio to ensure image height on mobile (when rows are auto-sized) */}
+                <div className="relative w-full aspect-[4/3]">
                   <Image
                     src={solution.image}
                     alt={t(solution.key)}
@@ -46,7 +47,7 @@ export default function Solutions() {
                   />
                 </div>
 
-                <div className="shrink-0 p-4 text-center bg-black/30 backdrop-blur-sm">
+                <div className="p-4 text-center bg-black/30 backdrop-blur-sm">
                   <h3 className="text-base sm:text-lg font-semibold tracking-wide leading-tight">
                     {t(solution.key)}
                   </h3>
