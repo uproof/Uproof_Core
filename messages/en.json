@@ -129,10 +129,15 @@
       "title": "ROOF RENOVATION AND CONSTRUCTION",
       "subtitle": "EXCELLENT ROOFS ARE OUR MISSION!",
       "cta": "Get Started",
-      "learnMore": "Learn More"
+      "learnMore": "Learn More",
+      "orderNow": "Order Now"
     },
     "services": {
       "title": "ROOFING SOLUTIONS",
+      "buttons": {
+        "orderNow": "Order Now",
+        "learnMore": "Learn More"
+      },
       "construction": {
         "title": "ROOF CONSTRUCTION",
         "description": "We offer full-cycle roof construction and renovation with a <bold>10-year warranty</bold>. Roof structure restoration, insulation installation, roof covering installation, skylight installation, gutter system installation, and installation of other roof accessories."

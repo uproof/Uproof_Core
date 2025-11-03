@@ -134,10 +134,15 @@
       "title": "DAKRENOVATIE EN -BOUW",
       "subtitle": "UITSTEKENDE DAKEN ZIJN ONZE MISSIE!",
       "cta": "Een dak bouwen",
-      "learnMore": "Meer informatie"
+      "learnMore": "Meer informatie",
+      "orderNow": "Bestel nu"
     },
     "services": {
       "title": "Onze diensten",
+      "buttons": {
+        "orderNow": "Bestel nu",
+        "learnMore": "Meer informatie"
+      },
       "construction": {
         "title": "Dak CONSTRUCTIE",
         "description": "Wij bieden volledige dakconstructie en renovatie met een <bold>garantie van 10 jaar</bold>. Renovatie van dakconstructies, installatie van isolatiemateriaal, plaatsing van dakbedekking, installatie van dakramen, installatie van afvoersystemen en installatie van andere dakaccessoires."

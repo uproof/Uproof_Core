@@ -11,6 +11,7 @@ type ServicesProps = {
 
 export default function Services({ limit }: ServicesProps) {
   const t = useTranslations('home.services');
+  const tButtons = useTranslations('home.services.buttons');
 
   const services = [
     {
@@ -131,13 +132,13 @@ export default function Services({ limit }: ServicesProps) {
                     rel="noopener noreferrer"
                     className="bg-primary-600 text-white px-6 sm:px-8 py-2.5 sm:py-3 text-xs sm:text-sm font-bold uppercase hover:bg-primary-700 transition-all shadow-lg hover:scale-105"
                   >
-                    ORDER NOW
+                    {tButtons('orderNow')}
                   </a>
                   <Link
                     href={service.link}
                     className="bg-gray-200 text-gray-900 px-6 sm:px-8 py-2.5 sm:py-3 text-xs sm:text-sm font-bold uppercase hover:bg-gray-300 transition-all"
                   >
-                    LEARN MORE
+                    {tButtons('learnMore')}
                   </Link>
                 </div>
               </div>
