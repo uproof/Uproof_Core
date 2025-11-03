@@ -29,8 +29,8 @@
           "description": "Our specialists are certified and the company meets all requirements."
         },
         "guarantee": {
-          "title": "10-YEAR GUARANTEE",
-          "description": "We offer a 10-year guarantee on all completed work."
+          "title": "10-YEAR WARRANTY",
+          "description": "We offer a 10-year warranty on all completed work."
         },
         "contract": {
           "title": "CONTRACT CLARITY",
@@ -135,7 +135,7 @@
       "title": "ROOFING SOLUTIONS",
       "construction": {
         "title": "ROOF CONSTRUCTION",
-        "description": "We offer full-cycle roof construction and renovation with a <bold>10-year guarantee</bold>. Roof structure restoration, insulation installation, roof covering installation, skylight installation, gutter system installation, and installation of other roof accessories."
+        "description": "We offer full-cycle roof construction and renovation with a <bold>10-year warranty</bold>. Roof structure restoration, insulation installation, roof covering installation, skylight installation, gutter system installation, and installation of other roof accessories."
       },
       "painting": {
         "title": "ROOF PAINTING",
@@ -187,7 +187,7 @@
       },
       "q2": {
         "question": "Do we provide a warranty?",
-        "answer": "We provide a guarantee for all our work, for example, we offer a 10-year guarantee for rolled profile assembly work and an additional 50-year manufacturer's guarantee for the materials used."
+        "answer": "We provide a warranty for all our work, for example, we offer a 10-year warranty for rolled profile assembly work and an additional 50-year manufacturer's warranty for the materials used."
       },
       "q3": {
         "question": "How quickly can roof diagnostics be performed?",
