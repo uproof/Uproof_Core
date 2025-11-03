@@ -15,6 +15,7 @@ type Props = {
 
 export default function ProjectCard({titleKey, locationKey, year, services, descriptionKey, image}: Props) {
   const t = useTranslations();
+  const tServiceTags = useTranslations('serviceTags');
   
   return (
     <motion.div
@@ -56,7 +57,7 @@ export default function ProjectCard({titleKey, locationKey, year, services, desc
         <div className="flex flex-wrap gap-2">
           {services.map((s) => (
             <span key={s} className="px-3 py-1.5 text-xs font-medium bg-primary-50 text-primary-700 border border-primary-200 uppercase tracking-wide hover:bg-primary-600 hover:text-white transition-colors duration-300">
-              {s}
+              {tServiceTags(s)}
             </span>
           ))}
         </div>

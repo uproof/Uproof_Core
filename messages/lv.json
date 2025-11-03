@@ -8,6 +8,18 @@
     "blog": "Blogs",
     "recommendations": "Ieteikumi"
   },
+  "serviceTags": {
+    "construction": "Būvniecība",
+    "profiling": "Metāla profila darbi",
+    "insulation": "Izolācija",
+    "renovation": "Renovācija",
+    "maintenance": "Apkope",
+    "painting": "Krāsošana",
+    "tiling": "Dakstiņu montāža",
+    "skylights": "Jumta logi",
+    "gutters": "Notekas",
+    "chimney": "Skurstenim darbi"
+  },
   "pages": {
     "services": {"title": "Mūsu jumtu pakalpojumi"},
     "projects": {"title": "Pabeigtie projekti"},

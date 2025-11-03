@@ -8,6 +8,18 @@
     "blog": "Blog",
     "recommendations": "Recommendations"
   },
+  "serviceTags": {
+    "construction": "Construction",
+    "profiling": "Metal Profiling",
+    "insulation": "Insulation",
+    "renovation": "Renovation",
+    "maintenance": "Maintenance",
+    "painting": "Painting",
+    "tiling": "Tiling",
+    "skylights": "Skylights",
+    "gutters": "Gutters",
+    "chimney": "Chimney Work"
+  },
   "pages": {
     "services": {"title": "Our Roofing Services"},
     "projects": {"title": "Completed Projects"},

@@ -7,6 +7,18 @@
     "contact": "Contact",
     "blog": "Blog"
   },
+  "serviceTags": {
+    "construction": "Constructie",
+    "profiling": "Metaalbekleding",
+    "insulation": "Isolatie",
+    "renovation": "Renovatie",
+    "maintenance": "Onderhoud",
+    "painting": "Schilderwerk",
+    "tiling": "Dakpannen",
+    "skylights": "Dakramen",
+    "gutters": "Dakgoten",
+    "chimney": "Schoorsteen werkzaamheden"
+  },
   "pages": {
     "services": {
       "title": "Onze dakdiensten"
