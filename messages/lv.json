@@ -119,10 +119,15 @@
       "title": "JUMTA RENOVĀCIJA UN BŪVNIECĪBA",
       "subtitle": "LIELISKI JUMTI IR MŪSU MISIJA!",
       "cta": "Sazināties",
-      "learnMore": "Uzzināt vairāk"
+      "learnMore": "Uzzināt vairāk",
+      "orderNow": "Pieteikties"
     },
     "services": {
       "title": "JUMTU RISINĀJUMI",
+      "buttons": {
+        "orderNow": "Pieteikties",
+        "learnMore": "Uzzināt vairāk"
+      },
       "construction": {
         "title": "JUMTA BŪVNIECĪBA",
         "description": "Piedāvājam pilna cikla jumta būvniecību un renovāciju ar <bold>10 gadu garantiju</bold>. Jumta konstrukciju atjaunošana, izolācijas materiālu ieklāšana, jumta seguma ieklāšana, jumta logu montāža, jumta noteksistēmas montāža un citu jumta aksesuāru montāža."
