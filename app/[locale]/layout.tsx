@@ -189,8 +189,11 @@ export default async function LocaleLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        {/* Preload brand logo for faster first paint */}
-        <link rel="preload" href="/logo.svg" as="image" type="image/svg+xml" crossOrigin="anonymous" />
+        {/* Preconnect to GTM for faster analytics loading */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        {/* Preload hero poster for faster LCP */}
+        <link rel="preload" href="/images/hero-roof.svg" as="image" fetchPriority="high" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

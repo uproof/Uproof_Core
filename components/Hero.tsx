@@ -29,7 +29,7 @@ export default function Hero() {
           loop
           muted
           playsInline
-          preload="metadata"
+          preload="none"
           poster="/images/hero-roof.svg"
           onLoadedData={() => setIsVideoLoaded(true)}
         >

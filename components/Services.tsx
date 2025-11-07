@@ -136,9 +136,10 @@ export default function Services({ limit }: ServicesProps) {
                   </a>
                   <Link
                     href={service.link}
+                    aria-label={`${tButtons('learnMore')} — ${service.title}`}
                     className="bg-gray-200 text-gray-900 px-6 sm:px-8 py-2.5 sm:py-3 text-xs sm:text-sm font-bold uppercase hover:bg-gray-300 transition-all"
                   >
-                    {tButtons('learnMore')}
+                    {tButtons('learnMore')} <span className="sr-only">— {service.title}</span>
                   </Link>
                 </div>
               </div>
