@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   },
   description: 'Expert roofing in Latvia: construction, repairs, painting & maintenance. 10-year warranty. Quality workmanship. Get a free quote today!',
   keywords: ['roofing Latvia', 'roof construction', 'roof repair', 'jumta būvniecība', 'jumta remonts', 'jumta krāsošana', 'roofing contractor', 'metal roofing', 'tile roofing', 'roof maintenance Latvia'],
-  authors: [{ name: 'UpRoof', url: 'https://uproof.lv' }],
+  authors: [{ name: 'UpRoof', url: 'https://uproof.eu' }],
   creator: 'UpRoof',
   publisher: 'UpRoof',
   formatDetection: {
@@ -102,11 +102,86 @@ export default async function LocaleLayout({
   params: {locale: string};
 }) {
   const messages = await getMessages();
+  // Build Organization schema dynamically to allow small customizations
+  const sameAs: string[] = [
+    'https://www.facebook.com/uproof',
+    'https://www.instagram.com/uproof'
+  ];
+  if (process.env.NEXT_PUBLIC_GBP_URL) {
+    sameAs.push(process.env.NEXT_PUBLIC_GBP_URL);
+  }
+  const orgSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'RoofingContractor',
+    '@id': 'https://uproof.eu/#organization',
+    name: 'UpRoof',
+    url: 'https://uproof.eu',
+    logo: 'https://uproof.eu/images/logo.png',
+    image: 'https://uproof.eu/images/og-image.jpg',
+    description:
+      'Professional roofing services in Latvia: construction, repairs, painting, and maintenance with 10-year warranty.',
+    address: {
+      '@type': 'PostalAddress',
+      addressCountry: 'LV',
+      addressLocality: 'Rīga',
+      addressRegion: 'Rīga'
+    },
+    telephone: '+371-25612440',
+    priceRange: '$$',
+    areaServed: {
+      '@type': 'Country',
+      name: 'Latvia'
+    },
+    serviceArea: {
+      '@type': 'GeoCircle',
+      geoMidpoint: {
+        '@type': 'GeoCoordinates',
+        latitude: 56.9496,
+        longitude: 24.1052
+      },
+      geoRadius: '100000'
+    },
+    sameAs,
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Roofing Services',
+      itemListElement: [
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Roof Construction',
+            description: 'Complete roof construction with 10-year warranty'
+          }
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Roof Repair',
+            description: 'Professional roof repair and maintenance services'
+          }
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Roof Painting',
+            description: 'Expert roof painting with durable materials'
+          }
+        }
+      ]
+    },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '5',
+      reviewCount: '47'
+    }
+  } as const;
 
   return (
     <html lang={locale} className={inter.variable}>
       <head>
-        <link rel="canonical" href={`https://uproof.eu/${locale}`} />
         <link rel="alternate" hrefLang="lv" href="https://uproof.eu/lv" />
         <link rel="alternate" hrefLang="en" href="https://uproof.eu/en" />
         <link rel="alternate" hrefLang="nl-BE" href="https://uproof.eu/nl-BE" />
@@ -117,75 +192,7 @@ export default async function LocaleLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'RoofingContractor',
-              '@id': 'https://uproof.eu/#organization',
-              name: 'UpRoof',
-              url: 'https://uproof.eu',
-              logo: 'https://uproof.eu/images/logo.png',
-              image: 'https://uproof.eu/images/og-image.jpg',
-              description: 'Professional roofing services in Latvia: construction, repairs, painting, and maintenance with 10-year warranty.',
-              address: {
-                '@type': 'PostalAddress',
-                addressCountry: 'LV',
-                addressLocality: 'Latvia'
-              },
-              telephone: '+371-25612440',
-              priceRange: '$$',
-              areaServed: {
-                '@type': 'Country',
-                name: 'Latvia'
-              },
-              serviceArea: {
-                '@type': 'GeoCircle',
-                geoMidpoint: {
-                  '@type': 'GeoCoordinates',
-                  latitude: 56.9496,
-                  longitude: 24.1052
-                },
-                geoRadius: '100000'
-              },
-              sameAs: [
-                'https://www.facebook.com/uproof',
-                'https://www.instagram.com/uproof'
-              ],
-              hasOfferCatalog: {
-                '@type': 'OfferCatalog',
-                name: 'Roofing Services',
-                itemListElement: [
-                  {
-                    '@type': 'Offer',
-                    itemOffered: {
-                      '@type': 'Service',
-                      name: 'Roof Construction',
-                      description: 'Complete roof construction with 10-year warranty'
-                    }
-                  },
-                  {
-                    '@type': 'Offer',
-                    itemOffered: {
-                      '@type': 'Service',
-                      name: 'Roof Repair',
-                      description: 'Professional roof repair and maintenance services'
-                    }
-                  },
-                  {
-                    '@type': 'Offer',
-                    itemOffered: {
-                      '@type': 'Service',
-                      name: 'Roof Painting',
-                      description: 'Expert roof painting with durable materials'
-                    }
-                  }
-                ]
-              },
-              aggregateRating: {
-                '@type': 'AggregateRating',
-                ratingValue: '5',
-                reviewCount: '47'
-              }
-            })
+            __html: JSON.stringify(orgSchema)
           }}
         />
       </head>

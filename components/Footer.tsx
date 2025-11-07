@@ -62,6 +62,21 @@ export default function Footer() {
             <div>
               <h4 className="text-lg font-semibold mb-4">Follow Us</h4>
               <div className="flex gap-4">
+                {/* Google Business Profile */}
+                {process.env.NEXT_PUBLIC_GBP_URL && (
+                  <a
+                    href={process.env.NEXT_PUBLIC_GBP_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 bg-gray-800 hover:bg-green-600 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+                    aria-label="Google Business Profile"
+                  >
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm1 14.93V17a1 1 0 0 0-2 0v-.07A8.005 8.005 0 0 1 4.07 13H5a1 1 0 0 0 0-2h-.93A8.005 8.005 0 0 1 11 4.07V5a1 1 0 0 0 2 0v-.93A8.005 8.005 0 0 1 19.93 11H19a1 1 0 0 0 0 2h.93A8.005 8.005 0 0 1 13 16.93Z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  </a>
+                )}
                 {/* TikTok */}
                 <a
                   href="https://www.tiktok.com/@uproof?_t=ZN-90lWrtN4pVP&_r=1"

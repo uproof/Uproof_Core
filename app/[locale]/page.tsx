@@ -7,6 +7,7 @@ import Solutions from '@/components/Solutions';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import nextDynamic from 'next/dynamic';
+import type {Metadata} from 'next';
 const Reviews = nextDynamic(() => import('@/components/Reviews'), { ssr: false });
 const FAQ = nextDynamic(() => import('@/components/FAQ'), { ssr: false });
 
@@ -34,5 +35,12 @@ export default function HomePage({params: {locale}}: Props) {
 // Prefer static generation to reduce TTFB and stabilize LCP
 export const dynamic = 'force-static';
 export const revalidate = 3600; // Re-generate once per hour
+
+// Homepage canonical (layout canonical removed to avoid duplication)
+export const metadata: Metadata = {
+  alternates: {
+    canonical: 'https://uproof.eu/'
+  }
+};
 
 
