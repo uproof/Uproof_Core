@@ -7,17 +7,10 @@ dist
 build
 .vercel
 .turbo
-
-# Security: Do not commit environment files or sensitive data
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
-
-# Ignore all Markdown documentation from repo except root README.md
-*.md
-!/README.md
-
 public/videos/README.md
 .vscode/
