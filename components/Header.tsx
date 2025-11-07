@@ -51,6 +51,7 @@ export default function Header({showText = true, largeLogo = false}: HeaderProps
                   fill
                   sizes={largeLogo ? '80px' : '70px'}
                   className="object-contain"
+                  priority
                 />
               </div>
               {showText && (

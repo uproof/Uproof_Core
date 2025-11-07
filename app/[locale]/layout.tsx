@@ -180,7 +180,7 @@ export default async function LocaleLayout({
   } as const;
 
   return (
-    <html lang={locale} className={inter.variable}>
+    <html lang={locale} className={inter.variable} suppressHydrationWarning>
       <head>
         <link rel="alternate" hrefLang="lv" href="https://uproof.eu/lv" />
         <link rel="alternate" hrefLang="en" href="https://uproof.eu/en" />
