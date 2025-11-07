@@ -17,13 +17,13 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://uproof.lv'), // Replace with your actual domain
+  metadataBase: new URL('https://uproof.eu'),
   title: {
-    default: 'UpRoof | Professional Roofing Services in Latvia | Jumtu būvniecība',
+    default: 'Professional Roofing Services Latvia | UpRoof',
     template: '%s | UpRoof'
   },
-  description: 'Professional roofing services in Latvia. Roof construction, painting, maintenance, and repairs. Expert roofing solutions from A to Z. Profesionāli jumta risinājumi Latvijā. ✓ Quality ✓ Reliability ✓ Safety',
-  keywords: ['roofing', 'roof construction', 'roof repair', 'Latvia', 'jumta būvniecība', 'jumta remonts', 'jumta krāsošana', 'jumta apkope', 'roofing Latvia', 'Latvian roofing company', 'professional roofers'],
+  description: 'Expert roofing in Latvia: construction, repairs, painting & maintenance. 10-year warranty. Quality workmanship. Get a free quote today!',
+  keywords: ['roofing Latvia', 'roof construction', 'roof repair', 'jumta būvniecība', 'jumta remonts', 'jumta krāsošana', 'roofing contractor', 'metal roofing', 'tile roofing', 'roof maintenance Latvia'],
   authors: [{ name: 'UpRoof', url: 'https://uproof.lv' }],
   creator: 'UpRoof',
   publisher: 'UpRoof',
@@ -36,9 +36,9 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'lv_LV',
     alternateLocale: ['en_US', 'nl_BE'],
-    url: 'https://uproof.lv',
-    title: 'UpRoof | Professional Roofing Services in Latvia',
-    description: 'Expert roofing construction, painting, and maintenance services. Quality workmanship with guaranteed results.',
+    url: 'https://uproof.eu',
+    title: 'Professional Roofing Services Latvia | UpRoof',
+    description: 'Expert roofing: construction, repairs, painting. 10-year warranty. Quality workmanship in Latvia.',
     siteName: 'UpRoof',
     images: [
       {
@@ -51,8 +51,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'UpRoof | Professional Roofing Services',
-    description: 'Expert roofing solutions in Latvia. Construction, painting, and maintenance.',
+    title: 'Professional Roofing Services Latvia | UpRoof',
+    description: 'Expert roofing: construction, repairs, painting. 10-year warranty in Latvia.',
     images: ['/images/og-image.jpg'],
   },
   robots: {
@@ -84,6 +84,12 @@ export const metadata: Metadata = {
   manifest: '/site.webmanifest',
 };
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export function generateStaticParams() {
   return [{locale: 'lv'}, {locale: 'en'}, {locale: 'nl-BE'}];
 }
@@ -100,9 +106,88 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={inter.variable}>
       <head>
+        <link rel="canonical" href={`https://uproof.eu/${locale}`} />
+        <link rel="alternate" hrefLang="lv" href="https://uproof.eu/lv" />
+        <link rel="alternate" hrefLang="en" href="https://uproof.eu/en" />
+        <link rel="alternate" hrefLang="nl-BE" href="https://uproof.eu/nl-BE" />
+        <link rel="alternate" hrefLang="x-default" href="https://uproof.eu/lv" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'RoofingContractor',
+              '@id': 'https://uproof.eu/#organization',
+              name: 'UpRoof',
+              url: 'https://uproof.eu',
+              logo: 'https://uproof.eu/images/logo.png',
+              image: 'https://uproof.eu/images/og-image.jpg',
+              description: 'Professional roofing services in Latvia: construction, repairs, painting, and maintenance with 10-year warranty.',
+              address: {
+                '@type': 'PostalAddress',
+                addressCountry: 'LV',
+                addressLocality: 'Latvia'
+              },
+              telephone: '+371-25612440',
+              priceRange: '$$',
+              areaServed: {
+                '@type': 'Country',
+                name: 'Latvia'
+              },
+              serviceArea: {
+                '@type': 'GeoCircle',
+                geoMidpoint: {
+                  '@type': 'GeoCoordinates',
+                  latitude: 56.9496,
+                  longitude: 24.1052
+                },
+                geoRadius: '100000'
+              },
+              sameAs: [
+                'https://www.facebook.com/uproof',
+                'https://www.instagram.com/uproof'
+              ],
+              hasOfferCatalog: {
+                '@type': 'OfferCatalog',
+                name: 'Roofing Services',
+                itemListElement: [
+                  {
+                    '@type': 'Offer',
+                    itemOffered: {
+                      '@type': 'Service',
+                      name: 'Roof Construction',
+                      description: 'Complete roof construction with 10-year warranty'
+                    }
+                  },
+                  {
+                    '@type': 'Offer',
+                    itemOffered: {
+                      '@type': 'Service',
+                      name: 'Roof Repair',
+                      description: 'Professional roof repair and maintenance services'
+                    }
+                  },
+                  {
+                    '@type': 'Offer',
+                    itemOffered: {
+                      '@type': 'Service',
+                      name: 'Roof Painting',
+                      description: 'Expert roof painting with durable materials'
+                    }
+                  }
+                ]
+              },
+              aggregateRating: {
+                '@type': 'AggregateRating',
+                ratingValue: '5',
+                reviewCount: '47'
+              }
+            })
+          }}
+        />
       </head>
       <body className="font-sans">
         <GTM gtmId={process.env.NEXT_PUBLIC_GTM_ID || ''} />

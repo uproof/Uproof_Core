@@ -1,9 +1,19 @@
 import {unstable_setRequestLocale} from 'next-intl/server';
 import {useTranslations} from 'next-intl';
+import type {Metadata} from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import ProjectCard from '@/components/ProjectCard';
 import {projects} from '@/data/projects';
+
+export const metadata: Metadata = {
+  title: 'Our Roofing Projects | Portfolio & Case Studies',
+  description: 'View our completed roofing projects in Latvia. Metal roofing, tile installation, repairs. See quality workmanship and customer results.',
+  alternates: {
+    canonical: 'https://uproof.eu/projects'
+  }
+};
 
 export default function ProjectsPage({params: {locale}}: {params: {locale: string}}) {
   unstable_setRequestLocale(locale);
@@ -12,6 +22,7 @@ export default function ProjectsPage({params: {locale}}: {params: {locale: strin
   return (
     <main className="min-h-screen">
       <Header />
+      <Breadcrumbs />
       {/* Simple gradient header - no Vanta */}
       <section className="relative pt-32 pb-20 bg-gradient-to-br from-gray-900 via-gray-800 to-primary-900 overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-grid-pattern"></div>

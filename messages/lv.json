@@ -8,6 +8,14 @@
     "blog": "Blogs",
     "recommendations": "Ieteikumi"
   },
+  "breadcrumbs": {
+    "home": "Sākums",
+    "services": "Pakalpojumi",
+    "projects": "Projekti",
+    "about": "Par mums",
+    "contact": "Kontakti",
+    "blog": "Blogs"
+  },
   "serviceTags": {
     "construction": "Būvniecība",
     "profiling": "Metāla profila darbi",

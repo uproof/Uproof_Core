@@ -8,6 +8,14 @@
     "blog": "Blog",
     "recommendations": "Recommendations"
   },
+  "breadcrumbs": {
+    "home": "Home",
+    "services": "Services",
+    "projects": "Projects",
+    "about": "About Us",
+    "contact": "Contact",
+    "blog": "Blog"
+  },
   "serviceTags": {
     "construction": "Construction",
     "profiling": "Metal Profiling",

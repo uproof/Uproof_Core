@@ -7,6 +7,14 @@
     "contact": "Contact",
     "blog": "Blog"
   },
+  "breadcrumbs": {
+    "home": "Home",
+    "services": "Diensten",
+    "projects": "Projecten",
+    "about": "Over ons",
+    "contact": "Contact",
+    "blog": "Blog"
+  },
   "serviceTags": {
     "construction": "Constructie",
     "profiling": "Metaalbekleding",
