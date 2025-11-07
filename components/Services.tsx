@@ -20,55 +20,55 @@ export default function Services({ limit }: ServicesProps) {
         bold: (chunks) => <strong>{chunks}</strong>,
       }),
       image: '/images/services/construction.webp',
-      link: '/services#construction'
+      link: '/services/jumta-buvnieciba'
     },
     {
       title: t('painting.title'),
       description: t.rich('painting.description'),
       image: '/images/services/Painting.webp',
-      link: '/services#painting'
+      link: '/services/jumta-krasosana'
     },
     {
       title: t('maintenance.title'),
       description: t.rich('maintenance.description'),
       image: '/images/services/maintenance.webp',
-      link: '/services#maintenance'
+      link: '/services/jumta-apkope-remonts'
     },
     {
       title: t('metalProfile.title'),
       description: t.rich('metalProfile.description'),
       image: '/images/services/metalprofile.webp',
-      link: '/services#metalProfile'
+      link: '/services/jumta-seguma-montaza'
     },
     {
       title: t('tiledRoof.title'),
       description: t.rich('tiledRoof.description'),
       image: '/images/services/tiledroofs.webp',
-      link: '/services#tiledRoof'
+      link: '/services/jumta-seguma-montaza'
     },
     {
       title: t('skylights.title'),
       description: t.rich('skylights.description'),
       image: '/images/services/skylights.webp',
-      link: '/services#skylights'
+      link: '/services/jumta-seguma-montaza'
     },
     {
       title: t('gutterSystem.title'),
       description: t.rich('gutterSystem.description'),
       image: '/images/services/guttersystem.webp',
-      link: '/services#gutterSystem'
+      link: '/services/noteksistemu-uzstadisana'
     },
     {
       title: t('snowRemoval.title'),
       description: t.rich('snowRemoval.description'),
       image: '/images/services/snowremoval.webp',
-      link: '/services#snowRemoval'
+      link: '/services/jumta-apkope-remonts'
     },
     {
       title: t('leafCleaning.title'),
       description: t.rich('leafCleaning.description'),
       image: '/images/services/leafcleaning.webp',
-      link: '/services#leafCleaning'
+      link: '/services/jumta-apkope-remonts'
     },
   ];
 
