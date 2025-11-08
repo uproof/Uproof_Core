@@ -19,11 +19,25 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL('https://uproof.eu'),
   title: {
-    default: 'Professional Roofing Services Latvia | UpRoof',
+    default: 'Jumta būvniecība un remonts Rīgā | Profesionāli pakalpojumi Latvijā | UpRoof',
     template: '%s | UpRoof'
   },
-  description: 'Expert roofing in Latvia: construction, repairs, painting & maintenance. 10-year warranty. Quality workmanship. Get a free quote today!',
-  keywords: ['roofing Latvia', 'roof construction', 'roof repair', 'jumta būvniecība', 'jumta remonts', 'jumta krāsošana', 'roofing contractor', 'metal roofing', 'tile roofing', 'roof maintenance Latvia'],
+  description: 'Profesionāli jumta pakalpojumi Rīgā un visā Latvijā: būvniecība, remonts, krāsošana, apkope. 10 gadu garantija. Apkalpojam Rīgu, Pierīgu, Jūrmalu, Jelgavu. Bezmaksas novērtējums!',
+  keywords: [
+    'jumta būvniecība Rīgā',
+    'jumta remonts Rīgā', 
+    'jumta krāsošana Rīgā',
+    'jumtu būvniecība Latvijā',
+    'jumta seguma montāža Rīgā',
+    'jumta apkope Pierīgā',
+    'noteksistēmu uzstādīšana Rīgā',
+    'jumta renovācija Jūrmalā',
+    'jumta pakalpojumi Jelgavā',
+    'roofing contractor Riga',
+    'roof construction Latvia',
+    'roof repair Riga',
+    'roof painting Latvia'
+  ],
   authors: [{ name: 'UpRoof', url: 'https://uproof.eu' }],
   creator: 'UpRoof',
   publisher: 'UpRoof',
@@ -37,22 +51,22 @@ export const metadata: Metadata = {
     locale: 'lv_LV',
     alternateLocale: ['en_US', 'nl_BE'],
     url: 'https://uproof.eu',
-    title: 'Professional Roofing Services Latvia | UpRoof',
-    description: 'Expert roofing: construction, repairs, painting. 10-year warranty. Quality workmanship in Latvia.',
+    title: 'Jumta būvniecība un remonts Rīgā | Profesionāli pakalpojumi Latvijā',
+    description: 'Profesionāli jumta pakalpojumi Rīgā, Pierīgā un Latvijā: būvniecība, remonts, krāsošana. 10 gadu garantija. Apkalpojam Rīgu, Jūrmalu, Jelgavu.',
     siteName: 'UpRoof',
     images: [
       {
         url: '/images/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'UpRoof - Professional Roofing Services',
+        alt: 'UpRoof - Jumta būvniecība un remonts Rīgā un Latvijā',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Professional Roofing Services Latvia | UpRoof',
-    description: 'Expert roofing: construction, repairs, painting. 10-year warranty in Latvia.',
+    title: 'Jumta būvniecība un remonts Rīgā | Profesionāli pakalpojumi Latvijā',
+    description: 'Profesionāli jumta pakalpojumi Rīgā, Pierīgā un Latvijā: būvniecība, remonts, krāsošana. 10 gadu garantija.',
     images: ['/images/og-image.jpg'],
   },
   robots: {
@@ -112,62 +126,120 @@ export default async function LocaleLayout({
   }
   const orgSchema = {
     '@context': 'https://schema.org',
-    '@type': 'RoofingContractor',
+    '@type': ['RoofingContractor', 'LocalBusiness'],
     '@id': 'https://uproof.eu/#organization',
     name: 'UpRoof',
     url: 'https://uproof.eu',
     logo: 'https://uproof.eu/images/logo.png',
     image: 'https://uproof.eu/images/og-image.jpg',
     description:
-      'Professional roofing services in Latvia: construction, repairs, painting, and maintenance with 10-year warranty.',
+      'Profesionāli jumta būvniecības, remonta un apkopes pakalpojumi Rīgā un visā Latvijā. 10 gadu garantija.',
     address: {
       '@type': 'PostalAddress',
-      addressCountry: 'LV',
+      streetAddress: 'Rīga',
       addressLocality: 'Rīga',
-      addressRegion: 'Rīga'
+      addressRegion: 'Rīgas rajons',
+      postalCode: 'LV-1000',
+      addressCountry: 'LV'
     },
     telephone: '+371-25612440',
     priceRange: '$$',
-    areaServed: {
-      '@type': 'Country',
-      name: 'Latvia'
-    },
+    // Multiple service areas covering Riga and surrounding regions
+    areaServed: [
+      {
+        '@type': 'City',
+        name: 'Rīga',
+        '@id': 'https://www.wikidata.org/wiki/Q1773'
+      },
+      {
+        '@type': 'City',
+        name: 'Jūrmala'
+      },
+      {
+        '@type': 'City',
+        name: 'Jelgava'
+      },
+      {
+        '@type': 'City',
+        name: 'Ogre'
+      },
+      {
+        '@type': 'City',
+        name: 'Salaspils'
+      },
+      {
+        '@type': 'City',
+        name: 'Ķekava'
+      },
+      {
+        '@type': 'AdministrativeArea',
+        name: 'Pierīga'
+      },
+      {
+        '@type': 'Country',
+        name: 'Latvia',
+        '@id': 'https://www.wikidata.org/wiki/Q211'
+      }
+    ],
+    // Primary service area centered on Riga (100km radius)
     serviceArea: {
       '@type': 'GeoCircle',
       geoMidpoint: {
         '@type': 'GeoCoordinates',
         latitude: 56.9496,
-        longitude: 24.1052
+        longitude: 24.1052,
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Rīga',
+          addressCountry: 'LV'
+        }
       },
       geoRadius: '100000'
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: 56.9496,
+      longitude: 24.1052
     },
     sameAs,
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
-      name: 'Roofing Services',
+      name: 'Jumta pakalpojumi',
       itemListElement: [
         {
           '@type': 'Offer',
           itemOffered: {
             '@type': 'Service',
-            name: 'Roof Construction',
-            description: 'Complete roof construction with 10-year warranty'
+            name: 'Jumta būvniecība',
+            description: 'Pilna cikla jumta būvniecība Rīgā un Latvijā ar 10 gadu garantiju',
+            areaServed: 'Rīga, Pierīga, Latvija'
           }
         },
         {
           '@type': 'Offer',
           itemOffered: {
             '@type': 'Service',
-            name: 'Roof Repair',
-            description: 'Professional roof repair and maintenance services'
+            name: 'Jumta remonts',
+            description: 'Profesionāls jumta remonts un apkope Rīgā',
+            areaServed: 'Rīga, Pierīga, Latvija'
           }
         },
         {
           '@type': 'Offer',
           itemOffered: {
             '@type': 'Service',
-            name: 'Roof Painting',
-            description: 'Expert roof painting with durable materials'
+            name: 'Jumta krāsošana',
+            description: 'Jumta krāsošana ar ilgnoturīgiem materiāliem Rīgā',
+            areaServed: 'Rīga, Pierīga, Latvija'
+          }
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Noteksistēmu uzstādīšana',
+            description: 'Kvalitatīva noteksistēmu montāža jumtam Rīgā',
+            areaServed: 'Rīga, Pierīga, Latvija'
           }
         }
       ]
@@ -175,7 +247,15 @@ export default async function LocaleLayout({
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: '5',
-      reviewCount: '47'
+      reviewCount: '47',
+      bestRating: '5',
+      worstRating: '1'
+    },
+    openingHoursSpecification: {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '08:00',
+      closes: '18:00'
     }
   } as const;
 
