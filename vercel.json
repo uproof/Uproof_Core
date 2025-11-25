@@ -37,6 +37,12 @@
       "source": "/admin",
       "destination": "/lv/admin",
       "permanent": false
+    },
+    {
+      "source": "/(.*)",
+      "has": [{"type": "host", "value": "www.uproof.eu"}],
+      "destination": "https://uproof.eu/$1",
+      "permanent": true
     }
   ]
 }

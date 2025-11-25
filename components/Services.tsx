@@ -38,19 +38,19 @@ export default function Services({ limit }: ServicesProps) {
       title: t('metalProfile.title'),
       description: t.rich('metalProfile.description'),
       image: '/images/services/metalprofile.webp',
-      link: '/services/jumta-seguma-montaza'
+      link: '/services/valcprofila-montaza'
     },
     {
       title: t('tiledRoof.title'),
       description: t.rich('tiledRoof.description'),
       image: '/images/services/tiledroofs.webp',
-      link: '/services/jumta-seguma-montaza'
+      link: '/services/dakstinu-montaza'
     },
     {
       title: t('skylights.title'),
       description: t.rich('skylights.description'),
       image: '/images/services/skylights.webp',
-      link: '/services/jumta-seguma-montaza'
+      link: '/services/jumta-logu-montaza'
     },
     {
       title: t('gutterSystem.title'),

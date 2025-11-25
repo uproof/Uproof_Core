@@ -1,7 +1,9 @@
 import {useTranslations} from 'next-intl';
 import {unstable_setRequestLocale} from 'next-intl/server';
+import type {Metadata} from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import Image from 'next/image';
 import {Link} from '@/i18n/routing';
 import {notFound} from 'next/navigation';
@@ -23,6 +25,48 @@ const blogPosts = blogData as Array<{
   content?: string;
 }>;
 
+export function generateMetadata({params}: Props): Metadata {
+  const post = blogPosts.find(p => p.id === parseInt(params.id));
+  
+  if (!post) {
+    return {title: 'Post Not Found'};
+  }
+
+  const {locale, id} = params;
+  const canonical = `https://uproof.eu/${locale}/blog/${id}`;
+  
+  // Generate hreflang alternates for blog post
+  const languages: Record<string, string> = {
+    lv: `https://uproof.eu/lv/blog/${id}`,
+    en: `https://uproof.eu/en/blog/${id}`,
+    'nl-BE': `https://uproof.eu/nl-BE/blog/${id}`,
+    'x-default': `https://uproof.eu/lv/blog/${id}`,
+  };
+
+  return {
+    title: `${post.title} | UpRoof Blog`,
+    description: post.excerpt,
+    alternates: {
+      canonical,
+      languages,
+    },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      url: canonical,
+      type: 'article',
+      publishedTime: post.date,
+      authors: [post.author || 'UpRoof Team'],
+      locale: locale === 'lv' ? 'lv_LV' : locale === 'en' ? 'en_US' : 'nl_BE',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
+    },
+  };
+}
+
 export default function BlogPostPage({params: {locale, id}}: Props) {
   unstable_setRequestLocale(locale);
 
@@ -32,9 +76,69 @@ export default function BlogPostPage({params: {locale, id}}: Props) {
     notFound();
   }
 
+  // BlogPosting structured data
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    '@id': `https://uproof.eu/${locale}/blog/${id}#article`,
+    headline: post.title,
+    description: post.excerpt,
+    image: `https://uproof.eu${post.image}`,
+    datePublished: post.date,
+    dateModified: post.date,
+    author: {
+      '@type': 'Organization',
+      '@id': 'https://uproof.eu/#organization',
+      name: post.author || 'UpRoof Team',
+    },
+    publisher: {
+      '@type': 'Organization',
+      '@id': 'https://uproof.eu/#organization',
+      name: 'UpRoof',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://uproof.eu/images/logo.png',
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://uproof.eu/${locale}/blog/${id}`,
+    },
+    inLanguage: locale === 'lv' ? 'lv-LV' : locale === 'en' ? 'en-US' : 'nl-BE',
+    articleSection: post.category,
+    keywords: post.category,
+  };
+
+  // BreadcrumbList structured data
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: `https://uproof.eu/${locale}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Blog',
+        item: `https://uproof.eu/${locale}/blog`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: post.title,
+        item: `https://uproof.eu/${locale}/blog/${id}`,
+      },
+    ],
+  };
+
   return (
     <main className="min-h-screen bg-gray-50">
       <Header />
+      <Breadcrumbs />
       
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-20 pt-32">
@@ -99,6 +203,10 @@ export default function BlogPostPage({params: {locale, id}}: Props) {
       </article>
 
       <Footer />
+      
+      {/* Structured Data */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(articleSchema)}} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(breadcrumbSchema)}} />
     </main>
   );
 }

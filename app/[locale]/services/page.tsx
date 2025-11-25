@@ -6,13 +6,24 @@ import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Services from '@/components/Services';
 
-export const metadata: Metadata = {
-  title: 'Roofing Services Latvia | Construction & Repair',
-  description: 'Complete roofing services: construction, repairs, painting, metal roofing, tile installation. 10-year warranty. Free quotes in Latvia.',
-  alternates: {
-    canonical: 'https://uproof.eu/services'
-  }
-};
+export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
+  const canonical = `https://uproof.eu/${locale}/services`;
+  const languages = {
+    lv: 'https://uproof.eu/lv/services',
+    en: 'https://uproof.eu/en/services',
+    'nl-BE': 'https://uproof.eu/nl-BE/services',
+    'x-default': 'https://uproof.eu/lv/services'
+  };
+
+  return {
+    title: 'Roofing Services Latvia | Construction & Repair',
+    description: 'Complete roofing services: construction, repairs, painting, metal roofing, tile installation. 10-year warranty. Free quotes in Latvia.',
+    alternates: {
+      canonical,
+      languages
+    }
+  };
+}
 
 export default function ServicesPage({params: {locale}}: {params: {locale: string}}) {
   unstable_setRequestLocale(locale);

@@ -15,6 +15,26 @@ type Props = {
   params: {locale: string};
 };
 
+export function generateMetadata({params}: Props): Metadata {
+  const {locale} = params;
+  const canonical = `https://uproof.eu/${locale}`;
+  
+  // Generate hreflang alternates for homepage
+  const languages: Record<string, string> = {
+    lv: 'https://uproof.eu/lv',
+    en: 'https://uproof.eu/en',
+    'nl-BE': 'https://uproof.eu/nl-BE',
+    'x-default': 'https://uproof.eu/lv', // Default to Latvian
+  };
+
+  return {
+    alternates: {
+      canonical,
+      languages,
+    },
+  };
+}
+
 export default function HomePage({params: {locale}}: Props) {
   unstable_setRequestLocale(locale);
 
@@ -35,12 +55,3 @@ export default function HomePage({params: {locale}}: Props) {
 // Prefer static generation to reduce TTFB and stabilize LCP
 export const dynamic = 'force-static';
 export const revalidate = 3600; // Re-generate once per hour
-
-// Homepage canonical (layout canonical removed to avoid duplication)
-export const metadata: Metadata = {
-  alternates: {
-    canonical: 'https://uproof.eu/'
-  }
-};
-
-

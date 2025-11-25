@@ -1,9 +1,55 @@
 import createMiddleware from 'next-intl/middleware';
 import {routing} from './i18n/routing';
+import {NextRequest, NextResponse} from 'next/server';
 
-export default createMiddleware(routing);
+const intlMiddleware = createMiddleware(routing);
+
+// Geo-based locale resolution: LV -> lv, BE -> nl-BE, else en.
+function resolveLocale(req: NextRequest): string {
+  const country = (req.geo?.country || '').toUpperCase();
+  if (country === 'LV') return 'lv';
+  if (country === 'BE') return 'nl-BE';
+  return 'en';
+}
+
+export default function middleware(request: NextRequest) {
+  const {nextUrl, cookies} = request;
+  const pathname = nextUrl.pathname;
+
+  // Skip if already has locale prefix
+  const hasLocalePrefix = /^\/(lv|en|nl-BE)(\/|$)/.test(pathname);
+
+  // User preference cookie overrides geo
+  const pref = cookies.get('preferred_locale')?.value;
+
+  if (!hasLocalePrefix) {
+    const locale = pref || resolveLocale(request);
+    const redirectUrl = new URL(`/${locale}${pathname === '/' ? '' : pathname}`, nextUrl);
+    const response = NextResponse.redirect(redirectUrl);
+    // Persist preference to avoid repeated geo checks
+    response.cookies.set('preferred_locale', locale, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 180 // 180 days
+    });
+    return response;
+  }
+
+  // Allow manual locale switch via query (?setLocale=lv) and store cookie
+  const setLocale = nextUrl.searchParams.get('setLocale');
+  if (setLocale && ['lv','en','nl-BE'].includes(setLocale)) {
+    const newUrl = new URL(pathname.replace(/^\/(lv|en|nl-BE)/, `/${setLocale}`) + nextUrl.search, nextUrl);
+    const response = NextResponse.redirect(newUrl);
+    response.cookies.set('preferred_locale', setLocale, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 180
+    });
+    return response;
+  }
+
+  // Delegate to next-intl middleware for locale routing
+  return intlMiddleware(request);
+}
 
 export const config = {
-  // Match only internationalized pathnames
   matcher: ['/', '/(lv|en|nl-BE)/:path*']
 };
