@@ -12,9 +12,9 @@ export async function GET() {
     '/static-sitemap.xml',
     '/services-sitemap.xml',
     '/blog-sitemap.xml',
-    '/projects-sitemap.xml',
     '/materials-sitemap.xml',
-    '/cities-sitemap.xml'
+    // '/projects-sitemap.xml', // Empty - excluded to avoid GSC errors
+    // '/cities-sitemap.xml'    // Empty - excluded to avoid GSC errors
   ];
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls

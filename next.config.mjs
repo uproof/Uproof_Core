@@ -4,6 +4,12 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async rewrites() {
+    return [
+      // Map common /sitemap.xml to the actual segmented index to avoid route conflicts.
+      { source: '/sitemap.xml', destination: '/sitemap_index.xml' },
+    ];
+  },
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
