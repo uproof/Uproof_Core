@@ -4,6 +4,7 @@ import type {Metadata} from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import MiersMethod from '@/components/MiersMethod';
 
 export const metadata: Metadata = {
   title: 'About UpRoof | Professional Roofing Company Latvia',
@@ -27,36 +28,7 @@ export default function AboutPage({params: {locale}}: {params: {locale: string}}
             {t('description')}
           </p>
           {/* M-I-E-R-S method window for all languages */}
-          <div className="mt-8 bg-primary-50 border-l-4 border-primary-400 p-6 rounded-xl shadow">
-            <h2 className="text-2xl font-bold mb-2 text-primary-700">
-              {locale === 'lv' && <>Izmantojam būvniecības metodi - <span className="tracking-widest">M-I-E-R-S</span></>}
-              {locale === 'en' && <>We use the <span className="tracking-widest">M-I-E-R-S</span> construction method</>}
-              {locale === 'nl-BE' && <>Wij gebruiken de <span className="tracking-widest">M-I-E-R-S</span> bouwmethode</>}
-            </h2>
-            <ul className="list-disc pl-6 text-lg text-gray-800">
-              {locale === 'lv' && <>
-                <li><b>M</b> - materiālu ilgmūžība</li>
-                <li><b>I</b> - izpildījuma kvalitāte ar sertificētiem speciālistiem</li>
-                <li><b>E</b> - estētiski pievilcīgi risinājumi</li>
-                <li><b>R</b> - rezultāta garantija 10 gadi un pilna atbildības uzņemšanās</li>
-                <li><b>S</b> - serviss un attieksme, kas priecēs visos būvniecības posmos</li>
-              </>}
-              {locale === 'en' && <>
-                <li><b>M</b> - Material longevity</li>
-                <li><b>I</b> - Impeccable execution by certified specialists</li>
-                <li><b>E</b> - Elegant and aesthetic solutions</li>
-                <li><b>R</b> - Results guaranteed for 10 years with full accountability</li>
-                <li><b>S</b> - Service and attitude that delight at every stage of construction</li>
-              </>}
-              {locale === 'nl-BE' && <>
-                <li><b>M</b> - Materiaalduurzaamheid</li>
-                <li><b>I</b> - Uitvoering van topkwaliteit door gecertificeerde specialisten</li>
-                <li><b>E</b> - Esthetisch aantrekkelijke oplossingen</li>
-                <li><b>R</b> - Resultaatgarantie van 10 jaar en volledige verantwoordelijkheid</li>
-                <li><b>S</b> - Service en houding die in elke bouwfase plezier geven</li>
-              </>}
-            </ul>
-          </div>
+          <MiersMethod locale={locale} />
         </div>
       </section>
 

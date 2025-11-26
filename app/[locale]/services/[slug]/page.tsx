@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import InternalLinks from '@/components/InternalLinks';
+import MiersMethod from '@/components/MiersMethod';
 
 // Service slugs focused on Latvian queries
 const SERVICE_SLUGS = [
@@ -606,6 +607,9 @@ export default function ServiceLanding({params: {locale, slug}}: PageProps) {
               </ol>
             </div>
           )}
+
+          {/* M-I-E-R-S Method Integration - Compact Trust Signal */}
+          <MiersMethod locale={locale} variant="compact" />
 
           <div className="bg-primary-600/10 border-l-4 border-primary-600 p-6 rounded-md mb-8">
             <p className="font-semibold text-primary-800">
