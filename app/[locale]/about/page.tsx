@@ -1,4 +1,4 @@
-import {unstable_setRequestLocale} from 'next-intl/server';
+import {unstable_setRequestLocale, getTranslations} from 'next-intl/server';
 import {useTranslations} from 'next-intl';
 import type {Metadata} from 'next';
 import Header from '@/components/Header';
@@ -6,13 +6,17 @@ import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import MiersMethod from '@/components/MiersMethod';
 
-export const metadata: Metadata = {
-  title: 'About UpRoof | Professional Roofing Company Latvia',
-  description: 'UpRoof: certified roofing specialists in Latvia. 10-year warranty, quality materials, expert workmanship. Learn about our MIERS construction method.',
-  alternates: {
-    canonical: 'https://uproof.eu/about'
-  }
-};
+export async function generateMetadata({params: {locale}}: {params: {locale: string}}): Promise<Metadata> {
+  const t = await getTranslations({locale, namespace: 'pages.about'});
+  
+  return {
+    title: 'About UpRoof | Professional Roofing Company Latvia',
+    description: 'UpRoof: certified roofing specialists in Latvia. 10-year warranty, quality materials, expert workmanship. Learn about our MIERS construction method.',
+    alternates: {
+      canonical: `https://uproof.eu/${locale}/about`
+    }
+  };
+}
 
 export default function AboutPage({params: {locale}}: {params: {locale: string}}) {
   unstable_setRequestLocale(locale);

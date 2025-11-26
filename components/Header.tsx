@@ -43,7 +43,7 @@ export default function Header({showText = true, largeLogo = false}: HeaderProps
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link href="/" className="flex items-center gap-3 group">
+            <Link href="/" className="flex items-center gap-3 group" aria-label="UpRoof Home">
               <div className={`relative ${largeLogo ? 'h-20 w-20' : 'h-[4.375rem] w-[4.375rem]'} transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
                   <Image
                     src="/logo.svg"
