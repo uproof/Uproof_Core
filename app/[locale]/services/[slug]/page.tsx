@@ -164,6 +164,90 @@ function getServiceContent(slug: string, locale: string) {
         benefits: ['Hermetische dubbele sluiting in alle verbindingen', 'Zeer weerbestendig', '50 jaar fabrieksgarantie op materialen', 'Modern en esthetisch uiterlijk'],
         process: ['Structuurvoorbereiding', 'Onderlaag installatie met ventilatie', 'Staande naad paneel fabricage', 'Dubbele sluitvoeg installatie', 'Plaatwerk bij ramen en schoorstenen']
       }
+    },
+    'dakstinu-montaza': {
+      lv: {
+        benefits: ['Ilgmūžība līdz pat 100 gadiem', 'Lieliska skaņas un siltuma izolācija', 'Ugunsdrošs un ekoloģisks materiāls', 'Prestižs un klasisks izskats'],
+        process: ['Jumta konstrukcijas pastiprināšana', 'Elpojošās membrānas ieklāšana', 'Latojuma un kontrlatojuma montāža', 'Dakstiņu ieklāšana un stiprināšana', 'Kores un malu elementu montāža']
+      },
+      en: {
+        benefits: ['Longevity up to 100 years', 'Excellent sound and heat insulation', 'Fireproof and ecological material', 'Prestigious and classic appearance'],
+        process: ['Roof structure reinforcement', 'Breathable membrane installation', 'Batten and counter-batten installation', 'Tile laying and fastening', 'Ridge and edge element installation']
+      },
+      'nl-BE': {
+        benefits: ['Levensduur tot 100 jaar', 'Uitstekende geluids- en warmte-isolatie', 'Vuurvast en ecologisch materiaal', 'Prestigieuze en klassieke uitstraling'],
+        process: ['Dakstructuur versterking', 'Ademende membraan installatie', 'Panlatten en tengellatten installatie', 'Pannen leggen en bevestigen', 'Nok- en randelementen installatie']
+      }
+    },
+    'jumta-logu-montaza': {
+      lv: {
+        benefits: ['Dabiskā apgaismojuma palielināšana', 'Telpu vēdināšanas uzlabošana', 'Energoefektīvi stikla pakešu risinājumi', 'Profesionāla hidroizolācija'],
+        process: ['Loga vietas izzāģēšana un sagatavošana', 'Loga rāmja montāža un līmeņošana', 'Hidroizolācijas un siltinājuma pieslēgums', 'Ārējo pieslēgumu un seguma atjaunošana', 'Iekšējās apdares sagatavošana']
+      },
+      en: {
+        benefits: ['Increased natural lighting', 'Improved room ventilation', 'Energy-efficient glazing solutions', 'Professional waterproofing'],
+        process: ['Window opening cutting and preparation', 'Frame installation and leveling', 'Waterproofing and insulation connection', 'External flashing and covering restoration', 'Internal finish preparation']
+      },
+      'nl-BE': {
+        benefits: ['Verhoogde natuurlijke verlichting', 'Verbeterde kamerventilatie', 'Energie-efficiënte beglazingsoplossingen', 'Professionele waterdichting'],
+        process: ['Raamopening zagen en voorbereiden', 'Kaderinstallatie en nivellering', 'Waterdichting en isolatie aansluiting', 'Externe gootstukken en bedekking herstel', 'Interne afwerking voorbereiding']
+      }
+    },
+    'jumta-buvnieciba': {
+      lv: {
+        benefits: ['Pilna cikla būvniecība no A līdz Z', 'Sertificēti būvspeciālisti', 'Atbilstība Latvijas būvnormatīviem', 'Individuāla projektēšana un tāme'],
+        process: ['Objekta apsekošana un tāmēšana', 'Materiālu piegāde', 'Spāru sistēmas izbūve', 'Siltināšana un plēvju montāža', 'Jumta seguma un noteku uzstādīšana']
+      },
+      en: {
+        benefits: ['Full-cycle construction from A to Z', 'Certified construction specialists', 'Compliance with building codes', 'Individual design and estimation'],
+        process: ['Site inspection and estimation', 'Material delivery', 'Rafter system construction', 'Insulation and membrane installation', 'Roof covering and gutter installation']
+      },
+      'nl-BE': {
+        benefits: ['Volledige cyclus bouw van A tot Z', 'Gecertificeerde bouwspecialisten', 'Naleving van bouwvoorschriften', 'Individueel ontwerp en schatting'],
+        process: ['Locatie-inspectie en schatting', 'Materiaal levering', 'Dakspant systeem constructie', 'Isolatie en membraan installatie', 'Dakbedekking en goot installatie']
+      }
+    },
+    'jumta-apkope-remonts': {
+      lv: {
+        benefits: ['Jumta kalpošanas laika pagarināšana', 'Noplūžu riska novēršana', 'Vizuālā izskata uzlabošana', 'Ātra avārijas reaģēšana'],
+        process: ['Vizuālā un tehniskā apsekošana', 'Bojāto vietu lokāls remonts', 'Noteku un satekņu tīrīšana', 'Sūnu un netīrumu noņemšana', 'Aizsargpārklājumu atjaunošana']
+      },
+      en: {
+        benefits: ['Extending roof service life', 'Leak risk prevention', 'Visual appearance improvement', 'Fast emergency response'],
+        process: ['Visual and technical inspection', 'Local repair of damaged areas', 'Gutter and valley cleaning', 'Moss and dirt removal', 'Protective coating renewal']
+      },
+      'nl-BE': {
+        benefits: ['Verlenging levensduur dak', 'Lekkage risicopreventie', 'Visuele uitstraling verbetering', 'Snelle noodrespons'],
+        process: ['Visuele en technische inspectie', 'Lokale reparatie van beschadigde gebieden', 'Goot en kilgoot reiniging', 'Mos en vuil verwijdering', 'Beschermende coating vernieuwing']
+      }
+    },
+    'noteksistemu-uzstadisana': {
+      lv: {
+        benefits: ['Efektīva ūdens novadīšana no fasādes', 'Plaša krāsu un materiālu izvēle', 'Izturība pret sniega slodzi', 'Garantija pret rūsēšanu'],
+        process: ['Jumta karnīzes mērīšana', 'Noteku turētāju montāža ar kritumu', 'Renu un piltuvju uzstādīšana', 'Notekcauruļu un līkumu montāža', 'Ūdens novadīšanas pārbaude']
+      },
+      en: {
+        benefits: ['Effective water drainage from facade', 'Wide choice of colors and materials', 'Resistance to snow load', 'Warranty against rusting'],
+        process: ['Roof eaves measurement', 'Gutter bracket installation with slope', 'Gutter and outlet installation', 'Downspout and elbow installation', 'Drainage testing']
+      },
+      'nl-BE': {
+        benefits: ['Effectieve waterafvoer van gevel', 'Ruime keuze aan kleuren en materialen', 'Weerstand tegen sneeuwbelasting', 'Garantie tegen roesten'],
+        process: ['Dakrand meting', 'Gootbeugel installatie met helling', 'Goot en uitloop installatie', 'Regenpijp en bocht installatie', 'Afvoer testen']
+      }
+    },
+    'jumta-krasosana': {
+      lv: {
+        benefits: ['Jumta mūža pagarināšana par 10-15 gadiem', 'Ekonomiska alternatīva nomaiņai', 'Aizsardzība pret koroziju un sūnām', 'Jebkura toņa izvēle'],
+        process: ['Augstspiediena mazgāšana (līdz 500 bar)', 'Rūsas apstrāde un gruntēšana', 'Pirmās krāsas kārtas uzklāšana', 'Otrās kārtas uzklāšana', 'Kvalitātes kontrole']
+      },
+      en: {
+        benefits: ['Extending roof life by 10-15 years', 'Economical alternative to replacement', 'Protection against corrosion and moss', 'Choice of any color'],
+        process: ['High-pressure washing (up to 500 bar)', 'Rust treatment and priming', 'First paint coat application', 'Second coat application', 'Quality control']
+      },
+      'nl-BE': {
+        benefits: ['Verlenging dakleven met 10-15 jaar', 'Economisch alternatief voor vervanging', 'Bescherming tegen corrosie en mos', 'Keuze uit elke kleur'],
+        process: ['Hogedrukreiniging (tot 500 bar)', 'Roestbehandeling en gronden', 'Eerste verflaag aanbrengen', 'Tweede laag aanbrengen', 'Kwaliteitscontrole']
+      }
     }
   };
 
@@ -205,6 +289,108 @@ function getServiceFAQs(slug: string, locale: string) {
         {q: 'Waarom kiezen voor staande naad?', a: 'Staande naad biedt maximale hermeticiteit dankzij dubbele sluitingen, duurzaamheid (50+ jaar) en modern uiterlijk zonder zichtbare schroefgaten.'},
         {q: 'Kan staande naad in winter geïnstalleerd worden?', a: 'Ja, staande naad kan het hele jaar door geïnstalleerd worden, maar optimale omstandigheden zijn temperaturen boven -10°C met minimaal neerslag risico.'},
         {q: 'Wat is de garantie op staande naad?', a: '10 jaar garantie op installatiewerk en 50 jaar fabrieksgarantie op materiaal, inclusief verfbaarheid en metaalintegriteit.'}
+      ]
+    },
+    'dakstinu-montaza': {
+      lv: [
+        {q: 'Vai mans jumts izturēs dakstiņu svaru?', a: 'Mēs vienmēr veicam konstrukcijas nestspējas aprēķinu. Ja nepieciešams, veicam spāru pastiprināšanu pirms montāžas.'},
+        {q: 'Kāda ir atšķirība starp māla un betona dakstiņiem?', a: 'Māla dakstiņi ir dabīgāki un ilgmūžīgāki (līdz 100 gadiem), bet betona dakstiņi ir ekonomiskāki un precīzāki izmēros.'},
+        {q: 'Cik ilgi kalpo dakstiņu jumts?', a: 'Pareizi uzklāts dakstiņu jumts kalpo 50-100 gadus, padarot to par vienu no izdevīgākajiem ieguldījumiem ilgtermiņā.'}
+      ],
+      en: [
+        {q: 'Will my roof support tile weight?', a: 'We always calculate structural load capacity. If necessary, we reinforce rafters before installation.'},
+        {q: 'Difference between clay and concrete tiles?', a: 'Clay tiles are more natural and longer-lasting (up to 100 years), while concrete tiles are more economical and precise in dimensions.'},
+        {q: 'How long does a tile roof last?', a: 'A properly installed tile roof lasts 50-100 years, making it one of the best long-term investments.'}
+      ],
+      'nl-BE': [
+        {q: 'Zal mijn dak het pannengewicht dragen?', a: 'Wij berekenen altijd de draagkracht. Indien nodig versterken we de spanten voor installatie.'},
+        {q: 'Verschil tussen klei en betonnen pannen?', a: 'Kleipannen zijn natuurlijker en gaan langer mee (tot 100 jaar), terwijl betonnen pannen economischer en maatvaster zijn.'},
+        {q: 'Hoe lang gaat een pannendak mee?', a: 'Een correct geïnstalleerd pannendak gaat 50-100 jaar mee, wat het een van de beste langetermijninvesteringen maakt.'}
+      ]
+    },
+    'jumta-logu-montaza': {
+      lv: [
+        {q: 'Vai jumta logi neizraisīs siltuma zudumus?', a: 'Mūsdienu Roto un Velux logi ar 3 stiklu paketēm ir ļoti energoefektīvi un pareizi iestrādāti (ar siltinājuma bloku) tie ir silti.'},
+        {q: 'Vai var ielikt logu jau gatavā jumtā?', a: 'Jā, mēs veicam logu iegriešanu un montāžu arī gatavos jumtos, atjaunojot segumu un siltinājumu ap logu.'},
+        {q: 'Kādus logus izvēlēties - koka vai plastmasas?', a: 'Mitras telpās (vannas istaba) iesakām plastmasas vai poliuretāna pārklājuma logus, dzīvojamās istabās - koka.'}
+      ],
+      en: [
+        {q: 'Will skylights cause heat loss?', a: 'Modern Roto and Velux windows with triple glazing are very energy efficient and when properly installed (with insulation block) are warm.'},
+        {q: 'Can a window be installed in a finished roof?', a: 'Yes, we cut and install windows in finished roofs, restoring covering and insulation around the window.'},
+        {q: 'Wood or PVC windows?', a: 'For humid rooms (bathrooms) we recommend PVC or polyurethane coated, for living rooms - wood.'}
+      ],
+      'nl-BE': [
+        {q: 'Zullen dakramen warmteverlies veroorzaken?', a: 'Moderne Roto en Velux ramen met driedubbel glas zijn zeer energiezuinig en bij correcte installatie (met isolatieblok) warm.'},
+        {q: 'Kan een raam in een afgewerkt dak?', a: 'Ja, wij zagen en installeren ramen in afgewerkte daken, met herstel van bedekking en isolatie rondom.'},
+        {q: 'Hout of PVC ramen?', a: 'Voor vochtige ruimtes (badkamers) raden we PVC of polyurethaan coating aan, voor woonkamers - hout.'}
+      ]
+    },
+    'jumta-buvnieciba': {
+      lv: [
+        {q: 'Cik maksā jauna jumta izbūve?', a: 'Izmaksas ir atkarīgas no jumta sarežģītības, izvēlētā materiāla un siltinājuma biezuma. Mēs sagatavojam precīzu tāmi pēc objekta apskates.'},
+        {q: 'Kādu materiālu labāk izvēlēties?', a: 'Tas atkarīgs no jumta slīpuma un budžeta. Lēzenākiem jumtiem - valcprofils vai bitumens, stāvākiem - dakstiņi vai metāldakstiņi.'},
+        {q: 'Vai jūs kārtojat būvniecības dokumentāciju?', a: 'Jā, sadarbībā ar sertificētiem projektētājiem varam palīdzēt ar nepieciešamo dokumentāciju.'}
+      ],
+      en: [
+        {q: 'How much does a new roof cost?', a: 'Costs depend on complexity, material choice, and insulation thickness. We prepare a precise estimate after site inspection.'},
+        {q: 'Which material to choose?', a: 'Depends on slope and budget. Flatter roofs - standing seam or bitumen, steeper - tiles or metal tiles.'},
+        {q: 'Do you handle construction permits?', a: 'Yes, in cooperation with certified designers we can assist with necessary documentation.'}
+      ],
+      'nl-BE': [
+        {q: 'Wat kost een nieuw dak?', a: 'Kosten hangen af van complexiteit, materiaalkeuze en isolatiedikte. We maken een precieze schatting na inspectie.'},
+        {q: 'Welk materiaal kiezen?', a: 'Hangt af van helling en budget. Vlakkere daken - staande naad of bitumen, steilere - pannen of metaalpannen.'},
+        {q: 'Regelen jullie bouwvergunningen?', a: 'Ja, in samenwerking met gecertificeerde ontwerpers kunnen we helpen met documentatie.'}
+      ]
+    },
+    'jumta-apkope-remonts': {
+      lv: [
+        {q: 'Cik bieži jāveic jumta apkope?', a: 'Iesakām veikt apsekošanu un noteku tīrīšanu vismaz 2 reizes gadā - pavasarī un rudenī.'},
+        {q: 'Vai jūs braucat uz nelieliem remontdarbiem?', a: 'Jā, mēs veicam arī nelielus remontus, piemēram, vētras bojājumu novēršanu vai atsevišķu lokšņu nomaiņu.'},
+        {q: 'Kā cīnīties ar sūnām uz jumta?', a: 'Mēs piedāvājam profesionālu jumta mazgāšanu un apstrādi ar pretsūnu līdzekļiem, kas aizkavē to ataugšanu.'}
+      ],
+      en: [
+        {q: 'How often for roof maintenance?', a: 'We recommend inspection and gutter cleaning at least twice a year - spring and autumn.'},
+        {q: 'Do you do small repairs?', a: 'Yes, we perform small repairs like storm damage fix or individual sheet replacement.'},
+        {q: 'How to deal with moss?', a: 'We offer professional roof washing and anti-moss treatment to delay regrowth.'}
+      ],
+      'nl-BE': [
+        {q: 'Hoe vaak dakonderhoud?', a: 'We raden inspectie en gootreiniging minstens 2 keer per jaar aan - lente en herfst.'},
+        {q: 'Doen jullie kleine reparaties?', a: 'Ja, we voeren kleine reparaties uit zoals stormschade of vervanging van enkele platen.'},
+        {q: 'Hoe mos bestrijden?', a: 'We bieden professionele dakreiniging en anti-mos behandeling om hergroei te vertragen.'}
+      ]
+    },
+    'noteksistemu-uzstadisana': {
+      lv: [
+        {q: 'Kādas notekas ir labākas - plastmasas vai metāla?', a: 'Metāla (tērauda) notekas ir izturīgākas pret ledu un sauli, tās neizbalē un neplaisā kā plastmasa.'},
+        {q: 'Vai var uzstādīt notekas, ja jumts jau gatavs?', a: 'Jā, ir speciāli stiprinājumi, kas ļauj montēt notekas pie karnīzes dēļa arī gatavam jumtam.'},
+        {q: 'Cik maksā noteksistēmas uzstādīšana?', a: 'Cena atkarīga no mājas perimetra un stūru skaita. Precīzu tāmi nosakām pēc mērījumiem.'}
+      ],
+      en: [
+        {q: 'Plastic vs Metal gutters?', a: 'Metal (steel) gutters are more resistant to ice and sun, they don\'t fade or crack like plastic.'},
+        {q: 'Can gutters be installed on finished roof?', a: 'Yes, special brackets allow mounting to fascia board on finished roofs.'},
+        {q: 'Cost of gutter installation?', a: 'Price depends on perimeter and number of corners. Precise estimate after measurements.'}
+      ],
+      'nl-BE': [
+        {q: 'Plastic vs Metalen goten?', a: 'Metalen (stalen) goten zijn beter bestand tegen ijs en zon, ze verbleken of barsten niet zoals plastic.'},
+        {q: 'Kunnen goten op afgewerkt dak?', a: 'Ja, speciale beugels maken montage aan boeiboord mogelijk op afgewerkte daken.'},
+        {q: 'Kosten gootinstallatie?', a: 'Prijs hangt af van omtrek en aantal hoeken. Precieze schatting na metingen.'}
+      ]
+    },
+    'jumta-krasosana': {
+      lv: [
+        {q: 'Vai var krāsot jebkuru jumtu?', a: 'Visbiežāk krāso metāla un šīfera jumtus. Dakstiņus parasti mazgā un impregnē. Mēs novērtēsim piemērotību.'},
+        {q: 'Cik ilgi turas krāsa?', a: 'Pareizi sagatavota un nokrāsota virsma kalpo 10-15 gadus līdz nākamajai apkopei.'},
+        {q: 'Vai krāsošana aptur rūsu?', a: 'Jā, mēs apstrādājam rūsu ar pārveidotāju un grunti, kas aptur korozijas procesu zem krāsas.'}
+      ],
+      en: [
+        {q: 'Can any roof be painted?', a: 'Mostly metal and slate roofs. Tiles are usually washed and impregnated. We assess suitability.'},
+        {q: 'How long does paint last?', a: 'Properly prepared and painted surface lasts 10-15 years until next maintenance.'},
+        {q: 'Does painting stop rust?', a: 'Yes, we treat rust with converter and primer, stopping corrosion process under paint.'}
+      ],
+      'nl-BE': [
+        {q: 'Kan elk dak geschilderd worden?', a: 'Meestal metalen en leien daken. Pannen worden meestal gewassen en geïmpregneerd. We beoordelen geschiktheid.'},
+        {q: 'Hoe lang blijft verf goed?', a: 'Correct voorbereid en geschilderd oppervlak gaat 10-15 jaar mee tot volgend onderhoud.'},
+        {q: 'Stopt schilderen roest?', a: 'Ja, we behandelen roest met omvormer en primer, wat corrosieproces onder verf stopt.'}
       ]
     }
   };
