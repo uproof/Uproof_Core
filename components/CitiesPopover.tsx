@@ -1,14 +1,14 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { citiesByLocale, getCityDisplayName } from '@/lib/cities';
+import { citiesByLocale, getCityDisplayName, type Locale } from '@/lib/cities';
 import { Link } from '@/i18n/routing';
 
-type Props = { locale: string };
+type Props = { locale: Locale };
 
 export default function CitiesPopover({ locale }: Props) {
   const [open, setOpen] = useState(false);
-  const cities = useMemo(() => citiesByLocale[locale as any] || [], [locale]);
+  const cities = useMemo(() => citiesByLocale[locale] || [], [locale]);
 
   return (
     <div className="relative inline-block">
@@ -39,7 +39,7 @@ export default function CitiesPopover({ locale }: Props) {
                     href={`/cities/${slug}`}
                     className="block px-3 py-2 rounded hover:bg-primary-50 text-gray-800"
                   >
-                    {getCityDisplayName(locale as any, slug)}
+                    {getCityDisplayName(locale, slug)}
                   </Link>
                 </li>
               ))}
