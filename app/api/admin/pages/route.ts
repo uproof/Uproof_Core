@@ -26,6 +26,11 @@ async function ensurePagesFile() {
 }
 
 export async function GET() {
+  // Require admin auth for admin pages feed
+  const authenticated = isAdminAuthenticated();
+  if (!authenticated) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
   try {
     await ensurePagesFile();
     const content = await fs.readFile(PAGES_FILE, 'utf-8');
@@ -33,6 +38,6 @@ export async function GET() {
     return NextResponse.json({ pages });
   } catch (error) {
     console.error('Error reading pages:', error);
-    return NextResponse.json({ pages: [] });
+    return NextResponse.json({ error: 'Failed to read pages' }, { status: 500 });
   }
 }

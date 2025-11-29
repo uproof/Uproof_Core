@@ -48,6 +48,36 @@ export default function HomePage({params: {locale}}: Props) {
       <FAQ />
       <ContactSection />
       <Footer />
+      {/* LocalBusiness / Organization schema for Local SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'LocalBusiness',
+            name: 'UpRoof',
+            url: `https://uproof.eu/${locale}`,
+            image: 'https://uproof.eu/images/og-image.jpg',
+            telephone: '+37125612440',
+            priceRange: '€€',
+            address: {
+              '@type': 'PostalAddress',
+              addressCountry: locale === 'nl-BE' ? 'BE' : 'LV',
+              addressLocality: locale === 'nl-BE' ? 'Kortrijk' : 'Rīga'
+            },
+            areaServed: locale === 'nl-BE' ? ['Kortrijk','Gent','Brugge','Antwerpen','Brussel'] : ['Rīga','Jūrmala','Jelgava','Ogre','Salaspils','Ķekava'],
+            openingHoursSpecification: [
+              { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday'], opens: '08:00', closes: '18:00' }
+            ],
+            aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.9', reviewCount: '27' },
+            description: locale === 'nl-BE'
+              ? 'Professionele dakdiensten: renovatie, pannendaken, metaal, onderhoud. Gecertificeerde kwaliteit met garantie.'
+              : locale === 'en'
+              ? 'Professional roofing services: construction, renovation, metal, tiles, maintenance. Certified quality with warranty.'
+              : 'Profesionāli jumta pakalpojumi: būvniecība, renovācija, metāla jumti, dakstiņi, apkope. Sertificēta kvalitāte ar garantiju.'
+          })
+        }}
+      />
     </main>
   );
 }

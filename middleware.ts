@@ -6,7 +6,8 @@ const intlMiddleware = createMiddleware(routing);
 
 // Geo-based locale resolution: LV -> lv, BE -> nl-BE, else en.
 function resolveLocale(req: NextRequest): string {
-  const country = (req.geo?.country || '').toUpperCase();
+  const countryHeader = req.headers.get('x-vercel-ip-country') || '';
+  const country = (req.geo?.country || countryHeader).toUpperCase();
   if (country === 'LV') return 'lv';
   if (country === 'BE') return 'nl-BE';
   return 'en';

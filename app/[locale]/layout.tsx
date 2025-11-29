@@ -8,6 +8,7 @@ import dynamic from 'next/dynamic';
 const CookieConsent = dynamic(() => import('@/components/CookieConsent'), { ssr: false });
 const GTM = dynamic(() => import('@/components/GTM'), { ssr: false });
 import '../globals.css';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 const inter = Inter({ 
   subsets: ['latin', 'latin-ext'],
@@ -284,8 +285,10 @@ export default async function LocaleLayout({
       <body className="font-sans">
         <GTM gtmId={process.env.NEXT_PUBLIC_GTM_ID || ''} />
         <NextIntlClientProvider messages={messages}>
-          {children}
-           <CookieConsent />
+          <ErrorBoundary>
+            {children}
+            <CookieConsent />
+          </ErrorBoundary>
         </NextIntlClientProvider>
         <SpeedInsights />
         <Analytics />

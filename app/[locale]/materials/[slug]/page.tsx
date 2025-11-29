@@ -137,12 +137,39 @@ export default function MaterialSpecPage({ params: { slug, locale }}: { params: 
             <div className="bg-white shadow rounded-lg p-5">
               <h2 className="font-semibold mb-2">Typical Use Cases</h2>
               <ul className="text-sm text-gray-700 space-y-1">
-                {spec.typicalUse?.map(u => <li key={u}>✓ {u}</li>)}
+                {spec.typicalUse?.map(u => <li key={u}>{u}</li>)}
               </ul>
             </div>
             <div className="bg-white shadow rounded-lg p-5">
               <h2 className="font-semibold mb-2">Installation & Service</h2>
               <p className="text-sm text-gray-700">We provide professional installation of {spec.title[locale]} with precision flashing and moisture control best practices.</p>
+            </div>
+          </div>
+          <div className="mt-8 grid md:grid-cols-2 gap-6">
+            <div className="bg-white shadow rounded-lg p-5">
+              <h2 className="font-semibold mb-2">Overview</h2>
+              <p className="text-sm text-gray-700">{locale==='lv'?'Materiāla priekšrocības, ierobežojumi un piemērotība konkrētam jumta tipam.':'Material advantages, limitations, and suitability for specific roof types.'}</p>
+              <ul className="text-sm text-gray-700 list-disc pl-5 mt-2 space-y-1">
+                <li>{locale==='lv'?'Izturība pret laikapstākļiem':'Weather resistance'}</li>
+                <li>{locale==='lv'?'Savienojumu hermētiskums':'Joint watertightness'}</li>
+                <li>{locale==='lv'?'Apkope un kalpošanas laiks':'Maintenance and service life'}</li>
+              </ul>
+            </div>
+            <div className="bg-white shadow rounded-lg p-5">
+              <h2 className="font-semibold mb-2">Installation Steps</h2>
+              <ol className="text-sm text-gray-700 list-decimal pl-5 space-y-1">
+                <li>{locale==='lv'?'Pamatu un slīpuma novērtējums':'Base and slope assessment'}</li>
+                <li>{locale==='lv'?'Tvaika un hidroizolācijas slāņi':'Vapour and waterproofing layers'}</li>
+                <li>{locale==='lv'?'Savienojumu un pieslēgumu izpilde pie sienām/korēm':'Wall/ridge flashing and junctions'}</li>
+                <li>{locale==='lv'?'Noteksistēmu integrācija':'Gutter system integration'}</li>
+              </ol>
+            </div>
+            <div className="md:col-span-2 bg-primary-50 border border-primary-200 rounded-lg p-5">
+              <h2 className="font-semibold mb-2">FAQs</h2>
+              <ul className="text-sm text-gray-700 space-y-2">
+                <li><strong>{locale==='lv'?'Vai iespējams ziemas darbs?':'Winter work possible?'}</strong> {locale==='lv'?'Neatliekamus remontdarbus veicam visa gada garumā ar atbilstošām tehnoloģijām.':'Emergency repairs are performed year-round with appropriate techniques.'}</li>
+                <li><strong>{locale==='lv'?'Kā novērst kondensāciju?':'How to prevent condensation?'}</strong> {locale==='lv'?'Pareiza ventilācija un precīzi skārda/folijas pieslēgumi.':'Proper ventilation and precise sheet/membrane connections.'}</li>
+              </ul>
             </div>
           </div>
         </div>

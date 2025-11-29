@@ -5,7 +5,8 @@
     "projects": "Projecten",
     "about": "Over ons",
     "contact": "Contact",
-    "blog": "Blog"
+    "blog": "Blog",
+    "cities": "Steden"
   },
   "breadcrumbs": {
     "home": "Home",
@@ -334,5 +335,24 @@
       "company": "UpRoof dakconstructie bedrijf",
       "tagline": "Professionele dakbedekkingsoplossingen!",
       "rights": "Alle rechten voorbehouden"
-    }
+    },
+  "Cities": {
+        "title": "Steden waar we actief zijn",
+        "description": "Vind dakdiensten in jouw stad.",
+        "subtitle": "Kies je stad om lokale diensten en projecten te bekijken.",
+        "CityNames": {
+          "riga": "Riga",
+          "jurmala": "Jurmala",
+          "jelgava": "Jelgava",
+          "ogre": "Ogre",
+          "salaspils": "Salaspils",
+          "kekava": "Kekava",
+          "brussel": "Brussel",
+          "antwerpen": "Antwerpen",
+          "gent": "Gent",
+          "brugge": "Brugge",
+          "leuven": "Leuven",
+          "mechelen": "Mechelen"
+        }
+      }
   }

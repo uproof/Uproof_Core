@@ -6,7 +6,7 @@
     "about": "About Us",
     "contact": "Contact",
     "blog": "Blog",
-    "recommendations": "Recommendations"
+    "cities": "Cities"
   },
   "breadcrumbs": {
     "home": "Home",
@@ -328,5 +328,25 @@
   "footer": {
     "company": "SIA UpLift",
     "rights": "All rights reserved"
+  }
+  ,
+  "Cities": {
+    "title": "Cities we serve",
+    "description": "Find roofing services in your city.",
+    "subtitle": "Choose your city to see local services and projects.",
+    "CityNames": {
+      "riga": "Riga",
+      "jurmala": "Jurmala",
+      "jelgava": "Jelgava",
+      "ogre": "Ogre",
+      "salaspils": "Salaspils",
+      "kekava": "Kekava",
+      "brussel": "Brussels",
+      "antwerpen": "Antwerp",
+      "gent": "Ghent",
+      "brugge": "Bruges",
+      "leuven": "Leuven",
+      "mechelen": "Mechelen"
+    }
   }
 }

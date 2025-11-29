@@ -454,10 +454,10 @@ export default function ServiceLanding({params: {locale, slug}}: PageProps) {
     : ['Rīga', 'Jūrmala', 'Jelgava', 'Ogre', 'Salaspils', 'Ķekava', 'Pierīgas rajons'];
 
   const cityHeading = locale === 'nl-BE' 
-    ? '📍 Servicegebieden'
+    ? 'Servicegebieden'
     : locale === 'en'
-    ? '📍 Service Areas'
-    : '📍 Apkalpojamās teritorijas';
+    ? 'Service Areas'
+    : 'Apkalpojamās teritorijas';
 
   const cityIntro = locale === 'nl-BE'
     ? 'Wij bieden dakdiensten in heel België met een primaire focus op West-Vlaanderen en Oost-Vlaanderen:'
@@ -567,7 +567,7 @@ export default function ServiceLanding({params: {locale, slug}}: PageProps) {
             <ul className="grid grid-cols-2 md:grid-cols-3 gap-2 text-gray-700">
               {cities.map((city, idx) => (
                 <li key={city} className="flex items-center">
-                  {idx === 0 ? <><strong>✓ {city}</strong></> : `✓ ${city}`}
+                  {idx === 0 ? <strong>{city}</strong> : city}
                 </li>
               ))}
             </ul>
@@ -584,7 +584,7 @@ export default function ServiceLanding({params: {locale, slug}}: PageProps) {
               <ul className="space-y-2">
                 {serviceContent.benefits.map(benefit => (
                   <li key={benefit} className="flex items-start">
-                    <span className="text-primary-600 mr-2">✓</span>
+                    <span className="text-primary-600 mr-2">•</span>
                     <span className="text-gray-700">{benefit}</span>
                   </li>
                 ))}
@@ -610,6 +610,7 @@ export default function ServiceLanding({params: {locale, slug}}: PageProps) {
 
           {/* M-I-E-R-S Method Integration - Compact Trust Signal */}
           <MiersMethod locale={locale} variant="compact" />
+
 
           <div className="bg-primary-600/10 border-l-4 border-primary-600 p-6 rounded-md mb-8">
             <p className="font-semibold text-primary-800">

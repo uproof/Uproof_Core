@@ -23,6 +23,11 @@ async function ensureDirectories() {
 }
 
 export async function GET() {
+  // Require admin auth for reading admin-managed projects
+  const authenticated = isAdminAuthenticated();
+  if (!authenticated) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
   try {
     await ensureDirectories();
     const content = await fs.readFile(PROJECTS_FILE, 'utf-8');
@@ -30,7 +35,7 @@ export async function GET() {
     return NextResponse.json({ projects });
   } catch (error) {
     console.error('Error reading projects:', error);
-    return NextResponse.json({ projects: [] });
+    return NextResponse.json({ error: 'Failed to read projects' }, { status: 500 });
   }
 }
 

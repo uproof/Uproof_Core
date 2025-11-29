@@ -6,7 +6,7 @@
     "about": "Par mums",
     "contact": "Kontakti",
     "blog": "Blogs",
-    "recommendations": "Ieteikumi"
+    "cities": "Pilsētas"
   },
   "breadcrumbs": {
     "home": "Sākums",
@@ -318,5 +318,25 @@
   "footer": {
     "company": "SIA UpLift",
     "rights": "Visas tiesības aizsargātas"
+  }
+  ,
+  "Cities": {
+    "title": "Pilsētas, kurās strādājam",
+    "description": "Atrodi jumtu pakalpojumus savā pilsētā.",
+    "subtitle": "Izvēlies pilsētu, lai apskatītu pakalpojumus un projektus.",
+    "CityNames": {
+      "riga": "Rīga",
+      "jurmala": "Jūrmala",
+      "jelgava": "Jelgava",
+      "ogre": "Ogre",
+      "salaspils": "Salaspils",
+      "kekava": "Ķekava",
+      "brussel": "Brisele",
+      "antwerpen": "Antverpene",
+      "gent": "Genta",
+      "brugge": "Brige",
+      "leuven": "Leuvena",
+      "mechelen": "Mekele"
+    }
   }
 }

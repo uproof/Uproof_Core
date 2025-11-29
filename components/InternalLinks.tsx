@@ -1,4 +1,5 @@
 import {Link} from '@/i18n/routing';
+import CitiesPopover from '@/components/CitiesPopover';
 
 type InternalLinksProps = {
   locale: string;
@@ -94,6 +95,7 @@ export default function InternalLinks({ locale, currentSlug, context }: Internal
           <nav aria-label={resourcesLabel} className="space-y-3">
             <h3 className="font-semibold text-gray-800 text-lg">{resourcesLabel}</h3>
             <ul className="space-y-2 text-sm">
+              <li><CitiesPopover locale={locale} /></li>
               <li><Link href={'/blog'} className="text-primary-700 hover:underline">{locale==='nl-BE'?'Blogartikelen':locale==='en'?'Blog articles':'Blog raksti'}</Link></li>
               <li><Link href={'/projects'} className="text-primary-700 hover:underline">{locale==='nl-BE'?'Projekten':locale==='en'?'Projects':'Projekti'}</Link></li>
               <li><Link href={'/urgency/caurs-jumts'} className="text-primary-700 hover:underline">{locale==='nl-BE'?'Lek in het dak?':locale==='en'?'Roof leak emergency':'Caurs jumts? Ko darīt?'}</Link></li>

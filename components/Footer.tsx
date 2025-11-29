@@ -34,6 +34,9 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                {/* Cities link removed per request */}
+              </li>
+              <li>
                 <Link href="#contact" className="text-gray-400 hover:text-white transition-colors">
                   Contact
                 </Link>

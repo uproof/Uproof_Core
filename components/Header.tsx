@@ -17,6 +17,7 @@ export default function Header({showText = true, largeLogo = false}: HeaderProps
   const t = useTranslations('nav');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     let ticking = false;
@@ -76,6 +77,7 @@ export default function Header({showText = true, largeLogo = false}: HeaderProps
               {t('projects')}
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 group-hover:w-full transition-all duration-300"></span>
             </Link>
+            {/* Cities link removed from global header per request */}
             <Link href="/about" prefetch={false} className="px-3 py-1.5 text-gray-900 hover:text-primary-500 transition-colors font-bold relative group">
               {t('about')}
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 group-hover:w-full transition-all duration-300"></span>
@@ -122,6 +124,7 @@ export default function Header({showText = true, largeLogo = false}: HeaderProps
               <Link href="/projects" prefetch={false} className="text-gray-900 hover:text-primary-600 transition-colors font-semibold px-2 py-2 hover:bg-primary-50">
                 {t('projects')}
               </Link>
+              {/* Cities navigation removed from mobile header per request */}
               <Link href="/about" prefetch={false} className="text-gray-900 hover:text-primary-600 transition-colors font-semibold px-2 py-2 hover:bg-primary-50">
                 {t('about')}
               </Link>
