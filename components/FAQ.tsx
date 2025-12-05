@@ -56,11 +56,11 @@ export default function FAQ() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="border border-gray-200 overflow-hidden"
+              className="border border-gray-200 overflow-hidden rounded-lg"
             >
               <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="w-full flex justify-between items-center p-6 bg-gray-50 hover:bg-gray-100 transition-colors text-left"
+                className="w-full flex justify-between items-center p-6 bg-gray-100 hover:bg-gray-200 transition-colors text-left rounded-t-lg"
               >
                 <span className="text-lg font-bold text-gray-900 pr-8">
                   {faq.question}
@@ -81,7 +81,7 @@ export default function FAQ() {
                 transition={{ duration: 0.3 }}
                 className="overflow-hidden"
               >
-                <div className="p-6 bg-white">
+                <div className="p-6 bg-white rounded-b-lg">
                   <p className="text-gray-600 leading-relaxed">
                     {faq.answer}
                   </p>

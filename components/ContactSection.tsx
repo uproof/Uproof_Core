@@ -122,13 +122,13 @@ export default function ContactSection() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Form - Left Side */}
-          <div className="bg-gray-50 p-8">
+          <div className="bg-gray-100 p-8 rounded-lg">
             <h3 className="text-2xl font-bold text-gray-900 mb-6">
               {t('formTitle') || 'Send us a message'}
             </h3>
             
             {submitSuccess && (
-              <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+              <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
                 {t('successMessage') || 'Message sent successfully!'}
               </div>
             )}
@@ -142,7 +142,7 @@ export default function ContactSection() {
                   {...register('name', { required: true })}
                   type="text"
                   id="name"
-                  className="w-full px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                 />
                 {errors.name && (
                   <p className="text-red-600 text-sm mt-1">{t('form.nameError')}</p>
@@ -157,7 +157,7 @@ export default function ContactSection() {
                   {...register('phone')}
                   type="tel"
                   id="phone"
-                  className="w-full px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                 />
                 {errors.phone && (
                   <p className="text-red-600 text-sm mt-1">{t('form.phoneError')}</p>
@@ -175,7 +175,7 @@ export default function ContactSection() {
                   })}
                   type="email"
                   id="email"
-                  className="w-full px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                 />
                 {errors.email && (
                   <p className="text-red-600 text-sm mt-1">{t('form.emailError') || 'Valid email is required'}</p>
@@ -190,7 +190,7 @@ export default function ContactSection() {
                   {...register('message', { required: true })}
                   id="message"
                   rows={5}
-                  className="w-full px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                 />
                 {errors.message && (
                   <p className="text-red-600 text-sm mt-1">{t('form.messageError')}</p>
@@ -200,7 +200,7 @@ export default function ContactSection() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-primary-600 text-white px-8 py-4 text-sm font-bold uppercase hover:bg-primary-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-primary-600 text-white px-8 py-4 text-sm font-bold uppercase hover:bg-primary-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed rounded-lg"
               >
                 {isSubmitting ? (t('form.sending') || 'SENDING...') : (t('form.submit') || 'SEND')}
               </button>
@@ -237,7 +237,7 @@ export default function ContactSection() {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-primary-600 to-primary-800 shadow-lg p-8 text-white">
+            <div className="bg-gradient-to-br from-primary-600 to-primary-800 shadow-lg p-8 text-white rounded-lg">
               <h3 className="text-2xl font-bold mb-4">
                 {t('consultation')}
               </h3>

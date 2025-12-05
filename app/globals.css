@@ -5,6 +5,7 @@
 :root {
   --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
   --font-display: 'Inter', system-ui, -apple-system, sans-serif;
+  --radius: 12px; /* Default rounding for CTAs */
 }
 
 @layer base {
@@ -41,6 +42,21 @@
   /* Slow pulse for subtle animations */
   .animate-pulse-slow {
     animation: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* Universal CTA & button rounding rule (affects anchors used as buttons, buttons and submit inputs) */
+  button, input[type="submit"], input[type="button"], a[class*="bg-"], a[class*="px-"], a[class*="btn-"], .btn {
+    border-radius: var(--radius) !important;
+  }
+
+  /* Round form controls for consistent UI across the site */
+  input, textarea, select {
+    border-radius: calc(var(--radius) * 0.75) !important;
+  }
+
+  /* Utility class for card / box containers: use "card" in JSX to ensure rounded boxes */
+  .card {
+    border-radius: var(--radius) !important;
   }
 
   /* Reveal animations */
