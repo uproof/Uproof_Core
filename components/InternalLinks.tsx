@@ -26,7 +26,8 @@ const MATERIAL_SLUGS = [
   'bitumena-rulli',
   'dakstini',
   'bezazbesta-siferis',
-  'ruukki-classic'
+  'ruukki-classic',
+  'jumta-krasa'
 ];
 
 function materialAnchor(slug: string, locale: string) {
@@ -40,7 +41,8 @@ function materialAnchor(slug: string, locale: string) {
     'bitumena-rulli': { lv: 'Bitumena ruļļu segums', en: 'Bitumen roll roofing', 'nl-BE': 'Bitumen rol dak' },
     'dakstini': { lv: 'Keramikas un betona dakstiņi', en: 'Clay & concrete tiles', 'nl-BE': 'Kleien & betonnen dakpannen' },
     'bezazbesta-siferis': { lv: 'Bezazbesta šīferis', en: 'Non-asbestos fibre cement slate', 'nl-BE': 'Asbestvrije vezelcement leien' },
-    'ruukki-classic': { lv: 'Ruukki Classic profils', en: 'Ruukki Classic profile', 'nl-BE': 'Ruukki Classic profiel' }
+    'ruukki-classic': { lv: 'Ruukki Classic profils', en: 'Ruukki Classic profile', 'nl-BE': 'Ruukki Classic profiel' },
+    'jumta-krasa': { lv: 'Jumta krāsas un pārklājumi', en: 'Roof paints & coatings', 'nl-BE': 'Dakverf & coatings' }
   };
   return map[slug]?.[locale] || map[slug]?.lv || slug;
 }
@@ -62,7 +64,21 @@ function serviceAnchor(slug: string, locale: string) {
 export default function InternalLinks({ locale, currentSlug, context }: InternalLinksProps) {
   // Filter out current slug from related lists
   const relatedServices = SERVICE_SLUGS.filter(s => s !== currentSlug);
-  const relatedMaterials = MATERIAL_SLUGS.filter(m => m !== currentSlug);
+  // Service-specific materials mapping
+  const SERVICE_MATERIALS: Record<string, string[]> = {
+    'jumta-renovacija': ['valcprofils', 'dakstini', 'bezazbesta-siferis', 'pvc-tpo', 'bitumena-rulli', 'ruukki-classic'],
+    'valcprofila-montaza': ['valcprofils', 'ruukki-classic', 'jumta-krasa'],
+    'dakstinu-montaza': ['dakstini', 'bezazbesta-siferis'],
+    'jumta-logu-montaza': ['valcprofils', 'dakstini', 'bezazbesta-siferis', 'ruukki-classic'],
+    'jumta-buvnieciba': ['valcprofils', 'ruukki-classic', 'dakstini', 'bezazbesta-siferis', 'pvc-tpo', 'bitumena-rulli'],
+    'jumta-apkope-remonts': ['valcprofils', 'dakstini', 'bezazbesta-siferis', 'pvc-tpo', 'bitumena-rulli', 'jumta-krasa'],
+    'noteksistemu-uzstadisana': ['valcprofils', 'dakstini', 'bezazbesta-siferis', 'ruukki-classic', 'pvc-tpo'],
+    'jumta-krasosana': ['jumta-krasa', 'valcprofils', 'ruukki-classic', 'dakstini']
+  };
+  const relatedMaterials =
+    context === 'service' && currentSlug && SERVICE_MATERIALS[currentSlug]
+      ? SERVICE_MATERIALS[currentSlug]
+      : MATERIAL_SLUGS.filter(m => m !== currentSlug);
 
   const heading = locale === 'nl-BE' ? 'Gerelateerde pagina\'s' : locale === 'en' ? 'Related Pages' : 'Saistītās lapas';
   const servicesLabel = locale === 'nl-BE' ? 'Gerelateerde diensten' : locale === 'en' ? 'Related Services' : 'Saistītie pakalpojumi';
