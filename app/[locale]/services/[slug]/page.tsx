@@ -44,16 +44,16 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
   },
   'valcprofila-montaza': {
     title: {
-      lv: 'Valcprofila montāža Rīgā | Metāla jumta segums ar hermētiskajiem savienojumiem | UpRoof',
+      lv: 'Valcprofila montāža Rīgā | Stāvošā šuve – hermētisks metāla jumts | UpRoof',
       en: 'Standing Seam Metal Roofing in Riga | Hermetic Connections | UpRoof',
       'nl-BE': 'Staande naad metalen dakbedekking in België | Hermetische verbindingen | UpRoof'
     },
     description: {
-      lv: 'Valcprofila montāža Rīgā un Latvijā ar pilnībā hermētiskiem dubultlocījumu risinājumiem. Profesionāla skārda apstrāde ar precīziem pieslēgumiem pie logiem un skursteņiem. 10 gadu garantija. Apkalpojam Rīgu, Pierīgu, Jūrmalu.',
+      lv: 'Stāvošā šuve bez caurumošanas – hermētisks metāla jumts Rīgā un Latvijā. Valcprofila montāža ar dubultlocījumiem, sarežģīti mezgli pie skursteņiem/logiem. Skārdnieka darbi, 50 gadu garantija materiāliem. Apkalpojam Rīgu, Pierīgu, Jūrmalu.',
       en: 'Standing seam metal roofing installation in Riga and Latvia with fully hermetic double-lock solutions. Professional sheet metal work with precise connections to windows and chimneys. 10-year warranty. Serving Riga, Pieriga, Jurmala.',
       'nl-BE': 'Staande naad metalen dakbedekking installatie in België met volledig hermetische dubbele sluitoplossingen. Professioneel plaatwerk met precieze aansluitingen op ramen en schoorstenen. 10 jaar garantie. Actief in Kortrijk, Gent, Brugge.'
     },
-    keywords: 'valcprofila montāža Rīgā, metāla jumts Latvijā, standing seam roofing Riga, staande naad dakbedekking België'
+    keywords: 'valcprofila montāža Rīgā, stāvošā šuve, valcprofils, metāla jumts Rīgā, skārda jumts, skārdnieka darbi, falcētais jumts, standing seam roofing Riga, staande naad dakbedekking België'
   },
   'dakstinu-montaza': {
     title: {
@@ -96,16 +96,16 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
   },
   'jumta-apkope-remonts': {
     title: {
-      lv: 'Jumta apkope un remonts Rīgā | Tīrīšana, bojājumu novēršana | UpRoof',
-      en: 'Roof Maintenance and Repair in Riga | Cleaning, Damage Prevention | UpRoof',
+      lv: 'Jumta apkope un remonts Rīgā | Ātra palīdzība + Bezmaksas apskate | UpRoof',
+      en: 'Roof Maintenance and Repair in Riga | Fast Response + Free Assessment | UpRoof',
       'nl-BE': 'Dakonderhoud en reparatie in België | Reiniging, Schadevoorkoming | UpRoof'
     },
     description: {
-      lv: 'Jumta apkope Rīgā: bojājumu diagnostika, remonts, noteku tīrīšana, sniega un lapu novākšana, skursteņu apdare. Regulāra apkope pagarina jumta mūžu. Serviss Rīgā, Jūrmalā, Pierīgā.',
-      en: 'Roof maintenance in Riga: damage diagnostics, repair, gutter cleaning, snow and leaf removal, chimney finishing. Regular maintenance extends roof lifespan. Service in Riga, Jurmala, Pieriga.',
+      lv: 'Jumts tek vai vajag apkopi? Ātra avārijas reaģēšana, noteku tīrīšana, jumta tīrīšana, bojājumu remonts Rīgā. Drona diagnostika, sniega/lāsteku noņemšana, skursteņa hermetizācija. Bezmaksas novērtējums Rīgā un Pierīgā.',
+      en: 'Roof leak or need maintenance? Fast emergency response, gutter cleaning, roof washing, damage repair in Riga. Drone diagnostics, snow/moss removal, chimney sealing. Free assessment in Riga and Pieriga.',
       'nl-BE': 'Dakonderhoud in België: schadediagnose, reparatie, gootreiniging, sneeuw- en bladverwijdering, schoorsteenafwerking. Regelmatig onderhoud verlengt daklevensduur. Service in Kortrijk, Gent, Brugge, Deinze, Waregem.'
     },
-    keywords: 'jumta apkope Rīgā, jumta remonts Rīgā, jumta tīrīšana Latvijā, roof maintenance Riga, dakonderhoud België'
+    keywords: 'jumta apkope Rīgā, jumta remonts Rīgā, jumts tek, jumta noplūde, noteku tīrīšana Rīgā, jumta tīrīšana, jumta mazgāšana, avārijas remonts, lāsteku noņemšana, sniega tīrīšana jumtiem, skursteņa apdare, roof maintenance Riga, dakonderhoud België'
   },
   'noteksistemu-uzstadisana': {
     title: {
@@ -169,10 +169,10 @@ function getServiceContent(slug: string, locale: string) {
     },
     'valcprofila-montaza': {
       lv: {
-        overview: 'Valcprofila montāža ir moderns jumta seguma risinājums, kas nodrošina maksimālu hermētiskumu ar dubultlocījumiem, ilgmūžību un elegantnu izskatu. Piemērots jauniem projektiem un renovācijas gadījumiem.',
-        benefits: ['Hermētiski dubultlocījumi visos savienojumos', 'Īpaši izturīgs pret laikapstākļiem', '50 gadu ražotāja garantija materiāliem', 'Moderns un estētisks izskats bez redzamiem skrūvēm'],
-        process: ['Konstrukcijas sagatavošana un niveļošana', 'Zemseguma uzstādīšana ar ventilāciju', 'Valcprofila paneļu izgatavošana uz vietas', 'Dubultlocījumu savienojumu montāža ar speciāliem rīkiem', 'Precīza skārda apstrāde pie logiem un skursteņiem', 'Hermētiskuma pārbaude'],
-        qualityPoints: ['10 gadu garantija uz darbu', '50 gadu ražotāja garantija uz PVDF/PE krāsu', 'Sertificēti instalatori no ražotāja', 'Hermētiskuma pārbaude ar ūdens testa metodiku'],
+        overview: 'Stāvošā šuve (valcprofils) ir moderns metāla jumta risinājums bez caurumošanas ar skrūvēm, kas nodrošina maksimālu hermētiskumu ar dubultlocījumiem, ilgmūžību un elegantu izskatu. Piemērots jauniem projektiem un renovācijas gadījumiem. Ideāls minimālam slīpumam no 5°.',
+        benefits: ['Hermētiski dubultlocījumi visos savienojumos bez skrūvēm', 'Īpaši izturīgs pret laikapstākļiem', '50 gadu ražotāja garantija materiāliem', 'Moderns un estētisks izskats bez redzamiem skrūvju caurumiem', 'Mehāniskais valcējums uz vietas ar profesionālu iekārtu'],
+        process: ['Konstrukcijas sagatavošana un niveļošana', 'Difūzijas membrānas/zemseguma uzstādīšana ar ventilāciju', 'Valcprofila paneļu izgatavošana uz vietas', 'Dubultlocījumu savienojumu montāža ar speciāliem rīkiem', 'Precīza skārda apstrāde pie logiem, skursteņiem un sarežģītām tehēm', 'Hermētiskuma pārbaude ar ūdens testu'],
+        qualityPoints: ['10 gadu garantija uz darbu', '50 gadu ražotāja garantija uz PVDF/PE krāsu un metāla integritāti', 'Sertificēti instalatori no ražotāja', 'Hermētiskuma pārbaude ar ūdens testa metodiku', 'Profesionāla valcējuma iekārta (nevis uz koka dēlīša)'],
         relatedServices: ['jumta-buvnieciba', 'jumta-apkope-remonts', 'noteksistemu-uzstadisana', 'jumta-logu-montaza']
       },
       en: {

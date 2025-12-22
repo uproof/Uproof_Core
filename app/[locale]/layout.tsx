@@ -20,14 +20,29 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL('https://uproof.eu'),
   title: {
-    default: 'Jumta būvniecība un remonts Rīgā | Profesionāli pakalpojumi Latvijā | UpRoof',
+    default: 'Jumta remonts un būvniecība Rīgā | 10 gadu garantija | UpRoof',
     template: '%s | UpRoof'
   },
-  description: 'Profesionāli jumta pakalpojumi Rīgā un visā Latvijā: būvniecība, remonts, krāsošana, apkope. 10 gadu garantija. Apkalpojam Rīgu, Pierīgu, Jūrmalu, Jelgavu. Bezmaksas novērtējums!',
+  description: 'Jumts tek vai vajag remontu? Profesionāli jumta pakalpojumi Rīgā un Latvijā: būvniecība, remonts, krāsošana, apkope, valcprofils. 10 gadu garantija, ātra palīdzība. Bezmaksas novērtējums!',
   keywords: [
     'jumta būvniecība Rīgā',
     'jumta remonts Rīgā', 
     'jumta krāsošana Rīgā',
+    'jumta apkope Rīgā',
+    'jumts tek',
+    'jumta noplūde',
+    'jumta meistari Rīgā',
+    'jumta darbi Rīgā',
+    'jumta seguma maiņa Rīgā',
+    'valcprofils',
+    'valcprofila montāža',
+    'stāvošā šuve',
+    'metāla jumts Rīgā',
+    'skārda jumts',
+    'skārdnieka darbi',
+    'noteku tīrīšana Rīgā',
+    'jumta tīrīšana',
+    'jumta renovācija Rīgā',
     'jumtu būvniecība Latvijā',
     'jumta seguma montāža Rīgā',
     'jumta apkope Pierīgā',
@@ -37,7 +52,9 @@ export const metadata: Metadata = {
     'roofing contractor Riga',
     'roof construction Latvia',
     'roof repair Riga',
-    'roof painting Latvia'
+    'roof painting Latvia',
+    'standing seam roof Riga',
+    'metal roof Riga'
   ],
   authors: [{ name: 'UpRoof', url: 'https://uproof.eu' }],
   creator: 'UpRoof',
@@ -52,8 +69,8 @@ export const metadata: Metadata = {
     locale: 'lv_LV',
     alternateLocale: ['en_US', 'nl_BE'],
     url: 'https://uproof.eu',
-    title: 'Jumta būvniecība un remonts Rīgā | Profesionāli pakalpojumi Latvijā',
-    description: 'Profesionāli jumta pakalpojumi Rīgā, Pierīgā un Latvijā: būvniecība, remonts, krāsošana. 10 gadu garantija. Apkalpojam Rīgu, Jūrmalu, Jelgavu.',
+    title: 'Jumta remonts un būvniecība Rīgā | 10 gadu garantija | UpRoof',
+    description: 'Jumts tek vai vajag remontu? Profesionāli jumta pakalpojumi Rīgā: būvniecība, remonts, krāsošana, valcprofils. 10 gadu garantija, ātra palīdzība. Bezmaksas novērtējums!',
     siteName: 'UpRoof',
     images: [
       {
@@ -66,8 +83,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Jumta būvniecība un remonts Rīgā | Profesionāli pakalpojumi Latvijā',
-    description: 'Profesionāli jumta pakalpojumi Rīgā, Pierīgā un Latvijā: būvniecība, remonts, krāsošana. 10 gadu garantija.',
+    title: 'Jumta remonts un būvniecība Rīgā | 10 gadu garantija | UpRoof',
+    description: 'Jumts tek vai vajag remontu? Profesionāli jumta pakalpojumi Rīgā: būvniecība, remonts, krāsošana, valcprofils. 10 gadu garantija, ātra palīdzība.',
     images: ['/images/og-image.jpg'],
   },
   robots: {
