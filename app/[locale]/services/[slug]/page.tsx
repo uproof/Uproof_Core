@@ -14,6 +14,7 @@ const SERVICE_SLUGS = [
   'jumta-logu-montaza',
   'jumta-buvnieciba',
   'jumta-apkope-remonts',
+  'jumta-remonts',
   'noteksistemu-uzstadisana',
   'jumta-krasosana'
 ];
@@ -44,16 +45,16 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
   },
   'valcprofila-montaza': {
     title: {
-      lv: 'Valcprofila montāža Rīgā | Metāla jumta segums ar hermētiskajiem savienojumiem | UpRoof',
+      lv: 'Valcprofila montāža Rīgā | Stāvošā šuve – hermētisks metāla jumts | UpRoof',
       en: 'Standing Seam Metal Roofing in Riga | Hermetic Connections | UpRoof',
       'nl-BE': 'Staande naad metalen dakbedekking in België | Hermetische verbindingen | UpRoof'
     },
     description: {
-      lv: 'Valcprofila montāža Rīgā un Latvijā ar pilnībā hermētiskiem dubultlocījumu risinājumiem. Profesionāla skārda apstrāde ar precīziem pieslēgumiem pie logiem un skursteņiem. 10 gadu garantija. Apkalpojam Rīgu, Pierīgu, Jūrmalu.',
+      lv: 'Stāvošā šuve bez caurumošanas – hermētisks metāla jumts Rīgā un Latvijā. Valcprofila montāža ar dubultlocījumiem, sarežģīti mezgli pie skursteņiem/logiem. Skārdnieka darbi, 50 gadu garantija materiāliem. Apkalpojam Rīgu, Pierīgu, Jūrmalu.',
       en: 'Standing seam metal roofing installation in Riga and Latvia with fully hermetic double-lock solutions. Professional sheet metal work with precise connections to windows and chimneys. 10-year warranty. Serving Riga, Pieriga, Jurmala.',
       'nl-BE': 'Staande naad metalen dakbedekking installatie in België met volledig hermetische dubbele sluitoplossingen. Professioneel plaatwerk met precieze aansluitingen op ramen en schoorstenen. 10 jaar garantie. Actief in Kortrijk, Gent, Brugge.'
     },
-    keywords: 'valcprofila montāža Rīgā, metāla jumts Latvijā, standing seam roofing Riga, staande naad dakbedekking België'
+    keywords: 'valcprofila montāža Rīgā, stāvošā šuve, valcprofils, metāla jumts Rīgā, skārda jumts, skārdnieka darbi, falcētais jumts, standing seam roofing Riga, staande naad dakbedekking België'
   },
   'dakstinu-montaza': {
     title: {
@@ -96,16 +97,16 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
   },
   'jumta-apkope-remonts': {
     title: {
-      lv: 'Jumta apkope un remonts Rīgā | Tīrīšana, bojājumu novēršana | UpRoof',
-      en: 'Roof Maintenance and Repair in Riga | Cleaning, Damage Prevention | UpRoof',
+      lv: 'Jumta apkope un remonts Rīgā | Ātra palīdzība + Bezmaksas apskate | UpRoof',
+      en: 'Roof Maintenance and Repair in Riga | Fast Response + Free Assessment | UpRoof',
       'nl-BE': 'Dakonderhoud en reparatie in België | Reiniging, Schadevoorkoming | UpRoof'
     },
     description: {
-      lv: 'Jumta apkope Rīgā: bojājumu diagnostika, remonts, noteku tīrīšana, sniega un lapu novākšana, skursteņu apdare. Regulāra apkope pagarina jumta mūžu. Serviss Rīgā, Jūrmalā, Pierīgā.',
-      en: 'Roof maintenance in Riga: damage diagnostics, repair, gutter cleaning, snow and leaf removal, chimney finishing. Regular maintenance extends roof lifespan. Service in Riga, Jurmala, Pieriga.',
+      lv: 'Jumts tek vai vajag apkopi? Ātra avārijas reaģēšana, noteku tīrīšana, jumta tīrīšana, bojājumu remonts Rīgā. Drona diagnostika, sniega/lāsteku noņemšana, skursteņa hermetizācija. Bezmaksas novērtējums Rīgā un Pierīgā.',
+      en: 'Roof leak or need maintenance? Fast emergency response, gutter cleaning, roof washing, damage repair in Riga. Drone diagnostics, snow/moss removal, chimney sealing. Free assessment in Riga and Pieriga.',
       'nl-BE': 'Dakonderhoud in België: schadediagnose, reparatie, gootreiniging, sneeuw- en bladverwijdering, schoorsteenafwerking. Regelmatig onderhoud verlengt daklevensduur. Service in Kortrijk, Gent, Brugge, Deinze, Waregem.'
     },
-    keywords: 'jumta apkope Rīgā, jumta remonts Rīgā, jumta tīrīšana Latvijā, roof maintenance Riga, dakonderhoud België'
+    keywords: 'jumta apkope Rīgā, jumta remonts Rīgā, jumts tek, jumta noplūde, noteku tīrīšana Rīgā, jumta tīrīšana, jumta mazgāšana, avārijas remonts, lāsteku noņemšana, sniega tīrīšana jumtiem, skursteņa apdare, roof maintenance Riga, dakonderhoud België'
   },
   'noteksistemu-uzstadisana': {
     title: {
@@ -119,6 +120,19 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
       'nl-BE': 'Kwaliteitsvolle gootsysteem installatie in België: regenpijpen, goten, verbindingen, dakveiligheid en waterafvoer. Correct systeem beschermt structuur. Service in Kortrijk, Gent, Brugge, Oudenaarde, Izegem.'
     },
     keywords: 'noteksistēmu uzstādīšana Rīgā, noteksistēmu montāža jumtam Latvijā, gutter installation Riga, gootsysteem installatie België'
+  },
+  'jumta-remonts': {
+    title: {
+      lv: 'Jumta remonts Rīgā | Ātra avārijas reaģēšana 24/7, garantija | UpRoof',
+      en: 'Emergency Roof Repair in Riga | Fast 24/7 Response | UpRoof',
+      'nl-BE': 'Noodreparatie dak België | Snelle 24/7 reactie | UpRoof'
+    },
+    description: {
+      lv: 'Jumts tek vai noplūst? UpRoof – ātra 24/7 avārijas reaģēšana, diagnostika, lokāls remonts Rīgā un Pierīgā. Sertificēti meistari, 2 gadu garantija. Bezmaksas novērtējums. +371 25612440',
+      en: 'Roof leak emergency? Fast 24/7 response, diagnostics, local repair in Riga and Pieriga. Certified specialists, 2-year warranty. Free assessment. Call +371 25612440',
+      'nl-BE': 'Daklek noodgeval? Snelle 24/7 reactie, diagnose, lokale reparatie in België. Gecertificeerde vakmensen, 2 jaar garantie. Gratis beoordeling.'
+    },
+    keywords: 'jumta remonts Rīgā, jumts tek, jumta noplūde avārija, av\u0101rijas rea\u0123\u0113\u0161ana, jumta remonts Pier\u012bg\u0101, emergency roof repair Riga, dak reparatie noodgeval Belgi\u00eb'
   },
   'jumta-krasosana': {
     title: {
@@ -146,10 +160,10 @@ function getServiceContent(slug: string, locale: string) {
   }>> = {
     'jumta-renovacija': {
       lv: {
-        overview: 'Pilna cikla jumta renovācija ir kapitalais remonts, kas atjauno jumta konstrukciju, izolāciju, siltināšanu un segumu. Mēs nodrošinām, ka jūsu jumts kļūst kā jauns, ar modernas izolācijas materiāliem un ilgmūžīgiem seguma risinājumiem.',
+        overview: 'Pilna cikla jumta renovācija ir kapitālais remonts, kas atjauno jumta konstrukciju, izolāciju, siltināšanu un segumu. Mēs nodrošinām, ka jūsu jumts kļūst kā jauns, ar moderniem izolācijas materiāliem un ilgmūžīgiem seguma risinājumiem.',
         benefits: ['Pilnīga jumta konstrukciju atjaunošana', 'Moderna siltināšanas materiālu izmantošana', 'Garantēta noplūžu novēršana', 'Jumta estētikas uzlabošana', 'Enerģijas taupīšana ar labāku izolāciju'],
         process: ['Jumta stāvokļa diagnostika ar UAV', 'Veca seguma demontāža', 'Konstrukciju stiprības pārbaude un atjaunošana', 'Siltināšanas slāņa ierīkošana', 'Jauna seguma montāža ar hermētiskajiem savienojumiem', 'Noteku sistēmas uzstādīšana'],
-        qualityPoints: ['10 gadu garantija uz montāžas darbu', 'Certificēti speciālisti ar 15+ gadu pieredzi', 'ISO 9001 sertificēta kvalitātes vadības sistēma', 'Drošības protokoli atbilst LPSR normatīviem'],
+        qualityPoints: ['10 gadu garantija uz montāžas darbu', 'Sertificēti speciālisti ar 15+ gadu pieredzi', 'ISO 9001 sertificēta kvalitātes vadības sistēma', 'Drošības protokoli atbilst LBN normatīviem'],
         relatedServices: ['jumta-buvnieciba', 'jumta-apkope-remonts', 'noteksistemu-uzstadisana', 'jumta-krasosana']
       },
       en: {
@@ -169,10 +183,10 @@ function getServiceContent(slug: string, locale: string) {
     },
     'valcprofila-montaza': {
       lv: {
-        overview: 'Valcprofila montāža ir moderns jumta seguma risinājums, kas nodrošina maksimālu hermētiskumu ar dubultlocījumiem, ilgmūžību un elegantnu izskatu. Piemērots jauniem projektiem un renovācijas gadījumiem.',
-        benefits: ['Hermētiski dubultlocījumi visos savienojumos', 'Īpaši izturīgs pret laikapstākļiem', '50 gadu ražotāja garantija materiāliem', 'Moderns un estētisks izskats bez redzamiem skrūvēm'],
-        process: ['Konstrukcijas sagatavošana un niveļošana', 'Zemseguma uzstādīšana ar ventilāciju', 'Valcprofila paneļu izgatavošana uz vietas', 'Dubultlocījumu savienojumu montāža ar speciāliem rīkiem', 'Precīza skārda apstrāde pie logiem un skursteņiem', 'Hermētiskuma pārbaude'],
-        qualityPoints: ['10 gadu garantija uz darbu', '50 gadu ražotāja garantija uz PVDF/PE krāsu', 'Sertificēti instalatori no ražotāja', 'Hermētiskuma pārbaude ar ūdens testa metodiku'],
+        overview: 'Stāvošā šuve (valcprofils) ir moderns metāla jumta risinājums bez caurumošanas ar skrūvēm, kas nodrošina maksimālu hermētiskumu ar dubultlocījumiem, ilgmūžību un elegantu izskatu. Piemērots jauniem projektiem un renovācijas gadījumiem. Ideāls minimālam slīpumam no 5°.',
+        benefits: ['Hermētiski dubultlocījumi visos savienojumos bez skrūvēm', 'Īpaši izturīgs pret laikapstākļiem', '50 gadu ražotāja garantija materiāliem', 'Moderns un estētisks izskats bez redzamiem skrūvju caurumiem', 'Mehāniskais valcējums uz vietas ar profesionālu iekārtu'],
+        process: ['Konstrukcijas sagatavošana un niveļošana', 'Difūzijas membrānas/zemseguma uzstādīšana ar ventilāciju', 'Valcprofila paneļu izgatavošana uz vietas', 'Dubultlocījumu savienojumu montāža ar speciāliem rīkiem', 'Precīza skārda apstrāde pie logiem, skursteņiem un sarežģītām tehēm', 'Hermētiskuma pārbaude ar ūdens testu'],
+        qualityPoints: ['10 gadu garantija uz darbu', '50 gadu ražotāja garantija uz PVDF/PE krāsu un metāla integritāti', 'Sertificēti instalatori no ražotāja', 'Hermētiskuma pārbaude ar ūdens testa metodiku', 'Profesionāla valcējuma iekārta (nevis uz koka dēlīša)'],
         relatedServices: ['jumta-buvnieciba', 'jumta-apkope-remonts', 'noteksistemu-uzstadisana', 'jumta-logu-montaza']
       },
       en: {
@@ -185,15 +199,15 @@ function getServiceContent(slug: string, locale: string) {
       'nl-BE': {
         overview: 'Staande naad metalen dakbedekking is een moderne dakbedekking die maximale hermeticiteit met dubbele sluitingen, duurzaamheid en elegant uiterlijk biedt. Geschikt voor nieuwe projecten en renovaties.',
         benefits: ['Hermetische dubbele sluitingen overal', 'Zeer weerbestendig', '50 jaar fabrieksgarantie op materialen', 'Modern en esthetisch uiterlijk zonder zichtbare bevestigingen'],
-        process: ['Structuurvoorbereiding en nivellering', 'Onderlaag installatie met ventilatie', 'Staande naad paneel fabricage ter plaatse', 'Dubbele sluitvoeg installatie met gespecialiseerde gereedschappen', 'Nauwkeurig plaatwerk bij ramen en schoorstenen', 'Hermmeticiteit verificatie'],
-        qualityPoints: ['10 jaar garantie op vakmanschap', '50 jaar fabrieksgarantie op PVDF/PE kleuren', 'Gecertificeerde installers van fabrikant', 'Hermmeticiteit verificatie met watertestmethodologie'],
+        process: ['Structuurvoorbereiding en nivellering', 'Onderlaag installatie met ventilatie', 'Staande naad paneel fabricage ter plaatse', 'Dubbele sluitvoeg installatie met gespecialiseerde gereedschappen', 'Nauwkeurig plaatwerk bij ramen en schoorstenen', 'Hermeticiteit verificatie'],
+        qualityPoints: ['10 jaar garantie op vakmanschap', '50 jaar fabrieksgarantie op PVDF/PE kleuren', 'Gecertificeerde installateurs van fabrikant', 'Hermeticiteit verificatie met watertestmethodologie'],
         relatedServices: ['jumta-buvnieciba', 'jumta-apkope-remonts', 'noteksistemu-uzstadisana', 'jumta-logu-montaza']
       }
     },
     'dakstinu-montaza': {
       lv: {
         overview: 'Māla vai betona dakstiņu montāža nodrošina ilgmūžīgu, estētisku jumta risinājumu ar izcilu siltuma un skaņas izolāciju. Dakstiņi kalpo vairāk nekā 50 gadus un piešķir mājai prestižu izskatu.',
-        benefits: ['Ilgmūžība līdz pat 100 gadiem', 'Lieliska skaņas un siltuma izolācija', 'Ugunsdrošs un ekoloģisks materiāls', 'Prestižs un klasisks izskats', 'Mājslydze un videi draudzīgs risinājums'],
+        benefits: ['Ilgmūžība līdz pat 100 gadiem', 'Lieliska skaņas un siltuma izolācija', 'Ugunsdrošs un ekoloģisks materiāls', 'Prestižs un klasisks izskats', 'Mājīgs un videi draudzīgs risinājums'],
         process: ['Jumta konstrukcijas pastiprināšana un aprēķins', 'Elpojošās membrānas ieklāšana', 'Latojuma un kontrlatojuma montāža', 'Dakstiņu precīza ieklāšana un stiprināšana', 'Kores un malu elementu montāža', 'Noteku pieslēgumi'],
         qualityPoints: ['10 gadu garantija uz montāžas darbu', 'Dakstiņu garantija līdz 50 gadiem', 'Ugunsdrošības klase A1', 'Speciālistiem ir sertifikāti dakstiņu montāžai'],
         relatedServices: ['jumta-buvnieciba', 'jumta-apkope-remonts', 'valcprofila-montaza', 'jumta-renovacija']
@@ -215,7 +229,7 @@ function getServiceContent(slug: string, locale: string) {
     },
     'jumta-logu-montaza': {
       lv: {
-        overview: 'Jumta logu (daklogu) montāža pievienoja papildus gaismu un vēdināšanu jumta stāvam bez jumta funkcionālitātes zaudēšanas. Mēs montējam Roto un Velux augstākās kvalitātes logus ar profesionālu hidroizolāciju.',
+        overview: 'Jumta logu (daklogu) montāža pievieno papildus gaismu un vēdināšanu jumta stāvam bez jumta funkcionālitātes zaudēšanas. Mēs montējam Roto un Velux augstākās kvalitātes logus ar profesionālu hidroizolāciju.',
         benefits: ['Dabiskā apgaismojuma palielināšana jumta stāvā', 'Telpu vēdināšanas uzlabošana ar automātisko vadību', 'Energoefektīvi stikla pakešu risinājumi', 'Profesionāla hidroizolācija un siltināšana', 'Drošas un vieglas vadības sistēmas'],
         process: ['Loga vietas izzāģēšana un sagatavošana', 'Loga rāmja montāža, līmeņošana un pārbaude', 'Hidroizolācijas un siltinājuma pieslēgums', 'Ārējo pieslēgumu un seguma atjaunošana', 'Iekšējās apdares sagatavošana', 'Funkcionalitātes testēšana'],
         qualityPoints: ['10 gadu garantija uz montāžas darbu', 'Roto/Velux garantija uz logiem (5-10 gadi)', 'Hermētiskuma pārbaude pēc montāžas', 'Sertificēti instalatori no ražotāja'],
@@ -231,8 +245,8 @@ function getServiceContent(slug: string, locale: string) {
       'nl-BE': {
         overview: 'Dakraam installatie voegt extra licht en ventilatie toe aan zolderruimtes zonder de dakfunctionaliteit in het gedrang te brengen. We installeren Roto en Velux hoogwaardige ramen met professionele waterdichting.',
         benefits: ['Verhoogde natuurlijke verlichting in zolderruimtes', 'Verbeterde kamerventilatie met geautomatiseerde controle', 'Energie-efficiënte beglazingsoplossingen', 'Professionele waterdichting en isolatie', 'Veilige en gebruiksvriendelijke bedieningssystemen'],
-        process: ['Dakreaamopening zagen en voorbereiden', 'Raamkaderingallatie, nivellering en verificatie', 'Waterdichting en isolatie aansluiting', 'Externe gootstukken en bedekking herstel', 'Interne afwerking voorbereiding', 'Functionaliteitstesting'],
-        qualityPoints: ['10 jaar garantie op vakmanschap', 'Roto/Velux garantie op ramen (5-10 jaar)', 'Hermmeticiteit verificatie na installatie', 'Gecertificeerde installers van fabrikant'],
+        process: ['Dakraamopening zagen en voorbereiden', 'Raamkader installatie, nivellering en verificatie', 'Waterdichting en isolatie aansluiting', 'Externe gootstukken en bedekking herstel', 'Interne afwerking voorbereiding', 'Functionaliteitstest'],
+        qualityPoints: ['10 jaar garantie op vakmanschap', 'Roto/Velux garantie op ramen (5-10 jaar)', 'Hermeticiteit verificatie na installatie', 'Gecertificeerde installateurs van fabrikant'],
         relatedServices: ['jumta-buvnieciba', 'jumta-apkope-remonts', 'valcprofila-montaza', 'jumta-renovacija']
       }
     },
@@ -241,7 +255,7 @@ function getServiceContent(slug: string, locale: string) {
         overview: 'Jumta būvniecība ir komplekss process no projektēšanas līdz gatavajam jumtam, kurā ietilpst konstrukcija, izolācija, siltināšana, segums un noteku sistēmas. Mēs piedāvājam pilna cikla risinājumus ar individuālu projektēšanu.',
         benefits: ['Pilna cikla būvniecība no A līdz Z', 'Sertificēti būvspeciālisti un projektanti', 'Atbilstība visiem Latvijas būvnormatīviem', 'Individuāla projektēšana un tāme', 'Modernie siltinājuma risinājumi ar energoietilpību'],
         process: ['Objekta apsekošana, mērīšana un tāmēšana', 'Projektēšana un būvniecības atļauju ieguves palīdzība', 'Materiālu piegāde un logistika', 'Spāru sistēmas izbūve un nostabilizēšana', 'Siltināšana, plēvju montāža un ventilācija', 'Jumta seguma un noteku uzstādīšana', 'Ūdens hermētiskuma un kvalitātes pārbaude'],
-        qualityPoints: ['10 gadu garantija uz visu darbu', 'ISO 9001 sertificēta kvalitātes vadība', 'Būvniecības bērtas dokumentācijas sagatavošana', 'Speciālistu sertifikāti un licences'],
+        qualityPoints: ['10 gadu garantija uz visu darbu', 'ISO 9001 sertificēta kvalitātes vadība', 'Būvniecības dokumentācijas sagatavošana', 'Speciālistu sertifikāti un licences'],
         relatedServices: ['jumta-apkope-remonts', 'jumta-logu-montaza', 'noteksistemu-uzstadisana', 'jumta-krasosana']
       },
       en: {
@@ -261,10 +275,10 @@ function getServiceContent(slug: string, locale: string) {
     },
     'jumta-apkope-remonts': {
       lv: {
-        overview: 'Regulāra jumta apkope un savlaicīgs remonts pagarinas jumta mūžu par 10-20 gadiem un novērš dārgus bojājumus. Mēs nodrošinājam diagnostiku, tīrīšanu, bojājumu novēršanu un avārijas reaģēšanu.',
+        overview: 'Regulāra jumta apkope un savlaicīgs remonts pagarina jumta mūžu par 10-20 gadiem un novērš dārgus bojājumus. Mēs nodrošinām diagnostiku, tīrīšanu, bojājumu novēršanu un avārijas reaģēšanu.',
         benefits: ['Jumta kalpošanas laika pagarināšana par 10-20 gadiem', 'Noplūžu riska priekšlaicīga novēršana', 'Vizuālā izskata uzlabošana un sūnu noņemšana', 'Ātra avārijas reaģēšana (1-2 stundas)', 'Preventīvā diagnostika ar UAV'],
-        process: ['Vizuālā un tehniskā jumta apsekošana', 'Noteku un satekņu tīrīšana ar augstspiedienu', 'Bojāto vietu lokāls remonts vai atjaunošana', 'Sūnu un melno tašķu noņemšana bez ķīmijas', 'Skursteņu un noteku pieslēgumu hermētiskuma pārbaude', 'Aizsargpārklājumu atjaunošana'],
-        qualityPoints: ['2 gadu garantija uz remontdarbu', '24/7 avārijas reaģēšanas serviss', 'Speciālistiem ir darbā apdraudošas mātes asigurācija', 'UAV diagnostika ar vizuālajiem pierakstiem'],
+        process: ['Vizuālā un tehniskā jumta apsekošana', 'Noteku un satekņu tīrīšana ar augstspiedienu', 'Bojāto vietu lokāls remonts vai atjaunošana', 'Sūnu un melno traipu noņemšana bez ķīmijas', 'Skursteņu un noteku pieslēgumu hermētiskuma pārbaude', 'Aizsargpārklājumu atjaunošana'],
+        qualityPoints: ['2 gadu garantija uz remontdarbu', '24/7 avārijas reaģēšanas serviss', 'Speciālistiem ir darba drošības apdrošināšana', 'UAV diagnostika ar vizuālajiem pierakstiem'],
         relatedServices: ['jumta-buvnieciba', 'jumta-krasosana', 'noteksistemu-uzstadisana', 'valcprofila-montaza']
       },
       en: {
@@ -277,7 +291,7 @@ function getServiceContent(slug: string, locale: string) {
       'nl-BE': {
         overview: 'Regelmatig dakonderhoud en tijdige reparatie verlengt daklevensduur met 10-20 jaar en voorkomt kostbare schade. Wij bieden diagnose, reiniging, reparatie en noodrespons.',
         benefits: ['Verlenging dakleven met 10-20 jaar', 'Vroege lekkagrisicopreventie', 'Visuele uitstraling verbetering en mosverwijdering', 'Snelle noodrespons (1-2 uur)', 'Preventieve diagnostiek met UAV'],
-        process: ['Visuele en technische dakinspectie', 'Goot en kilgootiereiniging met hogedruk', 'Lokale reparatie of vernieuwing beschadigde gebieden', 'Mos- en zwarte vlekkenverwijdering zonder chemicaliën', 'Schoorsteen- en gootverbinding hermmeticiteit controle', 'Beschermende coating vernieuwing'],
+        process: ['Visuele en technische dakinspectie', 'Goot en kilgootiereiniging met hogedruk', 'Lokale reparatie of vernieuwing beschadigde gebieden', 'Mos- en zwarte vlekkenverwijdering zonder chemicaliën', 'Schoorsteen- en gootverbinding hermeticiteit controle', 'Beschermende coating vernieuwing'],
         qualityPoints: ['2 jaar garantie op reparatiewerk', '24/7 noodrespons service', 'Specialisten hebben verzekering voor gevaarlijk werk', 'UAV diagnostiek met visuele records'],
         relatedServices: ['jumta-buvnieciba', 'jumta-krasosana', 'noteksistemu-uzstadisana', 'valcprofila-montaza']
       }
@@ -286,7 +300,7 @@ function getServiceContent(slug: string, locale: string) {
       lv: {
         overview: 'Noteksistēmas (ūdens noteku sistēmas) nodrošina efektīvu ūdens novadīšanu no jumta un fasādes, aizsargājot fasādes, bāzi un apkārtni. Mēs montējam kvalitātīvas metāla notekas ar garantiju pret rūsēšanu.',
         benefits: ['Efektīva ūdens novadīšana no fasādes un bāzes', 'Plaša krāsu un materiālu izvēle', 'Izturība pret sniega un ledu slodzi', 'Garantija pret rūsēšanu un lūšanu vēl 25 gadus', 'Skaņas adsorbcija ar speciālu izolāciju'],
-        process: ['Jumta karnīzes mērīšana un CAD plāna izstrāde', 'Noteku turētāju montāža ar pareizu kritumu', 'Metallinās renu ieklāšana un savienošana', 'Ūdens piltuvju un savienojumu montāža', 'Notekcauruļu un līkumu uzstādīšana', 'Ūdens novadīšanas pārbaude ar ūdens testa metodi'],
+        process: ['Jumta karnīzes mērīšana un CAD plāna izstrāde', 'Noteku turētāju montāža ar pareizu kritumu', 'Metālisko renu ieklāšana un savienošana', 'Ūdens piltuvju un savienojumu montāža', 'Notekcauruļu un līkumu uzstādīšana', 'Ūdens novadīšanas pārbaude ar ūdens testa metodi'],
         qualityPoints: ['10 gadu garantija uz montāžas darbu', '25 gadu antikorozijas garantija uz materiālu', 'Speciālistiem ir sertifikāti noteku montāžai', 'CAD dizains katram objektam'],
         relatedServices: ['jumta-buvnieciba', 'jumta-apkope-remonts', 'jumta-renovacija', 'valcprofila-montaza']
       },
@@ -300,16 +314,39 @@ function getServiceContent(slug: string, locale: string) {
       'nl-BE': {
         overview: 'Gootsystemen zorgen voor effectieve waterafvoer van dak en gevel en beschermen de gevel, fundering en omgeving. We installeren kwaliteitsmetalen goten met garantie tegen roesten.',
         benefits: ['Effectieve waterafvoer van gevel en fundering', 'Ruime keuze aan kleuren en materialen', 'Weerstand tegen sneeuw- en ijsbelasting', 'Garantie tegen roesten en splintering voor 25 jaar', 'Geluidabsorptie met speciale isolatie'],
-        process: ['Dakrand meting en CAD planont wikkeling', 'Gootbeugel installatie met juiste helling', 'Metalen goot leggen en verbinding', 'Wateruitloop en connector installatie', 'Regenpijp en bocht installatie', 'Waterafvoer verificatie met watertestmethode'],
+        process: ['Dakrandmeting en CAD planontwikkeling', 'Gootbeugel installatie met juiste helling', 'Metalen goot leggen en verbinding', 'Wateruitloop en connector installatie', 'Regenpijp en bocht installatie', 'Waterafvoer verificatie met watertestmethode'],
         qualityPoints: ['10 jaar garantie op installatie', '25 jaar anti-corrosie garantie op materialen', 'Specialisten zijn gecertificeerd voor gootinstallatie', 'CAD ontwerp voor elk project'],
         relatedServices: ['jumta-buvnieciba', 'jumta-apkope-remonts', 'jumta-renovacija', 'valcprofila-montaza']
+      }
+    },
+    'jumta-remonts': {
+      lv: {
+        overview: 'Ātra jumta avārijas reaģēšana 24/7 Rīgā un Pierīgā. Jumts tek vai noplūst? Mēs novērsam noplūdes, veicam lokālus remontus un diagnozes. Sertificēti meistari, 2 gadu garantija uz remontdarbu.',
+        benefits: ['Ātra 24/7 avārijas reaģēšana (1-2 stundas)', 'Diagnoze ar UAV dronu un vizuālo ziņojumu', 'Lokāls remonts bez pilnīgas demontāžas', 'Garantija uz remontdarbu un materiāliem', 'Bezmaksas novērtējums Rīgā un Pierīgā'],
+        process: ['Tūlīta jautājumi un pieņemšana', 'Lokācijas apskate un noplūdes diagnostika', 'Novārtējuma sagatavošana un tāmes sniegšana', 'Operatīvs remonts vai noplūdes likvidēšana', 'Hermētiskuma pārbaude ar ūdens testu', 'Dokumentācija un garantijas nodrošināšana'],
+        qualityPoints: ['24/7 avārijas reaģēšana pieņemšana', '2 gadu garantija uz remontdarbu', 'Speciālistiem ir darba drošības apdrošināšana', 'UAV diagnostika ar ziņojumiem'],
+        relatedServices: ['jumta-apkope-remonts', 'jumta-krasosana', 'valcprofila-montaza', 'jumta-renovacija']
+      },
+      en: {
+        overview: 'Fast emergency roof repair 24/7 in Riga and Pieriga. Roof leaking? We stop leaks, perform local repairs and diagnostics. Certified specialists, 2-year warranty on repair work.',
+        benefits: ['Fast 24/7 emergency response (1-2 hours)', 'Drone diagnostics with visual report', 'Local repair without full demolition', 'Warranty on repair work and materials', 'Free assessment in Riga and Pieriga'],
+        process: ['Immediate inquiry and site visit scheduling', 'On-site inspection and leak diagnostics', 'Estimate preparation and quote submission', 'Prompt repair or leak elimination', 'Hermeticity verification with water test', 'Documentation and warranty provision'],
+        qualityPoints: ['24/7 emergency response availability', '2-year warranty on repair work', 'Specialists have work safety insurance', 'UAV diagnostics with visual reports'],
+        relatedServices: ['jumta-apkope-remonts', 'jumta-krasosana', 'valcprofila-montaza', 'jumta-renovacija']
+      },
+      'nl-BE': {
+        overview: 'Snelle daklek noodreparatie 24/7 in België. Dak lekt? Wij stoppen lekken, voeren lokale reparaties en diagnose uit. Gecertificeerde vakmensen, 2 jaar garantie op reparatiewerk.',
+        benefits: ['Snelle 24/7 noodrespons (1-2 uur)', 'Drone diagnose met visueel rapport', 'Lokale reparatie zonder volledige sloop', 'Garantie op reparatiewerk en materialen', 'Gratis beoordeling in heel België'],
+        process: ['Onmiddellijke informatie en bezoekplanning', 'Ter plaatse inspectie en lekdiagnose', 'Estimaatvoorbereiding en offerteindeling', 'Snelle reparatie of lekbestrijding', 'Hermmeticiteit verificatie met watertest', 'Documentatie en garantieregeling'],
+        qualityPoints: ['24/7 noodreparatie beschikbaarheid', '2 jaar garantie op reparatiewerk', 'Specialisten hebben werkverzekerking', 'Drone diagnose met visuele rapporten'],
+        relatedServices: ['jumta-apkope-remonts', 'jumta-krasosana', 'valcprofila-montaza', 'jumta-renovacija']
       }
     },
     'jumta-krasosana': {
       lv: {
         overview: 'Jumta krāsošana ir ekonomiska alternatīva jumta nomaiņai, kas pagarina jumta mūžu par 10-15 gadiem, uzlabo izskatu un aizsargā pret koroziju. Mēs krāsojam metāla jumtus, šīferi un betona paneļus.',
-        benefits: ['Jumta mūža pagarināšana par 10-15 gadiem', 'Ekonomiska alternatīva nomaiņai (3-4 reizes lētāk)', 'Aizsardzība pret koroziju un sūnām', 'Jebkura pantone toņa izvēle', 'Jumta izskatas uzlabošana un modernus izskats'],
-        process: ['Augstspiediena mazgāšana (500+ bar)', 'Rūsas apstrāde ar ķīmiskiem pārveidotājiem', 'Pirmo un otro gruntes kārtu uzklāšana', 'Pirmās un otrās vārmijas kārtas uzklāšana', 'Detaļu noslīpēšana un stūru apdare', 'Kvalitātes kontrole un skrāpju vietas apstrāde'],
+        benefits: ['Jumta mūža pagarināšana par 10-15 gadiem', 'Ekonomiska alternatīva nomaiņai (3-4 reizes lētāk)', 'Aizsardzība pret koroziju un sūnām', 'Jebkura pantone toņa izvēle', 'Jumta izskata uzlabošana un moderns izskats'],
+        process: ['Augstspiediena mazgāšana (500+ bar)', 'Rūsas apstrāde ar ķīmiskiem pārveidotājiem', 'Pirmo un otro gruntes kārtu uzklāšana', 'Pirmās un otrās krāsas kārtas uzklāšana', 'Detaļu noslīpēšana un stūru apdare', 'Kvalitātes kontrole un skrāpju vietas apstrāde'],
         qualityPoints: ['3 gadu garantija uz krāsu', '10 gadu garantija uz pretkorozijas apstrādi', 'Profesionāli instrumenti un ekvivalentas krāsas', 'Rūsas pārveidotājs garantija'],
         relatedServices: ['jumta-apkope-remonts', 'jumta-buvnieciba', 'jumta-renovacija', 'noteksistemu-uzstadisana']
       },
@@ -321,9 +358,9 @@ function getServiceContent(slug: string, locale: string) {
         relatedServices: ['jumta-apkope-remonts', 'jumta-buvnieciba', 'jumta-renovacija', 'noteksistemu-uzstadisana']
       },
       'nl-BE': {
-        overview: 'Dakschilderen is een economisch alternatief voor dakvervangingdat daklevensduur met 10-15 jaar verlengt, het uiterlijk verbetert en bescherming biedt tegen corrosie. We schilderen metalen daken, leisteen en betonnen panelen.',
+        overview: 'Dakschilderen is een economisch alternatief voor dakvervanging dat de daklevensduur met 10-15 jaar verlengt, het uiterlijk verbetert en bescherming biedt tegen corrosie. We schilderen metalen daken, leisteen en betonnen panelen.',
         benefits: ['Verlenging dakleven met 10-15 jaar', 'Economisch alternatief voor vervanging (3-4 keer goedkoper)', 'Bescherming tegen corrosie en mos', 'Keuze uit elke Pantone kleur', 'Verbeterde uitstraling en modern uiterlijk'],
-        process: ['Hogedrukreiniging (500+ bar)', 'Roestbehandeling met chemische omzetters', 'Eerste en tweede grondlaag aanbrenging', 'Eerste en tweede verflaag aanbrenging', 'Detailslijping en hoek afwerking', 'Kwaliteits controle en krasplek behandeling'],
+        process: ['Hogedrukreiniging (500+ bar)', 'Roestbehandeling met chemische omzetters', 'Eerste en tweede grondlaag aanbrenging', 'Eerste en tweede verflaag aanbrenging', 'Detailslijping en hoekafwerking', 'Kwaliteitscontrole en krasplek behandeling'],
         qualityPoints: ['3 jaar garantie op verf', '10 jaar garantie op anti-corrosie behandeling', 'Professionele gereedschappen en gelijkwaardige verven', 'Roest omzetter garantie'],
         relatedServices: ['jumta-apkope-remonts', 'jumta-buvnieciba', 'jumta-renovacija', 'noteksistemu-uzstadisana']
       }
@@ -436,6 +473,23 @@ function getServiceFAQs(slug: string, locale: string) {
         {q: 'Hoe vaak dakonderhoud?', a: 'We raden inspectie en gootreiniging minstens 2 keer per jaar aan - lente en herfst.'},
         {q: 'Doen jullie kleine reparaties?', a: 'Ja, we voeren kleine reparaties uit zoals stormschade of vervanging van enkele platen.'},
         {q: 'Hoe mos bestrijden?', a: 'We bieden professionele dakreiniging en anti-mos behandeling om hergroei te vertragen.'}
+      ]
+    },
+    'jumta-remonts': {
+      lv: [
+        {q: 'Cik ātri varat atnākt uz avāriju?', a: 'Mēs garantējam atnākšanu vidēji 1-2 stundās darbalaikos un 2-3 stundās naktī Rīgā un Pierīgā. Avārija pieņemšana 24/7.'},
+        {q: 'Vai var veikt remontu bez visa jumta demontāžas?', a: 'Jā, mūsu speciālisti veic noplūdes diagnostiku un lokālos remontus, neremonējot veselu jumtu, ja tas nav nepieciešams. Tas ietaupa 40-60% no biežajiem remontiem.'},
+        {q: 'Kāda garantija uz avārijas remontu?', a: '2 gadu garantija uz remontdarbu un materiāliem. Ūdens noplūdes gadījumā garantijas periodā mēs to likvidējam bez maksas.'}
+      ],
+      en: [
+        {q: 'How quickly can you arrive at an emergency?', a: 'We guarantee arrival within 1-2 hours during business hours and 2-3 hours at night in Riga and Pieriga. 24/7 emergency intake.'},
+        {q: 'Can you repair without demolishing entire roof?', a: 'Yes, our specialists perform leak diagnostics and local repairs without re-roofing unless necessary. This saves 40-60% on routine repairs.'},
+        {q: 'What warranty on emergency repair?', a: '2-year warranty on workmanship and materials. In case of water leak during warranty period, we fix it free of charge.'}
+      ],
+      'nl-BE': [
+        {q: 'Hoe snel kunnen jullie ter plekke zijn bij noodgeval?', a: 'We garanderen aankomst binnen 1-2 uur tijdens werkuren en 2-3 uur \'s nachts in Kortrijk en omgeving. 24/7 noodopvang.'},
+        {q: 'Kunnen jullie repareren zonder compleet dak te slopen?', a: 'Ja, onze specialisten voeren lekdiagnose en lokale reparaties uit zonder compleet dak te vervangen tenzij nodig. Dit bespaard 40-60% op routineonderhoud.'},
+        {q: 'Wat is de garantie op noodreparatie?', a: '2 jaar garantie op werk en materialen. Bij waterlek tijdens garantieperiode herstellen we het gratis.'}
       ]
     },
     'noteksistemu-uzstadisana': {
@@ -554,6 +608,11 @@ export default function ServiceLanding({params: {locale, slug}}: PageProps) {
       'nl-BE': 'Met UpRoof krijgt u'
     },
     'jumta-apkope-remonts': {
+      lv: 'Ar UpRoof Jūs saņemat',
+      en: 'With UpRoof You Get',
+      'nl-BE': 'Met UpRoof krijgt u'
+    },
+    'jumta-remonts': {
       lv: 'Ar UpRoof Jūs saņemat',
       en: 'With UpRoof You Get',
       'nl-BE': 'Met UpRoof krijgt u'
