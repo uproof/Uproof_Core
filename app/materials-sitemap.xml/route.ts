@@ -7,7 +7,8 @@ const materialSlugs = [
   'bitumena-rulli',
   'dakstini',
   'bezazbesta-siferis',
-  'ruukki-classic'
+  'ruukki-classic',
+  'jumta-krasa'
 ];
 
 export async function GET() {
