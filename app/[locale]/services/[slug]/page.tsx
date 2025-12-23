@@ -132,7 +132,7 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
       en: 'Roof leak emergency? Fast 24/7 response, diagnostics, local repair in Riga and Pieriga. Certified specialists, 2-year warranty. Free assessment. Call +371 25612440',
       'nl-BE': 'Daklek noodgeval? Snelle 24/7 reactie, diagnose, lokale reparatie in België. Gecertificeerde vakmensen, 2 jaar garantie. Gratis beoordeling.'
     },
-    keywords: 'jumta remonts Rīgā, jumts tek, jumta noplūde avārija, av\u0101rijas rea\u0123\u0113\u0161ana, jumta remonts Pier\u012bg\u0101, emergency roof repair Riga, dak reparatie noodgeval Belgi\u00eb'
+    keywords: 'jumta remonts Rīgā, jumts tek, jumta noplūde avārija, avārijas reaģēšana, jumta remonts Pierīgā, emergency roof repair Riga, dak reparatie noodgeval België'
   },
   'jumta-krasosana': {
     title: {
@@ -337,7 +337,7 @@ function getServiceContent(slug: string, locale: string) {
       'nl-BE': {
         overview: 'Snelle daklek noodreparatie 24/7 in België. Dak lekt? Wij stoppen lekken, voeren lokale reparaties en diagnose uit. Gecertificeerde vakmensen, 2 jaar garantie op reparatiewerk.',
         benefits: ['Snelle 24/7 noodrespons (1-2 uur)', 'Drone diagnose met visueel rapport', 'Lokale reparatie zonder volledige sloop', 'Garantie op reparatiewerk en materialen', 'Gratis beoordeling in heel België'],
-        process: ['Onmiddellijke informatie en bezoekplanning', 'Ter plaatse inspectie en lekdiagnose', 'Estimaatvoorbereiding en offerteindeling', 'Snelle reparatie of lekbestrijding', 'Hermmeticiteit verificatie met watertest', 'Documentatie en garantieregeling'],
+        process: ['Onmiddellijke informatie en bezoekplanning', 'Ter plaatse inspectie en lekdiagnose', 'Estimaatvoorbereiding en offerteindeling', 'Snelle reparatie of lekbestrijding', 'Hermeticiteit verificatie met watertest', 'Documentatie en garantieregeling'],
         qualityPoints: ['24/7 noodreparatie beschikbaarheid', '2 jaar garantie op reparatiewerk', 'Specialisten hebben werkverzekerking', 'Drone diagnose met visuele rapporten'],
         relatedServices: ['jumta-apkope-remonts', 'jumta-krasosana', 'valcprofila-montaza', 'jumta-renovacija']
       }

@@ -71,6 +71,7 @@ export default function InternalLinks({ locale, currentSlug, context }: Internal
     'dakstinu-montaza': ['dakstini', 'bezazbesta-siferis'],
     'jumta-logu-montaza': ['valcprofils', 'dakstini', 'bezazbesta-siferis', 'ruukki-classic'],
     'jumta-buvnieciba': ['valcprofils', 'ruukki-classic', 'dakstini', 'bezazbesta-siferis', 'pvc-tpo', 'bitumena-rulli'],
+    'jumta-remonts': ['valcprofils', 'dakstini', 'bezazbesta-siferis', 'pvc-tpo', 'bitumena-rulli', 'jumta-krasa'],
     'jumta-apkope-remonts': ['valcprofils', 'dakstini', 'bezazbesta-siferis', 'pvc-tpo', 'bitumena-rulli', 'jumta-krasa'],
     'noteksistemu-uzstadisana': ['valcprofils', 'dakstini', 'bezazbesta-siferis', 'ruukki-classic', 'pvc-tpo'],
     'jumta-krasosana': ['jumta-krasa', 'valcprofils', 'ruukki-classic', 'dakstini']
@@ -115,7 +116,7 @@ export default function InternalLinks({ locale, currentSlug, context }: Internal
               <li><CitiesPopover locale={locale as Locale} /></li>
               <li><Link href={'/blog'} className="text-primary-700 hover:underline">{locale==='nl-BE'?'Blogartikelen':locale==='en'?'Blog articles':'Blog raksti'}</Link></li>
               <li><Link href={'/projects'} className="text-primary-700 hover:underline">{locale==='nl-BE'?'Projekten':locale==='en'?'Projects':'Projekti'}</Link></li>
-              <li><Link href={'/urgency/caurs-jumts'} className="text-primary-700 hover:underline">{locale==='nl-BE'?'Lek in het dak?':locale==='en'?'Roof leak emergency':'Caurs jumts? Ko darīt?'}</Link></li>
+              <li><Link href={'/urgency/caurs-jumts'} className="text-primary-700 hover:underline">{locale==='nl-BE'?'Lek in het dak?':locale==='en'?'Roof leak emergency':'Tek jumts, ko darīt?'}</Link></li>
               <li><Link href={'/contact'} className="text-primary-700 hover:underline">{locale==='nl-BE'?'Contact opnemen':locale==='en'?'Contact us':'Kontakts'}</Link></li>
             </ul>
           </nav>
