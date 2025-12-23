@@ -14,6 +14,7 @@ const SERVICE_SLUGS = [
   'jumta-logu-montaza',
   'jumta-buvnieciba',
   'jumta-apkope-remonts',
+  'jumta-remonts',
   'noteksistemu-uzstadisana',
   'jumta-krasosana'
 ];
@@ -119,6 +120,19 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
       'nl-BE': 'Kwaliteitsvolle gootsysteem installatie in België: regenpijpen, goten, verbindingen, dakveiligheid en waterafvoer. Correct systeem beschermt structuur. Service in Kortrijk, Gent, Brugge, Oudenaarde, Izegem.'
     },
     keywords: 'noteksistēmu uzstādīšana Rīgā, noteksistēmu montāža jumtam Latvijā, gutter installation Riga, gootsysteem installatie België'
+  },
+  'jumta-remonts': {
+    title: {
+      lv: 'Jumta remonts Rīgā | Ātra avārijas reaģēšana 24/7, garantija | UpRoof',
+      en: 'Emergency Roof Repair in Riga | Fast 24/7 Response | UpRoof',
+      'nl-BE': 'Noodreparatie dak België | Snelle 24/7 reactie | UpRoof'
+    },
+    description: {
+      lv: 'Jumts tek vai noplūst? UpRoof – ātra 24/7 avārijas reaģēšana, diagnostika, lokāls remonts Rīgā un Pierīgā. Sertificēti meistari, 2 gadu garantija. Bezmaksas novērtējums. +371 25612440',
+      en: 'Roof leak emergency? Fast 24/7 response, diagnostics, local repair in Riga and Pieriga. Certified specialists, 2-year warranty. Free assessment. Call +371 25612440',
+      'nl-BE': 'Daklek noodgeval? Snelle 24/7 reactie, diagnose, lokale reparatie in België. Gecertificeerde vakmensen, 2 jaar garantie. Gratis beoordeling.'
+    },
+    keywords: 'jumta remonts Rīgā, jumts tek, jumta noplūde avārija, av\u0101rijas rea\u0123\u0113\u0161ana, jumta remonts Pier\u012bg\u0101, emergency roof repair Riga, dak reparatie noodgeval Belgi\u00eb'
   },
   'jumta-krasosana': {
     title: {
@@ -305,6 +319,29 @@ function getServiceContent(slug: string, locale: string) {
         relatedServices: ['jumta-buvnieciba', 'jumta-apkope-remonts', 'jumta-renovacija', 'valcprofila-montaza']
       }
     },
+    'jumta-remonts': {
+      lv: {
+        overview: 'Ātra jumta avārijas reaģēšana 24/7 Rīgā un Pierīgā. Jumts tek vai noplūst? Mēs novērsam noplūdes, veicam lokālus remontus un diagnozes. Sertificēti meistari, 2 gadu garantija uz remontdarbu.',
+        benefits: ['Ātra 24/7 avārijas reaģēšana (1-2 stundas)', 'Diagnoze ar UAV dronu un vizuālo ziņojumu', 'Lokāls remonts bez pilnīgas demontāžas', 'Garantija uz remontdarbu un materiāliem', 'Bezmaksas novērtējums Rīgā un Pierīgā'],
+        process: ['Tūlīta jautājumi un pieņemšana', 'Lokācijas apskate un noplūdes diagnostika', 'Novārtējuma sagatavošana un tāmes sniegšana', 'Operatīvs remonts vai noplūdes likvidēšana', 'Hermētiskuma pārbaude ar ūdens testu', 'Dokumentācija un garantijas nodrošināšana'],
+        qualityPoints: ['24/7 avārijas reaģēšana pieņemšana', '2 gadu garantija uz remontdarbu', 'Speciālistiem ir darba drošības apdrošināšana', 'UAV diagnostika ar ziņojumiem'],
+        relatedServices: ['jumta-apkope-remonts', 'jumta-krasosana', 'valcprofila-montaza', 'jumta-renovacija']
+      },
+      en: {
+        overview: 'Fast emergency roof repair 24/7 in Riga and Pieriga. Roof leaking? We stop leaks, perform local repairs and diagnostics. Certified specialists, 2-year warranty on repair work.',
+        benefits: ['Fast 24/7 emergency response (1-2 hours)', 'Drone diagnostics with visual report', 'Local repair without full demolition', 'Warranty on repair work and materials', 'Free assessment in Riga and Pieriga'],
+        process: ['Immediate inquiry and site visit scheduling', 'On-site inspection and leak diagnostics', 'Estimate preparation and quote submission', 'Prompt repair or leak elimination', 'Hermeticity verification with water test', 'Documentation and warranty provision'],
+        qualityPoints: ['24/7 emergency response availability', '2-year warranty on repair work', 'Specialists have work safety insurance', 'UAV diagnostics with visual reports'],
+        relatedServices: ['jumta-apkope-remonts', 'jumta-krasosana', 'valcprofila-montaza', 'jumta-renovacija']
+      },
+      'nl-BE': {
+        overview: 'Snelle daklek noodreparatie 24/7 in België. Dak lekt? Wij stoppen lekken, voeren lokale reparaties en diagnose uit. Gecertificeerde vakmensen, 2 jaar garantie op reparatiewerk.',
+        benefits: ['Snelle 24/7 noodrespons (1-2 uur)', 'Drone diagnose met visueel rapport', 'Lokale reparatie zonder volledige sloop', 'Garantie op reparatiewerk en materialen', 'Gratis beoordeling in heel België'],
+        process: ['Onmiddellijke informatie en bezoekplanning', 'Ter plaatse inspectie en lekdiagnose', 'Estimaatvoorbereiding en offerteindeling', 'Snelle reparatie of lekbestrijding', 'Hermmeticiteit verificatie met watertest', 'Documentatie en garantieregeling'],
+        qualityPoints: ['24/7 noodreparatie beschikbaarheid', '2 jaar garantie op reparatiewerk', 'Specialisten hebben werkverzekerking', 'Drone diagnose met visuele rapporten'],
+        relatedServices: ['jumta-apkope-remonts', 'jumta-krasosana', 'valcprofila-montaza', 'jumta-renovacija']
+      }
+    },
     'jumta-krasosana': {
       lv: {
         overview: 'Jumta krāsošana ir ekonomiska alternatīva jumta nomaiņai, kas pagarina jumta mūžu par 10-15 gadiem, uzlabo izskatu un aizsargā pret koroziju. Mēs krāsojam metāla jumtus, šīferi un betona paneļus.',
@@ -438,6 +475,23 @@ function getServiceFAQs(slug: string, locale: string) {
         {q: 'Hoe mos bestrijden?', a: 'We bieden professionele dakreiniging en anti-mos behandeling om hergroei te vertragen.'}
       ]
     },
+    'jumta-remonts': {
+      lv: [
+        {q: 'Cik ātri varat atnākt uz avāriju?', a: 'Mēs garantējam atnākšanu vidēji 1-2 stundās darbalaikos un 2-3 stundās naktī Rīgā un Pierīgā. Avārija pieņemšana 24/7.'},
+        {q: 'Vai var veikt remontu bez visa jumta demontāžas?', a: 'Jā, mūsu speciālisti veic noplūdes diagnostiku un lokālos remontus, neremonējot veselu jumtu, ja tas nav nepieciešams. Tas ietaupa 40-60% no biežajiem remontiem.'},
+        {q: 'Kāda garantija uz avārijas remontu?', a: '2 gadu garantija uz remontdarbu un materiāliem. Ūdens noplūdes gadījumā garantijas periodā mēs to likvidējam bez maksas.'}
+      ],
+      en: [
+        {q: 'How quickly can you arrive at an emergency?', a: 'We guarantee arrival within 1-2 hours during business hours and 2-3 hours at night in Riga and Pieriga. 24/7 emergency intake.'},
+        {q: 'Can you repair without demolishing entire roof?', a: 'Yes, our specialists perform leak diagnostics and local repairs without re-roofing unless necessary. This saves 40-60% on routine repairs.'},
+        {q: 'What warranty on emergency repair?', a: '2-year warranty on workmanship and materials. In case of water leak during warranty period, we fix it free of charge.'}
+      ],
+      'nl-BE': [
+        {q: 'Hoe snel kunnen jullie ter plekke zijn bij noodgeval?', a: 'We garanderen aankomst binnen 1-2 uur tijdens werkuren en 2-3 uur \'s nachts in Kortrijk en omgeving. 24/7 noodopvang.'},
+        {q: 'Kunnen jullie repareren zonder compleet dak te slopen?', a: 'Ja, onze specialisten voeren lekdiagnose en lokale reparaties uit zonder compleet dak te vervangen tenzij nodig. Dit bespaard 40-60% op routineonderhoud.'},
+        {q: 'Wat is de garantie op noodreparatie?', a: '2 jaar garantie op werk en materialen. Bij waterlek tijdens garantieperiode herstellen we het gratis.'}
+      ]
+    },
     'noteksistemu-uzstadisana': {
       lv: [
         {q: 'Kādas notekas ir labākas - plastmasas vai metāla?', a: 'Metāla (tērauda) notekas ir izturīgākas pret ledu un sauli, tās neizbalē un neplaisā kā plastmasa.'},
@@ -554,6 +608,11 @@ export default function ServiceLanding({params: {locale, slug}}: PageProps) {
       'nl-BE': 'Met UpRoof krijgt u'
     },
     'jumta-apkope-remonts': {
+      lv: 'Ar UpRoof Jūs saņemat',
+      en: 'With UpRoof You Get',
+      'nl-BE': 'Met UpRoof krijgt u'
+    },
+    'jumta-remonts': {
       lv: 'Ar UpRoof Jūs saņemat',
       en: 'With UpRoof You Get',
       'nl-BE': 'Met UpRoof krijgt u'

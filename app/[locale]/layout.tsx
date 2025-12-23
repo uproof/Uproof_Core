@@ -20,10 +20,10 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL('https://uproof.eu'),
   title: {
-    default: 'Jumta remonts un būvniecība Rīgā | 10 gadu garantija | UpRoof',
+    default: 'Jumta remonts Rīgā | Ātra avārijas reaģēšana 24/7 | UpRoof',
     template: '%s | UpRoof'
   },
-  description: 'Jumts tek vai vajag remontu? Profesionāli jumta pakalpojumi Rīgā un Latvijā: būvniecība, remonts, krāsošana, apkope, valcprofils. 10 gadu garantija, ātra palīdzība. Bezmaksas novērtējums!',
+  description: 'Jumts tek vai vajag remontu? UpRoof – ātra 24/7 avārijas reaģēšana, profesionāla jumta apkope, renovācija, būvniecība Rīgā un Latvijā. 10 gadu garantija. +371 25612440. Bezmaksas novērtējums!',
   keywords: [
     'jumta būvniecība Rīgā',
     'jumta remonts Rīgā', 
@@ -69,8 +69,8 @@ export const metadata: Metadata = {
     locale: 'lv_LV',
     alternateLocale: ['en_US', 'nl_BE'],
     url: 'https://uproof.eu',
-    title: 'Jumta remonts un būvniecība Rīgā | 10 gadu garantija | UpRoof',
-    description: 'Jumts tek vai vajag remontu? Profesionāli jumta pakalpojumi Rīgā: būvniecība, remonts, krāsošana, valcprofils. 10 gadu garantija, ātra palīdzība. Bezmaksas novērtējums!',
+    title: 'Jumta remonts Rīgā | Ātra avārijas reaģēšana 24/7 | UpRoof',
+    description: 'Jumts tek? UpRoof – ātra avārijas reaģēšana, profesionāla apkope, renovācija, būvniecība. 10 gadu garantija Rīgā, Pierīgā. +371 25612440. Bezmaksas novērtējums!',
     siteName: 'UpRoof',
     images: [
       {
@@ -83,8 +83,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Jumta remonts un būvniecība Rīgā | 10 gadu garantija | UpRoof',
-    description: 'Jumts tek vai vajag remontu? Profesionāli jumta pakalpojumi Rīgā: būvniecība, remonts, krāsošana, valcprofils. 10 gadu garantija, ātra palīdzība.',
+    title: 'Jumta remonts Rīgā | Ātra avārijas reaģēšana 24/7 | UpRoof',
+    description: 'Jumts tek? UpRoof – ātra avārijas reaģēšana, profesionāla apkope, renovācija. 10 gadu garantija. +371 25612440.',
     images: ['/images/og-image.jpg'],
   },
   robots: {
