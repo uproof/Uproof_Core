@@ -1,7 +1,7 @@
 export const revalidate = 86400;
 const baseUrl = 'https://uproof.eu';
 const locales = ['lv', 'en', 'nl-BE'];
-const staticPaths = ['', '/services', '/projects', '/about', '/contact', '/blog', '/privacy-policy'];
+const staticPaths = ['', '/services', '/projects', '/about', '/contact', '/blog', '/privacy-policy', '/cities', '/urgency/caurs-jumts'];
 
 export async function GET() {
   const now = new Date().toISOString();
