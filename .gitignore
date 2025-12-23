@@ -15,3 +15,4 @@ tsconfig.tsbuildinfo
 .env.production.local
 public/videos/README.md
 .vscode/
+*.md

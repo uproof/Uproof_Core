@@ -38,9 +38,19 @@ export default function Hero() {
         
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70" />
-        
-        {/* Faded border at bottom of video - stretches edge to edge */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 sm:h-32 md:h-40 bg-gradient-to-t from-white via-white/80 to-transparent z-10"></div>
+
+        {/* Blur transition bar - smoother white-to-transparent blend for visibility */}
+        <div
+          className="absolute bottom-0 left-0 right-0 h-28 sm:h-36 md:h-44 backdrop-blur-2xl z-20"
+          style={{
+            background: `linear-gradient(to top,
+              rgba(248,250,252,1.0) 0%,
+              rgba(248,250,252,0.95) 25%,
+              rgba(248,250,252,0.85) 50%,
+              rgba(248,250,252,0.65) 75%,
+              rgba(248,250,252,0.0) 100%)`
+          }}
+        />
       </div>
       
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 md:py-32 text-center">
