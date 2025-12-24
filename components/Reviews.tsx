@@ -3,11 +3,16 @@
 import {useTranslations} from 'next-intl';
 import {motion} from 'framer-motion';
 import {StarIcon} from '@heroicons/react/24/solid';
-import {useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 
 export default function Reviews() {
   const t = useTranslations('reviews');
   const [expandedReview, setExpandedReview] = useState<number | null>(null);
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const autoTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const resumeTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const [isAuto, setIsAuto] = useState(true);
 
   const reviews = [
     {
@@ -34,6 +39,87 @@ export default function Reviews() {
     setExpandedReview(expandedReview === id ? null : id);
   };
 
+  // Helper to pause/resume auto sliding
+  const pauseAuto = (ms = 5000) => {
+    setIsAuto(false);
+    if (autoTimerRef.current) {
+      clearInterval(autoTimerRef.current as unknown as number);
+      autoTimerRef.current = null;
+    }
+    if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current as unknown as number);
+    resumeTimerRef.current = setTimeout(() => setIsAuto(true), ms);
+  };
+
+  const stepScroll = (direction: 1 | -1) => {
+    const scroller = scrollerRef.current;
+    const track = trackRef.current;
+    if (!scroller || !track) return;
+    const firstCard = track.querySelector<HTMLDivElement>('[data-card]');
+    const gap = parseInt(getComputedStyle(track).columnGap || getComputedStyle(track).gap || '16', 10);
+    const cardWidth = firstCard ? firstCard.offsetWidth : 320;
+    const delta = direction * (cardWidth + gap);
+    pauseAuto();
+    scroller.scrollBy({ left: delta, behavior: 'smooth' });
+    // Looping: if we scroll beyond half, jump back by half (duplicated list)
+    setTimeout(() => {
+      if (scroller.scrollLeft >= scroller.scrollWidth / 2) {
+        scroller.scrollLeft = scroller.scrollLeft - scroller.scrollWidth / 2;
+      } else if (scroller.scrollLeft < 0) {
+        scroller.scrollLeft = scroller.scrollLeft + scroller.scrollWidth / 2;
+      }
+    }, 400);
+  };
+
+  useEffect(() => {
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+
+    const startAuto = () => {
+      if (autoTimerRef.current) return;
+      autoTimerRef.current = setInterval(() => {
+        // small incremental scroll for smooth continuous movement
+        if (!isAuto) return;
+        const smallStep = 1; // px
+        scroller.scrollLeft += smallStep;
+        // seamless loop with duplicated content
+        if (scroller.scrollLeft >= scroller.scrollWidth / 2) {
+          scroller.scrollLeft = scroller.scrollLeft - scroller.scrollWidth / 2;
+        }
+      }, 16); // ~60fps
+    };
+
+    startAuto();
+
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      pauseAuto(6000);
+      // Convert vertical scroll to horizontal
+      scroller.scrollLeft += e.deltaY;
+      // Seamless loop
+      if (scroller.scrollLeft >= scroller.scrollWidth / 2) {
+        scroller.scrollLeft = scroller.scrollLeft - scroller.scrollWidth / 2;
+      } else if (scroller.scrollLeft <= 0) {
+        scroller.scrollLeft = scroller.scrollWidth / 2;
+      }
+    };
+    const onPointerDown = () => pauseAuto(6000);
+    scroller.addEventListener('wheel', onWheel, { passive: false });
+    scroller.addEventListener('pointerdown', onPointerDown, { passive: true });
+
+    return () => {
+      if (autoTimerRef.current) {
+        clearInterval(autoTimerRef.current as unknown as number);
+        autoTimerRef.current = null;
+      }
+      if (resumeTimerRef.current) {
+        clearTimeout(resumeTimerRef.current as unknown as number);
+        resumeTimerRef.current = null;
+      }
+      scroller.removeEventListener('wheel', onWheel);
+      scroller.removeEventListener('pointerdown', onPointerDown);
+    };
+  }, [isAuto]);
+
   return (
     <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-12">
@@ -53,9 +139,38 @@ export default function Reviews() {
         </motion.div>
       </div>
 
-      {/* Scrolling Reviews */}
+      {/* Scrolling + Manual Controls */}
       <div className="relative">
-        <div className="flex animate-scroll space-x-4 sm:space-x-6 px-4 sm:px-6">
+        {/* Controls */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 right-0 flex items-center justify-between px-2 sm:px-4">
+          <button
+            aria-label="Previous reviews"
+            onClick={() => stepScroll(-1)}
+            className="pointer-events-auto rounded-full bg-white/80 hover:bg-white shadow p-2 sm:p-3 border border-gray-200 text-gray-700 hover:text-primary-700 transition"
+          >
+            ‹
+          </button>
+          <button
+            aria-label="Next reviews"
+            onClick={() => stepScroll(1)}
+            className="pointer-events-auto rounded-full bg-white/80 hover:bg-white shadow p-2 sm:p-3 border border-gray-200 text-gray-700 hover:text-primary-700 transition"
+          >
+            ›
+          </button>
+        </div>
+
+        <div
+          ref={scrollerRef}
+          className="overflow-x-auto overflow-y-hidden px-4 sm:px-6 touch-pan-x scrollbar-hide"
+          onMouseEnter={() => pauseAuto()}
+          onTouchStart={() => pauseAuto()}
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          <div
+            ref={trackRef}
+            className="flex gap-4 sm:gap-6 items-stretch w-max scroll-smooth select-none"
+            style={{ willChange: 'transform' }}
+          >
           {/* Duplicate reviews for seamless loop */}
           {[...reviews, ...reviews].map((review, index) => {
             const uniqueId = `${review.id}-${index}`;
@@ -69,7 +184,8 @@ export default function Reviews() {
                 viewport={{once: true}}
                 transition={{duration: 0.5, delay: index * 0.1}}
                 onClick={() => toggleExpand(review.id)}
-                className="flex-shrink-0 w-[280px] sm:w-[350px] md:w-[400px] bg-white rounded-2xl shadow-xl p-5 sm:p-6 md:p-8 border border-gray-100 cursor-pointer hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                data-card
+                className="flex-shrink-0 snap-start w-[280px] sm:w-[350px] md:w-[400px] bg-white rounded-2xl shadow-xl p-5 sm:p-6 md:p-8 border border-gray-100 cursor-pointer hover:shadow-2xl hover:scale-105 transition-all duration-300"
               >
                 {/* Rating Stars */}
                 <div className="flex mb-3 sm:mb-4">
@@ -100,27 +216,11 @@ export default function Reviews() {
               </motion.div>
             );
           })}
+          </div>
         </div>
       </div>
 
-      <style jsx>{`
-        @keyframes scroll {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-
-        .animate-scroll {
-          animation: scroll 15s linear infinite;
-        }
-
-        .animate-scroll:hover {
-          animation-play-state: paused;
-        }
-      `}</style>
+      {/* no extra CSS needed; using scroll + JS for auto-slide */}
     </section>
   );
 }
