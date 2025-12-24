@@ -101,16 +101,18 @@ export default function Services({ limit }: ServicesProps) {
               className={`group flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} bg-white shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden`}
             >
               {/* Image Section */}
-              <div className="md:w-1/2 relative h-64 sm:h-80 md:h-96 overflow-hidden">
+              <div className="md:w-1/2 relative h-64 sm:h-80 md:h-96 overflow-hidden bg-gray-200">
                 <Image
                   src={service.image}
                   alt={service.title}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                   sizes="(min-width: 768px) 50vw, 100vw"
-                  quality={65}
+                  quality={75}
                   priority={index === 0}
                   loading={index === 0 ? 'eager' : 'lazy'}
+                  placeholder="blur"
+                  blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzAwIiBoZWlnaHQ9IjQ3NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNzAwIiBoZWlnaHQ9IjQ3NSIgZmlsbD0iI2U1ZTdlYiIvPjwvc3ZnPg=="
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-primary-900/20 to-transparent"></div>
               </div>
