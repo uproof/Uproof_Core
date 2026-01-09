@@ -16,7 +16,8 @@ const SERVICE_SLUGS = [
   'jumta-apkope-remonts',
   'jumta-remonts',
   'noteksistemu-uzstadisana',
-  'jumta-krasosana'
+  'jumta-krasosana',
+  'saules-dakstini'
 ];
 
 type PageProps = {
@@ -146,6 +147,19 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
       'nl-BE': 'Professioneel dakschilderen in België: reiniging, roestbehandeling, primer, meerdere verflagen. Herstelt uiterlijk en verlengt bedekking levensduur. Actief in Kortrijk, Gent, Brugge, Roeselare, Antwerpen.'
     },
     keywords: 'jumta krāsošana Rīgā, jumta krāsošana Latvijā, metāla jumta krāsošana Rīgā, roof painting Riga, dakschilderen België'
+  },
+  'saules-dakstini': {
+    title: {
+      lv: 'Saules jumta dakstiņi Rīgā | Integrēti saules paneļu dakstiņi | UpRoof',
+      en: 'Solar Roof Tiles in Riga | Integrated Solar Roofing | UpRoof',
+      'nl-BE': 'Zonnedakpannen in België | Geïntegreerde zonne-dakoplossing | UpRoof'
+    },
+    description: {
+      lv: 'Integrētie saules dakstiņi – elegants risinājums, kas apvieno jumta segumu un saules enerģijas ražošanu. Estētiski, hermētiski un droši Latvijas klimatā. Projektēšana, uzstādīšana un garantija.',
+      en: 'Integrated solar roof tiles combine roofing and energy generation in one elegant system. Aesthetic, weatherproof and safe for Baltic climate. Design, installation and warranty.',
+      'nl-BE': 'Geïntegreerde zonnedakpannen combineren dakbedekking en energieopwekking in één elegant systeem. Esthetisch, weerbestendig en veilig. Ontwerp, installatie en garantie.'
+    },
+    keywords: 'saules dakstiņi Rīgā, saules jumta dakstiņi, solar roof tiles Riga, integrated solar roofing, zonnedakpannen België'
   }
 };
 
@@ -183,22 +197,22 @@ function getServiceContent(slug: string, locale: string) {
     },
     'valcprofila-montaza': {
       lv: {
-        overview: 'Stāvošā šuve (valcprofils) ir moderns metāla jumta risinājums bez caurumošanas ar skrūvēm, kas nodrošina maksimālu hermētiskumu ar dubultlocījumiem, ilgmūžību un elegantu izskatu. Piemērots jauniem projektiem un renovācijas gadījumiem. Ideāls minimālam slīpumam no 5°.',
-        benefits: ['Hermētiski dubultlocījumi visos savienojumos bez skrūvēm', 'Īpaši izturīgs pret laikapstākļiem', '50 gadu ražotāja garantija materiāliem', 'Moderns un estētisks izskats bez redzamiem skrūvju caurumiem', 'Mehāniskais valcējums uz vietas ar profesionālu iekārtu'],
+        overview: 'Latvijas skarbajos laikapstākļos ar krasajām temperatūras maiņām un lielo mitrumu vispiemērotākie ir metāla valcprofila jumti. Valcprofila metāla jumta segums nodrošina maksimālu hermētiskumu ar dubultlocījumiem, ilgmūžību un elegantu izskatu. Piemērots gan jaunbūvēm, gan renovācijām.',
+        benefits: ['Pilnīgs hermētiskums - dubultā metāla locīšana izveido pilnībā hermētiskus savienojumus', 'Laikapstākļu noturība - spēj izplesties un sarauties temperatūras maiņas rezultātā, nesaplaisā pēc daudzkārtējas temperatūras maiņas', 'Viegla kopšana ziemas apstākļos - var droši pārvietoties un apkopot, tīrīt sniegu un ledu', 'Ilgmūžība 50+ gadi - vienīgais drauds ir rūsa, ko novērš ar pārkrāsošanu ik pēc 5-10 gadiem', 'Vēsturisks pierādījums - Latvijas arhitektūrā kalpo jau simtiem gadu ar pareizu apkopi'],
         process: ['Konstrukcijas sagatavošana un niveļošana', 'Difūzijas membrānas/zemseguma uzstādīšana ar ventilāciju', 'Valcprofila paneļu izgatavošana uz vietas', 'Dubultlocījumu savienojumu montāža ar speciāliem rīkiem', 'Precīza skārda apstrāde pie logiem, skursteņiem un sarežģītām tehēm', 'Hermētiskuma pārbaude ar ūdens testu'],
         qualityPoints: ['10 gadu garantija uz darbu', '50 gadu ražotāja garantija uz PVDF/PE krāsu un metāla integritāti', 'Sertificēti instalatori no ražotāja', 'Hermētiskuma pārbaude ar ūdens testa metodiku', 'Profesionāla valcējuma iekārta (nevis uz koka dēlīša)'],
         relatedServices: ['jumta-buvnieciba', 'jumta-apkope-remonts', 'noteksistemu-uzstadisana', 'jumta-logu-montaza']
       },
       en: {
-        overview: 'Standing seam metal roofing is a modern roofing solution providing maximum hermeticity with double-locks, longevity and elegant appearance. Suitable for new projects and renovation cases.',
-        benefits: ['Hermetic double-lock connections throughout', 'Highly weather-resistant', '50-year manufacturer warranty on materials', 'Modern and aesthetic appearance without visible fasteners'],
+        overview: 'In harsh Baltic weather conditions with extreme temperature changes and high humidity, metal standing seam roofs are the most suitable. Standing seam metal roofing provides maximum hermeticity with double-locks, longevity and elegant appearance. Suitable for new construction and renovations.',
+        benefits: ['Complete hermeticity - double metal folding creates fully hermetic connections', 'Weather resistance - expands and contracts with temperature changes without cracking after repeated temperature fluctuations', 'Easy winter maintenance - safe to walk on and maintain, clear snow and ice without damage concerns', '50+ year durability - only threat is rust, prevented by repainting every 5-10 years', 'Historical proof - serving Latvian architecture for centuries with proper maintenance'],
         process: ['Structure preparation and leveling', 'Underlayment installation with ventilation', 'Standing seam panel fabrication on-site', 'Double-lock connection installation with specialized tools', 'Precise sheet metal work at windows and chimneys', 'Hermeticity verification'],
         qualityPoints: ['10-year warranty on workmanship', '50-year manufacturer warranty on PVDF/PE colors', 'Certified installers from manufacturer', 'Hermeticity verification with water test methodology'],
         relatedServices: ['jumta-buvnieciba', 'jumta-apkope-remonts', 'noteksistemu-uzstadisana', 'jumta-logu-montaza']
       },
       'nl-BE': {
-        overview: 'Staande naad metalen dakbedekking is een moderne dakbedekking die maximale hermeticiteit met dubbele sluitingen, duurzaamheid en elegant uiterlijk biedt. Geschikt voor nieuwe projecten en renovaties.',
-        benefits: ['Hermetische dubbele sluitingen overal', 'Zeer weerbestendig', '50 jaar fabrieksgarantie op materialen', 'Modern en esthetisch uiterlijk zonder zichtbare bevestigingen'],
+        overview: 'In harde Baltische weersomstandigheden met extreme temperatuurwisselingen en hoge luchtvochtigheid zijn metalen staande naad daken het meest geschikt. Staande naad metalen dakbedekking biedt maximale hermeticiteit met dubbele sluitingen, duurzaamheid en elegant uiterlijk. Geschikt voor nieuwbouw en renovaties.',
+        benefits: ['Volledige hermeticiteit - dubbele metaalvouwen creëren volledig hermetische verbindingen', 'Weerbestendigheid - zet uit en krimpt bij temperatuurveranderingen zonder scheuren na herhaalde temperatuurschommelingen', 'Gemakkelijk winteronderhoud - veilig begaanbaar en onderhoudbaar, sneeuw en ijs verwijderen zonder schade', '50+ jaar duurzaamheid - enige bedreiging is roest, voorkomen door elke 5-10 jaar opnieuw te schilderen', 'Historisch bewijs - dient Baltische architectuur al eeuwenlang met goed onderhoud'],
         process: ['Structuurvoorbereiding en nivellering', 'Onderlaag installatie met ventilatie', 'Staande naad paneel fabricage ter plaatse', 'Dubbele sluitvoeg installatie met gespecialiseerde gereedschappen', 'Nauwkeurig plaatwerk bij ramen en schoorstenen', 'Hermeticiteit verificatie'],
         qualityPoints: ['10 jaar garantie op vakmanschap', '50 jaar fabrieksgarantie op PVDF/PE kleuren', 'Gecertificeerde installateurs van fabrikant', 'Hermeticiteit verificatie met watertestmethodologie'],
         relatedServices: ['jumta-buvnieciba', 'jumta-apkope-remonts', 'noteksistemu-uzstadisana', 'jumta-logu-montaza']
@@ -253,7 +267,7 @@ function getServiceContent(slug: string, locale: string) {
     'jumta-buvnieciba': {
       lv: {
         overview: 'Jumta būvniecība ir komplekss process no projektēšanas līdz gatavajam jumtam, kurā ietilpst konstrukcija, izolācija, siltināšana, segums un noteku sistēmas. Mēs piedāvājam pilna cikla risinājumus ar individuālu projektēšanu.',
-        benefits: ['Pilna cikla būvniecība no A līdz Z', 'Sertificēti būvspeciālisti un projektanti', 'Atbilstība visiem Latvijas būvnormatīviem', 'Individuāla projektēšana un tāme', 'Modernie siltinājuma risinājumi ar energoietilpību'],
+        benefits: ['Pilna cikla būvniecība no A līdz Z', 'Sertificēti būvspeciālisti un jumtu projektētāji', 'Atbilstība visiem Latvijas būvnormatīviem', 'Individuāla projektēšana un tāme', 'Ilgtspējīgi un hermētiski jumta risinājumi'],
         process: ['Objekta apsekošana, mērīšana un tāmēšana', 'Projektēšana un būvniecības atļauju ieguves palīdzība', 'Materiālu piegāde un logistika', 'Spāru sistēmas izbūve un nostabilizēšana', 'Siltināšana, plēvju montāža un ventilācija', 'Jumta seguma un noteku uzstādīšana', 'Ūdens hermētiskuma un kvalitātes pārbaude'],
         qualityPoints: ['10 gadu garantija uz visu darbu', 'ISO 9001 sertificēta kvalitātes vadība', 'Būvniecības dokumentācijas sagatavošana', 'Speciālistu sertifikāti un licences'],
         relatedServices: ['jumta-apkope-remonts', 'jumta-logu-montaza', 'noteksistemu-uzstadisana', 'jumta-krasosana']
@@ -364,6 +378,29 @@ function getServiceContent(slug: string, locale: string) {
         qualityPoints: ['3 jaar garantie op verf', '10 jaar garantie op anti-corrosie behandeling', 'Professionele gereedschappen en gelijkwaardige verven', 'Roest omzetter garantie'],
         relatedServices: ['jumta-apkope-remonts', 'jumta-buvnieciba', 'jumta-renovacija', 'noteksistemu-uzstadisana']
       }
+    },
+    'saules-dakstini': {
+      lv: {
+        overview: 'Saules jumta dakstiņi ir pilnībā integrēti fotovoltaiskie elementi, kas aizstāj tradicionālo segumu un ražo elektrību. Estētisks risinājums bez redzamiem paneļu rāmjiem, pielāgots Latvijas klimatam.',
+        benefits: ['Estētiska integrācija bez redzamiem paneļiem', 'Elektrības ražošana un zemāki rēķini', 'Hermētiska un droša konstrukcija', 'Saderība ar siltumsūkņiem un EV uzlādi', 'Garantēta veiktspēja un izturība pret vēju/sniegu'],
+        process: ['Aptuvenā jaudas un atdeves aprēķins', 'Konstrukcijas nestspējas izvērtēšana', 'Elektroprojekts un drošības risinājumi', 'Dakstiņu/elementu montāža ar hidroizolāciju', 'Invertora un drošības iekārtu uzstādīšana', 'Ieslēgšana tīklā un monitorings'],
+        qualityPoints: ['10 gadu garantija uz montāžu', '25 gadu ražotāja veiktspējas garantija (tipiski)', 'Atbilstība ES un Latvijas elektrostandartiem', 'Pilns dokumentu un monitoringa nodrošinājums'],
+        relatedServices: ['jumta-buvnieciba', 'jumta-renovacija', 'noteksistemu-uzstadisana', 'jumta-logu-montaza']
+      },
+      en: {
+        overview: 'Solar roof tiles are fully integrated photovoltaic elements that replace traditional covering and generate electricity. A premium, seamless look without visible panel frames, optimized for Baltic climate.',
+        benefits: ['Seamless aesthetic integration', 'Power generation and lower bills', 'Weatherproof and safe installation', 'Compatible with heat pumps and EV charging', 'Guaranteed performance and wind/snow resistance'],
+        process: ['Preliminary yield and sizing estimate', 'Structural load assessment', 'Electrical design and safety planning', 'Tile/module installation with waterproofing', 'Inverter and safety equipment setup', 'Grid connection and monitoring'],
+        qualityPoints: ['10-year workmanship warranty', '25-year manufacturer performance warranty (typical)', 'Compliance with EU and local electrical codes', 'Complete documentation and monitoring'],
+        relatedServices: ['jumta-buvnieciba', 'jumta-renovacija', 'noteksistemu-uzstadisana', 'jumta-logu-montaza']
+      },
+      'nl-BE': {
+        overview: 'Zonnedakpannen zijn volledig geïntegreerde PV-elementen die traditionele bedekking vervangen en elektriciteit opwekken. Premium naadloze look zonder zichtbare panelen, geoptimaliseerd voor het lokale klimaat.',
+        benefits: ['Naadloze esthetische integratie', 'Stroomopwekking en lagere kosten', 'Weerbestendige en veilige installatie', 'Compatibel met warmtepompen en EV-laden', 'Gegarandeerde prestaties en wind/sneeuwbestendigheid'],
+        process: ['Voorlopige opbrengst- en maatinschatting', 'Structurele belastingsevaluatie', 'Elektrisch ontwerp en veiligheidsplan', 'Pannen/module installatie met waterdichting', 'Omvormer en veiligheidscomponenten', 'Netkoppeling en monitoring'],
+        qualityPoints: ['10 jaar garantie op montage', '25 jaar fabrieks prestatiegarantie (typisch)', 'Naleving EU en lokale elektrocodes', 'Volledige documentatie en monitoring'],
+        relatedServices: ['jumta-buvnieciba', 'jumta-renovacija', 'noteksistemu-uzstadisana', 'jumta-logu-montaza']
+      }
     }
   };
 
@@ -394,34 +431,40 @@ function getServiceFAQs(slug: string, locale: string) {
       lv: [
         {q: 'Kāpēc izvēlēties valcprofilu?', a: 'Valcprofils nodrošina maksimālu hermētiskumu pateicoties dubultlocījumiem, ilgmūžību (50+ gadi) un modernu izskatu bez redzamiem skrūvju caurumiem.'},
         {q: 'Vai var montēt valcprofilu ziemā?', a: 'Jā, valcprofila montāžu var veikt visu gadu, taču optimālie apstākļi ir temperatūrā virs -10°C ar minimālu nokrišņu risku.'},
-        {q: 'Kāda ir valcprofila garantija?', a: '10 gadu garantija uz montāžas darbu un 50 gadu ražotāja garantija uz materiālu, iekļaujot krāsas noturību un metāla integritāti.'}
+        {q: 'Kāda ir valcprofila garantija?', a: '10 gadu garantija uz montāžas darbu un 50 gadu ražotāja garantija uz materiālu, iekļaujot krāsas noturību un metāla integritāti.'},
+        {q: 'Vai metāla jumti ir skaļi?', a: 'Metāla jumti ir skaļāki salīdzinot ar citiem jumta segumiem, tomēr tas vairāk ir mīts nekā patiesība. Metāla jumtus var padarīt klusus iestrādājot skaņas slāpējošu kārtu. Ja jumts ir mansarda stāvā, siltinājums un vēdināšanas kanāls rada gaisa un siltinājuma barjeras. Ja jumts ir bez siltinājuma, aukstie bēniņi nodrošina pietiekamu attālumu. Lielākā daļa cilvēku apliecina, ka skaņa ikdienā nav traucējoša, dažkārt pat patīkama un nomierinoša.'}
       ],
       en: [
         {q: 'Why choose standing seam?', a: 'Standing seam provides maximum hermeticity thanks to double-locks, longevity (50+ years) and modern appearance without visible screw holes.'},
         {q: 'Can standing seam be installed in winter?', a: 'Yes, standing seam can be installed year-round, but optimal conditions are temperatures above -10°C with minimal precipitation risk.'},
-        {q: 'What is standing seam warranty?', a: '10-year warranty on installation work and 50-year manufacturer warranty on material, including paint durability and metal integrity.'}
+        {q: 'What is standing seam warranty?', a: '10-year warranty on installation work and 50-year manufacturer warranty on material, including paint durability and metal integrity.'},
+        {q: 'Are metal roofs noisy?', a: 'Metal roofs are louder compared to other roofing materials, but this is more myth than reality. Metal roofs can be made quiet by incorporating sound-dampening layers. If the roof is on an attic floor, insulation and ventilation create air and insulation barriers. If the roof has no insulation, the cold attic provides sufficient distance. Most people confirm that sound is not bothersome in daily life, and sometimes even pleasant and calming.'}
       ],
       'nl-BE': [
         {q: 'Waarom kiezen voor staande naad?', a: 'Staande naad biedt maximale hermeticiteit dankzij dubbele sluitingen, duurzaamheid (50+ jaar) en modern uiterlijk zonder zichtbare schroefgaten.'},
         {q: 'Kan staande naad in winter geïnstalleerd worden?', a: 'Ja, staande naad kan het hele jaar door geïnstalleerd worden, maar optimale omstandigheden zijn temperaturen boven -10°C met minimaal neerslag risico.'},
-        {q: 'Wat is de garantie op staande naad?', a: '10 jaar garantie op installatiewerk en 50 jaar fabrieksgarantie op materiaal, inclusief verfbaarheid en metaalintegriteit.'}
+        {q: 'Wat is de garantie op staande naad?', a: '10 jaar garantie op installatiewerk en 50 jaar fabrieksgarantie op materiaal, inclusief verfbaarheid en metaalintegriteit.'},
+        {q: 'Zijn metalen daken luidruchtig?', a: 'Metalen daken zijn luider vergeleken met andere dakbedekkingsmaterialen, maar dit is meer mythe dan waarheid. Metalen daken kunnen stil gemaakt worden door geluiddempende lagen te verwerken. Als het dak op een zolderverdieping ligt, creëren isolatie en ventilatie lucht- en isolatiebarrières. Als het dak geen isolatie heeft, zorgt de koude zolder voor voldoende afstand. De meeste mensen bevestigen dat geluid niet storend is in het dagelijks leven, en soms zelfs aangenaam en kalmerend.'}
       ]
     },
     'dakstinu-montaza': {
       lv: [
         {q: 'Vai mans jumts izturēs dakstiņu svaru?', a: 'Mēs vienmēr veicam konstrukcijas nestspējas aprēķinu. Ja nepieciešams, veicam spāru pastiprināšanu pirms montāžas.'},
         {q: 'Kāda ir atšķirība starp māla un betona dakstiņiem?', a: 'Māla dakstiņi ir dabīgāki un ilgmūžīgāki (līdz 100 gadiem), bet betona dakstiņi ir ekonomiskāki un precīzāki izmēros.'},
-        {q: 'Cik ilgi kalpo dakstiņu jumts?', a: 'Pareizi uzklāts dakstiņu jumts kalpo 50-100 gadus, padarot to par vienu no izdevīgākajiem ieguldījumiem ilgtermiņā.'}
+        {q: 'Cik ilgi kalpo dakstiņu jumts?', a: 'Pareizi uzklāts dakstiņu jumts kalpo 50-100 gadus, padarot to par vienu no izdevīgākajiem ieguldījumiem ilgtermiņā.'},
+        {q: 'Kāpēc dienvidu siltajās zemēs biežāk izmanto māla dakstiņu jumtus?', a: 'Māla dakstiņu popularitāte Dienvideiropā ir saistīta ar vēsturiskiem un materiāla īpašību faktoriem. Māla dakstiņi ir pieejams lokāli iegūstams resurs, ko dienvidnieki izmanto gadsimtiem ilgi. Tie ir labs glābiņš no karstās dienvidu saules, jo neuzkarst un vasarās vieglāk nodrošina atveldzinošu vēsumu telpās. Zemēs kā Spānija un Itālija ziemas ir mērenas bez straujām temperatūras svārstībām, līdz ar to dakstiņu segums kalpo ilgāk un nekļūst trausls tik ātri kā ziemeļu klimatā.'}
       ],
       en: [
         {q: 'Will my roof support tile weight?', a: 'We always calculate structural load capacity. If necessary, we reinforce rafters before installation.'},
         {q: 'Difference between clay and concrete tiles?', a: 'Clay tiles are more natural and longer-lasting (up to 100 years), while concrete tiles are more economical and precise in dimensions.'},
-        {q: 'How long does a tile roof last?', a: 'A properly installed tile roof lasts 50-100 years, making it one of the best long-term investments.'}
+        {q: 'How long does a tile roof last?', a: 'A properly installed tile roof lasts 50-100 years, making it one of the best long-term investments.'},
+        {q: 'Why are clay tile roofs more common in warm southern regions?', a: 'Clay tile popularity in Southern Europe is related to both historical and material property factors. Clay tiles are a locally available resource that southerners have used for centuries. They are excellent protection from hot southern sun as they do not overheat and more easily provide refreshing coolness indoors in summer. In countries like Spain and Italy, winters are mild without extreme temperature fluctuations, so tile roofing lasts longer and does not become brittle as quickly as in northern climates.'}
       ],
       'nl-BE': [
         {q: 'Zal mijn dak het pannengewicht dragen?', a: 'Wij berekenen altijd de draagkracht. Indien nodig versterken we de spanten voor installatie.'},
         {q: 'Verschil tussen klei en betonnen pannen?', a: 'Kleipannen zijn natuurlijker en gaan langer mee (tot 100 jaar), terwijl betonnen pannen economischer en maatvaster zijn.'},
-        {q: 'Hoe lang gaat een pannendak mee?', a: 'Een correct geïnstalleerd pannendak gaat 50-100 jaar mee, wat het een van de beste langetermijninvesteringen maakt.'}
+        {q: 'Hoe lang gaat een pannendak mee?', a: 'Een correct geïnstalleerd pannendak gaat 50-100 jaar mee, wat het een van de beste langetermijninvesteringen maakt.'},
+        {q: 'Waarom zijn kleipannen daken gebruikelijker in warme zuidelijke regio\'s?', a: 'De populariteit van kleipannen in Zuid-Europa is gerelateerd aan zowel historische als materiaaleigenschappen. Kleipannen zijn een lokaal beschikbare grondstof die zuiderlingen al eeuwenlang gebruiken. Ze zijn uitstekende bescherming tegen de hete zuidelijke zon omdat ze niet oververhitten en gemakkelijker verfrissende koelte binnenshuis bieden in de zomer. In landen als Spanje en Italië zijn de winters mild zonder extreme temperatuurschommelingen, dus gaat de pannendekking langer mee en wordt niet zo snel bros als in noordelijke klimaten.'}
       ]
     },
     'jumta-logu-montaza': {

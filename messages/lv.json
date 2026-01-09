@@ -215,6 +215,10 @@
       "q5": {
         "question": "Vai jumta remontu var veikt ziemā?",
         "answer": "Jā, mēs varam veikt lielāko daļu jumta remontu visu gadu. Lai gan daži materiāli vislabāk darbojas siltākā laikā, mums ir īpašas tehnikas un materiāli, kas ļauj droši pabeigt ārkārtas remontus pat aukstā laikā."
+      },
+      "q6": {
+        "question": "Vai metāla jumti ir skaļi?",
+        "answer": "Metāla jumti ir skaļāki salīdzinot ar citiem jumta segumiem, tomēr tas vairāk ir mīts nekā patiesība. Metāla jumtus var padarīt klusus iestrādājot skaņas slāpējošu kārtu. Ja jumts ir mansarda stāvā, siltinājums un vēdināšanas kanāls rada gaisa un siltinājuma barjeras, kas aiztur skaņu. Ja jumts ir bez siltinājuma, aukstie bēniņi un siltinātā bēniņu grīda nodrošina pietiekamu attālumu. Lielākā daļa cilvēku apliecina, ka skaņa ikdienā nav traucējoša, dažkārt pat apgalvo, ka lietus skaņa ir patīkama un nomierinoša."
       }
     }
   },
