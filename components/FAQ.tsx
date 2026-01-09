@@ -30,6 +30,10 @@ export default function FAQ() {
       question: t('q5.question'),
       answer: t('q5.answer')
     },
+    {
+      question: t('q6.question'),
+      answer: t('q6.answer')
+    },
   ];
 
   return (
