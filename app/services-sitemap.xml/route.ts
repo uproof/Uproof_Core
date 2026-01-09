@@ -10,7 +10,8 @@ const serviceSlugs = [
   'jumta-apkope-remonts',
   'jumta-remonts',
   'noteksistemu-uzstadisana',
-  'jumta-krasosana'
+  'jumta-krasosana',
+  'saules-dakstini'
 ];
 
 export async function GET() {
