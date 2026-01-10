@@ -1,12 +1,15 @@
 'use client';
 
 import {useTranslations} from 'next-intl';
+import {useLocale} from 'next-intl';
 import {motion} from 'framer-motion';
 import {StarIcon} from '@heroicons/react/24/solid';
 import {useEffect, useRef, useState} from 'react';
+import Link from 'next/link';
 
 export default function Reviews() {
   const t = useTranslations('reviews');
+  const locale = useLocale();
   const [expandedReview, setExpandedReview] = useState<number | null>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -130,12 +133,14 @@ export default function Reviews() {
           transition={{duration: 0.6}}
           className="text-center"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-3 sm:mb-4">
-            {t('title')}
-          </h2>
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
-            {t('subtitle')}
-          </p>
+          <Link href={`/${locale}/reviews`} className="group inline-block">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-primary-600 transition-colors">
+              {t('title')}
+            </h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto group-hover:text-gray-800 transition-colors">
+              {t('subtitle')}
+            </p>
+          </Link>
         </motion.div>
       </div>
 

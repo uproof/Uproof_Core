@@ -3,7 +3,6 @@ import {useTranslations} from 'next-intl';
 import type {Metadata} from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import Breadcrumbs from '@/components/Breadcrumbs';
 import Reviews from '@/components/Reviews';
 
 type PageProps = { params: { locale: string } };
@@ -70,8 +69,6 @@ export default function ReviewsPage({params: {locale}}: PageProps) {
       <Header />
       <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
         <div className="container mx-auto px-4 py-8 sm:py-12">
-          <Breadcrumbs />
-          
           <div className="mt-8">
             <div className="text-center mb-12">
               <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
@@ -149,7 +146,7 @@ export default function ReviewsPage({params: {locale}}: PageProps) {
                   {locale === 'nl-BE' && 'Of laat uw beoordeling achter op Google Maps'}
                 </p>
                 <a 
-                  href="https://g.page/r/YOUR_GOOGLE_PLACE_ID/review"
+                  href="https://www.google.com/search?num=10&sca_esv=31d3cabc157c1d09&si=AL3DRZEsmMCCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOWQ-eCdLJUq8RkkdKDpMXAjjRZOpuQzyyNc3h-0yX0SKbu1-BM495FL6JrpK2l9Kx0nzcLkRMKZRO0-cduKdTbAPa6gmegG7fn0gF_o9ZZFzQbwSPw%3D%3D&q=UpRoof+%7C+Jumtu+b%C5%ABvniec%C4%ABba+Reviews&sa=X&ved=2ahUKEwjB7oGuvoGSAxWuNxAIHQm_HEgQ0bkNegQIIhAD&biw=1920&bih=934&dpr=1&aic=0"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center mt-4 text-blue-600 hover:text-blue-700 font-medium"

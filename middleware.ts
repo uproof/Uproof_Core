@@ -26,7 +26,8 @@ export default function middleware(request: NextRequest) {
   }
 
   // Handle old paths without locale - redirect to lv
-  if (pathname === '/ieteikumi' || pathname === '/services' || pathname === '/materials' || pathname === '/reviews') {
+  const oldPathsToRedirect = ['/ieteikumi', '/services', '/materials', '/reviews', '/projects', '/about', '/contact', '/blog'];
+  if (oldPathsToRedirect.some(p => pathname === p || pathname.startsWith(p + '/'))) {
     const redirectUrl = new URL(`/lv${pathname}`, nextUrl);
     return NextResponse.redirect(redirectUrl, 301);
   }

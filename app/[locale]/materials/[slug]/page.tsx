@@ -71,6 +71,17 @@ const MATERIAL_SPECS: Record<string, { title: Record<string,string>; description
     thickness: '0.5mm',
     finishes: ['Matte','Semi-matte'],
     typicalUse: ['High-end residential','Architectural accents']
+  },
+  'jumta-krasa': {
+    title: { lv: 'Jumta krāsas un pārklājumi', en: 'Roof Paints & Coatings', 'nl-BE': 'Dakverf & Coatings' },
+    description: {
+      lv: 'Profesionāli jumta aizsargpārklājumi un krāsas metāla jumtiem – ilgmūžīga aizsardzība pret koroziju un UV.',
+      en: 'Professional roof protective coatings and paints for metal roofs – long-lasting protection against corrosion and UV.',
+      'nl-BE': 'Professionele dakbeschermende coatings en verven voor metalen daken – langdurige bescherming tegen corrosie en UV.'
+    },
+    thickness: '60–120 μm (dry film)',
+    finishes: ['Matte', 'Satin', 'Gloss'],
+    typicalUse: ['Metal roof restoration', 'Preventive maintenance', 'Color refresh']
   }
 };
 

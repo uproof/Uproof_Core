@@ -16,8 +16,10 @@ const SERVICE_SLUGS = [
   'jumta-logu-montaza',
   'jumta-buvnieciba',
   'jumta-apkope-remonts',
+  'jumta-remonts',
   'noteksistemu-uzstadisana',
-  'jumta-krasosana'
+  'jumta-krasosana',
+  'saules-dakstini'
 ];
 
 const MATERIAL_SLUGS = [
@@ -55,8 +57,10 @@ function serviceAnchor(slug: string, locale: string) {
     'jumta-logu-montaza': { lv: 'Jumta logu montāža', en: 'Skylight installation', 'nl-BE': 'Dakraam installatie' },
     'jumta-buvnieciba': { lv: 'Jumta būvniecība', en: 'Roof construction', 'nl-BE': 'Dakbouw' },
     'jumta-apkope-remonts': { lv: 'Jumta apkope / remonts', en: 'Roof maintenance / repair', 'nl-BE': 'Dakonderhoud / reparatie' },
+    'jumta-remonts': { lv: 'Avārijas jumta remonts', en: 'Emergency roof repair', 'nl-BE': 'Noodreparatie dak' },
     'noteksistemu-uzstadisana': { lv: 'Noteksistēmu uzstādīšana', en: 'Gutter system install', 'nl-BE': 'Gootsysteem installatie' },
-    'jumta-krasosana': { lv: 'Jumta krāsošana', en: 'Roof painting', 'nl-BE': 'Dakschilderen' }
+    'jumta-krasosana': { lv: 'Jumta krāsošana', en: 'Roof painting', 'nl-BE': 'Dakschilderen' },
+    'saules-dakstini': { lv: 'Saules jumta dakstiņi', en: 'Solar roof tiles', 'nl-BE': 'Zonnedakpannen' }
   };
   return map[slug]?.[locale] || map[slug]?.lv || slug;
 }

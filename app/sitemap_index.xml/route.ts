@@ -13,7 +13,6 @@ export async function GET() {
     '/services-sitemap.xml',
     '/blog-sitemap.xml',
     '/materials-sitemap.xml',
-    '/projects-sitemap.xml',
     '/cities-sitemap.xml'
   ];
 

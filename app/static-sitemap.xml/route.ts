@@ -8,6 +8,7 @@ const staticPaths = [
   '/about',
   '/contact',
   '/blog',
+  '/reviews',
   '/privacy-policy',
   '/urgency/caurs-jumts'
 ];
