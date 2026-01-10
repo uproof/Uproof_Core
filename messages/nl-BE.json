@@ -1,4 +1,8 @@
 {
+  "common": {
+    "home": "Home",
+    "contactUs": "Contacteer ons"
+  },
   "nav": {
     "home": "Home",
     "services": "Diensten",
@@ -6,7 +10,9 @@
     "about": "Over ons",
     "contact": "Contact",
     "blog": "Blog",
-    "cities": "Steden"
+    "cities": "Steden",
+    "materials": "Materialen",
+    "reviews": "Beoordelingen"
   },
   "breadcrumbs": {
     "home": "Home",
@@ -92,6 +98,10 @@
     }
   },
   "projects": {
+    "title": "Projecten",
+    "projectDetails": "Projectdetails",
+    "servicesProvided": "Geleverde diensten",
+    "backToProjects": "Terug naar alle projecten",
     "items": {
       "fullCycleConstruction": {
         "title": "Volledige daakconstuctie met staande-naad profiel",
@@ -253,6 +263,10 @@
       "name": "Alexey Konstantinov",
       "text": "Ik ben tevreden met het werk, UpRoof is een verantwoordelijk bedrijf, ik beveel het UpRoof bedrijf aan iedereen die een kwaliteitsdak nodig heeft👍👍👍"
     }
+  },
+  "materials": {
+    "title": "Dakmaterialen",
+    "description": "Hoogwaardige dakmaterialen voor alle daktypes. Professioneel advies en installatie met 10 jaar garantie."
   },
   "contact": {
     "title": "Contacteer ons",

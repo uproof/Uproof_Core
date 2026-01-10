@@ -1,4 +1,8 @@
 {
+  "common": {
+    "home": "Home",
+    "contactUs": "Contact Us"
+  },
   "nav": {
     "home": "Home",
     "services": "Services",
@@ -6,7 +10,9 @@
     "about": "About Us",
     "contact": "Contact",
     "blog": "Blog",
-    "cities": "Cities"
+    "cities": "Cities",
+    "materials": "Materials",
+    "reviews": "Reviews"
   },
   "breadcrumbs": {
     "home": "Home",
@@ -86,6 +92,10 @@
     }
   },
   "projects": {
+    "title": "Projects",
+    "projectDetails": "Project Details",
+    "servicesProvided": "Services Provided",
+    "backToProjects": "Back to all projects",
     "items": {
       "fullCycleConstruction": {
         "title": "Full-Cycle Roof Construction with Metal Profile",
@@ -247,6 +257,10 @@
       "name": "Alexey Konstantinov",
       "text": "I am satisfied with the work, UpRoof is a responsible firm, I recommend UpRoof company to everyone who needs a quality roof👍👍👍"
     }
+  },
+  "materials": {
+    "title": "Roofing Materials",
+    "description": "High-quality roofing materials for all roof types. Professional consultation and installation with 10-year warranty."
   },
   "contact": {
     "title": "GET IN TOUCH",

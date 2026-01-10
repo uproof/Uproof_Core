@@ -16,6 +16,20 @@ function resolveLocale(req: NextRequest): string {
 export default function middleware(request: NextRequest) {
   const {nextUrl, cookies} = request;
   const pathname = nextUrl.pathname;
+  const hostname = request.headers.get('host') || '';
+
+  // Redirect www to non-www
+  if (hostname.startsWith('www.')) {
+    const newUrl = new URL(request.url);
+    newUrl.hostname = hostname.replace('www.', '');
+    return NextResponse.redirect(newUrl, 301);
+  }
+
+  // Handle old paths without locale - redirect to lv
+  if (pathname === '/ieteikumi' || pathname === '/services' || pathname === '/materials' || pathname === '/reviews') {
+    const redirectUrl = new URL(`/lv${pathname}`, nextUrl);
+    return NextResponse.redirect(redirectUrl, 301);
+  }
 
   // Skip if already has locale prefix
   const hasLocalePrefix = /^\/(lv|en|nl-BE)(\/|$)/.test(pathname);
@@ -52,5 +66,10 @@ export default function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/(lv|en|nl-BE)/:path*']
+  matcher: [
+    '/',
+    '/(lv|en|nl-BE)/:path*',
+    // Exclude API routes, static files, and well-known paths
+    '/((?!api|_next/static|_next/image|favicon.ico|images|uploads|models|videos|.*\\..*|\\.well-known).*)'
+  ]
 };

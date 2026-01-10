@@ -9,11 +9,7 @@ const staticPaths = [
   '/contact',
   '/blog',
   '/privacy-policy',
-  '/reviews',
-  '/cenas/jauns-jumts',
-  '/cenas/jumta-remonts',
-  '/urgency/caurs-jumts',
-  '/materials'
+  '/urgency/caurs-jumts'
 ];
 
 export async function GET() {

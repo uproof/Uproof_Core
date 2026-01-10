@@ -1,4 +1,8 @@
 {
+  "common": {
+    "home": "Sākums",
+    "contactUs": "Sazināties ar mums"
+  },
   "nav": {
     "home": "Sākums",
     "services": "Pakalpojumi",
@@ -6,7 +10,9 @@
     "about": "Par mums",
     "contact": "Kontakti",
     "blog": "Blogs",
-    "cities": "Pilsētas"
+    "cities": "Pilsētas",
+    "materials": "Materiāli",
+    "reviews": "Atsauksmes"
   },
   "breadcrumbs": {
     "home": "Sākums",
@@ -76,6 +82,10 @@
     "contact": {"title": "Sazinies ar mums"}
   },
   "projects": {
+    "title": "Projekti",
+    "projectDetails": "Projekta detaļas",
+    "servicesProvided": "Sniegtie pakalpojumi",
+    "backToProjects": "Atpakaļ uz visiem projektiem",
     "items": {
       "fullCycleConstruction": {
         "title": "Pilna cikla jumta būvniecība ar valcprofilu",
@@ -237,6 +247,10 @@
       "name": "Alexey Konstantinov",
       "text": "Esmu apmierināts ar darbu, UpRoof ir atbildīga firma, es iesaku UpRoof kompāniju ikvienam, kam nepieciešams kvalitatīvs jumts👍👍👍"
     }
+  },
+  "materials": {
+    "title": "Jumta materiāli",
+    "description": "Augstas kvalitātes jumta materiāli visiem jumta veidiem. Profesionāla konsultācija un uzstādīšana ar 10 gadu garantiju."
   },
   "contact": {
     "title": "SAZINIES AR MUMS",
