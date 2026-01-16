@@ -16,6 +16,10 @@ async function ensureServicesFile() {
         title: 'Roof Construction',
         description: 'Professional roof construction services using premium materials.',
       },
+      roofStructure: {
+        title: 'Roof Structure Installation',
+        description: 'Installation of prefabricated roof trusses and timber roof structures.',
+      },
       painting: {
         title: 'Roof Painting',
         description: 'High-quality roof painting to extend lifespan and enhance appearance.',

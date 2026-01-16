@@ -36,8 +36,11 @@ export default function Hero() {
           <source src="/videos/hero-video.mp4" type="video/mp4" />
         </video>
         
-        {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70" />
+        {/* Enhanced dark overlay with depth */}
+        <div className="absolute inset-0 bg-gradient-to-b from-gray-900/80 via-gray-900/50 to-gray-900/70" />
+        
+        {/* Subtle vignette effect */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)]" />
 
         {/* Blur transition bar - smoother white-to-transparent blend for visibility */}
         <div
@@ -60,7 +63,7 @@ export default function Hero() {
           transition={{ duration: 1, ease: "easeOut" }}
         >
           <motion.h1 
-            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-4 sm:mb-6 leading-tight px-2"
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-4 sm:mb-6 leading-tight px-2 tracking-tight"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -68,7 +71,7 @@ export default function Hero() {
             {t('title')}
           </motion.h1>
           <motion.p 
-            className="text-base sm:text-lg md:text-2xl lg:text-3xl text-gray-100 font-light mb-8 sm:mb-12 max-w-3xl mx-auto px-4"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 font-light mb-8 sm:mb-12 max-w-2xl mx-auto px-4 leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -76,22 +79,25 @@ export default function Hero() {
             {t('subtitle')}
           </motion.p>
           
-          {/* Roofmaster-style buttons */}
+          {/* Modern button design */}
           <motion.div
-            className="flex gap-3 sm:gap-4 justify-center flex-wrap px-4"
+            className="flex gap-4 justify-center flex-wrap px-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
           >
             <Link
               href="#contact"
-              className="inline-block bg-primary-600 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 text-sm sm:text-base font-bold uppercase hover:bg-primary-700 transition-all shadow-2xl hover:shadow-primary-600/50 hover:scale-105"
+              className="inline-flex items-center gap-2 bg-primary-600 text-white px-7 sm:px-8 py-3.5 sm:py-4 text-sm sm:text-base font-semibold hover:bg-primary-500 transition-all duration-300 shadow-xl shadow-primary-600/30 hover:shadow-2xl hover:shadow-primary-500/40 hover:-translate-y-0.5 rounded-lg"
             >
               {t('cta')}
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
             </Link>
             <Link
               href="/services"
-              className="inline-block bg-white text-gray-900 px-6 sm:px-8 md:px-10 py-3 sm:py-4 text-sm sm:text-base font-bold uppercase hover:bg-gray-100 transition-all shadow-2xl hover:scale-105"
+              className="inline-flex items-center gap-2 bg-white/95 backdrop-blur-sm text-gray-900 px-7 sm:px-8 py-3.5 sm:py-4 text-sm sm:text-base font-semibold hover:bg-white transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-0.5 rounded-lg"
             >
               {t('learnMore')}
             </Link>

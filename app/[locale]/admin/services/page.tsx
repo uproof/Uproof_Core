@@ -23,7 +23,7 @@ export default function ServicesEditor({ params: { locale } }: { params: { local
   useEffect(() => {
     // Fetch services from translations
     const serviceKeys = [
-      'construction', 'painting', 'maintenance', 'metalProfile',
+      'construction', 'roofStructure', 'painting', 'maintenance', 'metalProfile',
       'tiledRoof', 'skylights', 'gutterSystem', 'snowRemoval', 'leafCleaning'
     ];
     

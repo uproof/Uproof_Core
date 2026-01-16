@@ -1,7 +1,7 @@
 'use client';
 
 import {useTranslations} from 'next-intl';
-import {motion} from 'framer-motion';
+import {motion, AnimatePresence} from 'framer-motion';
 import {useState} from 'react';
 import {ChevronDownIcon} from '@heroicons/react/24/outline';
 
@@ -37,8 +37,8 @@ export default function FAQ() {
   ];
 
   return (
-    <section id="faq" className="py-20 bg-white">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="faq" className="py-20 md:py-24 bg-gradient-to-b from-white via-gray-50/30 to-white">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -46,51 +46,66 @@ export default function FAQ() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
             {t('title')}
           </h2>
-          <div className="w-20 h-1 bg-primary-600 mx-auto"></div>
+          <p className="text-gray-600 max-w-xl mx-auto">
+            Find answers to commonly asked questions about our roofing services.
+          </p>
         </motion.div>
 
-        <div className="space-y-4">
+        <div className="space-y-3">
           {faqs.map((faq, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="border border-gray-200 overflow-hidden rounded-lg"
+              transition={{ duration: 0.4, delay: index * 0.05 }}
+              className={`bg-white border rounded-xl overflow-hidden transition-all duration-300 ${
+                openIndex === index 
+                  ? 'border-primary-200 shadow-card' 
+                  : 'border-gray-100 shadow-soft hover:shadow-card hover:border-gray-200'
+              }`}
             >
               <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="w-full flex justify-between items-center p-6 bg-gray-100 hover:bg-gray-200 transition-colors text-left rounded-t-lg"
+                className="w-full flex justify-between items-center p-5 sm:p-6 text-left group"
               >
-                <span className="text-lg font-bold text-gray-900 pr-8">
+                <span className={`text-base sm:text-lg font-semibold pr-4 transition-colors ${
+                  openIndex === index ? 'text-primary-600' : 'text-gray-900 group-hover:text-gray-700'
+                }`}>
                   {faq.question}
                 </span>
-                <ChevronDownIcon
-                  className={`w-6 h-6 text-primary-600 flex-shrink-0 transition-transform duration-300 ${
-                    openIndex === index ? 'transform rotate-180' : ''
-                  }`}
-                />
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
+                  openIndex === index 
+                    ? 'bg-primary-100 rotate-180' 
+                    : 'bg-gray-100 group-hover:bg-gray-200'
+                }`}>
+                  <ChevronDownIcon className={`w-5 h-5 transition-colors ${
+                    openIndex === index ? 'text-primary-600' : 'text-gray-500'
+                  }`} />
+                </div>
               </button>
               
-              <motion.div
-                initial={false}
-                animate={{
-                  height: openIndex === index ? 'auto' : 0,
-                  opacity: openIndex === index ? 1 : 0
-                }}
-                transition={{ duration: 0.3 }}
-                className="overflow-hidden"
-              >
-                <div className="p-6 bg-white rounded-b-lg">
-                  <p className="text-gray-600 leading-relaxed">
-                    {faq.answer}
-                  </p>
-                </div>
-              </motion.div>
+              <AnimatePresence>
+                {openIndex === index && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3, ease: 'easeInOut' }}
+                    className="overflow-hidden"
+                  >
+                    <div className="px-5 sm:px-6 pb-5 sm:pb-6 pt-0">
+                      <div className="h-px bg-gray-100 mb-4" />
+                      <p className="text-gray-600 leading-relaxed">
+                        {faq.answer}
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           ))}
         </div>

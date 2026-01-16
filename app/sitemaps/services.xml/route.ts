@@ -9,9 +9,11 @@ const serviceSlugs = [
   'dakstinu-montaza',
   'jumta-logu-montaza',
   'jumta-buvnieciba',
+  'jumta-konstrukciju-montaza',
   'jumta-apkope-remonts',
   'noteksistemu-uzstadisana',
-  'jumta-krasosana'
+  'jumta-krasosana',
+  'saules-dakstini'
 ];
 
 export async function GET() {

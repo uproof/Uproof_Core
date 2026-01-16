@@ -5,7 +5,9 @@
 :root {
   --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
   --font-display: 'Inter', system-ui, -apple-system, sans-serif;
-  --radius: 12px; /* Default rounding for CTAs */
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 16px;
 }
 
 @layer base {
@@ -15,7 +17,76 @@
   }
   
   body {
-    @apply bg-white text-gray-900 antialiased;
+    @apply text-gray-900 antialiased;
+    background-color: #f0f9ff;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  /* Better text rendering */
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-balance tracking-tight;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Prevent awkward word breaks */
+  p, span, li, td, th, label {
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: none;
+    -webkit-hyphens: none;
+  }
+
+  /* Smoother font rendering for dark backgrounds */
+  .dark-text, [class*="bg-gray-9"], [class*="bg-primary-9"], [class*="bg-gray-8"] {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  /* Enhanced button styles */
+  .btn {
+    @apply inline-flex items-center justify-center font-semibold transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800;
+    @apply focus:ring-primary-500 shadow-sm hover:shadow-md;
+  }
+
+  .btn-secondary {
+    @apply bg-white text-gray-900 border border-gray-200 hover:bg-gray-50 hover:border-gray-300;
+    @apply focus:ring-gray-500;
+  }
+
+  /* Card with better shadows */
+  .card-elevated {
+    @apply bg-white rounded-xl shadow-card transition-all duration-300;
+    @apply hover:shadow-card-hover hover:-translate-y-0.5;
+  }
+
+  /* Section divider line */
+  .section-divider {
+    @apply w-16 h-1 bg-primary-600 rounded-full;
+  }
+
+  /* Gradient text */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-primary-400;
+  }
+
+  /* Subtle texture overlay */
+  .texture-overlay {
+    position: relative;
+  }
+  .texture-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.02;
+    pointer-events: none;
   }
 }
 
@@ -24,37 +95,43 @@
     text-wrap: balance;
   }
 
-  /* Subtle grid background utility used by Hero/PageHeader */
+  /* Grid background pattern */
   .bg-grid-pattern {
     background-image: linear-gradient(
         to right,
-        rgba(255, 255, 255, 0.06) 1px,
+        rgba(255, 255, 255, 0.05) 1px,
         transparent 1px
       ),
       linear-gradient(
         to bottom,
-        rgba(255, 255, 255, 0.06) 1px,
+        rgba(255, 255, 255, 0.05) 1px,
         transparent 1px
       );
+    background-size: 32px 32px;
+  }
+
+  /* Dot pattern */
+  .bg-dot-pattern {
+    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
     background-size: 24px 24px;
   }
 
-  /* Slow pulse for subtle animations */
+  /* Slow pulse animation */
   .animate-pulse-slow {
     animation: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
-  /* Universal CTA & button rounding rule (affects anchors used as buttons, buttons and submit inputs) */
+  /* Universal button rounding */
   button, input[type="submit"], input[type="button"], a[class*="bg-"], a[class*="px-"], a[class*="btn-"], .btn {
     border-radius: var(--radius) !important;
   }
 
-  /* Round form controls for consistent UI across the site */
+  /* Form controls rounding */
   input, textarea, select {
-    border-radius: calc(var(--radius) * 0.75) !important;
+    border-radius: var(--radius-sm) !important;
   }
 
-  /* Utility class for card / box containers: use "card" in JSX to ensure rounded boxes */
+  /* Card container */
   .card {
     border-radius: var(--radius) !important;
   }
@@ -62,8 +139,8 @@
   /* Reveal animations */
   .reveal-up {
     opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    transform: translateY(30px);
+    transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .reveal-up.revealed {
@@ -71,15 +148,38 @@
     transform: translateY(0);
   }
 
-  /* Diagonal section dividers like oxbox.ru */
-  .diagonal-cut-bottom {
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 60px), 0 100%);
-    padding-bottom: 80px;
+  /* Stagger delays for lists */
+  .stagger-1 { transition-delay: 0.1s; }
+  .stagger-2 { transition-delay: 0.2s; }
+  .stagger-3 { transition-delay: 0.3s; }
+  .stagger-4 { transition-delay: 0.4s; }
+  .stagger-5 { transition-delay: 0.5s; }
+
+  /* Glow effects */
+  .glow-primary {
+    box-shadow: 0 0 20px rgba(14, 165, 233, 0.2);
   }
 
-  .diagonal-cut-top {
-    clip-path: polygon(0 60px, 100% 0, 100% 100%, 0 100%);
-    padding-top: 80px;
+  .glow-primary-lg {
+    box-shadow: 0 0 40px rgba(14, 165, 233, 0.25);
+  }
+
+  /* Smooth gradient backgrounds */
+  .bg-gradient-subtle {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+  }
+
+  /* Interactive lift effect */
+  .hover-lift {
+    @apply transition-all duration-300;
+  }
+  .hover-lift:hover {
+    @apply -translate-y-1 shadow-soft-lg;
+  }
+
+  /* Focus ring utility */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
   }
 }
 
@@ -88,6 +188,31 @@
     opacity: 1;
   }
   50% {
-    opacity: 0.3;
+    opacity: 0.4;
   }
+}
+
+/* Smooth scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Selection styling */
+::selection {
+  background: rgba(14, 165, 233, 0.2);
+  color: inherit;
 }

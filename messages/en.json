@@ -40,7 +40,7 @@
     "contact": {"title": "Contact Us"},
     "about": {
   "title": "About UpRoof",
-  "description": "UpRoof are roofing experts with years of experience and a passion for quality. We deliver complete roofing solutions – from design and material selection to installation, painting, and long-term maintenance. Our certified specialists pay attention to every detail, ensuring the highest standards of quality, safety, and aesthetics. UpRoof offers a personal approach, clear communication, and guaranteed results. We take pride in our completed projects and are a trusted partner for both private homes and businesses.",
+  "description": "UpRoof are roofing experts with years of experience and a passion for quality. We deliver complete roofing solutions including design, material selection, installation, painting and long-term maintenance. Our certified specialists pay attention to every detail, ensuring the highest standards of quality, safety and aesthetics. We offer a personal approach, clear communication and guaranteed results. We take pride in our completed projects and are a trusted partner for both private homes and businesses.",
     "values": {
         "quality": {
           "title": "QUALITY",
@@ -171,6 +171,10 @@
       "construction": {
         "title": "ROOF CONSTRUCTION",
         "description": "We offer full-cycle roof construction and renovation with a <bold>10-year warranty</bold>. Roof structure restoration, insulation installation, roof covering installation, skylight installation, gutter system installation, and installation of other roof accessories."
+      },
+      "roofStructure": {
+        "title": "ROOF STRUCTURE INSTALLATION",
+        "description": "We install prefabricated roof trusses and timber roof structures. Services include rafter installation, wall plate installation, and roof frame assembly with precise geometry and reliable joints."
       },
       "painting": {
         "title": "ROOF PAINTING",

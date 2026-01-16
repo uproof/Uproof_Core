@@ -19,51 +19,51 @@ export default function ProjectCard({titleKey, locationKey, year, services, desc
   
   return (
     <motion.div
-      initial={{opacity: 0, y: 30}}
+      initial={{opacity: 0, y: 20}}
       whileInView={{opacity: 1, y: 0}}
-      viewport={{once: true}}
-      transition={{duration: 0.6}}
-      className="group relative overflow-hidden bg-white shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+      viewport={{once: true, margin: "-50px"}}
+      transition={{duration: 0.4}}
+      className="group relative overflow-hidden bg-white rounded-2xl shadow-card hover:shadow-card-hover transition-all duration-500 border border-gray-100"
     >
       {/* Image with overlay */}
-      <div className="relative aspect-[16/9] w-full overflow-hidden">
+      <div className="relative aspect-[16/10] w-full overflow-hidden">
         <Image
           src={image || '/images/projects/placeholder.svg'}
           alt={t(titleKey)}
           fill
           sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-          className="object-cover transform group-hover:scale-110 transition-transform duration-700"
+          className="object-cover transform group-hover:scale-105 transition-transform duration-700"
           priority={false}
         />
-        {/* Dark overlay that lightens on hover */}
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500"></div>
+        {/* Subtle gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-70 group-hover:opacity-50 transition-opacity duration-500"></div>
         
         {/* Year badge */}
-        <div className="absolute top-4 right-4 bg-primary-600 text-white px-4 py-2 font-bold text-sm">
+        <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm text-gray-900 px-3 py-1.5 font-semibold text-sm rounded-lg shadow-sm">
           {year}
         </div>
       </div>
 
       {/* Content */}
       <div className="p-6">
-        <h3 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors duration-300">
+        <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+          <svg className="w-4 h-4 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          {t(locationKey)}
+        </div>
+        <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors duration-300 tracking-tight">
           {t(titleKey)}
         </h3>
-        <p className="text-sm text-gray-500 mb-3 flex items-center gap-2">
-          <span className="inline-block w-1 h-1 rounded-full bg-primary-600"></span>
-          {t(locationKey)}
-        </p>
-        <p className="text-gray-700 mb-4 leading-relaxed">{t(descriptionKey)}</p>
+        <p className="text-gray-600 mb-5 leading-relaxed text-sm line-clamp-3">{t(descriptionKey)}</p>
         <div className="flex flex-wrap gap-2">
           {services.map((s) => (
-            <span key={s} className="px-3 py-1.5 text-xs font-medium bg-primary-50 text-primary-700 border border-primary-200 uppercase tracking-wide hover:bg-primary-600 hover:text-white transition-colors duration-300">
+            <span key={s} className="px-3 py-1.5 text-xs font-medium bg-gray-100 text-gray-700 rounded-lg hover:bg-primary-50 hover:text-primary-700 transition-colors duration-300">
               {tServiceTags(s)}
             </span>
           ))}
         </div>
-        
-        {/* Bottom accent line */}
-        <div className="mt-6 h-1 w-0 bg-gradient-to-r from-primary-600 to-primary-400 group-hover:w-full transition-all duration-500"></div>
       </div>
     </motion.div>
   );

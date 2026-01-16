@@ -32,7 +32,7 @@ export default function ServicesPage({params: {locale}}: {params: {locale: strin
     <main className="min-h-screen">
       <Header />
       <Breadcrumbs />
-      <section className="pt-24 pb-10 bg-gradient-to-b from-primary-50 to-white">
+      <section className="pt-14 pb-4 bg-gradient-to-b from-primary-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900">{t('title')}</h1>
         </div>

@@ -8,28 +8,36 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-900 text-white py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+    <footer className="bg-gray-900 text-white relative overflow-hidden">
+      {/* Subtle texture overlay */}
+      <div className="absolute inset-0 opacity-[0.015]" style={{backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.85\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")'}} />
+      
+      {/* Gradient accent at top */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary-500/30 to-transparent" />
+      
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* Company Info */}
-          <div>
-            <h3 className="text-2xl font-bold text-white mb-4">UpRoof</h3>
-            <p className="text-gray-400">
+          <div className="md:col-span-1">
+            <h3 className="text-2xl font-bold text-white mb-4 tracking-tight">UpRoof</h3>
+            <p className="text-gray-400 text-sm leading-relaxed">
               {t('company')}
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-2">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-300 mb-5">Quick Links</h4>
+            <ul className="space-y-3">
               <li>
-                <Link href="#home" className="text-gray-400 hover:text-white transition-colors">
+                <Link href="/" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2 group">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-primary-500 transition-colors"></span>
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="#services" className="text-gray-400 hover:text-white transition-colors">
+                <Link href="/services" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2 group">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-primary-500 transition-colors"></span>
                   Services
                 </Link>
               </li>
@@ -37,7 +45,8 @@ export default function Footer() {
                 {/* Cities link removed per request */}
               </li>
               <li>
-                <Link href="#contact" className="text-gray-400 hover:text-white transition-colors">
+                <Link href="/contact" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2 group">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-primary-500 transition-colors"></span>
                   Contact
                 </Link>
               </li>
@@ -46,15 +55,21 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Contact</h4>
-            <ul className="space-y-2 text-gray-400">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-300 mb-5">Contact</h4>
+            <ul className="space-y-3">
               <li>
-                <a href="mailto:karlis.uproof@gmail.com" className="hover:text-white transition-colors">
+                <a href="mailto:karlis.uproof@gmail.com" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2 group">
+                  <svg className="w-4 h-4 text-gray-500 group-hover:text-primary-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
                   karlis.uproof@gmail.com
                 </a>
               </li>
               <li>
-                <a href="tel:+37125612440" className="hover:text-white transition-colors">
+                <a href="tel:+37125612440" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2 group">
+                  <svg className="w-4 h-4 text-gray-500 group-hover:text-primary-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
                   +371 25612440
                 </a>
               </li>
@@ -63,15 +78,15 @@ export default function Footer() {
 
             {/* Social Media */}
             <div>
-              <h4 className="text-lg font-semibold mb-4">Follow Us</h4>
-              <div className="flex gap-4">
+              <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-300 mb-5">Follow Us</h4>
+              <div className="flex gap-3">
                 {/* Google Business Profile */}
                 {process.env.NEXT_PUBLIC_GBP_URL && (
                   <a
                     href={process.env.NEXT_PUBLIC_GBP_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 bg-gray-800 hover:bg-green-600 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+                    className="w-10 h-10 bg-gray-800/80 hover:bg-green-600 rounded-lg flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-green-600/20"
                     aria-label="Google Business Profile"
                   >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -85,7 +100,7 @@ export default function Footer() {
                   href="https://www.tiktok.com/@uproof?_t=ZN-90lWrtN4pVP&_r=1"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 bg-gray-800 hover:bg-primary-600 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+                  className="w-10 h-10 bg-gray-800/80 hover:bg-primary-600 rounded-lg flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary-600/20"
                   aria-label="TikTok"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -98,7 +113,7 @@ export default function Footer() {
                   href="https://www.instagram.com/up_roof?igsh=MWhhYXlxM2Vyd3QzNw=="
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 bg-gray-800 hover:bg-gradient-to-tr hover:from-purple-600 hover:via-pink-600 hover:to-yellow-500 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+                  className="w-10 h-10 bg-gray-800/80 hover:bg-gradient-to-tr hover:from-purple-600 hover:via-pink-600 hover:to-yellow-500 rounded-lg flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-pink-500/20"
                   aria-label="Instagram"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -111,7 +126,7 @@ export default function Footer() {
                   href="https://www.facebook.com/share/1BgDDjXKHX/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 bg-gray-800 hover:bg-blue-600 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+                  className="w-10 h-10 bg-gray-800/80 hover:bg-blue-600 rounded-lg flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-600/20"
                   aria-label="Facebook"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -124,7 +139,7 @@ export default function Footer() {
                   href="https://www.linkedin.com/company/uproof-jumti/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 bg-gray-800 hover:bg-blue-700 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+                  className="w-10 h-10 bg-gray-800/80 hover:bg-blue-700 rounded-lg flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-700/20"
                   aria-label="LinkedIn"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -135,21 +150,26 @@ export default function Footer() {
             </div>
         </div>
 
-        <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
-          <div className="flex items-center justify-center gap-2 flex-wrap">
+        {/* Bottom bar */}
+        <div className="border-t border-gray-800/50 pt-8 text-center">
+          <div className="flex items-center justify-center gap-3 flex-wrap text-gray-500 text-sm">
             <p className="flex items-center gap-2">
-              © {currentYear} UpRoof - {t('company')}. {t('rights')}.
+              © {currentYear} UpRoof. {t('rights')}.
             </p>
-            <span className="hidden sm:inline">•</span>
+            <span className="hidden sm:inline text-gray-700">•</span>
+            <Link href="/privacy-policy" className="hover:text-gray-300 transition-colors">
+              Privacy Policy
+            </Link>
+            <span className="hidden sm:inline text-gray-700">•</span>
             <a
               href="https://github.com/MohsinMir-13"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 hover:text-white transition-colors group"
             >
-              <span className="text-sm">Created by</span>
-              <div className="w-6 h-6 rounded-full bg-gray-800 group-hover:bg-primary-600 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
-                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+              <span>Created by</span>
+              <div className="w-5 h-5 rounded bg-gray-800 group-hover:bg-primary-600 flex items-center justify-center transition-all duration-300">
+                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                 </svg>
               </div>

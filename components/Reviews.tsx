@@ -124,8 +124,12 @@ export default function Reviews() {
   }, [isAuto]);
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-12">
+    <section className="py-16 sm:py-20 md:py-24 bg-gradient-to-b from-gray-50 via-white to-gray-50 overflow-hidden relative">
+      {/* Decorative elements */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-100/30 rounded-full blur-3xl -translate-y-1/2" />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary-100/20 rounded-full blur-3xl translate-y-1/2" />
+      
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 sm:mb-14">
         <motion.div
           initial={{opacity: 0, y: 20}}
           whileInView={{opacity: 1, y: 0}}
@@ -134,10 +138,11 @@ export default function Reviews() {
           className="text-center"
         >
           <Link href={`/${locale}/reviews`} className="group inline-block">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-primary-600 transition-colors">
+            <span className="inline-block text-sm font-semibold tracking-wider uppercase text-primary-600 mb-3">Testimonials</span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 group-hover:text-primary-600 transition-colors tracking-tight">
               {t('title')}
             </h2>
-            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto group-hover:text-gray-800 transition-colors">
+            <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto group-hover:text-gray-800 transition-colors">
               {t('subtitle')}
             </p>
           </Link>
@@ -147,20 +152,24 @@ export default function Reviews() {
       {/* Scrolling + Manual Controls */}
       <div className="relative">
         {/* Controls */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 right-0 flex items-center justify-between px-2 sm:px-4">
+        <div className="pointer-events-none absolute inset-y-0 left-0 right-0 flex items-center justify-between px-2 sm:px-6 z-10">
           <button
             aria-label="Previous reviews"
             onClick={() => stepScroll(-1)}
-            className="pointer-events-auto rounded-full bg-white/80 hover:bg-white shadow p-2 sm:p-3 border border-gray-200 text-gray-700 hover:text-primary-700 transition"
+            className="pointer-events-auto w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/95 backdrop-blur-sm hover:bg-white shadow-soft hover:shadow-card-hover border border-gray-100 text-gray-600 hover:text-primary-600 transition-all duration-300 flex items-center justify-center hover:-translate-y-0.5"
           >
-            ‹
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
           </button>
           <button
             aria-label="Next reviews"
             onClick={() => stepScroll(1)}
-            className="pointer-events-auto rounded-full bg-white/80 hover:bg-white shadow p-2 sm:p-3 border border-gray-200 text-gray-700 hover:text-primary-700 transition"
+            className="pointer-events-auto w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/95 backdrop-blur-sm hover:bg-white shadow-soft hover:shadow-card-hover border border-gray-100 text-gray-600 hover:text-primary-600 transition-all duration-300 flex items-center justify-center hover:-translate-y-0.5"
           >
-            ›
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
           </button>
         </div>
 
@@ -173,7 +182,7 @@ export default function Reviews() {
         >
           <div
             ref={trackRef}
-            className="flex gap-4 sm:gap-6 items-stretch w-max scroll-smooth select-none"
+            className="flex gap-5 sm:gap-6 items-stretch w-max scroll-smooth select-none py-4"
             style={{ willChange: 'transform' }}
           >
           {/* Duplicate reviews for seamless loop */}
@@ -184,39 +193,44 @@ export default function Reviews() {
             return (
               <motion.div
                 key={uniqueId}
-                initial={{opacity: 0, scale: 0.9}}
+                initial={{opacity: 0, scale: 0.95}}
                 whileInView={{opacity: 1, scale: 1}}
                 viewport={{once: true}}
-                transition={{duration: 0.5, delay: index * 0.1}}
+                transition={{duration: 0.4, delay: index * 0.05}}
                 onClick={() => toggleExpand(review.id)}
                 data-card
-                className="flex-shrink-0 snap-start w-[280px] sm:w-[350px] md:w-[400px] bg-white rounded-2xl shadow-xl p-5 sm:p-6 md:p-8 border border-gray-100 cursor-pointer hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                className="flex-shrink-0 snap-start w-[300px] sm:w-[360px] md:w-[400px] bg-white rounded-2xl shadow-card hover:shadow-card-hover p-6 sm:p-8 border border-gray-100 cursor-pointer transition-all duration-300 hover:-translate-y-1"
               >
                 {/* Rating Stars */}
-                <div className="flex mb-3 sm:mb-4">
+                <div className="flex gap-0.5 mb-4">
                   {[...Array(review.rating)].map((_, i) => (
-                    <StarIcon key={i} className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-400" />
+                    <StarIcon key={i} className="w-5 h-5 text-amber-400" />
                   ))}
                 </div>
 
                 {/* Review Text */}
-                <p className={`text-sm sm:text-base text-gray-700 mb-4 sm:mb-6 leading-relaxed transition-all duration-300 ${
+                <p className={`text-sm sm:text-base text-gray-600 mb-5 leading-relaxed transition-all duration-300 ${
                   isExpanded ? '' : 'line-clamp-6'
                 }`}>
-                  {review.text}
+                  &ldquo;{review.text}&rdquo;
                 </p>
 
                 {/* Expand Indicator */}
                 {!isExpanded && review.text.length > 200 && (
-                  <p className="text-xs text-primary-600 font-semibold mb-4">
+                  <p className="text-xs text-primary-600 font-medium mb-4">
                     Click to read more...
                   </p>
                 )}
 
                 {/* Author Info */}
-                <div className="border-t pt-3 sm:pt-4">
-                  <p className="font-bold text-gray-900 text-base sm:text-lg">{review.name}</p>
-                  <p className="text-xs sm:text-sm text-gray-500">On Google Reviews</p>
+                <div className="border-t border-gray-100 pt-4 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
+                    <span className="text-sm font-semibold text-primary-700">{review.name.charAt(0)}</span>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900 text-sm">{review.name}</p>
+                    <p className="text-xs text-gray-500">Google Reviews</p>
+                  </div>
                 </div>
               </motion.div>
             );
