@@ -177,11 +177,15 @@ export default function BlogPostPage({params: {locale, id}}: Props) {
       {/* Article Content */}
       <article className="py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Featured Image Placeholder */}
-          <div className="mb-12 relative h-96 bg-gradient-to-br from-primary-600 to-primary-800 rounded-lg flex items-center justify-center">
-            <span className="text-white text-6xl font-bold opacity-50">
-              {post.id}
-            </span>
+          {/* Featured Image */}
+          <div className="mb-12 relative h-96 rounded-xl overflow-hidden bg-gray-100">
+            <Image
+              src={post.image}
+              alt={post.title}
+              fill
+              className="object-cover"
+              priority
+            />
           </div>
 
           {/* Content */}
