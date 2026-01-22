@@ -190,17 +190,17 @@ export default function BlogPostPage({params: {locale, id}}: Props) {
 
           {/* Content */}
           <div 
-            className="prose prose-xl max-w-none 
-              prose-headings:font-bold prose-headings:text-gray-900 prose-headings:mb-6 prose-headings:mt-8
-              prose-h2:text-4xl prose-h2:font-extrabold prose-h2:mb-8 prose-h2:mt-12 prose-h2:text-gray-900 prose-h2:border-b prose-h2:border-gray-200 prose-h2:pb-4
-              prose-h3:text-2xl prose-h3:font-bold prose-h3:mb-4 prose-h3:mt-8 prose-h3:text-gray-800
-              prose-p:text-gray-700 prose-p:text-lg prose-p:leading-relaxed prose-p:mb-6
-              prose-strong:text-gray-900 prose-strong:font-bold prose-strong:text-lg
-              prose-ul:text-gray-700 prose-ul:text-lg prose-ul:my-6 prose-ul:space-y-2
-              prose-ol:text-gray-700 prose-ol:text-lg prose-ol:my-6 prose-ol:space-y-2
-              prose-li:leading-relaxed prose-li:mb-2
-              prose-a:text-primary-600 prose-a:font-semibold prose-a:no-underline hover:prose-a:underline
-              prose-blockquote:border-l-4 prose-blockquote:border-primary-500 prose-blockquote:pl-6 prose-blockquote:italic"
+            className="max-w-none
+              [&_h2]:text-4xl [&_h2]:font-extrabold [&_h2]:text-gray-900 [&_h2]:mb-6 [&_h2]:mt-12 [&_h2]:pb-4 [&_h2]:border-b [&_h2]:border-gray-200
+              [&_h3]:text-2xl [&_h3]:font-bold [&_h3]:text-gray-800 [&_h3]:mb-4 [&_h3]:mt-8
+              [&_p]:text-lg [&_p]:text-gray-700 [&_p]:leading-relaxed [&_p]:mb-6
+              [&_strong]:font-bold [&_strong]:text-gray-900 [&_strong]:text-lg
+              [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-6 [&_ul]:space-y-2
+              [&_ul_li]:text-lg [&_ul_li]:text-gray-700 [&_ul_li]:leading-relaxed
+              [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-6 [&_ol]:space-y-2
+              [&_ol_li]:text-lg [&_ol_li]:text-gray-700 [&_ol_li]:leading-relaxed
+              [&_a]:text-primary-600 [&_a]:font-semibold [&_a]:no-underline hover:[&_a]:underline
+              [&_blockquote]:border-l-4 [&_blockquote]:border-primary-500 [&_blockquote]:pl-6 [&_blockquote]:italic [&_blockquote]:text-gray-600"
             dangerouslySetInnerHTML={{__html: post.content ?? ''}}
           />
 
