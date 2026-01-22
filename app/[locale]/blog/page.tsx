@@ -20,6 +20,8 @@ const blogPosts = blogData as Array<{
   readTime?: string;
 }>;
 
+const placeholderImage = '/images/blog/placeholder.jpg';
+
 export default function BlogPage({params: {locale}}: Props) {
   unstable_setRequestLocale(locale);
 
@@ -48,24 +50,27 @@ export default function BlogPage({params: {locale}}: Props) {
             {blogPosts.map((post, index) => (
               <article
                 key={post.id}
-                className="bg-white shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group"
+                className="bg-white rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 group border border-gray-100"
               >
                 {/* Image */}
-                <div className="relative h-56 bg-gray-200 overflow-hidden">
-                  {/* Placeholder - replace with actual images */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center">
-                    <span className="text-white text-4xl font-bold opacity-50">
-                      {post.id}
-                    </span>
+                <Link href={`/blog/${post.id}`} className="block">
+                  <div className="relative h-64 overflow-hidden bg-slate-100">
+                    <Image
+                      src={post.image?.trim() ? post.image : placeholderImage}
+                      alt={post.title}
+                      fill
+                      sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      priority={index < 3}
+                    />
                   </div>
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
-                </div>
+                </Link>
 
                 {/* Content */}
                 <div className="p-6">
                   {/* Category & Read Time */}
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-bold text-primary-600 uppercase tracking-wide">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary-50 text-primary-700">
                       {post.category}
                     </span>
                     <span className="text-xs text-gray-500">
@@ -74,31 +79,34 @@ export default function BlogPage({params: {locale}}: Props) {
                   </div>
 
                   {/* Title */}
-                  <h2 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors">
-                    <Link href={`/blog/${post.id}`}>
+                  <h2 className="text-xl font-bold text-gray-900 mb-3 leading-tight">
+                    <Link href={`/blog/${post.id}`} className="hover:text-primary-600 transition-colors">
                       {post.title}
                     </Link>
                   </h2>
 
                   {/* Excerpt */}
-                  <p className="text-gray-600 mb-4 line-clamp-3">
+                  <p className="text-gray-600 mb-4 line-clamp-2 text-sm leading-relaxed">
                     {post.excerpt}
                   </p>
 
                   {/* Date & Read More */}
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                     <time className="text-sm text-gray-500">
                       {new Date(post.date).toLocaleDateString(locale, {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
                       })}
                     </time>
                     <Link
                       href={`/blog/${post.id}`}
-                      className="text-sm font-bold text-primary-600 hover:text-primary-700 uppercase tracking-wide"
+                      className="text-sm font-semibold text-primary-600 hover:text-primary-700 flex items-center gap-1 group/link"
                     >
-                      Read More →
+                      Read More
+                      <svg className="w-4 h-4 transition-transform group-hover/link:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
                     </Link>
                   </div>
                 </div>
