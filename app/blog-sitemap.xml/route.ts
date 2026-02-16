@@ -11,7 +11,7 @@ export async function GET() {
       published
         .map(
           (post) =>
-            `<url><loc>${baseUrl}/${locale}/blog/${post.id}</loc><lastmod>${new Date(post.date).toISOString()}</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>`
+            `<url><loc>${baseUrl}/${locale}/blog/${(post as any).slug || post.id}</loc><lastmod>${new Date(post.date).toISOString()}</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>`
         )
         .join('\n')
     )

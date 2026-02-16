@@ -52,15 +52,15 @@ function materialAnchor(slug: string, locale: string) {
 
 function serviceAnchor(slug: string, locale: string) {
   const map: Record<string, Record<string,string>> = {
-    'jumta-renovacija': { lv: 'Jumta renovācija', en: 'Roof renovation', 'nl-BE': 'Dakrenovatie' },
-    'valcprofila-montaza': { lv: 'Valcprofila montāža', en: 'Standing seam install', 'nl-BE': 'Staande naad installatie' },
-    'dakstinu-montaza': { lv: 'Dakstiņu montāža', en: 'Tile roof install', 'nl-BE': 'Pannendak installatie' },
+    'jumta-renovacija': { lv: 'Jumta nomaiņa un renovācija', en: 'Roof renovation', 'nl-BE': 'Dakrenovatie' },
+    'valcprofila-montaza': { lv: 'Metāla jumta montāža (valcprofils)', en: 'Standing seam metal roof install', 'nl-BE': 'Staande naad installatie' },
+    'dakstinu-montaza': { lv: 'Dakstiņu jumta ieklāšana', en: 'Tile roof install', 'nl-BE': 'Pannendak installatie' },
     'jumta-logu-montaza': { lv: 'Jumta logu montāža', en: 'Skylight installation', 'nl-BE': 'Dakraam installatie' },
-    'jumta-buvnieciba': { lv: 'Jumta būvniecība', en: 'Roof construction', 'nl-BE': 'Dakbouw' },
+    'jumta-buvnieciba': { lv: 'Jumta seguma montāža un būvniecība', en: 'Roof construction', 'nl-BE': 'Dakbouw' },
     'jumta-konstrukciju-montaza': { lv: 'Jumta konstrukciju montāža', en: 'Roof structure installation', 'nl-BE': 'Dakconstructie montage' },
-    'jumta-apkope-remonts': { lv: 'Jumta apkope / remonts', en: 'Roof maintenance / repair', 'nl-BE': 'Dakonderhoud / reparatie' },
+    'jumta-apkope-remonts': { lv: 'Jumta darbi – apkope un remonts', en: 'Roof maintenance / repair', 'nl-BE': 'Dakonderhoud / reparatie' },
     'jumta-remonts': { lv: 'Avārijas jumta remonts', en: 'Emergency roof repair', 'nl-BE': 'Noodreparatie dak' },
-    'noteksistemu-uzstadisana': { lv: 'Noteksistēmu uzstādīšana', en: 'Gutter system install', 'nl-BE': 'Gootsysteem installatie' },
+    'noteksistemu-uzstadisana': { lv: 'Noteku montāža un uzstādīšana', en: 'Gutter system install', 'nl-BE': 'Gootsysteem installatie' },
     'jumta-krasosana': { lv: 'Jumta krāsošana', en: 'Roof painting', 'nl-BE': 'Dakschilderen' },
     'saules-dakstini': { lv: 'Saules jumta dakstiņi', en: 'Solar roof tiles', 'nl-BE': 'Zonnedakpannen' }
   };
@@ -124,6 +124,7 @@ export default function InternalLinks({ locale, currentSlug, context }: Internal
               <li><Link href={'/blog'} className="text-primary-700 hover:underline">{locale==='nl-BE'?'Blogartikelen':locale==='en'?'Blog articles':'Blog raksti'}</Link></li>
               <li><Link href={'/projects'} className="text-primary-700 hover:underline">{locale==='nl-BE'?'Projekten':locale==='en'?'Projects':'Projekti'}</Link></li>
               <li><Link href={'/urgency/caurs-jumts'} className="text-primary-700 hover:underline">{locale==='nl-BE'?'Lek in het dak?':locale==='en'?'Roof leak emergency':'Tek jumts, ko darīt?'}</Link></li>
+              <li><Link href={'/urgency/sniega-tirisana'} className="text-primary-700 hover:underline">{locale==='nl-BE'?'Sneeuw verwijderen van dak':locale==='en'?'Snow removal from roof':'Sniega tīrīšana no jumta'}</Link></li>
               <li><Link href={'/contact'} className="text-primary-700 hover:underline">{locale==='nl-BE'?'Contact opnemen':locale==='en'?'Contact us':'Kontakts'}</Link></li>
             </ul>
           </nav>

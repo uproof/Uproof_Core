@@ -9,12 +9,22 @@ import {Link} from '@/i18n/routing';
 import {notFound} from 'next/navigation';
 import blogData from '@/data/blog.json';
 
+const locales = ['lv', 'en', 'nl-BE'];
+
+export function generateStaticParams() {
+  const published = blogData.filter((p: any) => p.status === 'published');
+  return locales.flatMap(locale =>
+    published.map(post => ({locale, slug: (post as any).slug || String(post.id)}))
+  );
+}
+
 type Props = {
-  params: {locale: string; id: string};
+  params: {locale: string; slug: string};
 };
 
 const blogPosts = blogData as Array<{
   id: number;
+  slug?: string;
   title: string;
   excerpt: string;
   image: string;
@@ -25,22 +35,27 @@ const blogPosts = blogData as Array<{
   content?: string;
 }>;
 
+function findPost(slug: string) {
+  return blogPosts.find(p => p.slug === slug) || blogPosts.find(p => String(p.id) === slug);
+}
+
 export function generateMetadata({params}: Props): Metadata {
-  const post = blogPosts.find(p => p.id === parseInt(params.id));
+  const post = findPost(params.slug);
   
   if (!post) {
     return {title: 'Post Not Found'};
   }
 
-  const {locale, id} = params;
-  const canonical = `https://uproof.eu/${locale}/blog/${id}`;
+  const {locale, slug} = params;
+  const postSlug = post.slug || String(post.id);
+  const canonical = `https://uproof.eu/${locale}/blog/${postSlug}`;
   
   // Generate hreflang alternates for blog post
   const languages: Record<string, string> = {
-    lv: `https://uproof.eu/lv/blog/${id}`,
-    en: `https://uproof.eu/en/blog/${id}`,
-    'nl-BE': `https://uproof.eu/nl-BE/blog/${id}`,
-    'x-default': `https://uproof.eu/lv/blog/${id}`,
+    lv: `https://uproof.eu/lv/blog/${postSlug}`,
+    en: `https://uproof.eu/en/blog/${postSlug}`,
+    'nl-BE': `https://uproof.eu/nl-BE/blog/${postSlug}`,
+    'x-default': `https://uproof.eu/lv/blog/${postSlug}`,
   };
 
   return {
@@ -67,20 +82,22 @@ export function generateMetadata({params}: Props): Metadata {
   };
 }
 
-export default function BlogPostPage({params: {locale, id}}: Props) {
+export default function BlogPostPage({params: {locale, slug}}: Props) {
   unstable_setRequestLocale(locale);
 
-  const post = blogPosts.find(p => p.id === parseInt(id));
+  const post = findPost(slug);
 
   if (!post) {
     notFound();
   }
 
+  const postSlug = post.slug || String(post.id);
+
   // BlogPosting structured data
   const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
-    '@id': `https://uproof.eu/${locale}/blog/${id}#article`,
+    '@id': `https://uproof.eu/${locale}/blog/${postSlug}#article`,
     headline: post.title,
     description: post.excerpt,
     image: `https://uproof.eu${post.image}`,
@@ -102,11 +119,11 @@ export default function BlogPostPage({params: {locale, id}}: Props) {
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://uproof.eu/${locale}/blog/${id}`,
+      '@id': `https://uproof.eu/${locale}/blog/${postSlug}`,
     },
     inLanguage: locale === 'lv' ? 'lv-LV' : locale === 'en' ? 'en-US' : 'nl-BE',
     articleSection: post.category,
-    keywords: post.category,
+    keywords: `${post.category}, ${post.title}, jumta darbi, jumta seguma montāža, jumta nomaiņa`,
   };
 
   // BreadcrumbList structured data
@@ -130,7 +147,7 @@ export default function BlogPostPage({params: {locale, id}}: Props) {
         '@type': 'ListItem',
         position: 3,
         name: post.title,
-        item: `https://uproof.eu/${locale}/blog/${id}`,
+        item: `https://uproof.eu/${locale}/blog/${postSlug}`,
       },
     ],
   };

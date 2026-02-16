@@ -15,7 +15,8 @@ export type KeywordIntent =
   | 'skylight'
   | 'painting'
   | 'profile'
-  | 'technical';
+  | 'technical'
+  | 'snow-removal';
 
 export interface KeywordMappingEntry {
   keyword: string; // Exact Latvian intent phrase (lowercase)
@@ -123,6 +124,178 @@ export const keywordMapping: KeywordMappingEntry[] = [
     primaryUrl: '/lv/cenas/jumta-remonts', // Planned
     supportingUrls: ['/lv/services/jumta-apkope-remonts'],
     notes: 'Differentiate emergency vs planned repair cost structures.'
+  },
+
+  // ── Snow removal keywords (seasonal high-volume) ──────────────────
+  {
+    keyword: 'sniega tīrīšana no jumta',
+    intent: 'snow-removal',
+    primaryUrl: '/lv/urgency/sniega-tirisana',
+    supportingUrls: ['/lv/blog/sniega-tirisana-no-jumta-riga', '/lv/blog/sniega-slogs-uz-jumta', '/lv/blog/sniega-tirisana-daudzdzivoklu-maja'],
+    notes: 'Primary head keyword. Landing page is the canonical target.'
+  },
+  {
+    keyword: 'jumta tīrīšana no sniega',
+    intent: 'snow-removal',
+    primaryUrl: '/lv/urgency/sniega-tirisana',
+    supportingUrls: ['/lv/blog/sniega-tirisana-no-jumta-riga', '/lv/blog/sniega-slogs-uz-jumta'],
+    notes: 'Synonym of primary keyword—same landing page, no cannibalization.'
+  },
+  {
+    keyword: 'sniega tīrīšana no jumta rīgā',
+    intent: 'snow-removal',
+    primaryUrl: '/lv/urgency/sniega-tirisana',
+    supportingUrls: ['/lv/blog/sniega-tirisana-no-jumta-riga', '/lv/blog/ka-izvelieties-sniega-tirisanas-pakalpojumu'],
+    notes: 'Geo-modified variant. Landing page covers Rīga + Pierīga.'
+  },
+  {
+    keyword: 'lāsteku tīrīšana',
+    intent: 'snow-removal',
+    primaryUrl: '/lv/urgency/sniega-tirisana',
+    supportingUrls: ['/lv/blog/lasteku-tirisana-jumta-tirisana-no-ledus'],
+    notes: 'Icicle removal—blog 18 is deep-dive, landing page is conversion target.'
+  },
+  {
+    keyword: 'jumta tīrīšana no ledus un lāstekām',
+    intent: 'snow-removal',
+    primaryUrl: '/lv/urgency/sniega-tirisana',
+    supportingUrls: ['/lv/blog/lasteku-tirisana-jumta-tirisana-no-ledus'],
+    notes: 'Ice + icicle combined query. Blog 18 covers details.'
+  },
+  {
+    keyword: 'sniega slogs uz jumta',
+    intent: 'snow-removal',
+    primaryUrl: '/lv/blog/sniega-slogs-uz-jumta',
+    supportingUrls: ['/lv/urgency/sniega-tirisana'],
+    notes: 'Informational intent—blog 19 is authoritative content, landing page for conversion.'
+  },
+  {
+    keyword: 'sniega tīrīšana no jumta cena',
+    intent: 'snow-removal',
+    primaryUrl: '/lv/urgency/sniega-tirisana',
+    supportingUrls: ['/lv/blog/sniega-tirisana-no-jumta-riga'],
+    notes: 'Cost-intent variant. Landing page has pricing section.'
+  },
+  {
+    keyword: 'sniega tīrīšana daudzdzīvokļu mājai',
+    intent: 'snow-removal',
+    primaryUrl: '/lv/blog/sniega-tirisana-daudzdzivoklu-maja',
+    supportingUrls: ['/lv/urgency/sniega-tirisana'],
+    notes: 'Niche audience: apartment building managers/residents. Blog 20 is deep-dive.'
+  },
+  {
+    keyword: 'sniega tīrīšana ar traktoru',
+    intent: 'snow-removal',
+    primaryUrl: '/lv/blog/sniega-tirisana-ar-traktoru',
+    supportingUrls: ['/lv/urgency/sniega-tirisana'],
+    notes: 'Tractor service queries. Blog 22 covers ground + territory clearing.'
+  },
+  {
+    keyword: 'sniega izvešana',
+    intent: 'snow-removal',
+    primaryUrl: '/lv/blog/sniega-tirisana-ar-traktoru',
+    supportingUrls: ['/lv/urgency/sniega-tirisana'],
+    notes: 'Snow removal/hauling from site. Blog 22 covers full logistics.'
+  },
+  {
+    keyword: 'sniega noņemšana no jumta',
+    intent: 'snow-removal',
+    primaryUrl: '/lv/urgency/sniega-tirisana',
+    supportingUrls: ['/lv/blog/sniega-tirisana-no-jumta-riga', '/lv/blog/sniega-slogs-uz-jumta'],
+    notes: 'Alternate phrasing of head keyword.'
+  },
+  {
+    keyword: 'lāsteku noņemšana',
+    intent: 'snow-removal',
+    primaryUrl: '/lv/urgency/sniega-tirisana',
+    supportingUrls: ['/lv/blog/lasteku-tirisana-jumta-tirisana-no-ledus'],
+    notes: 'Alternate icicle phrasing.'
+  },
+  {
+    keyword: 'ledus tīrīšana no jumta',
+    intent: 'snow-removal',
+    primaryUrl: '/lv/urgency/sniega-tirisana',
+    supportingUrls: ['/lv/blog/lasteku-tirisana-jumta-tirisana-no-ledus'],
+    notes: 'Ice cleaning from roof—covered by landing page + blog 18.'
+  },
+  {
+    keyword: 'jumta tīrīšana ziemā',
+    intent: 'snow-removal',
+    primaryUrl: '/lv/urgency/sniega-tirisana',
+    supportingUrls: ['/lv/blog/sniega-tirisana-no-jumta-riga', '/lv/blog/sniega-slogs-uz-jumta', '/lv/blog/sniega-tirisana-daudzdzivoklu-maja'],
+    notes: 'Seasonal maintenance query. All snow content supports this.'
+  },
+  {
+    keyword: 'soda nauda par sniegu uz jumta',
+    intent: 'snow-removal',
+    primaryUrl: '/lv/blog/sniega-tirisana-no-jumta-riga',
+    supportingUrls: ['/lv/urgency/sniega-tirisana'],
+    notes: 'Legal/fine intent. Blog 17 has detailed regulatory content.'
+  },
+  {
+    keyword: 'kā izvēlēties sniega tīrīšanas pakalpojumu',
+    intent: 'snow-removal',
+    primaryUrl: '/lv/blog/ka-izvelieties-sniega-tirisanas-pakalpojumu',
+    supportingUrls: ['/lv/urgency/sniega-tirisana'],
+    notes: 'Consideration-stage content. Blog 21 is decision guide.'
+  },
+
+  // ── High-volume roofing keywords (commonly searched) ──────────────
+  {
+    keyword: 'jumta seguma montāža',
+    intent: 'installation',
+    primaryUrl: '/lv/services/jumta-buvnieciba',
+    supportingUrls: ['/lv/services/jumta-renovacija', '/lv/services/valcprofila-montaza', '/lv/services/dakstinu-montaza'],
+    notes: 'Generic covering installation—construction page is canonical, reinforced by specific material pages.'
+  },
+  {
+    keyword: 'jumta nomaiņa',
+    intent: 'renovation',
+    primaryUrl: '/lv/services/jumta-renovacija',
+    supportingUrls: ['/lv/services/jumta-buvnieciba', '/lv/blog'],
+    notes: 'Roof replacement—renovation page is primary. Differentiate from new build.'
+  },
+  {
+    keyword: 'metāla jumta montāža',
+    intent: 'installation',
+    primaryUrl: '/lv/services/valcprofila-montaza',
+    supportingUrls: ['/lv/services/jumta-buvnieciba', '/lv/materials/valcprofils', '/lv/materials/ruukki-classic'],
+    notes: 'Metal roof installation—standing seam page is canonical target.'
+  },
+  {
+    keyword: 'jumta darbi',
+    intent: 'core-service',
+    primaryUrl: '/lv/services',
+    supportingUrls: ['/lv/services/jumta-buvnieciba', '/lv/services/jumta-renovacija', '/lv/services/jumta-apkope-remonts'],
+    notes: 'Broad umbrella term—services listing page as canonical, all service pages reinforce.'
+  },
+  {
+    keyword: 'jumta ieklāšana',
+    intent: 'installation',
+    primaryUrl: '/lv/services/jumta-buvnieciba',
+    supportingUrls: ['/lv/services/valcprofila-montaza', '/lv/services/dakstinu-montaza', '/lv/services/jumta-renovacija'],
+    notes: 'Roof laying/installation synonym—construction is canonical.'
+  },
+  {
+    keyword: 'noteku montāža',
+    intent: 'drainage',
+    primaryUrl: '/lv/services/noteksistemu-uzstadisana',
+    supportingUrls: ['/lv/services/jumta-buvnieciba', '/lv/services/jumta-renovacija'],
+    notes: 'Gutter installation short form—drainage page is canonical.'
+  },
+  {
+    keyword: 'jumta darbi rīgā',
+    intent: 'city',
+    primaryUrl: '/lv/services',
+    supportingUrls: ['/lv/services/jumta-buvnieciba', '/lv/services/jumta-apkope-remonts'],
+    notes: 'Geo-modified broad term. Services listing is canonical.'
+  },
+  {
+    keyword: 'jumta seguma maiņa',
+    intent: 'renovation',
+    primaryUrl: '/lv/services/jumta-renovacija',
+    supportingUrls: ['/lv/services/jumta-buvnieciba'],
+    notes: 'Covering replacement—synonym for renovation.'
   }
 ];
 

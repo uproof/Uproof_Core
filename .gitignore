@@ -16,3 +16,4 @@ tsconfig.tsbuildinfo
 public/videos/README.md
 .vscode/
 *.md
+scripts/

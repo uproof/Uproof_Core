@@ -43,6 +43,52 @@
       "has": [{"type": "host", "value": "www.uproof.eu"}],
       "destination": "https://uproof.eu/$1",
       "permanent": true
-    }
+    },
+
+    { "source": "/ieteikumi", "destination": "/lv/services", "permanent": true },
+    { "source": "/services", "destination": "/lv/services", "permanent": true },
+    { "source": "/materials", "destination": "/lv/services", "permanent": true },
+    { "source": "/reviews", "destination": "/lv", "permanent": true },
+
+    { "source": "/:locale(lv|en|nl-BE)/materials", "destination": "/:locale/services", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/reviews", "destination": "/:locale", "permanent": true },
+
+    { "source": "/:locale(lv|en|nl-BE)/cenas/:path*", "destination": "/:locale/services", "permanent": true },
+
+    { "source": "/:locale(lv|en|nl-BE)/projects/:slug", "destination": "/:locale/projects", "permanent": true },
+
+    { "source": "/:locale(lv|en|nl-BE)/blog/1", "destination": "/:locale/blog/top-5-roofing-materials-2025", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/blog/2", "destination": "/:locale/blog/how-to-maintain-roof-in-winter", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/blog/3", "destination": "/:locale/blog/signs-roof-needs-repair", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/blog/4", "destination": "/:locale/blog/metal-profile-roofs-guide", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/blog/5", "destination": "/:locale/blog/skylight-installation-pros-cons", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/blog/6", "destination": "/:locale/blog/gutter-system-installation-guide", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/blog/7", "destination": "/:locale/blog/winter-roof-care-snow-ice-tips", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/blog/8", "destination": "/:locale/blog/roof-leak-detection-checklist", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/blog/9", "destination": "/:locale/blog/roof-painting-metal-roof-guide", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/blog/10", "destination": "/:locale/blog/jumta-remonts-riga-cenas", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/blog/11", "destination": "/:locale/blog/kad-jamaina-jumta-segums", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/blog/12", "destination": "/:locale/blog/valcprofils-vs-bitumens", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/blog/13", "destination": "/:locale/blog/jumts-tek-avarijas-remonts", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/blog/14", "destination": "/:locale/blog/valcprofila-montaza-soli-pa-solim", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/blog/15", "destination": "/:locale/blog/noteksistemas-montaza-celvedis", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/blog/16", "destination": "/:locale/blog/jumta-inspekcija-profesionali", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/blog/17", "destination": "/:locale/blog/sniega-tirisana-no-jumta-riga", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/blog/18", "destination": "/:locale/blog/lasteku-tirisana-jumta-tirisana-no-ledus", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/blog/19", "destination": "/:locale/blog/sniega-slogs-uz-jumta", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/blog/20", "destination": "/:locale/blog/sniega-tirisana-daudzdzivoklu-maja", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/blog/21", "destination": "/:locale/blog/ka-izvelieties-sniega-tirisanas-pakalpojumu", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/blog/22", "destination": "/:locale/blog/sniega-tirisana-ar-traktoru", "permanent": true },
+
+    { "source": "/en/urgency/through-the-roof", "destination": "/en/urgency/caurs-jumts", "permanent": true },
+    { "source": "/nl-BE/services/roof-renovation", "destination": "/nl-BE/services/jumta-renovacija", "permanent": true },
+    { "source": "/nl-BE/services/roof-maintenance-repair", "destination": "/nl-BE/services/jumta-apkope-remonts", "permanent": true },
+    { "source": "/nl-BE/services/roof-window-installation", "destination": "/nl-BE/services/jumta-logu-montaza", "permanent": true },
+    { "source": "/lv/services/roof-maintenance-repair", "destination": "/lv/services/jumta-apkope-remonts", "permanent": true },
+    { "source": "/lv/services/roof-construction", "destination": "/lv/services/jumta-buvnieciba", "permanent": true },
+    { "source": "/lv/services/roof-painting", "destination": "/lv/services/jumta-krasosana", "permanent": true },
+    { "source": "/nl-BE/services/roof-painting", "destination": "/nl-BE/services/jumta-krasosana", "permanent": true },
+    { "source": "/en/materials/roof-paint", "destination": "/en/materials/jumta-krasa", "permanent": true },
+    { "source": "/nl-BE/materials/roof-paint", "destination": "/nl-BE/materials/jumta-krasa", "permanent": true }
   ]
 }

@@ -12,7 +12,8 @@
     "blog": "Blog",
     "cities": "Cities",
     "materials": "Materials",
-    "reviews": "Reviews"
+    "reviews": "Reviews",
+    "snowRemoval": "Snow Removal"
   },
   "breadcrumbs": {
     "home": "Home",
@@ -349,7 +350,16 @@
   },
   "footer": {
     "company": "SIA UpLift",
-    "rights": "All rights reserved"
+    "rights": "All rights reserved",
+    "quickLinks": "Quick Links",
+    "contactTitle": "Contact",
+    "followUs": "Follow Us",
+    "home": "Home",
+    "servicesLink": "Services",
+    "blogLink": "Blog",
+    "contactLink": "Contact",
+    "snowRemoval": "Snow Removal",
+    "roofLeak": "Roof Leak?"
   }
   ,
   "Cities": {

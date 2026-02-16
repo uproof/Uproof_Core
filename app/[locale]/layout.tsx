@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     default: 'Jumta remonts Rīgā | Ātra avārijas reaģēšana 24/7 | UpRoof',
     template: '%s | UpRoof'
   },
-  description: 'Jumts tek vai vajag remontu? UpRoof – ātra 24/7 avārijas reaģēšana, profesionāla jumta apkope, renovācija, būvniecība Rīgā un Latvijā. 10 gadu garantija. +371 25612440. Bezmaksas novērtējums!',
+  description: 'Jumts tek vai vajag remontu? UpRoof – jumta darbi Rīgā: jumta seguma montāža, jumta nomaiņa, metāla jumta montāža, valcprofila montāža, jumta ieklāšana, noteku montāža, jumta krāsošana. 10 gadu garantija. +371 25612440.',
   keywords: [
     'jumta būvniecība Rīgā',
     'jumta remonts Rīgā', 
@@ -34,12 +34,16 @@ export const metadata: Metadata = {
     'jumta meistari Rīgā',
     'jumta darbi Rīgā',
     'jumta seguma maiņa Rīgā',
+    'jumta nomaiņa Rīgā',
+    'jumta ieklāšana',
     'valcprofils',
     'valcprofila montāža',
+    'metāla jumta montāža',
     'stāvošā šuve',
     'metāla jumts Rīgā',
     'skārda jumts',
     'skārdnieka darbi',
+    'noteku montāža Rīgā',
     'noteku tīrīšana Rīgā',
     'jumta tīrīšana',
     'jumta renovācija Rīgā',
@@ -264,7 +268,7 @@ export default async function LocaleLayout({
     },
     aggregateRating: {
       '@type': 'AggregateRating',
-      ratingValue: '5',
+      ratingValue: '4.9',
       reviewCount: '47',
       bestRating: '5',
       worstRating: '1'

@@ -27,27 +27,42 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-300 mb-5">Quick Links</h4>
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-300 mb-5">{t('quickLinks') || 'Quick Links'}</h4>
             <ul className="space-y-3">
               <li>
                 <Link href="/" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-primary-500 transition-colors"></span>
-                  Home
+                  {t('home') || 'Home'}
                 </Link>
               </li>
               <li>
                 <Link href="/services" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-primary-500 transition-colors"></span>
-                  Services
+                  {t('servicesLink') || 'Services'}
                 </Link>
               </li>
               <li>
-                {/* Cities link removed per request */}
+                <Link href="/blog" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2 group">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-primary-500 transition-colors"></span>
+                  {t('blogLink') || 'Blog'}
+                </Link>
               </li>
               <li>
                 <Link href="/contact" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-primary-500 transition-colors"></span>
-                  Contact
+                  {t('contactLink') || 'Contact'}
+                </Link>
+              </li>
+              <li>
+                <Link href="/urgency/sniega-tirisana" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2 group">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-600 group-hover:bg-red-400 transition-colors"></span>
+                  {t('snowRemoval') || 'Sniega tīrīšana'}
+                </Link>
+              </li>
+              <li>
+                <Link href="/urgency/caurs-jumts" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2 group">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-600 group-hover:bg-red-400 transition-colors"></span>
+                  {t('roofLeak') || 'Tek jumts?'}
                 </Link>
               </li>
             </ul>
@@ -55,7 +70,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-300 mb-5">Contact</h4>
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-300 mb-5">{t('contactTitle') || 'Contact'}</h4>
             <ul className="space-y-3">
               <li>
                 <a href="mailto:karlis.uproof@gmail.com" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2 group">
@@ -78,7 +93,7 @@ export default function Footer() {
 
             {/* Social Media */}
             <div>
-              <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-300 mb-5">Follow Us</h4>
+              <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-300 mb-5">{t('followUs') || 'Follow Us'}</h4>
               <div className="flex gap-3">
                 {/* Google Business Profile */}
                 {process.env.NEXT_PUBLIC_GBP_URL && (

@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import Services from '@/components/Services';
 import Solutions from '@/components/Solutions';
+import StatsBar from '@/components/StatsBar';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import nextDynamic from 'next/dynamic';
@@ -19,15 +20,28 @@ export function generateMetadata({params}: Props): Metadata {
   const {locale} = params;
   const canonical = `https://uproof.eu/${locale}`;
   
-  // Generate hreflang alternates for homepage
   const languages: Record<string, string> = {
     lv: 'https://uproof.eu/lv',
     en: 'https://uproof.eu/en',
     'nl-BE': 'https://uproof.eu/nl-BE',
-    'x-default': 'https://uproof.eu/lv', // Default to Latvian
+    'x-default': 'https://uproof.eu/lv',
+  };
+
+  const titles: Record<string, string> = {
+    lv: 'UpRoof – Profesionāli jumta pakalpojumi Rīgā un Pierīgā | Sniega tīrīšana 24/7',
+    en: 'UpRoof – Professional Roofing Services in Latvia | Snow Removal 24/7',
+    'nl-BE': 'UpRoof – Professionele Dakdiensten | Renovatie & Onderhoud',
+  };
+
+  const descriptions: Record<string, string> = {
+    lv: 'Profesionāli jumta darbi Rīgā: jumta seguma montāža, jumta nomaiņa, metāla jumta montāža, valcprofila montāža, jumta ieklāšana, noteku montāža, jumta krāsošana. Sertificēta kvalitāte, 10+ gadu pieredze. Bezmaksas apskate. Zvaniet +371 25612440.',
+    en: 'Professional roofing services: construction, renovation, repair, metal roof installation, snow and ice removal 24/7. Certified quality, 10+ years experience. Free inspection. Call +371 25612440.',
+    'nl-BE': 'Professionele dakdiensten: renovatie, reparatie, metalen daken, pannendaken, onderhoud. Gecertificeerde kwaliteit met garantie. Gratis inspectie.',
   };
 
   return {
+    title: titles[locale] || titles.lv,
+    description: descriptions[locale] || descriptions.lv,
     alternates: {
       canonical,
       languages,
@@ -38,11 +52,55 @@ export function generateMetadata({params}: Props): Metadata {
 export default function HomePage({params: {locale}}: Props) {
   unstable_setRequestLocale(locale);
 
+  // Show snow removal banner during winter months (Nov-Mar)
+  const month = new Date().getMonth(); // 0-indexed
+  const isWinter = month >= 10 || month <= 2; // Nov(10), Dec(11), Jan(0), Feb(1), Mar(2)
+
+  const bannerText: Record<string, {title: string; cta: string}> = {
+    lv: {title: 'Sniega un ledus tīrīšana no jumta – 24/7', cta: 'Pieteikties tagad'},
+    en: {title: 'Snow & Ice Removal from Roof – 24/7', cta: 'Request now'},
+    'nl-BE': {title: 'Sneeuw- en ijsverwijdering van dak – 24/7', cta: 'Aanvragen'},
+  };
+  const banner = bannerText[locale] || bannerText.lv;
+
+  const statsData: Record<string, {value: string; label: string}[]> = {
+    lv: [
+      {value: '200+', label: 'Pabeigti projekti'},
+      {value: '10+', label: 'Gadu pieredze'},
+      {value: '10', label: 'Gadu garantija'},
+      {value: '100%', label: 'Klientu apmierinātība'},
+    ],
+    en: [
+      {value: '200+', label: 'Completed Projects'},
+      {value: '10+', label: 'Years Experience'},
+      {value: '10', label: 'Year Warranty'},
+      {value: '100%', label: 'Client Satisfaction'},
+    ],
+    'nl-BE': [
+      {value: '200+', label: 'Voltooide Projecten'},
+      {value: '10+', label: 'Jaar Ervaring'},
+      {value: '10', label: 'Jaar Garantie'},
+      {value: '100%', label: 'Klanttevredenheid'},
+    ],
+  };
+
   return (
     <main className="min-h-screen">
   <Header showText={false} largeLogo={true} />
   <Hero />
+      {isWinter && (
+        <div className="bg-gray-900 text-white py-3">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-center">
+            <p className="font-semibold text-sm sm:text-base">{banner.title}</p>
+            <a href={`/${locale}/urgency/sniega-tirisana`} className="inline-flex items-center gap-2 bg-white text-gray-900 px-5 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">
+              {banner.cta}
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+            </a>
+          </div>
+        </div>
+      )}
   <Services limit={4} />
+      <StatsBar stats={statsData[locale] || statsData.lv} />
       <Reviews />
       <Solutions />
       <FAQ />
@@ -69,12 +127,29 @@ export default function HomePage({params: {locale}}: Props) {
             openingHoursSpecification: [
               { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday'], opens: '08:00', closes: '18:00' }
             ],
-            aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.9', reviewCount: '27' },
+            aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.9', reviewCount: '47' },
+            sameAs: [
+              'https://www.tiktok.com/@uproof',
+              'https://www.instagram.com/up_roof',
+              'https://www.facebook.com/share/1BgDDjXKHX/',
+              'https://www.linkedin.com/company/uproof-jumti/',
+            ],
+            hasOfferCatalog: {
+              '@type': 'OfferCatalog',
+              name: locale === 'lv' ? 'Jumta pakalpojumi' : locale === 'nl-BE' ? 'Dakdiensten' : 'Roofing Services',
+              itemListElement: [
+                {'@type': 'Offer', itemOffered: {'@type': 'Service', name: locale === 'lv' ? 'Jumta renovācija' : locale === 'nl-BE' ? 'Dakrenovatie' : 'Roof Renovation'}},
+                {'@type': 'Offer', itemOffered: {'@type': 'Service', name: locale === 'lv' ? 'Jumta būvniecība' : locale === 'nl-BE' ? 'Dakbouw' : 'Roof Construction'}},
+                {'@type': 'Offer', itemOffered: {'@type': 'Service', name: locale === 'lv' ? 'Jumta remonts' : locale === 'nl-BE' ? 'Dakreparatie' : 'Roof Repair'}},
+                {'@type': 'Offer', itemOffered: {'@type': 'Service', name: locale === 'lv' ? 'Sniega un ledus tīrīšana no jumta' : locale === 'nl-BE' ? 'Sneeuw- en ijsverwijdering van dak' : 'Snow & Ice Removal from Roof'}},
+                {'@type': 'Offer', itemOffered: {'@type': 'Service', name: locale === 'lv' ? 'Jumta apkope' : locale === 'nl-BE' ? 'Dakonderhoud' : 'Roof Maintenance'}},
+              ],
+            },
             description: locale === 'nl-BE'
               ? 'Professionele dakdiensten: renovatie, pannendaken, metaal, onderhoud. Gecertificeerde kwaliteit met garantie.'
               : locale === 'en'
-              ? 'Professional roofing services: construction, renovation, metal, tiles, maintenance. Certified quality with warranty.'
-              : 'Profesionāli jumta pakalpojumi: būvniecība, renovācija, metāla jumti, dakstiņi, apkope. Sertificēta kvalitāte ar garantiju.'
+              ? 'Professional roofing services: construction, renovation, metal, tiles, maintenance, snow and ice removal. Certified quality with warranty.'
+              : 'Profesionāli jumta pakalpojumi: būvniecība, renovācija, metāla jumti, dakstiņi, apkope, sniega un ledus tīrīšana no jumta. Sertificēta kvalitāte ar garantiju.'
           })
         }}
       />

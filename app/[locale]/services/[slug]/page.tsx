@@ -46,7 +46,7 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
       en: 'Full-cycle roof renovation in Riga and Pieriga: structure renewal, insulation, roofing replacement, skylight installation. Certified craftsmen, 10-year warranty. Serving Riga, Jurmala, Jelgava.',
       'nl-BE': 'Volledige dakrenovatie in België: structuurvernieuwing, isolatie, dakbedekkingsvervanging, dakraaminstallatie. Gecertificeerde vakmannen, 10 jaar garantie. Actief in Kortrijk, Gent, Brugge, Antwerpen.'
     },
-    keywords: 'jumta renovācija Rīgā, jumta renovācija Latvijā, jumta atjaunošana Rīgā, jumta remonts Pierīgā, roof renovation Riga, dakrenovatie België'
+    keywords: 'jumta renovācija Rīgā, jumta nomaiņa Rīgā, jumta seguma maiņa, jumta renovācija Latvijā, jumta atjaunošana Rīgā, jumta remonts Pierīgā, roof renovation Riga, dakrenovatie België'
   },
   'valcprofila-montaza': {
     title: {
@@ -59,7 +59,7 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
       en: 'Standing seam metal roofing installation in Riga and Latvia with fully hermetic double-lock solutions. Professional sheet metal work with precise connections to windows and chimneys. 10-year warranty. Serving Riga, Pieriga, Jurmala.',
       'nl-BE': 'Staande naad metalen dakbedekking installatie in België met volledig hermetische dubbele sluitoplossingen. Professioneel plaatwerk met precieze aansluitingen op ramen en schoorstenen. 10 jaar garantie. Actief in Kortrijk, Gent, Brugge.'
     },
-    keywords: 'valcprofila montāža Rīgā, stāvošā šuve, valcprofils, metāla jumts Rīgā, skārda jumts, skārdnieka darbi, falcētais jumts, standing seam roofing Riga, staande naad dakbedekking België'
+    keywords: 'valcprofila montāža Rīgā, metāla jumta montāža Rīgā, stāvošā šuve, valcprofils, metāla jumts Rīgā, skārda jumts, skārdnieka darbi, jumta ieklāšana, falcētais jumts, standing seam roofing Riga, staande naad dakbedekking België'
   },
   'dakstinu-montaza': {
     title: {
@@ -72,7 +72,7 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
       en: 'Clay or concrete tile installation in Riga and Latvia with proper underlayment ventilation and hermetic sheet metal connections. Durable and aesthetic roofs. 10-year warranty on workmanship. Serving Riga, Pieriga, Jelgava.',
       'nl-BE': 'Klei of betonnen pannendak installatie in België met juiste onderlaag ventilatie en hermetische plaatwerk aansluitingen. Duurzame en esthetische daken. 10 jaar garantie op vakmanschap. Actief in Kortrijk, Gent, Brugge, Antwerpen.'
     },
-    keywords: 'dakstiņu montāža Rīgā, māla dakstiņi Latvijā, tile roof installation Riga, pannendak installatie België'
+    keywords: 'dakstiņu montāža Rīgā, jumta ieklāšana, jumta seguma montāža, māla dakstiņi Latvijā, tile roof installation Riga, pannendak installatie België'
   },
   'jumta-logu-montaza': {
     title: {
@@ -98,7 +98,7 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
       en: 'Full-cycle roof construction in Riga from design to finished roof: structure, insulation materials, covering, drainage systems. 10-year warranty. Serving Riga, Pieriga, Jurmala, Jelgava.',
       'nl-BE': 'Volledige dakbouw in België van ontwerp tot voltooid dak: structuur, isolatiematerialen, bedekking, afvoersystemen. 10 jaar garantie. Actief in Kortrijk, Gent, Brugge, Antwerpen, Brussel.'
     },
-    keywords: 'jumta būvniecība Rīgā, jumtu būvniecība Latvijā, jauna jumta celtniecība Rīgā, roof construction Riga, dakbouw België'
+    keywords: 'jumta būvniecība Rīgā, jumta darbi Rīgā, jumta seguma montāža, jumta ieklāšana Rīgā, jumtu būvniecība Latvijā, jauna jumta celtniecība Rīgā, roof construction Riga, dakbouw België'
   },
   'jumta-konstrukciju-montaza': {
     title: {
@@ -124,7 +124,7 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
       en: 'Roof leak or need maintenance? Fast emergency response, gutter cleaning, roof washing, damage repair in Riga. Drone diagnostics, snow/moss removal, chimney sealing. Free assessment in Riga and Pieriga.',
       'nl-BE': 'Dakonderhoud in België: schadediagnose, reparatie, gootreiniging, sneeuw- en bladverwijdering, schoorsteenafwerking. Regelmatig onderhoud verlengt daklevensduur. Service in Kortrijk, Gent, Brugge, Deinze, Waregem.'
     },
-    keywords: 'jumta apkope Rīgā, jumta remonts Rīgā, jumts tek, jumta noplūde, noteku tīrīšana Rīgā, jumta tīrīšana, jumta mazgāšana, avārijas remonts, lāsteku noņemšana, sniega tīrīšana jumtiem, skursteņa apdare, roof maintenance Riga, dakonderhoud België'
+    keywords: 'jumta apkope Rīgā, jumta remonts Rīgā, jumta darbi, jumts tek, jumta noplūde, noteku tīrīšana Rīgā, noteku montāža, jumta tīrīšana, jumta mazgāšana, avārijas remonts, lāsteku noņemšana, sniega tīrīšana jumtiem, skursteņa apdare, roof maintenance Riga, dakonderhoud België'
   },
   'noteksistemu-uzstadisana': {
     title: {
@@ -137,7 +137,7 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
       en: 'Quality gutter system installation in Riga and Latvia: downspouts, gutters, connections, roof safety and water drainage. Proper system protects structure. Service in Riga, Pieriga, Jurmala.',
       'nl-BE': 'Kwaliteitsvolle gootsysteem installatie in België: regenpijpen, goten, verbindingen, dakveiligheid en waterafvoer. Correct systeem beschermt structuur. Service in Kortrijk, Gent, Brugge, Oudenaarde, Izegem.'
     },
-    keywords: 'noteksistēmu uzstādīšana Rīgā, noteksistēmu montāža jumtam Latvijā, gutter installation Riga, gootsysteem installatie België'
+    keywords: 'noteksistēmu uzstādīšana Rīgā, noteku montāža Rīgā, noteksistēmu montāža jumtam Latvijā, noteku uzstādīšana, gutter installation Riga, gootsysteem installatie België'
   },
   'jumta-remonts': {
     title: {
@@ -150,7 +150,7 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
       en: 'Roof leak emergency? Fast 24/7 response, diagnostics, local repair in Riga and Pieriga. Certified specialists, 2-year warranty. Free assessment. Call +371 25612440',
       'nl-BE': 'Daklek noodgeval? Snelle 24/7 reactie, diagnose, lokale reparatie in België. Gecertificeerde vakmensen, 2 jaar garantie. Gratis beoordeling.'
     },
-    keywords: 'jumta remonts Rīgā, jumts tek, jumta noplūde avārija, avārijas reaģēšana, jumta remonts Pierīgā, emergency roof repair Riga, dak reparatie noodgeval België'
+    keywords: 'jumta remonts Rīgā, jumta darbi Rīgā, jumts tek, jumta noplūde avārija, avārijas reaģēšana, jumta remonts Pierīgā, emergency roof repair Riga, dak reparatie noodgeval België'
   },
   'jumta-krasosana': {
     title: {
@@ -191,7 +191,7 @@ function getServiceContent(slug: string, locale: string) {
   }>> = {
     'jumta-renovacija': {
       lv: {
-        overview: 'Pilna cikla jumta renovācija ir kapitālais remonts, kas atjauno jumta konstrukciju, izolāciju, siltināšanu un segumu. Mēs nodrošinām, ka jūsu jumts kļūst kā jauns, ar moderniem izolācijas materiāliem un ilgmūžīgiem seguma risinājumiem.',
+        overview: 'Pilna cikla jumta renovācija un jumta nomaiņa ir kapitālais remonts, kas atjauno jumta konstrukciju, izolāciju, siltināšanu un segumu. Mēs veicam pilnīgu jumta seguma montāžu un jumta ieklāšanu, nodrošinot, ka jūsu jumts kļūst kā jauns ar moderniem izolācijas materiāliem un ilgmūžīgiem seguma risinājumiem.',
         benefits: ['Pilnīga jumta konstrukciju atjaunošana', 'Moderna siltināšanas materiālu izmantošana', 'Garantēta noplūžu novēršana', 'Jumta estētikas uzlabošana', 'Enerģijas taupīšana ar labāku izolāciju'],
         process: ['Jumta stāvokļa diagnostika ar dronu un tehniskā izpēte', 'Veca jumta seguma un bojāto elementu demontāža', 'Jumta konstrukcijas stiprības pārbaude, bojāto spāru un paneļu nomaiņa', 'Skursteņu atjaunošana, renovācija un hermētiskās sistēmas uzstādīšana', 'Jumta siltināšanas darbi ar mūsdienīgiem termoizolācijas materiāliem', 'Difūzijas membrānas/zemseguma uzstādīšana ar ventilācijas sistēmu', 'Latojuma un kontrlatojuma montāža ar precīzu līmeņošanu', 'Jumta noteksistēmas montāža ar teknes āķu iestrādāšanu', 'Jauna jumta seguma montāža ar hermētiskiem savienojumiem un pieslēgumiem', 'Jumta drošības elementu un aksesuāru montāža - sniega barjeras, laipas, ventilācija', 'Vēja kastes, apmalēm un apdares elementu montāža', 'Būvniecības atkritumu utilizācija, darba vietas satīrīšana un jumta funkcionalitātes pārbaude'],
         qualityPoints: ['10 gadu garantija uz montāžas darbu', 'Sertificēti speciālisti ar 15+ gadu pieredzi', 'ISO 9001 sertificēta kvalitātes vadības sistēma', 'Drošības protokoli atbilst Latvijas būvnormatīviem'],
@@ -214,7 +214,7 @@ function getServiceContent(slug: string, locale: string) {
     },
     'valcprofila-montaza': {
       lv: {
-        overview: 'Latvijas skarbajos laikapstākļos ar krasajām temperatūras maiņām un lielo mitrumu vispiemērotākie ir metāla valcprofila jumti. Valcprofila metāla jumta segums nodrošina maksimālu hermētiskumu ar dubultlocījumiem, ilgmūžību un elegantu izskatu. Piemērots gan jaunbūvēm, gan renovācijām.',
+        overview: 'Latvijas skarbajos laikapstākļos ar krasajām temperatūras maiņām un lielo mitrumu vispiemērotākie ir metāla valcprofila jumti. Metāla jumta montāža ar valcprofila segumu nodrošina maksimālu hermētiskumu ar dubultlocījumiem, ilgmūžību un elegantu izskatu. Piemērots gan jaunbūvēm, gan jumta nomaiņai.',
         benefits: ['Pilnīgs hermētiskums - dubultā metāla locīšana izveido pilnībā hermētiskus savienojumus', 'Laikapstākļu noturība - spēj izplesties un sarauties temperatūras maiņas rezultātā, nesaplaisā pēc daudzkārtējas temperatūras maiņas', 'Viegla kopšana ziemas apstākļos - var droši pārvietoties un apkopot, tīrīt sniegu un ledu', 'Ilgmūžība 50+ gadi - vienīgais drauds ir rūsa, ko novērš ar pārkrāsošanu ik pēc 5-10 gadiem', 'Vēsturisks pierādījums - Latvijas arhitektūrā kalpo jau simtiem gadu ar pareizu apkopi'],
         process: ['Vecā jumta demontāža un jumta konstrukcijas sagatavošana', 'Jumta konstrukcijas izbūve ar gatavām kopņu konstrukcijām vai montējot spāres un jumta krēslu uz vietas', 'Skursteņu atjaunošana un izbūve', 'Jumta siltināšanas darbi', 'Difūzijas membrānas/zemseguma uzstādīšana paredzot zemseguma ventilāciju', 'Latojuma montāža un līmeņošana', 'Jumta noteksistēmas montāža, teknes āķus iestrādājot uz spārēm zem jumta seguma', 'Valcprofila seguma montāža un visu nepieciešamo pieslēgumu montāža ar dubultlocījumiem', 'Jumta aksesuāru un papildus elementu montāža - sniega barjeras, jumta drošības laipas, jumta ventilācijas izvadi un citi jumta elementi', 'Vēja kastes un koka fasādes montāža ar dekoratīviem apdares dēļiem vai vēja kastes skārda paneļiem', 'Būvniecības laikā radušos atkritumu utilizācija un darba vietas satīrīšana', 'Jumta funkcionalitātes un hermētiskuma pārbaude'],
         qualityPoints: ['10 gadu garantija uz darbu', '50 gadu ražotāja garantija uz krāsu pārklājumu un metāla integritāti', 'Sertificēti instalatori no ražotāja', 'Hermētiskuma pārbaude ar ūdens testa metodiku', 'Profesionāla valcējuma iekārta'],
@@ -304,7 +304,7 @@ function getServiceContent(slug: string, locale: string) {
     },
     'jumta-buvnieciba': {
       lv: {
-        overview: 'Jumta būvniecība ir komplekss process no projektēšanas līdz gatavajam jumtam, kurā ietilpst konstrukcija, izolācija, siltināšana, segums un noteku sistēmas. Mēs piedāvājam pilna cikla risinājumus ar individuālu projektēšanu.',
+        overview: 'Jumta būvniecība un jumta darbi ir komplekss process no projektēšanas līdz gatavajam jumtam, kurā ietilpst konstrukcija, izolācija, siltināšana, jumta seguma montāža, jumta ieklāšana un noteku montāža. Mēs piedāvājam pilna cikla risinājumus ar individuālu projektēšanu.',
         benefits: ['Pilna cikla būvniecība no A līdz Z', 'Sertificēti būvspeciālisti un jumtu projektētāji', 'Atbilstība visiem Latvijas būvnormatīviem', 'Individuāla projektēšana un tāme', 'Ilgtspējīgi un hermētiski jumta risinājumi'],
         process: ['Objekta apsekošana, mērīšana un tāmēšana', 'Projektēšana un būvniecības atļauju ieguves palīdzība', 'Jumta konstrukcijas izbūve ar gatavām kopņu konstrukcijām vai montējot spāres un jumta krēslu uz vietas', 'Skursteņu atjaunošana un izbūve', 'Jumta siltināšanas darbi un termiskās izolācijas sistēmas uzstādīšana', 'Difūzijas membrānas/zemseguma uzstādīšana paredzot zemseguma ventilāciju', 'Latojuma montāža un līmeņošana', 'Jumta noteksistēmas montāža, teknes āķus iestrādājot uz spārēm', 'Jumta seguma montāža un visu nepieciešamo pieslēgumu hermētiska izbūve', 'Jumta aksesuāru un drošības elementu montāža - sniega barjeras, jumta laipas, ventilācijas izvadi', 'Vēja kastes un fasādes apdares darbi ar kvalitatīviem materiāliem', 'Būvniecības atkritumu utilizācija, darba vietas satīrīšana un jumta funkcionalitātes pārbaude'],
         qualityPoints: ['10 gadu garantija uz visu darbu', 'ISO 9001 sertificēta kvalitātes vadība', 'Būvniecības dokumentācijas sagatavošana', 'Speciālistu sertifikāti un licences'],
@@ -373,7 +373,7 @@ function getServiceContent(slug: string, locale: string) {
     },
     'noteksistemu-uzstadisana': {
       lv: {
-        overview: 'Noteksistēmas (ūdens noteku sistēmas) nodrošina efektīvu ūdens novadīšanu no jumta un fasādes, aizsargājot fasādes, bāzi un apkārtni. Mēs montējam kvalitātīvas metāla notekas ar garantiju pret rūsēšanu.',
+        overview: 'Noteku montāža un noteksistēmu uzstādīšana – nodrošinām efektīvu ūdens novadīšanu no jumta un fasādes, aizsargājot bāzi un apkārtni. Profesionāla noteku montāža Rīgā ar kvalitātīvām metāla notekām un garantiju pret rūsēšanu.',
         benefits: ['Efektīva ūdens novadīšana no fasādes un bāzes', 'Plaša krāsu un materiālu izvēle', 'Izturība pret sniega un ledu slodzi', 'Garantija pret rūsēšanu un lūšanu vēl 25 gadus', 'Skaņas adsorbcija ar speciālu izolāciju'],
         process: ['Jumta karnīzes precīza mērīšana un CAD plāna izstrāde', 'Noteku sistēmas komponentu izvēle un materiālu sagatavošana', 'Noteku turētāju (kronšteinu) montāža ar pareizu krituma leņķi (3-5mm/m)', 'Metālisko renu precīza ieklāšana, savienošana ar hermētiskām blīvēm', 'Stūra elementu un pagriezienu montāža ar precīzu pielāgošanu', 'Ūdens piltuvju un savienojumu ar notekcaurulēm uzstādīšana', 'Notekcauruļu kronšteinu fiksācija uz fasādes ar optimāliem intervāliem', 'Notekcauruļu montāža ar līkumiem un pagarinājumiem', 'Ūdens aizplūdes sistēmas pieslēgums (lietusūdens drenāža vai kanalizācija)', 'Skaņas izolācijas materiālu uzstādīšana (ja nepieciešams)', 'Noteku sistēmas aizsardzības režģu un sietu montāža', 'Ūdens novadīšanas funkcionalitātes pārbaude ar ūdens testa metodi'],
         qualityPoints: ['10 gadu garantija uz montāžas darbu', '25 gadu antikorozijas garantija uz materiālu', 'Speciālistiem ir sertifikāti noteku montāžai', 'CAD dizains katram objektam'],

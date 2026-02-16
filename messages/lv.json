@@ -12,7 +12,8 @@
     "blog": "Blogs",
     "cities": "Pilsētas",
     "materials": "Materiāli",
-    "reviews": "Atsauksmes"
+    "reviews": "Atsauksmes",
+    "snowRemoval": "Sniega tīrīšana"
   },
   "breadcrumbs": {
     "home": "Sākums",
@@ -339,7 +340,16 @@
   },
   "footer": {
     "company": "SIA UpLift",
-    "rights": "Visas tiesības aizsargātas"
+    "rights": "Visas tiesības aizsargātas",
+    "quickLinks": "Noderīgas saites",
+    "contactTitle": "Kontakti",
+    "followUs": "Sekojiet mums",
+    "home": "Sākums",
+    "servicesLink": "Pakalpojumi",
+    "blogLink": "Blogs",
+    "contactLink": "Kontakti",
+    "snowRemoval": "Sniega tīrīšana no jumta",
+    "roofLeak": "Tek jumts?"
   }
   ,
   "Cities": {

@@ -88,6 +88,9 @@ export default function Header({showText = true, largeLogo = false}: HeaderProps
               {t('blog') || 'Blog'}
               <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary-500 group-hover:w-3/4 transition-all duration-300 rounded-full"></span>
             </Link>
+            <Link href="/urgency/sniega-tirisana" prefetch={false} className="px-4 py-2 text-red-700 hover:text-red-800 transition-all font-semibold relative group rounded-lg hover:bg-red-50 text-sm">
+              {t('snowRemoval') || 'Sniega tīrīšana'}
+            </Link>
             <Link href="/contact" className="ml-4 px-6 py-2.5 bg-primary-500 text-white font-semibold hover:bg-primary-600 transition-all duration-300 shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 transform hover:-translate-y-0.5 rounded-lg text-sm tracking-wide">
               {t('contact')}
             </Link>
@@ -132,6 +135,9 @@ export default function Header({showText = true, largeLogo = false}: HeaderProps
               </Link>
               <Link href="/contact" prefetch={false} className="text-gray-900 hover:text-primary-600 transition-colors font-medium px-4 py-3 hover:bg-primary-50 rounded-lg">
                 {t('contact')}
+              </Link>
+              <Link href="/urgency/sniega-tirisana" prefetch={false} className="text-red-700 hover:text-red-800 transition-colors font-semibold px-4 py-3 hover:bg-red-50 rounded-lg">
+                {t('snowRemoval') || 'Sniega tīrīšana'}
               </Link>
               <div className="pt-4 px-4">
                 <LanguageSwitcher />

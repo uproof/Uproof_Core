@@ -10,7 +10,8 @@ const staticPaths = [
   '/blog',
   '/reviews',
   '/privacy-policy',
-  '/urgency/caurs-jumts'
+  '/urgency/caurs-jumts',
+  '/urgency/sniega-tirisana'
 ];
 
 export async function GET() {

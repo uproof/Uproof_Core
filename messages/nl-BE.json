@@ -12,7 +12,8 @@
     "blog": "Blog",
     "cities": "Steden",
     "materials": "Materialen",
-    "reviews": "Beoordelingen"
+    "reviews": "Beoordelingen",
+    "snowRemoval": "Sneeuwruiming"
   },
   "breadcrumbs": {
     "home": "Home",
@@ -356,7 +357,16 @@
     "footer": {
       "company": "UpRoof dakconstructie bedrijf",
       "tagline": "Professionele dakbedekkingsoplossingen!",
-      "rights": "Alle rechten voorbehouden"
+      "rights": "Alle rechten voorbehouden",
+      "quickLinks": "Snelle Links",
+      "contactTitle": "Contact",
+      "followUs": "Volg ons",
+      "home": "Home",
+      "servicesLink": "Diensten",
+      "blogLink": "Blog",
+      "contactLink": "Contact",
+      "snowRemoval": "Sneeuwruiming",
+      "roofLeak": "Daklek?"
     },
   "Cities": {
         "title": "Steden waar we actief zijn",

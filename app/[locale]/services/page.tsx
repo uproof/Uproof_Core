@@ -15,9 +15,20 @@ export async function generateMetadata({ params: { locale } }: { params: { local
     'x-default': 'https://uproof.eu/lv/services'
   };
 
+  const titles: Record<string, string> = {
+    lv: 'Jumta darbi Rīgā | Jumta seguma montāža, nomaiņa, krāsošana | UpRoof',
+    en: 'Roofing Services Latvia | Construction, Repair & Snow Removal | UpRoof',
+    'nl-BE': 'Dakdiensten | Renovatie, Reparatie & Onderhoud | UpRoof',
+  };
+  const descriptions: Record<string, string> = {
+    lv: 'Pilns jumta darbu klāsts Rīgā: jumta seguma montāža, jumta nomaiņa, metāla jumta montāža, valcprofila montāža, jumta ieklāšana, noteku montāža, jumta krāsošana, sniega tīrīšana 24/7. 10 gadu garantija. Bezmaksas apskate.',
+    en: 'Complete roofing services: construction, renovation, repairs, metal roof installation, painting, snow and ice removal 24/7. 10-year warranty. Free quotes in Latvia.',
+    'nl-BE': 'Complete dakdiensten: renovatie, reparatie, schilderwerk, metalen daken, pannendaken. 10 jaar garantie. Gratis offerte.',
+  };
+
   return {
-    title: 'Roofing Services Latvia | Construction & Repair',
-    description: 'Complete roofing services: construction, repairs, painting, metal roofing, tile installation. 10-year warranty. Free quotes in Latvia.',
+    title: titles[locale] || titles.lv,
+    description: descriptions[locale] || descriptions.lv,
     alternates: {
       canonical,
       languages

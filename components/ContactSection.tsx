@@ -111,10 +111,7 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-20 md:py-24 bg-gradient-to-b from-white via-gray-50/50 to-white relative overflow-hidden">
-      {/* Decorative background elements */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary-50/50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary-50/30 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3" />
+    <section id="contact" className="py-20 md:py-24 bg-gradient-to-b from-white via-gray-50/30 to-white">
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
@@ -243,25 +240,25 @@ export default function ContactSection() {
               </h3>
               
               <div className="space-y-5">
-                <a href="tel:+37125612440" className="flex items-center gap-4 p-4 rounded-xl bg-gray-50 hover:bg-primary-50 transition-colors group">
-                  <div className="w-12 h-12 rounded-xl bg-primary-100 flex items-center justify-center group-hover:bg-primary-200 transition-colors">
-                    <PhoneIcon className="w-6 h-6 text-primary-600" />
+                <a href="tel:+37125612440" className="flex items-center gap-4 p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors group">
+                  <div className="w-12 h-12 rounded-xl bg-gray-100 border border-gray-200 flex items-center justify-center transition-colors">
+                    <PhoneIcon className="w-6 h-6 text-gray-700" />
                   </div>
                   <div>
                     <p className="text-sm text-gray-500 mb-0.5">Phone</p>
-                    <p className="text-lg font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                    <p className="text-lg font-semibold text-gray-900 transition-colors">
                       +371 25612440
                     </p>
                   </div>
                 </a>
 
-                <a href="mailto:karlis.uproof@gmail.com" className="flex items-center gap-4 p-4 rounded-xl bg-gray-50 hover:bg-primary-50 transition-colors group">
-                  <div className="w-12 h-12 rounded-xl bg-primary-100 flex items-center justify-center group-hover:bg-primary-200 transition-colors">
-                    <EnvelopeIcon className="w-6 h-6 text-primary-600" />
+                <a href="mailto:karlis.uproof@gmail.com" className="flex items-center gap-4 p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors group">
+                  <div className="w-12 h-12 rounded-xl bg-gray-100 border border-gray-200 flex items-center justify-center transition-colors">
+                    <EnvelopeIcon className="w-6 h-6 text-gray-700" />
                   </div>
                   <div>
                     <p className="text-sm text-gray-500 mb-0.5">Email</p>
-                    <p className="text-lg font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                    <p className="text-lg font-semibold text-gray-900 transition-colors">
                       karlis.uproof@gmail.com
                     </p>
                   </div>

@@ -2,6 +2,7 @@ import {unstable_setRequestLocale} from 'next-intl/server';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import {Link} from '@/i18n/routing';
 import type {Metadata} from 'next';
 
 export const metadata: Metadata = {
@@ -87,6 +88,15 @@ export default function UrgencyLeakPage({ params: { locale }}: { params: { local
 							<p className="text-sm">{locale === 'lv' ? 'Zvani ' : locale === 'en' ? 'Call ' : 'Bel '}<a href="tel:+37125612440" className="underline">+371 25612440</a> {locale === 'lv' ? 'vai raksti' : locale === 'en' ? 'or write' : 'of schrijf'} <a href="mailto:karlis.uproof@gmail.com" className="underline">karlis.uproof@gmail.com</a></p>
 						</div>
 					</div>
+				</div>
+			</section>
+			<section className="py-8 border-t border-gray-200">
+				<div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+					<h3 className="font-semibold text-gray-900 mb-3">{locale === 'lv' ? 'Saistītie pakalpojumi' : locale === 'en' ? 'Related Services' : 'Gerelateerde diensten'}</h3>
+					<ul className="space-y-2">
+						<li><Link href="/urgency/sniega-tirisana" className="text-gray-600 hover:text-gray-900 hover:underline text-sm">{locale === 'lv' ? 'Sniega tīrīšana no jumta Rīgā – 24/7' : locale === 'en' ? 'Snow Removal from Roof in Riga – 24/7' : 'Sneeuwruiming van het dak in Riga – 24/7'}</Link></li>
+						<li><Link href="/services/jumta-apkope-remonts" className="text-gray-600 hover:text-gray-900 hover:underline text-sm">{locale === 'lv' ? 'Jumta apkope un remonts' : locale === 'en' ? 'Roof Maintenance & Repair' : 'Dakonderhoud & Reparatie'}</Link></li>
+					</ul>
 				</div>
 			</section>
 			<Footer />

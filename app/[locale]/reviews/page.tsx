@@ -54,7 +54,7 @@ export default function ReviewsPage({params: {locale}}: PageProps) {
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: '4.9',
-      reviewCount: '150+',
+      reviewCount: '47',
       bestRating: '5',
       worstRating: '1'
     }

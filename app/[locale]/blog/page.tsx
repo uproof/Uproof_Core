@@ -5,13 +5,43 @@ import Footer from '@/components/Footer';
 import Image from 'next/image';
 import {Link} from '@/i18n/routing';
 import blogData from '@/data/blog.json';
+import type {Metadata} from 'next';
 
 type Props = {
   params: {locale: string};
 };
 
+export function generateMetadata({params}: Props): Metadata {
+  const {locale} = params;
+  const canonical = `https://uproof.eu/${locale}/blog`;
+  const languages: Record<string, string> = {
+    lv: 'https://uproof.eu/lv/blog',
+    en: 'https://uproof.eu/en/blog',
+    'nl-BE': 'https://uproof.eu/nl-BE/blog',
+    'x-default': 'https://uproof.eu/lv/blog',
+  };
+
+  const titles: Record<string, string> = {
+    lv: 'Jumtu ziņas un padomi | UpRoof blogs',
+    en: 'Roofing Insights & Tips | UpRoof Blog',
+    'nl-BE': 'Daktips & Inzichten | UpRoof Blog',
+  };
+  const descriptions: Record<string, string> = {
+    lv: 'Ekspertu padomi par jumtu būvniecību, renovāciju, apkopi un sniega tīrīšanu. Jaunumi, nozares tendences un praktiskas rokasgrāmatas.',
+    en: 'Expert advice on roofing construction, renovation, maintenance and snow removal. News, industry trends and practical guides.',
+    'nl-BE': 'Deskundig advies over dakconstructie, renovatie, onderhoud. Nieuws, trends en praktische gidsen.',
+  };
+
+  return {
+    title: titles[locale] || titles.lv,
+    description: descriptions[locale] || descriptions.lv,
+    alternates: { canonical, languages },
+  };
+}
+
 const blogPosts = blogData as Array<{
   id: number;
+  slug?: string;
   title: string;
   excerpt: string;
   image: string;
@@ -34,10 +64,10 @@ export default function BlogPage({params: {locale}}: Props) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Roofing Insights & Tips
+              {locale === 'lv' ? 'Jumtu ziņas un padomi' : locale === 'nl-BE' ? 'Daktips & Inzichten' : 'Roofing Insights & Tips'}
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Expert advice, industry trends, and practical guides for all your roofing needs
+              {locale === 'lv' ? 'Ekspertu padomi, nozares tendences un praktiskas rokasgrāmatas jebkurām jumta vajadzībām' : locale === 'nl-BE' ? 'Deskundig advies, trends en praktische gidsen voor al uw dakbehoeften' : 'Expert advice, industry trends, and practical guides for all your roofing needs'}
             </p>
           </div>
         </div>
@@ -53,7 +83,7 @@ export default function BlogPage({params: {locale}}: Props) {
                 className="bg-white rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 group border border-gray-100"
               >
                 {/* Image */}
-                <Link href={`/blog/${post.id}`} className="block">
+                <Link href={`/blog/${post.slug || post.id}`} className="block">
                   <div className="relative h-64 overflow-hidden bg-slate-100">
                     <Image
                       src={post.image?.trim() ? post.image : placeholderImage}
@@ -80,7 +110,7 @@ export default function BlogPage({params: {locale}}: Props) {
 
                   {/* Title */}
                   <h2 className="text-xl font-bold text-gray-900 mb-3 leading-tight">
-                    <Link href={`/blog/${post.id}`} className="hover:text-primary-600 transition-colors">
+                    <Link href={`/blog/${post.slug || post.id}`} className="hover:text-primary-600 transition-colors">
                       {post.title}
                     </Link>
                   </h2>
@@ -100,10 +130,10 @@ export default function BlogPage({params: {locale}}: Props) {
                       })}
                     </time>
                     <Link
-                      href={`/blog/${post.id}`}
+                      href={`/blog/${post.slug || post.id}`}
                       className="text-sm font-semibold text-primary-600 hover:text-primary-700 flex items-center gap-1 group/link"
                     >
-                      Read More
+                      {locale === 'lv' ? 'Lasīt vairāk' : locale === 'nl-BE' ? 'Lees meer' : 'Read More'}
                       <svg className="w-4 h-4 transition-transform group-hover/link:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
@@ -114,18 +144,7 @@ export default function BlogPage({params: {locale}}: Props) {
             ))}
           </div>
 
-          {/* Pagination */}
-          <div className="mt-12 flex justify-center gap-2">
-            <button className="px-4 py-2 bg-primary-600 text-white font-bold hover:bg-primary-700 transition-colors">
-              1
-            </button>
-            <button className="px-4 py-2 bg-white text-gray-700 font-bold hover:bg-gray-100 transition-colors border border-gray-300">
-              2
-            </button>
-            <button className="px-4 py-2 bg-white text-gray-700 font-bold hover:bg-gray-100 transition-colors border border-gray-300">
-              3
-            </button>
-          </div>
+
         </div>
       </section>
 
