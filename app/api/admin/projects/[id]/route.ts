@@ -8,14 +8,15 @@ const PUBLIC_UPLOADS = path.join(process.cwd(), 'public', 'uploads', 'projects')
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const authenticated = isAdminAuthenticated();
+  const authenticated = await isAdminAuthenticated();
   if (!authenticated) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
+    const { id } = await params;
     const formData = await request.formData();
     const title = formData.get('title') as string;
     const location = formData.get('location') as string;
@@ -32,7 +33,7 @@ export async function PATCH(
     // Read existing projects
     const content = await fs.readFile(PROJECTS_FILE, 'utf-8');
     const projects = JSON.parse(content);
-    const projectIndex = projects.findIndex((p: any) => p.id === params.id);
+    const projectIndex = projects.findIndex((p: any) => p.id === id);
 
     if (projectIndex === -1) {
       return NextResponse.json(
@@ -58,7 +59,7 @@ export async function PATCH(
 
       const buffer = await imageFile.arrayBuffer();
       const ext = imageFile.name.split('.').pop() || 'jpg';
-      const fileName = `${params.id}.${ext}`;
+      const fileName = `${id}.${ext}`;
       const fullPath = path.join(PUBLIC_UPLOADS, fileName);
       
       await fs.writeFile(fullPath, Buffer.from(buffer));
@@ -89,18 +90,19 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const authenticated = isAdminAuthenticated();
+  const authenticated = await isAdminAuthenticated();
   if (!authenticated) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
     // Read existing projects
+    const { id } = await params;
     const content = await fs.readFile(PROJECTS_FILE, 'utf-8');
     const projects = JSON.parse(content);
-    const projectIndex = projects.findIndex((p: any) => p.id === params.id);
+    const projectIndex = projects.findIndex((p: any) => p.id === id);
 
     if (projectIndex === -1) {
       return NextResponse.json(

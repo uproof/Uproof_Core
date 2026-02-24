@@ -7,9 +7,9 @@ const PAGES_FILE = path.join(process.cwd(), 'data', 'pages.json');
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
-  const authenticated = isAdminAuthenticated();
+  const authenticated = await isAdminAuthenticated();
   if (!authenticated) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
@@ -28,7 +28,8 @@ export async function PATCH(
     // Read existing pages
     const fileContent = await fs.readFile(PAGES_FILE, 'utf-8');
     const pages = JSON.parse(fileContent);
-    const pageIndex = pages.findIndex((p: any) => p.slug === params.slug);
+    const { slug } = await params;
+    const pageIndex = pages.findIndex((p: any) => p.slug === slug);
 
     if (pageIndex === -1) {
       return NextResponse.json(

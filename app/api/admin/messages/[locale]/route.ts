@@ -7,8 +7,8 @@ function filePath(locale: string) {
   return path.join(process.cwd(), 'messages', `${locale}.json`);
 }
 
-export async function GET(_: NextRequest, {params}: {params: {locale: string}}) {
-  const {locale} = params;
+export async function GET(_: NextRequest, {params}: {params: Promise<{locale: string}>}) {
+  const {locale} = await params;
   try {
     const txt = await fs.readFile(filePath(locale), 'utf8');
     return NextResponse.json({ok: true, messages: JSON.parse(txt)});
@@ -17,9 +17,9 @@ export async function GET(_: NextRequest, {params}: {params: {locale: string}}) 
   }
 }
 
-export async function PUT(req: NextRequest, {params}: {params: {locale: string}}) {
-  if (!isAdminAuthenticated()) return NextResponse.json({ok: false}, {status: 401});
-  const {locale} = params;
+export async function PUT(req: NextRequest, {params}: {params: Promise<{locale: string}>}) {
+  if (!(await isAdminAuthenticated())) return NextResponse.json({ok: false}, {status: 401});
+  const {locale} = await params;
   const body = await req.json();
   // Basic safeguard: ensure object
   if (typeof body !== 'object' || body === null) {

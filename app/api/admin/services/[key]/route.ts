@@ -59,10 +59,10 @@ async function ensureServicesFile() {
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { key: string } }
+  { params }: { params: Promise<{ key: string }> }
 ) {
   // Check admin authentication
-  const authenticated = isAdminAuthenticated();
+  const authenticated = await isAdminAuthenticated();
   if (!authenticated) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
@@ -83,15 +83,17 @@ export async function PATCH(
     const content = await fs.readFile(SERVICES_CONFIG_FILE, 'utf-8');
     const services = JSON.parse(content);
 
+    const { key } = await params;
+
     // Update the specific service
-    if (!services[params.key]) {
+    if (!services[key]) {
       return NextResponse.json(
-        { error: `Service key "${params.key}" not found` },
+        { error: `Service key "${key}" not found` },
         { status: 404 }
       );
     }
 
-    services[params.key] = {
+    services[key] = {
       title,
       description,
     };
@@ -101,7 +103,7 @@ export async function PATCH(
 
     return NextResponse.json({
       success: true,
-      service: { key: params.key, ...services[params.key] },
+      service: { key, ...services[key] },
     });
   } catch (error) {
     console.error('Error updating service:', error);

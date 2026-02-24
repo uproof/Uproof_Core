@@ -19,7 +19,7 @@ export function generateStaticParams() {
 }
 
 type Props = {
-  params: {locale: string; slug: string};
+  params: Promise<{locale: string; slug: string}>;
 };
 
 const blogPosts = blogData as Array<{
@@ -39,14 +39,14 @@ function findPost(slug: string) {
   return blogPosts.find(p => p.slug === slug) || blogPosts.find(p => String(p.id) === slug);
 }
 
-export function generateMetadata({params}: Props): Metadata {
-  const post = findPost(params.slug);
+export async function generateMetadata({params}: Props): Promise<Metadata> {
+  const {locale, slug} = await params;
+  const post = findPost(slug);
   
   if (!post) {
     return {title: 'Post Not Found'};
   }
 
-  const {locale, slug} = params;
   const postSlug = post.slug || String(post.id);
   const canonical = `https://uproof.eu/${locale}/blog/${postSlug}`;
   
@@ -82,7 +82,8 @@ export function generateMetadata({params}: Props): Metadata {
   };
 }
 
-export default function BlogPostPage({params: {locale, slug}}: Props) {
+export default async function BlogPostPage({params}: Props) {
+  const {locale, slug} = await params;
   unstable_setRequestLocale(locale);
 
   const post = findPost(slug);

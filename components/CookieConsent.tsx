@@ -1,6 +1,7 @@
 'use client';
 
 import {useState, useEffect} from 'react';
+import Link from 'next/link';
 import {useTranslations} from 'next-intl';
 import {XMarkIcon} from '@heroicons/react/24/outline';
 import {motion, AnimatePresence} from 'framer-motion';
@@ -167,9 +168,9 @@ export default function CookieConsent() {
           
           <p className="text-xs text-gray-500 mt-4">
             {t('learnMore')}{' '}
-            <a href="/privacy-policy" className="text-primary-600 hover:underline">
+            <Link href="/privacy-policy" className="text-primary-600 hover:underline">
               {t('privacyPolicy')}
-            </a>
+            </Link>
           </p>
         </div>
       </motion.div>

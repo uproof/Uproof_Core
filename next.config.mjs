@@ -12,6 +12,13 @@ const nextConfig = {
   },
   images: {
     formats: ['image/avif', 'image/webp'],
+    // Tighter breakpoints — avoids generating oversized variants
+    deviceSizes: [640, 750, 828, 1080, 1200],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    // Allowed quality values for next/image
+    qualities: [65, 75],
+    // Cache optimized images for 30 days on CDN
+    minimumCacheTTL: 2592000,
     remotePatterns: [
       {
         protocol: 'https',

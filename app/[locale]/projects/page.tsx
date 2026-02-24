@@ -1,4 +1,5 @@
 import {unstable_setRequestLocale} from 'next-intl/server';
+import {use} from 'react';
 import {useTranslations} from 'next-intl';
 import type {Metadata} from 'next';
 import Header from '@/components/Header';
@@ -7,11 +8,11 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import ProjectCard from '@/components/ProjectCard';
 import {projects} from '@/data/projects';
 
-type PageProps = { params: { locale: string } };
+type PageProps = { params: Promise<{ locale: string }> };
 
 // Localized metadata generation similar to service pages
-export function generateMetadata({params}: PageProps): Metadata {
-  const {locale} = params;
+export async function generateMetadata({params}: PageProps): Promise<Metadata> {
+  const {locale} = await params;
   const canonical = `https://uproof.eu/${locale}/projects`;
   const titleMap: Record<string,string> = {
     lv: 'Mūsu jumta projekti | Portfolio un gadījumu izpēte | UpRoof',
@@ -40,7 +41,8 @@ export function generateMetadata({params}: PageProps): Metadata {
   };
 }
 
-export default function ProjectsPage({params: {locale}}: PageProps) {
+export default function ProjectsPage({params}: PageProps) {
+  const {locale} = use(params);
   unstable_setRequestLocale(locale);
   const t = useTranslations('pages.projects');
 

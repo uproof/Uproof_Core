@@ -26,8 +26,8 @@ function cityName(slug: string, locale: string) {
   return map[slug]?.[locale] || map[slug]?.lv || slug;
 }
 
-export function generateMetadata({params}: {params: {locale: string; city: string}}): Metadata {
-  const {locale, city} = params;
+export async function generateMetadata({params}: {params: Promise<{locale: string; city: string}>}): Promise<Metadata> {
+  const {locale, city} = await params;
   const name = cityName(city, locale);
   const canonical = `https://uproof.eu/${locale}/cities/${city}`;
   const languages: Record<string,string> = {
@@ -57,7 +57,8 @@ export function generateMetadata({params}: {params: {locale: string; city: strin
   };
 }
 
-export default function CityLanding({params: {locale, city}}: {params: {locale: string; city: string}}) {
+export default async function CityLanding({params}: {params: Promise<{locale: string; city: string}>}) {
+  const {locale, city} = await params;
   unstable_setRequestLocale(locale);
   const displayName = cityName(city, locale);
   const content = getCityContent(city, locale as any);

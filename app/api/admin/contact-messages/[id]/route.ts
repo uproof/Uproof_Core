@@ -7,9 +7,9 @@ const CONTACT_MESSAGES_FILE = path.join(process.cwd(), 'data', 'contact-messages
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const authenticated = isAdminAuthenticated();
+  const authenticated = await isAdminAuthenticated();
   if (!authenticated) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
@@ -21,7 +21,8 @@ export async function PATCH(
     // Read existing messages
     const content = await fs.readFile(CONTACT_MESSAGES_FILE, 'utf-8');
     const messages = JSON.parse(content);
-    const messageIndex = messages.findIndex((m: any) => m.id === params.id);
+    const { id } = await params;
+    const messageIndex = messages.findIndex((m: any) => m.id === id);
 
     if (messageIndex === -1) {
       return NextResponse.json(
@@ -45,9 +46,9 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const authenticated = isAdminAuthenticated();
+  const authenticated = await isAdminAuthenticated();
   if (!authenticated) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
@@ -56,7 +57,8 @@ export async function DELETE(
     // Read existing messages
     const content = await fs.readFile(CONTACT_MESSAGES_FILE, 'utf-8');
     const messages = JSON.parse(content);
-    const messageIndex = messages.findIndex((m: any) => m.id === params.id);
+    const { id } = await params;
+    const messageIndex = messages.findIndex((m: any) => m.id === id);
 
     if (messageIndex === -1) {
       return NextResponse.json(

@@ -11,7 +11,9 @@ export const metadata: Metadata = {
 	alternates: { canonical: 'https://uproof.eu/lv/urgency/caurs-jumts' }
 };
 
-export default function UrgencyLeakPage({ params: { locale }}: { params: { locale: string }}) {
+
+export default async function UrgencyLeakPage({ params }: { params: Promise<{ locale: string }> }) {
+	const { locale } = await params;
 	unstable_setRequestLocale(locale);
 	return (
 		<main className="min-h-screen">

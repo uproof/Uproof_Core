@@ -25,7 +25,7 @@ const SERVICE_SLUGS = [
 ];
 
 type PageProps = {
-  params: {locale: string; slug: string};
+  params: Promise<{locale: string; slug: string}>;
 };
 
 export function generateStaticParams() {
@@ -655,8 +655,8 @@ function getServiceFAQs(slug: string, locale: string) {
   ];
 }
 
-export function generateMetadata({params}: PageProps): Metadata {
-  const {locale, slug} = params;
+export async function generateMetadata({params}: PageProps): Promise<Metadata> {
+  const {locale, slug} = await params;
   const entry = META[slug];
   const canonical = `https://uproof.eu/${locale}/services/${slug}`;
   
@@ -700,7 +700,8 @@ export function generateMetadata({params}: PageProps): Metadata {
   };
 }
 
-export default function ServiceLanding({params: {locale, slug}}: PageProps) {
+export default async function ServiceLanding({params}: PageProps) {
+  const {locale, slug} = await params;
   unstable_setRequestLocale(locale);
   const meta = META[slug];
   const title = meta?.title[locale] || meta?.title.lv || 'Jumta pakalpojums';

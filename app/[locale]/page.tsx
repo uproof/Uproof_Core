@@ -7,17 +7,15 @@ import Solutions from '@/components/Solutions';
 import StatsBar from '@/components/StatsBar';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
-import nextDynamic from 'next/dynamic';
+import HomeClientSections from '@/components/HomeClientSections';
 import type {Metadata} from 'next';
-const Reviews = nextDynamic(() => import('@/components/Reviews'), { ssr: false });
-const FAQ = nextDynamic(() => import('@/components/FAQ'), { ssr: false });
 
 type Props = {
-  params: {locale: string};
+  params: Promise<{locale: string}>;
 };
 
-export function generateMetadata({params}: Props): Metadata {
-  const {locale} = params;
+export async function generateMetadata({params}: Props): Promise<Metadata> {
+  const {locale} = await params;
   const canonical = `https://uproof.eu/${locale}`;
   
   const languages: Record<string, string> = {
@@ -49,7 +47,8 @@ export function generateMetadata({params}: Props): Metadata {
   };
 }
 
-export default function HomePage({params: {locale}}: Props) {
+export default async function HomePage({params}: Props) {
+  const {locale} = await params;
   unstable_setRequestLocale(locale);
 
   // Show snow removal banner during winter months (Nov-Mar)
@@ -101,9 +100,9 @@ export default function HomePage({params: {locale}}: Props) {
       )}
   <Services limit={4} />
       <StatsBar stats={statsData[locale] || statsData.lv} />
-      <Reviews />
-      <Solutions />
-      <FAQ />
+      <HomeClientSections>
+        <Solutions />
+      </HomeClientSections>
       <ContactSection />
       <Footer />
       {/* LocalBusiness / Organization schema for Local SEO */}

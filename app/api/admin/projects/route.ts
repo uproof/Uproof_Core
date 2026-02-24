@@ -24,7 +24,7 @@ async function ensureDirectories() {
 
 export async function GET() {
   // Require admin auth for reading admin-managed projects
-  const authenticated = isAdminAuthenticated();
+  const authenticated = await isAdminAuthenticated();
   if (!authenticated) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
@@ -40,7 +40,7 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  const authenticated = isAdminAuthenticated();
+  const authenticated = await isAdminAuthenticated();
   if (!authenticated) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }

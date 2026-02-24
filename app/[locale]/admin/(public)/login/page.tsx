@@ -1,10 +1,12 @@
 'use client';
 
 import {useState} from 'react';
-import {useRouter} from 'next/navigation';
+import {useParams, useRouter} from 'next/navigation';
 import Link from 'next/link';
 
-export default function AdminLogin({params: {locale}}: {params: {locale: string}}) {
+export default function AdminLogin() {
+  const params = useParams<{locale?: string}>();
+  const locale = typeof params?.locale === 'string' ? params.locale : 'lv';
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);

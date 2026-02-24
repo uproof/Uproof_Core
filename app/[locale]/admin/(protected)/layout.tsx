@@ -2,8 +2,9 @@ import {ReactNode} from 'react';
 import {redirect} from 'next/navigation';
 import {isAdminAuthenticated} from '@/lib/adminAuth';
 
-export default function AdminProtectedLayout({children, params: {locale}}: {children: ReactNode; params: {locale: string}}) {
-  const ok = isAdminAuthenticated();
+export default async function AdminProtectedLayout({children, params}: {children: ReactNode; params: Promise<{locale: string}>}) {
+  const {locale} = await params;
+  const ok = await isAdminAuthenticated();
   if (!ok) {
     redirect(`/${locale}/admin/login`);
   }

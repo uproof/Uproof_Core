@@ -48,8 +48,9 @@ export function verifyToken(token: string | undefined): boolean {
   }
 }
 
-export function setAdminCookie(token: string) {
-  cookies().set(SESSION_COOKIE, token, {
+export async function setAdminCookie(token: string) {
+  const cookieStore = await cookies();
+  cookieStore.set(SESSION_COOKIE, token, {
     httpOnly: true,
     sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production',
@@ -58,11 +59,13 @@ export function setAdminCookie(token: string) {
   });
 }
 
-export function clearAdminCookie() {
-  cookies().set(SESSION_COOKIE, '', {httpOnly: true, path: '/', maxAge: 0});
+export async function clearAdminCookie() {
+  const cookieStore = await cookies();
+  cookieStore.set(SESSION_COOKIE, '', {httpOnly: true, path: '/', maxAge: 0});
 }
 
-export function isAdminAuthenticated(): boolean {
-  const token = cookies().get(SESSION_COOKIE)?.value;
+export async function isAdminAuthenticated(): Promise<boolean> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(SESSION_COOKIE)?.value;
   return verifyToken(token);
 }

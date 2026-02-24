@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
+import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeftIcon, CheckIcon } from '@heroicons/react/24/outline';
 
@@ -24,13 +25,15 @@ const PAGES: Page[] = [
   },
 ];
 
-export default function PagesEditor({ params: { locale } }: { params: { locale: string } }) {
+export default function PagesEditor() {
   const t = useTranslations();
   const [pages, setPages] = useState<Page[]>(PAGES);
   const [editingSlug, setEditingSlug] = useState<string | null>(null);
   const [formData, setFormData] = useState({ title: '', content: '' });
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
+  const params = useParams<{locale?: string}>();
+  const locale = typeof params?.locale === 'string' ? params.locale : 'lv';
 
   useEffect(() => {
     loadPages();

@@ -1,4 +1,5 @@
 import {unstable_setRequestLocale} from 'next-intl/server';
+import {use} from 'react';
 import {useTranslations} from 'next-intl';
 import type {Metadata} from 'next';
 import Header from '@/components/Header';
@@ -6,7 +7,8 @@ import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Services from '@/components/Services';
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
   const canonical = `https://uproof.eu/${locale}/services`;
   const languages = {
     lv: 'https://uproof.eu/lv/services',
@@ -36,7 +38,8 @@ export async function generateMetadata({ params: { locale } }: { params: { local
   };
 }
 
-export default function ServicesPage({params: {locale}}: {params: {locale: string}}) {
+export default function ServicesPage({params}: {params: Promise<{locale: string}>}) {
+  const {locale} = use(params);
   unstable_setRequestLocale(locale);
   const t = useTranslations('pages.services');
   return (

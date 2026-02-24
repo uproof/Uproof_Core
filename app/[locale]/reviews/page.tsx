@@ -1,14 +1,15 @@
 import {unstable_setRequestLocale} from 'next-intl/server';
+import {use} from 'react';
 import {useTranslations} from 'next-intl';
 import type {Metadata} from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Reviews from '@/components/Reviews';
 
-type PageProps = { params: { locale: string } };
+type PageProps = { params: Promise<{ locale: string }> };
 
-export function generateMetadata({params}: PageProps): Metadata {
-  const {locale} = params;
+export async function generateMetadata({params}: PageProps): Promise<Metadata> {
+  const {locale} = await params;
   const canonical = `https://uproof.eu/${locale}/reviews`;
   
   const titleMap: Record<string, string> = {
@@ -42,7 +43,8 @@ export function generateMetadata({params}: PageProps): Metadata {
   };
 }
 
-export default function ReviewsPage({params: {locale}}: PageProps) {
+export default function ReviewsPage({params}: PageProps) {
+  const {locale} = use(params);
   unstable_setRequestLocale(locale);
   const t = useTranslations();
 

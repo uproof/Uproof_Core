@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
+import { useParams, useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Link from 'next/link';
 import { ArrowLeftIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
@@ -12,13 +13,15 @@ type Service = {
   description: string;
 };
 
-export default function ServicesEditor({ params: { locale } }: { params: { locale: string } }) {
+export default function ServicesEditor() {
   const t = useTranslations();
   const [services, setServices] = useState<Service[]>([]);
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const [formData, setFormData] = useState({ title: '', description: '' });
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
+  const params = useParams<{locale?: string}>();
+  const locale = typeof params?.locale === 'string' ? params.locale : 'lv';
 
   useEffect(() => {
     // Fetch services from translations

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -14,7 +15,9 @@ type Project = {
   image?: string;
 };
 
-export default function ProjectsManager({ params: { locale } }: { params: { locale: string } }) {
+export default function ProjectsManager() {
+  const params = useParams<{locale?: string}>();
+  const locale = typeof params?.locale === 'string' ? params.locale : 'lv';
   const t = useTranslations();
   const [projects, setProjects] = useState<Project[]>([]);
   const [showForm, setShowForm] = useState(false);

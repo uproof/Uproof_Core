@@ -1,4 +1,5 @@
 import {unstable_setRequestLocale, getTranslations} from 'next-intl/server';
+import {use} from 'react';
 import {useTranslations} from 'next-intl';
 import type {Metadata} from 'next';
 import Header from '@/components/Header';
@@ -6,7 +7,12 @@ import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import MiersMethod from '@/components/MiersMethod';
 
-export async function generateMetadata({params: {locale}}: {params: {locale: string}}): Promise<Metadata> {
+type Props = {
+  params: Promise<{locale: string}>;
+};
+
+export async function generateMetadata({params}: Props): Promise<Metadata> {
+  const {locale} = await params;
   const t = await getTranslations({locale, namespace: 'pages.about'});
   
   return {
@@ -18,7 +24,8 @@ export async function generateMetadata({params: {locale}}: {params: {locale: str
   };
 }
 
-export default function AboutPage({params: {locale}}: {params: {locale: string}}) {
+export default function AboutPage({params}: Props) {
+  const {locale} = use(params);
   unstable_setRequestLocale(locale);
   const t = useTranslations('pages.about');
 

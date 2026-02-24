@@ -20,7 +20,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  if (!isAdminAuthenticated()) return NextResponse.json({ok: false}, {status: 401});
+  if (!(await isAdminAuthenticated())) return NextResponse.json({ok: false}, {status: 401});
   const body = await req.json();
   const posts = await readPosts();
   const id = (posts.reduce((m, p) => Math.max(m, Number(p.id) || 0), 0) || 0) + 1;

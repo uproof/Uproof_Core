@@ -1,13 +1,15 @@
+import {use} from 'react';
 import {useTranslations} from 'next-intl';
 import {unstable_setRequestLocale} from 'next-intl/server';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 type Props = {
-  params: {locale: string};
+  params: Promise<{locale: string}>;
 };
 
-export default function PrivacyPolicyPage({params: {locale}}: Props) {
+export default function PrivacyPolicyPage({params}: Props) {
+  const {locale} = use(params);
   unstable_setRequestLocale(locale);
   const t = useTranslations('privacy');
 

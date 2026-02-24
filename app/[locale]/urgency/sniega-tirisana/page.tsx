@@ -70,7 +70,8 @@ const FAQ_ITEMS = [
 	},
 ];
 
-export default function SniegaTirisanaPage({params: {locale}}: {params: {locale: string}}) {
+export default async function SniegaTirisanaPage({params}: {params: Promise<{locale: string}>}) {
+	const {locale} = await params;
 	unstable_setRequestLocale(locale);
 
 	const faqSchema = {

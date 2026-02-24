@@ -27,7 +27,7 @@ async function ensurePagesFile() {
 
 export async function GET() {
   // Require admin auth for admin pages feed
-  const authenticated = isAdminAuthenticated();
+  const authenticated = await isAdminAuthenticated();
   if (!authenticated) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }

@@ -1,7 +1,7 @@
 'use client';
 
 import {useEffect, useState} from 'react';
-import {useRouter} from 'next/navigation';
+import {useParams, useRouter} from 'next/navigation';
 import Link from 'next/link';
 import {
   PlusIcon,
@@ -13,7 +13,9 @@ import {
 
 type Post = {id: number; title: string; excerpt: string; category: string; date: string; readTime?: string; author?: string; content?: string; status?: 'published' | 'draft'};
 
-export default function BlogManagement({params: {locale}}: {params: {locale: string}}) {
+export default function BlogManagement() {
+  const params = useParams<{locale?: string}>();
+  const locale = typeof params?.locale === 'string' ? params.locale : 'lv';
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState<Post[]>([]);
   const [showForm, setShowForm] = useState(false);

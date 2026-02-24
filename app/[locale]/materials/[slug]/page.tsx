@@ -89,7 +89,8 @@ export function generateStaticParams() {
   return Object.keys(MATERIAL_SPECS).map(slug => ({ slug }));
 }
 
-export function generateMetadata({ params: { slug, locale }}: { params: { slug: string; locale: string }}): Metadata {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string; locale: string }> }): Promise<Metadata> {
+  const {slug, locale} = await params;
   const spec = MATERIAL_SPECS[slug];
   const title = spec?.title[locale] || slug;
   const description = spec?.description[locale] || '';
@@ -102,7 +103,8 @@ export function generateMetadata({ params: { slug, locale }}: { params: { slug: 
   };
 }
 
-export default function MaterialSpecPage({ params: { slug, locale }}: { params: { slug: string; locale: string }}) {
+export default async function MaterialSpecPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
+  const {slug, locale} = await params;
   unstable_setRequestLocale(locale);
   const spec = MATERIAL_SPECS[slug];
   if (!spec) return <main><p>Material not found</p></main>;

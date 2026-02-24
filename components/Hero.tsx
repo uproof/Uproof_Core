@@ -4,17 +4,29 @@ import {useTranslations} from 'next-intl';
 import {motion} from 'framer-motion';
 import {useEffect, useRef, useState} from 'react';
 import {Link} from '@/i18n/routing';
+import Image from 'next/image';
 
 export default function Hero() {
   const t = useTranslations('home.hero');
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [isVideoReady, setIsVideoReady] = useState(false);
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play().catch(() => {
-        // Autoplay failed, user will need to interact
-      });
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Start loading the video after the page has painted
+    const startLoad = () => {
+      video.preload = 'auto';
+      video.load();
+      video.play().catch(() => {});
+    };
+
+    // Use requestIdleCallback or setTimeout fallback to defer video load
+    if ('requestIdleCallback' in window) {
+      (window as Window & { requestIdleCallback: (cb: () => void) => void }).requestIdleCallback(startLoad);
+    } else {
+      setTimeout(startLoad, 100);
     }
   }, []);
 
@@ -22,16 +34,26 @@ export default function Hero() {
     <section id="home" className="relative min-h-[calc(100vh-80px)] sm:min-h-screen flex items-center justify-center overflow-hidden">
       {/* Video Background */}
       <div className="absolute inset-0 z-0">
+        {/* Static poster image — renders instantly as LCP */}
+        <Image
+          src="/images/hero-roof.svg"
+          alt=""
+          fill
+          className="object-cover"
+          priority
+          sizes="100vw"
+        />
+        
+        {/* Video fades in once loaded */}
         <video
           ref={videoRef}
-          className="absolute inset-0 w-full h-full object-cover"
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${isVideoReady ? 'opacity-100' : 'opacity-0'}`}
           autoPlay
           loop
           muted
           playsInline
           preload="none"
-          poster="/images/hero-roof.svg"
-          onLoadedData={() => setIsVideoLoaded(true)}
+          onCanPlay={() => setIsVideoReady(true)}
         >
           <source src="/videos/hero-video.mp4" type="video/mp4" />
         </video>

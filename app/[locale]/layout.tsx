@@ -4,11 +4,9 @@ import {Inter} from 'next/font/google';
 import type {Metadata} from 'next';
 import {SpeedInsights} from '@vercel/speed-insights/next';
 import {Analytics} from '@vercel/analytics/react';
-import dynamic from 'next/dynamic';
-const CookieConsent = dynamic(() => import('@/components/CookieConsent'), { ssr: false });
-const GTM = dynamic(() => import('@/components/GTM'), { ssr: false });
 import '../globals.css';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import LayoutClient from '@/components/LayoutClient';
 
 const inter = Inter({ 
   subsets: ['latin', 'latin-ext'],
@@ -132,11 +130,12 @@ export function generateStaticParams() {
 
 export default async function LocaleLayout({
   children,
-  params: {locale}
+  params
 }: {
   children: React.ReactNode;
-  params: {locale: string};
+  params: Promise<{locale: string}>;
 }) {
+  const {locale} = await params;
   const messages = await getMessages();
   // Build Organization schema dynamically to allow small customizations
   const sameAs: string[] = [
@@ -291,11 +290,8 @@ export default async function LocaleLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        {/* Preconnect to GTM for faster analytics loading */}
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        {/* DNS-prefetch for GTM (used only when analytics consent given) */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-        {/* Preload hero poster for faster LCP */}
-        <link rel="preload" href="/images/hero-roof.svg" as="image" fetchPriority="high" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -304,11 +300,10 @@ export default async function LocaleLayout({
         />
       </head>
       <body className="font-sans">
-        <GTM gtmId={process.env.NEXT_PUBLIC_GTM_ID || ''} />
         <NextIntlClientProvider messages={messages}>
           <ErrorBoundary>
             {children}
-            <CookieConsent />
+            <LayoutClient gtmId={process.env.NEXT_PUBLIC_GTM_ID || ''} />
           </ErrorBoundary>
         </NextIntlClientProvider>
         <SpeedInsights />

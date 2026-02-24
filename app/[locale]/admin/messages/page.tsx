@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { ArrowLeftIcon, TrashIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
@@ -17,7 +18,9 @@ type Message = {
   createdAt: string;
 };
 
-export default function Messages({ params: { locale } }: { params: { locale: string } }) {
+export default function Messages() {
+  const params = useParams<{locale?: string}>();
+  const locale = typeof params?.locale === 'string' ? params.locale : 'lv';
   const t = useTranslations();
   const [messages, setMessages] = useState<Message[]>([]);
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);

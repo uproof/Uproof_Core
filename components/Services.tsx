@@ -113,8 +113,8 @@ export default function Services({ limit }: ServicesProps) {
                   alt={service.title}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                  quality={75}
+                  sizes="(max-width: 767px) 100vw, 50vw"
+                  quality={65}
                   priority={index === 0}
                   loading={index === 0 ? 'eager' : 'lazy'}
                   placeholder="blur"

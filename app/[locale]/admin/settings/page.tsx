@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { ArrowLeftIcon, CheckIcon } from '@heroicons/react/24/outline';
@@ -20,7 +21,9 @@ type SiteSettings = {
   socialTwitter?: string;
 };
 
-export default function SiteSettings({ params: { locale } }: { params: { locale: string } }) {
+export default function SiteSettings() {
+  const params = useParams<{locale?: string}>();
+  const locale = typeof params?.locale === 'string' ? params.locale : 'lv';
   const t = useTranslations();
   const [settings, setSettings] = useState<SiteSettings>({
     companyName: '',

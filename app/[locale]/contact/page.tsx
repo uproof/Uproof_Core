@@ -1,4 +1,5 @@
 import {unstable_setRequestLocale} from 'next-intl/server';
+import {use} from 'react';
 import {useTranslations} from 'next-intl';
 import type {Metadata} from 'next';
 import Header from '@/components/Header';
@@ -14,7 +15,8 @@ export const metadata: Metadata = {
   }
 };
 
-export default function ContactPage({params: {locale}}: {params: {locale: string}}) {
+export default function ContactPage({params}: {params: Promise<{locale: string}>}) {
+  const {locale} = use(params);
   unstable_setRequestLocale(locale);
   const t = useTranslations('pages.contact');
   return (

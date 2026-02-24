@@ -8,11 +8,11 @@ import blogData from '@/data/blog.json';
 import type {Metadata} from 'next';
 
 type Props = {
-  params: {locale: string};
+  params: Promise<{locale: string}>;
 };
 
-export function generateMetadata({params}: Props): Metadata {
-  const {locale} = params;
+export async function generateMetadata({params}: Props): Promise<Metadata> {
+  const {locale} = await params;
   const canonical = `https://uproof.eu/${locale}/blog`;
   const languages: Record<string, string> = {
     lv: 'https://uproof.eu/lv/blog',
@@ -52,7 +52,8 @@ const blogPosts = blogData as Array<{
 
 const placeholderImage = '/images/blog/placeholder.jpg';
 
-export default function BlogPage({params: {locale}}: Props) {
+export default async function BlogPage({params}: Props) {
+  const {locale} = await params;
   unstable_setRequestLocale(locale);
 
   return (
@@ -132,8 +133,10 @@ export default function BlogPage({params: {locale}}: Props) {
                     <Link
                       href={`/blog/${post.slug || post.id}`}
                       className="text-sm font-semibold text-primary-600 hover:text-primary-700 flex items-center gap-1 group/link"
+                      aria-label={`${locale === 'lv' ? 'Lasīt vairāk' : locale === 'nl-BE' ? 'Lees meer' : 'Read more'}: ${post.title}`}
                     >
                       {locale === 'lv' ? 'Lasīt vairāk' : locale === 'nl-BE' ? 'Lees meer' : 'Read More'}
+                      <span className="sr-only">: {post.title}</span>
                       <svg className="w-4 h-4 transition-transform group-hover/link:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>

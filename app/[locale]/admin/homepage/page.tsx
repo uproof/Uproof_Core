@@ -1,7 +1,7 @@
 'use client';
 
 import {useEffect, useState} from 'react';
-import {useRouter} from 'next/navigation';
+import {useParams, useRouter} from 'next/navigation';
 import Link from 'next/link';
 import {
   ArrowLeftIcon,
@@ -11,7 +11,9 @@ import {
   QuestionMarkCircleIcon
 } from '@heroicons/react/24/outline';
 
-export default function HomepageEditor({params: {locale}}: {params: {locale: string}}) {
+export default function HomepageEditor() {
+  const params = useParams<{locale?: string}>();
+  const locale = typeof params?.locale === 'string' ? params.locale : 'lv';
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState<any | null>(null);
   const router = useRouter();
