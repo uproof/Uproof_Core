@@ -32,6 +32,29 @@ export default function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl, 301);
   }
 
+  // Redirect old Latvian slugs to current English slugs (with any locale prefix)
+  const latvianToEnglishPaths: Record<string, string> = {
+    '/pakalpojumi': '/services',
+    '/projekti': '/projects',
+    '/atsauksmes': '/reviews',
+    '/kontakti': '/contact',
+    '/par-mums': '/about',
+    '/blogi': '/blog',
+    '/privatuma-politika': '/privacy-policy',
+  };
+
+  // Check for old Latvian slugs with locale prefix
+  const localeMatch = pathname.match(/^\/(lv|en|nl-BE)(\/.*)/);
+  if (localeMatch) {
+    const localePrefix = localeMatch[1];
+    const subpath = localeMatch[2];
+    const mapped = latvianToEnglishPaths[subpath];
+    if (mapped) {
+      const redirectUrl = new URL(`/${localePrefix}${mapped}`, nextUrl);
+      return NextResponse.redirect(redirectUrl, 301);
+    }
+  }
+
   // Skip if already has locale prefix
   const hasLocalePrefix = /^\/(lv|en|nl-BE)(\/|$)/.test(pathname);
 

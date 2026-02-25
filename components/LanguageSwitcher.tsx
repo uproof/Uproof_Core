@@ -1,14 +1,24 @@
 'use client';
 
 import {useLocale} from 'next-intl';
-import {useRouter, usePathname} from '@/i18n/routing';
+import {useRouter} from '@/i18n/routing';
+import {usePathname as useNextPathname} from 'next/navigation';
 import {useState, useRef, useEffect} from 'react';
 import {ChevronDownIcon, GlobeAltIcon} from '@heroicons/react/24/outline';
 
+const LOCALES = ['lv', 'en', 'nl-BE'];
+
 export default function LanguageSwitcher() {
   const router = useRouter();
-  const pathname = usePathname();
+  const fullPathname = useNextPathname();
   const currentLocale = useLocale();
+
+  // Strip locale prefix to get the locale-independent path
+  // next-intl 3.x usePathname() can return locale-prefixed paths on Next.js 15
+  const pathname = LOCALES.reduce(
+    (p, loc) => (p.startsWith(`/${loc}/`) ? p.slice(loc.length + 1) : p === `/${loc}` ? '/' : p),
+    fullPathname
+  );
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
