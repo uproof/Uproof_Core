@@ -14,13 +14,38 @@ type Props = {
 export async function generateMetadata({params}: Props): Promise<Metadata> {
   const {locale} = await params;
   const t = await getTranslations({locale, namespace: 'pages.about'});
-  
+
+  const titles: Record<string, string> = {
+    lv: 'Par UpRoof | Profesionāla jumtu būvniecības kompānija Latvijā',
+    en: 'About UpRoof | Professional Roofing Company Latvia',
+    'nl-BE': 'Over UpRoof | Professioneel dakbedrijf in Letland',
+  };
+
+  const descriptions: Record<string, string> = {
+    lv: 'UpRoof: sertificēti jumtu speciālisti Latvijā. 10 gadu garantija, kvalitatīvi materiāli, profesionāls darbs. Uzziniet par mūsu MIERS būvniecības metodi.',
+    en: 'UpRoof: certified roofing specialists in Latvia. 10-year warranty, quality materials, expert workmanship. Learn about our MIERS construction method.',
+    'nl-BE': 'UpRoof: gecertificeerde dakspecialisten in Letland. 10 jaar garantie, kwaliteitsmaterialen, vakmanschap. Ontdek onze MIERS constructiemethode.',
+  };
+
   return {
-    title: 'About UpRoof | Professional Roofing Company Latvia',
-    description: 'UpRoof: certified roofing specialists in Latvia. 10-year warranty, quality materials, expert workmanship. Learn about our MIERS construction method.',
+    title: titles[locale] || titles.lv,
+    description: descriptions[locale] || descriptions.lv,
     alternates: {
-      canonical: `https://uproof.eu/${locale}/about`
-    }
+      canonical: `https://uproof.eu/${locale}/about`,
+      languages: {
+        lv: 'https://uproof.eu/lv/about',
+        en: 'https://uproof.eu/en/about',
+        'nl-BE': 'https://uproof.eu/nl-BE/about',
+        'x-default': 'https://uproof.eu/lv/about',
+      },
+    },
+    openGraph: {
+      title: titles[locale] || titles.lv,
+      description: descriptions[locale] || descriptions.lv,
+      url: `https://uproof.eu/${locale}/about`,
+      type: 'website',
+      siteName: 'UpRoof',
+    },
   };
 }
 

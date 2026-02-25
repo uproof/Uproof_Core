@@ -5,14 +5,50 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import {Link} from '@/i18n/routing';
 import type {Metadata} from 'next';
 
-export const metadata: Metadata = {
-	title: 'Man ir caurs jumts – ko darīt? | UpRoof',
-	description: 'Steidzama jumta noplūdes situācija: soli pa solim darbības, pagaidu risinājumi, profesionāla palīdzība un izmaksu faktori.',
-	alternates: { canonical: 'https://uproof.eu/lv/urgency/caurs-jumts' }
+type Props = {
+	params: Promise<{locale: string}>;
 };
 
+const titles: Record<string, string> = {
+	lv: 'Man ir caurs jumts – ko darīt? | UpRoof',
+	en: 'My Roof Is Leaking – What Should I Do? | UpRoof',
+	'nl-BE': 'Mijn dak lekt – wat nu? | UpRoof',
+};
 
-export default async function UrgencyLeakPage({ params }: { params: Promise<{ locale: string }> }) {
+const descriptions: Record<string, string> = {
+	lv: 'Steidzama jumta noplūdes situācija: soli pa solim darbības, pagaidu risinājumi, profesionāla palīdzība un izmaksu faktori.',
+	en: 'Emergency roof leak: step-by-step actions, temporary fixes, professional help and cost factors. Call +371 25612440.',
+	'nl-BE': 'Noodgeval daklek: stap-voor-stap actie, tijdelijke oplossingen, professionele hulp en kostenfactoren. Bel +371 25612440.',
+};
+
+export async function generateMetadata({params}: Props): Promise<Metadata> {
+	const {locale} = await params;
+	const canonical = `https://uproof.eu/${locale}/urgency/caurs-jumts`;
+
+	return {
+		title: titles[locale] || titles.lv,
+		description: descriptions[locale] || descriptions.lv,
+		alternates: {
+			canonical,
+			languages: {
+				lv: 'https://uproof.eu/lv/urgency/caurs-jumts',
+				en: 'https://uproof.eu/en/urgency/caurs-jumts',
+				'nl-BE': 'https://uproof.eu/nl-BE/urgency/caurs-jumts',
+				'x-default': 'https://uproof.eu/lv/urgency/caurs-jumts',
+			},
+		},
+		openGraph: {
+			title: titles[locale] || titles.lv,
+			description: descriptions[locale] || descriptions.lv,
+			url: canonical,
+			type: 'website',
+			siteName: 'UpRoof',
+		},
+	};
+}
+
+
+export default async function UrgencyLeakPage({ params }: Props) {
 	const { locale } = await params;
 	unstable_setRequestLocale(locale);
 	return (

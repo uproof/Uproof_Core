@@ -5,43 +5,73 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import {Link} from '@/i18n/routing';
 import type {Metadata} from 'next';
 
-export const metadata: Metadata = {
-	title: 'Sniega tīrīšana no jumta Rīgā | Jumta tīrīšana no sniega un ledus | UpRoof',
-	description: 'Profesionāla sniega tīrīšana no jumta Rīgā un Pierīgā 24/7. Lāsteku tīrīšana, jumta tīrīšana no ledus un lāstekām, sniega izvešana. Soda nauda līdz 1400 EUR. Zvaniet +371 25612440.',
-	keywords: [
-		'sniega tīrīšana no jumta',
-		'jumta tīrīšana no sniega',
-		'lāsteku tīrīšana',
-		'jumta tīrīšana no ledus un lāstekām',
-		'sniega tīrīšana no jumta Rīgā',
-		'sniega noņemšana no jumta',
-		'lāsteku noņemšana',
-		'ledus tīrīšana no jumta',
-		'sniega tīrīšana daudzdzīvokļu mājai',
-		'sniega izvešana',
-		'sniega tīrīšana ar traktoru',
-		'jumta sniega tīrīšanas pakalpojumi',
-		'avārijas jumta tīrīšana no sniega',
-		'sniega slogs uz jumta',
-		'jumta tīrīšana ziemā',
-	].join(', '),
-	alternates: {
-		canonical: 'https://uproof.eu/lv/urgency/sniega-tirisana',
-		languages: {
-			lv: 'https://uproof.eu/lv/urgency/sniega-tirisana',
-			en: 'https://uproof.eu/en/urgency/sniega-tirisana',
-			'nl-BE': 'https://uproof.eu/nl-BE/urgency/sniega-tirisana',
-			'x-default': 'https://uproof.eu/lv/urgency/sniega-tirisana',
-		},
-	},
-	openGraph: {
-		title: 'Sniega tīrīšana no jumta Rīgā – 24/7 | UpRoof',
-		description: 'Profesionāla sniega un ledus tīrīšana no jumta. Pilna cikla pakalpojums: sniega novadīšana, lāsteku tīrīšana, teritorijas sakopšana, sniega izvešana. Zvaniet tagad!',
-		url: 'https://uproof.eu/lv/urgency/sniega-tirisana',
-		type: 'website',
-		locale: 'lv_LV',
-	},
+type Props = {
+	params: Promise<{locale: string}>;
 };
+
+const titles: Record<string, string> = {
+	lv: 'Sniega tīrīšana no jumta Rīgā | Jumta tīrīšana no sniega un ledus | UpRoof',
+	en: 'Snow Removal from Roof in Riga | Roof Snow & Ice Cleaning 24/7 | UpRoof',
+	'nl-BE': 'Sneeuwruiming van het dak in Riga | 24/7 Daksneeuw & IJsverwijdering | UpRoof',
+};
+
+const descriptions: Record<string, string> = {
+	lv: 'Profesionāla sniega tīrīšana no jumta Rīgā un Pierīgā 24/7. Lāsteku tīrīšana, jumta tīrīšana no ledus un lāstekām, sniega izvešana. Soda nauda līdz 1400 EUR. Zvaniet +371 25612440.',
+	en: 'Professional snow removal from roofs in Riga and surrounding areas 24/7. Icicle removal, ice cleaning, snow hauling. Fines up to €1,400. Call +371 25612440.',
+	'nl-BE': 'Professionele sneeuwruiming van daken in Riga 24/7. IJspegels verwijderen, ijs en sneeuw opruimen. Boetes tot €1.400. Bel +371 25612440.',
+};
+
+const ogLocales: Record<string, string> = {
+	lv: 'lv_LV',
+	en: 'en_US',
+	'nl-BE': 'nl_BE',
+};
+
+export async function generateMetadata({params}: Props): Promise<Metadata> {
+	const {locale} = await params;
+	const canonical = `https://uproof.eu/${locale}/urgency/sniega-tirisana`;
+
+	return {
+		title: titles[locale] || titles.lv,
+		description: descriptions[locale] || descriptions.lv,
+		keywords: [
+			'sniega tīrīšana no jumta',
+			'jumta tīrīšana no sniega',
+			'lāsteku tīrīšana',
+			'jumta tīrīšana no ledus un lāstekām',
+			'sniega tīrīšana no jumta Rīgā',
+			'sniega noņemšana no jumta',
+			'lāsteku noņemšana',
+			'ledus tīrīšana no jumta',
+			'sniega tīrīšana daudzdzīvokļu mājai',
+			'sniega izvešana',
+			'sniega tīrīšana ar traktoru',
+			'jumta sniega tīrīšanas pakalpojumi',
+			'avārijas jumta tīrīšana no sniega',
+			'sniega slogs uz jumta',
+			'jumta tīrīšana ziemā',
+			'snow removal roof riga',
+			'roof snow cleaning latvia',
+		].join(', '),
+		alternates: {
+			canonical,
+			languages: {
+				lv: 'https://uproof.eu/lv/urgency/sniega-tirisana',
+				en: 'https://uproof.eu/en/urgency/sniega-tirisana',
+				'nl-BE': 'https://uproof.eu/nl-BE/urgency/sniega-tirisana',
+				'x-default': 'https://uproof.eu/lv/urgency/sniega-tirisana',
+			},
+		},
+		openGraph: {
+			title: titles[locale] || titles.lv,
+			description: descriptions[locale] || descriptions.lv,
+			url: canonical,
+			type: 'website',
+			locale: ogLocales[locale] || 'lv_LV',
+			siteName: 'UpRoof',
+		},
+	};
+}
 
 const FAQ_ITEMS = [
 	{
@@ -70,7 +100,7 @@ const FAQ_ITEMS = [
 	},
 ];
 
-export default async function SniegaTirisanaPage({params}: {params: Promise<{locale: string}>}) {
+export default async function SniegaTirisanaPage({params}: Props) {
 	const {locale} = await params;
 	unstable_setRequestLocale(locale);
 
@@ -137,8 +167,8 @@ export default async function SniegaTirisanaPage({params}: {params: Promise<{loc
 		'@context': 'https://schema.org',
 		'@type': 'BreadcrumbList',
 		itemListElement: [
-			{'@type': 'ListItem', position: 1, name: 'UpRoof', item: 'https://uproof.eu/lv'},
-			{'@type': 'ListItem', position: 2, name: 'Sniega tīrīšana no jumta', item: 'https://uproof.eu/lv/urgency/sniega-tirisana'},
+			{'@type': 'ListItem', position: 1, name: 'UpRoof', item: `https://uproof.eu/${locale}`},
+			{'@type': 'ListItem', position: 2, name: locale === 'en' ? 'Snow Removal from Roof' : locale === 'nl-BE' ? 'Sneeuwruiming van het dak' : 'Sniega tīrīšana no jumta', item: `https://uproof.eu/${locale}/urgency/sniega-tirisana`},
 		],
 	};
 

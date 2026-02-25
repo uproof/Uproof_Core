@@ -98,7 +98,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: `${title} | UpRoof`,
     description,
     alternates: {
-      canonical: `https://uproof.eu/${locale}/materials/${slug}`
+      canonical: `https://uproof.eu/${locale}/materials/${slug}`,
+      languages: {
+        lv: `https://uproof.eu/lv/materials/${slug}`,
+        en: `https://uproof.eu/en/materials/${slug}`,
+        'nl-BE': `https://uproof.eu/nl-BE/materials/${slug}`,
+        'x-default': `https://uproof.eu/lv/materials/${slug}`,
+      },
     }
   };
 }

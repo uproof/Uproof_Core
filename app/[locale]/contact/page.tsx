@@ -7,13 +7,47 @@ import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import ContactSection from '@/components/ContactSection';
 
-export const metadata: Metadata = {
-  title: 'Contact Us | Free Roofing Quote Latvia',
-  description: 'Get a free roofing quote in Latvia. Contact UpRoof for professional roofing services. Phone: +371 25612440. Fast response guaranteed.',
-  alternates: {
-    canonical: 'https://uproof.eu/contact'
-  }
+type Props = {
+  params: Promise<{locale: string}>;
 };
+
+const titles: Record<string, string> = {
+  lv: 'Sazinies ar mums | Bezmaksas jumta novērtējums Latvijā | UpRoof',
+  en: 'Contact Us | Free Roofing Quote Latvia | UpRoof',
+  'nl-BE': 'Contacteer ons | Gratis dakofferte | UpRoof',
+};
+
+const descriptions: Record<string, string> = {
+  lv: 'Saņemiet bezmaksas jumta novērtējumu Latvijā. Sazinieties ar UpRoof profesionāliem jumta pakalpojumiem. Tālrunis: +371 25612440. Ātra atbilde garantēta.',
+  en: 'Get a free roofing quote in Latvia. Contact UpRoof for professional roofing services. Phone: +371 25612440. Fast response guaranteed.',
+  'nl-BE': 'Vraag een gratis dakofferte aan. Contacteer UpRoof voor professionele dakdiensten. Tel: +371 25612440. Snelle reactie gegarandeerd.',
+};
+
+export async function generateMetadata({params}: Props): Promise<Metadata> {
+  const {locale} = await params;
+  const canonical = `https://uproof.eu/${locale}/contact`;
+
+  return {
+    title: titles[locale] || titles.lv,
+    description: descriptions[locale] || descriptions.lv,
+    alternates: {
+      canonical,
+      languages: {
+        lv: 'https://uproof.eu/lv/contact',
+        en: 'https://uproof.eu/en/contact',
+        'nl-BE': 'https://uproof.eu/nl-BE/contact',
+        'x-default': 'https://uproof.eu/lv/contact',
+      },
+    },
+    openGraph: {
+      title: titles[locale] || titles.lv,
+      description: descriptions[locale] || descriptions.lv,
+      url: canonical,
+      type: 'website',
+      siteName: 'UpRoof',
+    },
+  };
+}
 
 export default function ContactPage({params}: {params: Promise<{locale: string}>}) {
   const {locale} = use(params);

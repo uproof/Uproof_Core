@@ -1,12 +1,44 @@
 import {use} from 'react';
 import {useTranslations} from 'next-intl';
 import {unstable_setRequestLocale} from 'next-intl/server';
+import type {Metadata} from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 type Props = {
   params: Promise<{locale: string}>;
 };
+
+const titles: Record<string, string> = {
+  lv: 'Privātuma politika | UpRoof',
+  en: 'Privacy Policy | UpRoof',
+  'nl-BE': 'Privacybeleid | UpRoof',
+};
+
+const descriptions: Record<string, string> = {
+  lv: 'UpRoof privātuma politika. Uzziniet, kā mēs apkopojam, izmantojam un aizsargājam jūsu personas datus.',
+  en: 'UpRoof privacy policy. Learn how we collect, use and protect your personal data.',
+  'nl-BE': 'UpRoof privacybeleid. Ontdek hoe wij uw persoonsgegevens verzamelen, gebruiken en beschermen.',
+};
+
+export async function generateMetadata({params}: Props): Promise<Metadata> {
+  const {locale} = await params;
+  const canonical = `https://uproof.eu/${locale}/privacy-policy`;
+
+  return {
+    title: titles[locale] || titles.lv,
+    description: descriptions[locale] || descriptions.lv,
+    alternates: {
+      canonical,
+      languages: {
+        lv: 'https://uproof.eu/lv/privacy-policy',
+        en: 'https://uproof.eu/en/privacy-policy',
+        'nl-BE': 'https://uproof.eu/nl-BE/privacy-policy',
+        'x-default': 'https://uproof.eu/lv/privacy-policy',
+      },
+    },
+  };
+}
 
 export default function PrivacyPolicyPage({params}: Props) {
   const {locale} = use(params);
