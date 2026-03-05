@@ -378,8 +378,8 @@ export default async function SniegaTirisanaPage({params}: Props) {
 							{step: '1', title: 'Zvaniet', desc: '+371 25612440 (24/7)'},
 							{step: '2', title: 'Apskate', desc: 'Bezmaksas apskate vai novērtējums pēc foto'},
 							{step: '3', title: 'Cenas piedāvājums', desc: 'Fiksēta cena pirms darbiem'},
-							{step: '4', title: 'Darbu veikšana', desc: 'Droša un profesionāla izpilde'},
-							{step: '5', title: 'Dokumenti', desc: 'Izpildes akts un garantija'},
+							{step: '4', title: 'Dokumenti', desc: 'Izpildes akts un garantija'},
+							{step: '5', title: 'Darbu veikšana', desc: 'Droša un profesionāla izpilde'},
 						].map((item, i) => (
 							<div key={i} className="text-center">
 								<div className="w-10 h-10 bg-gray-900 text-white rounded-full flex items-center justify-center font-bold mx-auto mb-3">{item.step}</div>

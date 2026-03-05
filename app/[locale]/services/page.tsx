@@ -18,12 +18,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
 
   const titles: Record<string, string> = {
-    lv: 'Jumta darbi Rīgā | Jumta seguma montāža, nomaiņa, krāsošana | UpRoof',
+    lv: 'Jumta darbi Rīgā | 24/7 palīdzība, renovācija, montāža | UpRoof',
     en: 'Roofing Services Latvia | Construction, Repair & Snow Removal | UpRoof',
     'nl-BE': 'Dakdiensten | Renovatie, Reparatie & Onderhoud | UpRoof',
   };
   const descriptions: Record<string, string> = {
-    lv: 'Pilns jumta darbu klāsts Rīgā: jumta seguma montāža, jumta nomaiņa, metāla jumta montāža, valcprofila montāža, jumta ieklāšana, noteku montāža, jumta krāsošana, sniega tīrīšana 24/7. 10 gadu garantija. Bezmaksas apskate.',
+    lv: 'Pilns jumta darbu klāsts Rīgā un Pierīgā: jumta seguma montāža, nomaiņa, valcprofils, notekas, krāsošana un avārijas palīdzība 24/7. Sertificēti meistari, 10 gadu garantija un bezmaksas apskate.',
     en: 'Complete roofing services: construction, renovation, repairs, metal roof installation, painting, snow and ice removal 24/7. 10-year warranty. Free quotes in Latvia.',
     'nl-BE': 'Complete dakdiensten: renovatie, reparatie, schilderwerk, metalen daken, pannendaken. 10 jaar garantie. Gratis offerte.',
   };
@@ -42,6 +42,26 @@ export default function ServicesPage({params}: {params: Promise<{locale: string}
   const {locale} = use(params);
   unstable_setRequestLocale(locale);
   const t = useTranslations('pages.services');
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: locale === 'lv' ? 'Sākums' : 'Home',
+        item: `https://uproof.eu/${locale}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: locale === 'lv' ? 'Pakalpojumi' : locale === 'nl-BE' ? 'Diensten' : 'Services',
+        item: `https://uproof.eu/${locale}/services`,
+      },
+    ],
+  };
+
   return (
     <main className="min-h-screen">
       <Header />
@@ -53,6 +73,7 @@ export default function ServicesPage({params}: {params: Promise<{locale: string}
       </section>
       <Services />
       <Footer />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(breadcrumbSchema)}} />
     </main>
   );
 }

@@ -93,11 +93,17 @@ export default async function BlogPostPage({params}: Props) {
   }
 
   const postSlug = post.slug || String(post.id);
+  const cleanText = (post.content ?? '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  const wordCount = cleanText ? cleanText.split(' ').length : undefined;
+  const breadcrumbNames = {
+    home: locale === 'lv' ? 'Sākums' : locale === 'nl-BE' ? 'Home' : 'Home',
+    blog: locale === 'lv' ? 'Blogs' : locale === 'nl-BE' ? 'Blog' : 'Blog',
+  };
 
   // BlogPosting structured data
   const articleSchema = {
     '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
+    '@type': ['BlogPosting', 'Article'],
     '@id': `https://uproof.eu/${locale}/blog/${postSlug}#article`,
     headline: post.title,
     description: post.excerpt,
@@ -125,6 +131,7 @@ export default async function BlogPostPage({params}: Props) {
     inLanguage: locale === 'lv' ? 'lv-LV' : locale === 'en' ? 'en-US' : 'nl-BE',
     articleSection: post.category,
     keywords: `${post.category}, ${post.title}, jumta darbi, jumta seguma montāža, jumta nomaiņa`,
+    wordCount,
   };
 
   // BreadcrumbList structured data
@@ -135,13 +142,13 @@ export default async function BlogPostPage({params}: Props) {
       {
         '@type': 'ListItem',
         position: 1,
-        name: 'Home',
+        name: breadcrumbNames.home,
         item: `https://uproof.eu/${locale}`,
       },
       {
         '@type': 'ListItem',
         position: 2,
-        name: 'Blog',
+        name: breadcrumbNames.blog,
         item: `https://uproof.eu/${locale}/blog`,
       },
       {

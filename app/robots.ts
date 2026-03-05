@@ -14,8 +14,6 @@ export default function robots() {
           '/admin/',          // Protect admin panel
           '/*.json$',         // Protect direct JSON access
           '/uploads/',        // Protect upload directory
-          '/_next/static/',   // Protect Next.js internals
-          '/_next/data/',     // Protect Next.js data files
         ],
       },
       {

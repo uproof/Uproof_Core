@@ -56,6 +56,36 @@ export default async function BlogPage({params}: Props) {
   const {locale} = await params;
   unstable_setRequestLocale(locale);
 
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: locale === 'lv' ? 'Sākums' : 'Home',
+        item: `https://uproof.eu/${locale}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: locale === 'lv' ? 'Blogs' : 'Blog',
+        item: `https://uproof.eu/${locale}/blog`,
+      },
+    ],
+  };
+
+  const itemListSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: blogPosts.map((post, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: `https://uproof.eu/${locale}/blog/${post.slug || post.id}`,
+      name: post.title,
+    })),
+  };
+
   return (
     <main className="min-h-screen bg-gray-50">
       <Header />
@@ -152,6 +182,9 @@ export default async function BlogPage({params}: Props) {
       </section>
 
       <Footer />
+
+      <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(breadcrumbSchema)}} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(itemListSchema)}} />
     </main>
   );
 }
