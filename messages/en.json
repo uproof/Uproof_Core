@@ -251,16 +251,40 @@
     "title": "What Our Clients Say",
     "subtitle": "Real feedback from satisfied customers",
     "review1": {
-      "name": "Dita Major",
-      "text": "Very good service! We needed to remove the chimney, seal the chimney hole in the roof and wall, as well as remove the fasteners where the chimney was attached to the outer wall, and seal the holes there as well. They also inspected the roof and sealed the cracks where water was leaking through. They then removed all the materials and left a completely clean, beautiful place, and they also neatly put the removed chimney pipe back where it needed to be. Fantastic attitude towards us as a customer, very pleasant cooperation. We will definitely turn to them again when the need arises!"
+      "name": "Diana Vilistere",
+      "text": "The metal roofing replacement work on my property was performed at a high professional level, with high quality and within the specified deadlines. The contractor provided systematic monitoring of the daily work, regularly providing reports on the work done. I can recommend UpRoof as a reliable contractor and a reliable partner."
     },
     "review2": {
+      "name": "Alens Jucēvičs",
+      "text": "I definitely recommend this company for roof and facade installation. They created a nice birdhouse from an old glass greenhouse in a short time, in difficult weather conditions. It is very important that the team is led by a serious professional, Kārlis. The project manager and also the contractor, Pēteris, together with all the employees, did everything accurately and on time. The team is knowledgeable and pleasant to deal with. I definitely recommend it."
+    },
+    "review3": {
+      "name": "Julja Semena",
+      "text": "The cooperation was professional and well organized. Very good experience. The service was provided with quality and on time. I definitely recommend it."
+    },
+    "review4": {
+      "name": "Lana Zerdecka",
+      "text": "Thank you very much for the work done! Quick consultation and prompt solution. We are very satisfied with the service provided. We definitely recommend!"
+    },
+    "review5": {
+      "name": "Dita Majore",
+      "text": "Very good service! We needed to remove the chimney, seal the chimney hole in the roof and wall, as well as remove the fasteners where the chimney was attached to the outer wall, and seal the holes there as well. They also inspected the roof and sealed the cracks where water was leaking through. All the materials were then removed and left a completely clean, beautiful place. Fantastic attitude towards us as a customer, very pleasant cooperation. We will definitely turn to them again when the need arises!"
+    },
+    "review6": {
       "name": "XBRAND STUDIO",
       "text": "I highly recommend this team! The work was done perfectly – the roof was painted qualitatively, carefully and quickly. The team was professional, responsive and took care of everything down to the smallest detail. The result looks great, and I am more than satisfied with the work done. Thank you for the great work!"
     },
-    "review3": {
+    "review7": {
+      "name": "Ivo Taurins",
+      "text": "The guys work professionally and qualitatively. They listen to and realize the client's wishes."
+    },
+    "review8": {
       "name": "Alexey Konstantinov",
-      "text": "I am satisfied with the work, UpRoof is a responsible firm, I recommend UpRoof company to everyone who needs a quality roof👍👍👍"
+      "text": "I was satisfied with the work, UpRoof is a responsible company, I recommend UpRoof to everyone who needs a quality roof👍👍👍"
+    },
+    "review9": {
+      "name": "Rihards Liepa",
+      "text": "Excellent quality, excellent service"
     }
   },
   "materials": {

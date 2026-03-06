@@ -35,6 +35,42 @@ export default function Reviews() {
       name: t('review3.name'),
       rating: 5,
       text: t('review3.text')
+    },
+    {
+      id: 4,
+      name: t('review4.name'),
+      rating: 5,
+      text: t('review4.text')
+    },
+    {
+      id: 5,
+      name: t('review5.name'),
+      rating: 5,
+      text: t('review5.text')
+    },
+    {
+      id: 6,
+      name: t('review6.name'),
+      rating: 5,
+      text: t('review6.text')
+    },
+    {
+      id: 7,
+      name: t('review7.name'),
+      rating: 5,
+      text: t('review7.text')
+    },
+    {
+      id: 8,
+      name: t('review8.name'),
+      rating: 5,
+      text: t('review8.text')
+    },
+    {
+      id: 9,
+      name: t('review9.name'),
+      rating: 5,
+      text: t('review9.text')
     }
   ];
 

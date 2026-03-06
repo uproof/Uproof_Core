@@ -241,16 +241,40 @@
     "title": "Ko Saka Mūsu Klienti",
     "subtitle": "Īstas atsauksmes no apmierinātiem klientiem",
     "review1": {
-      "name": "Dita Major",
-      "text": "Ļoti labs serviss! Vajadzēja noņemt skursteni, aizblīvēt skursteņa caurumu jumtā un sienā, kā arī noņemt stiprinājumus, kur skurstens bija piestiprināts pie ārsienas, un aizblīvēt caurumus arī tur. Viņi arī pārbaudīja jumtu un aizblīvēja plaisas, kur ūdens tecēja cauri. Pēc tam viņi izņēma visus materiālus un atstāja pilnīgi tīru, skaistu vietu, un viņi arī smalki nolika atpakaļ noņemto skursteņa cauruli, kur vajag. Fantastiska attieksme pret mums kā klientu, ļoti patīkama sadarbība. Noteikti griezīsimies pie viņiem atkal, kad būs vajadzība!"
+      "name": "Diana Vilistere",
+      "text": "Metāla jumta nomaiņas darbi manā īpašumā tika veikti augstā profesionālā līmenī, ar augstu kvalitāti un noteiktajos termiņos. Līgumslēdzējs nodrošināja sistemātisku ikdienas darbu uzraudzību, regulāri sniedzot pārskatus par paveikto. Varu ieteikt UpRoof kā uzticamu līgumslēdzēju un uzticamu partneri."
     },
     "review2": {
+      "name": "Alens Jucēvičs",
+      "text": "Es noteikti iesaku šo uzņēmumu jumta un fasādes uzstādīšanai. Viņi īsā laikā, sarežģītos laika apstākļos izveidoja jauku putnu būrīti no vecās stikla siltumnīcas. Ir ļoti svarīgi, ka komandai vadību uztic nopietns profesionālis Kārlis. Projekta vadītājs un arī līgumslēdzējs Pēteris kopā ar visiem darbiniekiem visu izdarīja precīzi un laikā. Komanda ir zinošs un patīkams sadarbības partneris. Noteikti iesaku."
+    },
+    "review3": {
+      "name": "Julja Semena",
+      "text": "Sadarbība bija profesionāla un labi organizēta. Ļoti laba pieredze. Pakalpojums tika sniegts kvalitatīvi un laikā. Noteikti iesaku."
+    },
+    "review4": {
+      "name": "Lana Zerdecka",
+      "text": "Liels paldies par paveikto darbu! Ātra konsultācija un operatīvs risinājums. Esam ļoti apmierināti ar sniegto pakalpojumu. Noteikti ieteicam!"
+    },
+    "review5": {
+      "name": "Dita Majore",
+      "text": "Ļoti labs serviss! Vajadzēja noņemt skursteni, aizblīvēt skursteņa caurumu jumtā un sienā, kā arī noņemt stiprinājumus, kur skurstens bija piestiprināts pie ārsienas, un aizblīvēt caurumus arī tur. Viņi arī pārbaudīja jumtu un aizblīvēja plaisas, kur ūdens tecēja cauri. Pēc tam viņi izņēma visus materiālus un atstāja pilnīgi tīru, skaistu vietu. Fantastiska attieksme pret mums kā klientu, ļoti patīkama sadarbība. Noteikti griezīsimies pie viņiem atkal, kad būs vajadzība!"
+    },
+    "review6": {
       "name": "XBRAND STUDIO",
       "text": "Es ļoti iesaku šo komandu! Darbs tika veikts perfekti – jumts tika nokrāsots kvalitatīvi, rūpīgi un ātri. Komanda bija profesionāla, atsaucīga un rūpējās par visu līdz mazākajām detaļām. Rezultāts izskatās lieliski, un esmu vairāk nekā apmierināts ar paveikto darbu. Paldies par lielisku darbu!"
     },
-    "review3": {
+    "review7": {
+      "name": "Ivo Taurins",
+      "text": "Puiši strādā profesionāli un kvalitatīvi. Viņi klausās un realizē klienta vēlmes."
+    },
+    "review8": {
       "name": "Alexey Konstantinov",
       "text": "Esmu apmierināts ar darbu, UpRoof ir atbildīga firma, es iesaku UpRoof kompāniju ikvienam, kam nepieciešams kvalitatīvs jumts👍👍👍"
+    },
+    "review9": {
+      "name": "Rihards Liepa",
+      "text": "Izcila kvalitāte, izcils serviss"
     }
   },
   "materials": {
