@@ -6,10 +6,10 @@ export const belgiumCities = ['brussel', 'antwerpen', 'gent', 'brugge', 'leuven'
 
 export const allCities: string[] = [...latviaCities, ...belgiumCities];
 
-// For index views: show all cities regardless of locale
+// Locale-specific city targeting to avoid mixed-country SEO signals.
 export const citiesByLocale: Record<Locale, string[]> = {
   lv: [...latviaCities],
-  en: allCities,
+  en: [...latviaCities],
   'nl-BE': [...belgiumCities],
 };
 

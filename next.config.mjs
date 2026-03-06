@@ -8,6 +8,23 @@ const nextConfig = {
     return [
       // Map common /sitemap.xml to the actual segmented index to avoid route conflicts.
       { source: '/sitemap.xml', destination: '/sitemap_index.xml' },
+      // Backward compatibility for legacy segmented sitemap paths (pre Feb-2026 migration).
+      { source: '/sitemaps/static.xml', destination: '/static-sitemap.xml' },
+      { source: '/sitemaps/services.xml', destination: '/services-sitemap.xml' },
+      { source: '/sitemaps/blog.xml', destination: '/blog-sitemap.xml' },
+      { source: '/sitemaps/materials.xml', destination: '/materials-sitemap.xml' },
+      { source: '/sitemaps/cities.xml', destination: '/cities-sitemap.xml' },
+      { source: '/sitemaps/static', destination: '/static-sitemap.xml' },
+      { source: '/sitemaps/services', destination: '/services-sitemap.xml' },
+      { source: '/sitemaps/blog', destination: '/blog-sitemap.xml' },
+      { source: '/sitemaps/materials', destination: '/materials-sitemap.xml' },
+      { source: '/sitemaps/cities', destination: '/cities-sitemap.xml' },
+      { source: '/en/cities/brussel', destination: '/nl-BE/cities/brussel' },
+      { source: '/en/cities/antwerpen', destination: '/nl-BE/cities/antwerpen' },
+      { source: '/en/cities/gent', destination: '/nl-BE/cities/gent' },
+      { source: '/en/cities/brugge', destination: '/nl-BE/cities/brugge' },
+      { source: '/en/cities/leuven', destination: '/nl-BE/cities/leuven' },
+      { source: '/en/cities/mechelen', destination: '/nl-BE/cities/mechelen' },
     ];
   },
   images: {

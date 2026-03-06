@@ -6,12 +6,12 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import InternalLinks from '@/components/InternalLinks';
 import MiersMethod from '@/components/MiersMethod';
 import { getCityContent } from '@/data/citiesContent';
+import {citiesByLocale, locales, belgiumCities} from '@/lib/cities';
 
-const CITY_SLUGS = ['riga','jurmala','jelgava','ogre','salaspils','kekava'];
+const BELGIUM_CITY_SET = new Set<string>(belgiumCities);
 
 export function generateStaticParams() {
-  const locales = ['lv','en','nl-BE'];
-  return locales.flatMap(locale => CITY_SLUGS.map(city => ({ locale, city })));
+  return locales.flatMap((locale) => (citiesByLocale[locale] ?? []).map((city) => ({ locale, city })));
 }
 
 function cityName(slug: string, locale: string) {
@@ -21,7 +21,13 @@ function cityName(slug: string, locale: string) {
     jelgava: { lv: 'Jelgava', en: 'Jelgava', 'nl-BE': 'Jelgava' },
     ogre: { lv: 'Ogre', en: 'Ogre', 'nl-BE': 'Ogre' },
     salaspils: { lv: 'Salaspils', en: 'Salaspils', 'nl-BE': 'Salaspils' },
-    kekava: { lv: 'Ķekava', en: 'Kekava', 'nl-BE': 'Ķekava' }
+    kekava: { lv: 'Ķekava', en: 'Kekava', 'nl-BE': 'Ķekava' },
+    brussel: { lv: 'Brisele', en: 'Brussels', 'nl-BE': 'Brussel' },
+    antwerpen: { lv: 'Antverpene', en: 'Antwerp', 'nl-BE': 'Antwerpen' },
+    gent: { lv: 'Gente', en: 'Ghent', 'nl-BE': 'Gent' },
+    brugge: { lv: 'Brige', en: 'Bruges', 'nl-BE': 'Brugge' },
+    leuven: { lv: 'Levene', en: 'Leuven', 'nl-BE': 'Leuven' },
+    mechelen: { lv: 'Mehelene', en: 'Mechelen', 'nl-BE': 'Mechelen' }
   };
   return map[slug]?.[locale] || map[slug]?.lv || slug;
 }
@@ -29,6 +35,8 @@ function cityName(slug: string, locale: string) {
 export async function generateMetadata({params}: {params: Promise<{locale: string; city: string}>}): Promise<Metadata> {
   const {locale, city} = await params;
   const name = cityName(city, locale);
+  const isBelgiumCity = BELGIUM_CITY_SET.has(city);
+  const countryLabel = isBelgiumCity ? (locale === 'lv' ? 'Beļģijā' : locale === 'nl-BE' ? 'in België' : 'in Belgium') : (locale === 'nl-BE' ? 'in Letland' : locale === 'en' ? 'in Latvia' : 'Latvijā');
   const canonical = `https://uproof.eu/${locale}/cities/${city}`;
   const languages: Record<string,string> = {
     lv: `https://uproof.eu/lv/cities/${city}`,
@@ -42,9 +50,9 @@ export async function generateMetadata({params}: {params: Promise<{locale: strin
     'nl-BE': `Dakdiensten in ${name} | Constructie, Renovatie & Onderhoud | UpRoof`
   };
   const descMap: Record<string,string> = {
-    lv: `Profesionāli jumta pakalpojumi ${name}: būvniecība, renovācija, valcprofils, dakstiņi, noteksistēmas, jumta logi. 10 gadu garantija. Bezmaksas novērtējums.`,
-    en: `Professional roofing services in ${name}: construction, renovation, standing seam, tiles, gutter systems, skylights. 10-year warranty. Free assessment.`,
-    'nl-BE': `Professionele dakdiensten in ${name}: dakbouw, renovatie, staande naad, pannen, goten, dakramen. 10 jaar garantie. Gratis evaluatie.`
+    lv: `Profesionāli jumta pakalpojumi ${name} ${countryLabel}: jumta būvniecība, jumta renovācija, jumta remonts, valcprofils, noteksistēmas un jumta logi. 10 gadu garantija. Bezmaksas novērtējums.`,
+    en: `Professional roofing services in ${name} ${countryLabel}: roof construction, roof renovation, roof repair, standing seam, gutters and skylights. 10-year warranty. Free assessment.`,
+    'nl-BE': `Professionele dakdiensten in ${name} ${countryLabel}: dakbouw, dakrenovatie, dakreparatie, staande naad, goten en dakramen. 10 jaar garantie. Gratis evaluatie.`
   };
   const title = titleMap[locale] || titleMap.lv;
   const description = descMap[locale] || descMap.lv;

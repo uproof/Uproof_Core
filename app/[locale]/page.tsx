@@ -26,15 +26,15 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
   };
 
   const titles: Record<string, string> = {
-    lv: 'UpRoof – Profesionāli jumta pakalpojumi Rīgā un Pierīgā | Sniega tīrīšana 24/7',
-    en: 'UpRoof – Professional Roofing Services in Latvia | Snow Removal 24/7',
-    'nl-BE': 'UpRoof – Professionele Dakdiensten | Renovatie & Onderhoud',
+    lv: 'UpRoof – Jumta būvniecība, renovācija un remonts Latvijā | Sniega tīrīšana 24/7',
+    en: 'UpRoof – Professional Roofing Services in Latvia | Construction, Renovation & Snow Removal 24/7',
+    'nl-BE': 'UpRoof – Professionele Dakdiensten in Letland | Renovatie, Reparatie & Sneeuwruiming',
   };
 
   const descriptions: Record<string, string> = {
-    lv: 'Profesionāli jumta darbi Rīgā: jumta seguma montāža, jumta nomaiņa, metāla jumta montāža, valcprofila montāža, jumta ieklāšana, noteku montāža, jumta krāsošana. Sertificēta kvalitāte, 10+ gadu pieredze. Bezmaksas apskate. Zvaniet +371 25612440.',
-    en: 'Professional roofing services: construction, renovation, repair, metal roof installation, snow and ice removal 24/7. Certified quality, 10+ years experience. Free inspection. Call +371 25612440.',
-    'nl-BE': 'Professionele dakdiensten: renovatie, reparatie, metalen daken, pannendaken, onderhoud. Gecertificeerde kwaliteit met garantie. Gratis inspectie.',
+    lv: 'UpRoof profesionālie jumta pakalpojumi Rīgā, Pierīgā un visā Latvijā: jaunu jumtu būvniecība, renovācija, remonts, metāla jumti, valcprofila montāža, valcprofila jumta montāža, valcprofila jumts Rīga, metāla jumta montāža, dakstiņu jumti, jumta krāsošana, notekas, sniega tīrīšana 24/7. 10 gadu garantija. +371 25612440',
+    en: 'UpRoof professional roofing services in Riga, Jurmala and all Latvia: construction, renovation, repair, metal roofing, tile roofs, painting, gutters, snow & ice removal 24/7. 10-year warranty. +371 25612440',
+    'nl-BE': 'UpRoof professionele dakdiensten in Letland: constructie, renovatie, reparatie, metalen daken, pannendaken, coating, goten, sneeuwruiming 24/7. 10 jaar garantie.',
   };
 
   return {
@@ -148,7 +148,7 @@ export default async function HomePage({params}: Props) {
               ? 'Professionele dakdiensten: renovatie, pannendaken, metaal, onderhoud. Gecertificeerde kwaliteit met garantie.'
               : locale === 'en'
               ? 'Professional roofing services: construction, renovation, metal, tiles, maintenance, snow and ice removal. Certified quality with warranty.'
-              : 'Profesionāli jumta pakalpojumi: būvniecība, renovācija, metāla jumti, dakstiņi, apkope, sniega un ledus tīrīšana no jumta. Sertificēta kvalitāte ar garantiju.'
+              : 'Profesionāli jumta pakalpojumi: būvniecība, renovācija, metāla jumti, valcprofila montāža, valcprofila jumta montāža, metāla jumta montāža, dakstiņi, apkope, sniega un ledus tīrīšana no jumta. Sertificēta kvalitāte ar garantiju.'
           })
         }}
       />

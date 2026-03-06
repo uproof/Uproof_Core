@@ -37,7 +37,7 @@ export function generateStaticParams() {
 const META: Record<string, {title: Record<string, string>; description: Record<string, string>; keywords: string}> = {
   'jumta-renovacija': {
     title: {
-      lv: 'Jumta renovācija Rīgā | Bezmaksas apskate + 10 gadu garantija | UpRoof',
+      lv: 'Jumta renovācija Rīgā | Jumta renovācija Latvijā ar garantiju | UpRoof',
       en: 'Roof Renovation in Riga | Professional Roofing Solutions Latvia | UpRoof',
       'nl-BE': 'Dakrenovatie in België | Professionele Dakoplossingen | UpRoof'
     },
@@ -46,20 +46,20 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
       en: 'Full-cycle roof renovation in Riga and Pieriga: structure renewal, insulation, roofing replacement, skylight installation. Certified craftsmen, 10-year warranty. Serving Riga, Jurmala, Jelgava.',
       'nl-BE': 'Volledige dakrenovatie in België: structuurvernieuwing, isolatie, dakbedekkingsvervanging, dakraaminstallatie. Gecertificeerde vakmannen, 10 jaar garantie. Actief in Kortrijk, Gent, Brugge, Antwerpen.'
     },
-    keywords: 'jumta renovācija Rīgā, jumta nomaiņa Rīgā, jumta seguma maiņa, jumta renovācija Latvijā, jumta atjaunošana Rīgā, jumta remonts Pierīgā, roof renovation Riga, dakrenovatie België'
+    keywords: 'jumta renovācija Rīgā, jumta renovācija Latvijā, jumta renovācija un būvniecība, jumta nomaiņa Rīgā, jumta seguma maiņa, jumta atjaunošana Rīgā, jumta remonts Pierīgā, roof renovation Riga, dakrenovatie België'
   },
   'valcprofila-montaza': {
     title: {
-      lv: 'Valcprofila montāža Rīgā | Stāvošā šuve ar 10 gadu garantiju | UpRoof',
+      lv: 'Valcprofila jumta montāža Rīgā | Stāvošā šuve ar 10 gadu garantiju | UpRoof',
       en: 'Standing Seam Metal Roofing in Riga | Hermetic Connections | UpRoof',
       'nl-BE': 'Staande naad metalen dakbedekking in België | Hermetische verbindingen | UpRoof'
     },
     description: {
-      lv: 'Stāvošā šuve bez caurumošanas — hermētisks metāla jumts Rīgā un Pierīgā. Valcprofila montāža ar dubultlocījumiem un precīziem mezgliem pie skursteņiem un logiem. 10 gadu garantija darbam, līdz 50 gadiem materiāliem.',
+      lv: 'Stāvošā šuve bez caurumošanas - hermētisks metāla jumts Rīgā un Pierīgā. Valcprofila jumta montāža un valcprofila montāža ar dubultlocījumiem un precīziem mezgliem pie skursteņiem un logiem. 10 gadu garantija darbam, līdz 50 gadiem materiāliem.',
       en: 'Standing seam metal roofing installation in Riga and Latvia with fully hermetic double-lock solutions. Professional sheet metal work with precise connections to windows and chimneys. 10-year warranty. Serving Riga, Pieriga, Jurmala.',
       'nl-BE': 'Staande naad metalen dakbedekking installatie in België met volledig hermetische dubbele sluitoplossingen. Professioneel plaatwerk met precieze aansluitingen op ramen en schoorstenen. 10 jaar garantie. Actief in Kortrijk, Gent, Brugge.'
     },
-    keywords: 'valcprofila montāža Rīgā, metāla jumta montāža Rīgā, stāvošā šuve, valcprofils, metāla jumts Rīgā, skārda jumts, skārdnieka darbi, jumta ieklāšana, falcētais jumts, standing seam roofing Riga, staande naad dakbedekking België'
+    keywords: 'valcprofila jumta montāža, valcprofila montāža Rīgā, valcprofila jumta montāža Rīgā, valcprofila jumts Latvijā, metāla jumta montāža Rīgā, stāvošā šuve, valcprofils, metāla jumts Rīgā, skārda jumts, skārdnieka darbi, jumta ieklāšana, falcētais jumts, standing seam roofing Riga, staande naad dakbedekking België'
   },
   'dakstinu-montaza': {
     title: {
@@ -89,7 +89,7 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
   },
   'jumta-buvnieciba': {
     title: {
-      lv: 'Jumta būvniecība Rīgā | Pilna cikla darbi ar garantiju | UpRoof',
+      lv: 'Jumta būvniecība Rīgā | Jumta būvniecība Latvijā ar garantiju | UpRoof',
       en: 'Roof Construction in Riga | Structure, Insulation, Installation | UpRoof',
       'nl-BE': 'Dakbouw in België | Structuur, Isolatie, Installatie | UpRoof'
     },
@@ -98,7 +98,7 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
       en: 'Full-cycle roof construction in Riga from design to finished roof: structure, insulation materials, covering, drainage systems. 10-year warranty. Serving Riga, Pieriga, Jurmala, Jelgava.',
       'nl-BE': 'Volledige dakbouw in België van ontwerp tot voltooid dak: structuur, isolatiematerialen, bedekking, afvoersystemen. 10 jaar garantie. Actief in Kortrijk, Gent, Brugge, Antwerpen, Brussel.'
     },
-    keywords: 'jumta būvniecība Rīgā, jumta darbi Rīgā, jumta seguma montāža, jumta ieklāšana Rīgā, jumtu būvniecība Latvijā, jauna jumta celtniecība Rīgā, roof construction Riga, dakbouw België'
+    keywords: 'jumta būvniecība, jumta būvniecība Rīgā, jumta būvniecība Latvijā, jumta darbi Rīgā, jumta seguma montāža, jumta ieklāšana Rīgā, jumtu būvniecība Latvijā, jauna jumta celtniecība Rīgā, roof construction Riga, dakbouw België'
   },
   'jumta-konstrukciju-montaza': {
     title: {
@@ -141,7 +141,7 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
   },
   'jumta-remonts': {
     title: {
-      lv: 'Jumta remonts Rīgā 24/7 | Avārijas palīdzība un garantija | UpRoof',
+      lv: 'Jumta remonts Rīgā 24/7 | Jumta remonta pakalpojumi ar garantiju | UpRoof',
       en: 'Emergency Roof Repair in Riga | Fast 24/7 Response | UpRoof',
       'nl-BE': 'Noodreparatie dak België | Snelle 24/7 reactie | UpRoof'
     },
@@ -150,7 +150,7 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
       en: 'Roof leak emergency? Fast 24/7 response, diagnostics, local repair in Riga and Pieriga. Certified specialists, 2-year warranty. Free assessment. Call +371 25612440',
       'nl-BE': 'Daklek noodgeval? Snelle 24/7 reactie, diagnose, lokale reparatie in België. Gecertificeerde vakmensen, 2 jaar garantie. Gratis beoordeling.'
     },
-    keywords: 'jumta remonts Rīgā, jumta darbi Rīgā, jumts tek, jumta noplūde avārija, avārijas reaģēšana, jumta remonts Pierīgā, emergency roof repair Riga, dak reparatie noodgeval België'
+    keywords: 'jumta remonts Rīgā, jumta remonta pakalpojumi, jumta darbi Rīgā, jumts tek, jumta noplūde avārija, avārijas reaģēšana, jumta remonts Pierīgā, emergency roof repair Riga, dak reparatie noodgeval België'
   },
   'jumta-krasosana': {
     title: {
@@ -883,6 +883,52 @@ export default async function ServiceLanding({params}: PageProps) {
   };
   const heroImage = heroImages[slug] || '/images/services/construction.webp';
 
+  const lvSeoBoostBySlug: Record<string, {heading: string; paragraphs: string[]}> = {
+    'valcprofila-montaza': {
+      heading: 'Valcprofila montāža: solis pa solim un kvalitātes kontrole',
+      paragraphs: [
+        'Valcprofila jumta montāža sākas ar precīzu pamatnes un mezglu sagatavošanu, jo kvalitatīva valcprofila montāža ir atkarīga no katra savienojuma. Mūsu komandai valcprofila montāža Rīgā nozīmē stingru darbu secību un dubultlocījumu tehnoloģiju.',
+        'Katrs objekts tiek plānots kā pilna cikla valcprofila jumta montāža: materiālu piemērīšana, mezglu izstrāde pie skursteņiem un logiem, droša blīvējumu sistēma un nobeiguma kvalitātes pārbaude. Tāpēc valcprofila jumta montāža kalpo ilgtermiņā un samazina noplūžu risku.',
+        'Ja meklējat valcprofila montāžu vai metāla jumta montāžu ar garantiju, UpRoof nodrošina valcprofila montāžu Rīgā un visā Latvijā ar dokumentētu kvalitātes kontroli katrā etapā.',
+        'Praksē valcprofila jumta montāža un metāla jumta montāža tiek veikta ar vienotu standartu: precīza ģeometrija, hermētiski mezgli un testēta stiprinājumu sistēma. Tas ir iemesls, kāpēc klienti izvēlas tieši mūsu valcprofila montāžu.'
+      ]
+    },
+    'jumta-buvnieciba': {
+      heading: 'Jumta būvniecība: no projekta līdz gatavam risinājumam',
+      paragraphs: [
+        'Jumta būvniecība ir komplekss process, kurā svarīga ir pareiza secība: projektēšana, konstrukciju sagatavošana, seguma mezgli un drošības elementi. Mēs nodrošinām jumta būvniecību Rīgā un jumta būvniecību Latvijā pēc vienotiem kvalitātes standartiem.',
+        'Profesionāla jumta būvniecība ietver precīzu tehnisko uzraudzību un materiālu atbilstības kontroli. Tieši tāpēc jumta būvniecība ar UpRoof palīdz samazināt ekspluatācijas riskus un nodrošina ilgtermiņa kalpošanu.',
+        'Ja nepieciešama jumta būvniecība privātmājai vai komercobjektam, piedāvājam pilna cikla jumta būvniecību ar skaidriem termiņiem un garantiju.'
+      ]
+    },
+    'jumta-renovacija': {
+      heading: 'Jumta renovācija ar skaidru darbu plānu un garantiju',
+      paragraphs: [
+        'Jumta renovācija ir labākais risinājums, ja vēlaties atjaunot seguma drošību un pagarināt jumta kalpošanas laiku bez pilnīgas pārbūves. Mēs veicam jumta renovāciju Rīgā un jumta renovāciju Latvijā ar detalizētu defektu diagnostiku.',
+        'Kvalitatīva jumta renovācija ietver bojāto mezglu nomaiņu, seguma atjaunošanu un hidroizolācijas risinājumus. Katra jumta renovācija tiek plānota individuāli atbilstoši objekta stāvoklim.',
+        'Ja mērķis ir droša un ilgtspējīga jumta renovācija, UpRoof nodrošina skaidru tāmi, termiņus un garantiju visiem renovācijas darbiem.'
+      ]
+    },
+    'jumta-remonts': {
+      heading: 'Jumta remonts Rīgā: ātra diagnostika un precīzi remontdarbi',
+      paragraphs: [
+        'Jumta remonts Rīgā bieži ir steidzams, tāpēc nodrošinām ātru defektu noteikšanu un skaidru darbu plānu. Mūsu jumta remonta pakalpojumi ietver noplūžu novēršanu, mezglu atjaunošanu un seguma lokālu nomaiņu.',
+        'Profesionāls jumta remonts nozīmē ne tikai redzamo bojājumu labošanu, bet arī cēloņu novēršanu. Tādēļ jumta remonts Rīgā tiek veikts ar tehnisko pārbaudi un kvalitātes kontroli katram etapam.',
+        'Ja nepieciešami uzticami jumta remonta pakalpojumi, UpRoof nodrošina jumta remontu Rīgā un Pierīgā ar dokumentētu izpildes kvalitāti un garantiju.',
+        'Mūsu praksē jumta remonts Rīgā tiek organizēts pa etapiem: diagnostika, risinājuma plāns, precīzi remontdarbi un gala pārbaude. Šāda pieeja ļauj jumta remontu Rīgā izpildīt droši un prognozējami.'
+      ]
+    },
+    'jumta-apkope-remonts': {
+      heading: 'Jumta apkope un remonts ilgākam jumta mūžam',
+      paragraphs: [
+        'Regulāra jumta apkope un savlaicīgs jumta remonts palīdz novērst lielus bojājumus un samazināt izmaksas ilgtermiņā. Mēs apvienojam jumta apkopi ar mērķētu remontdarbu plānu.',
+        'Šie jumta remonta pakalpojumi ietver noteku un mezglu pārbaudi, noplūžu vietu novēršanu un profilaktisko atjaunošanu, lai jumta apkope dotu reālu rezultātu.',
+        'Klientiem, kuriem svarīga droša ekspluatācija, piedāvājam periodisku jumta apkopi un nepieciešamības gadījumā operatīvu jumta remontu Rīgā un Latvijā.'
+      ]
+    }
+  };
+  const lvSeoBoost = locale === 'lv' ? lvSeoBoostBySlug[slug] : undefined;
+
   return (
     <main className="min-h-screen">
       <Header />
@@ -1021,6 +1067,19 @@ export default async function ServiceLanding({params}: PageProps) {
 
           {/* M-I-E-R-S Method Integration */}
           <MiersMethod locale={locale} variant="compact" />
+
+          {lvSeoBoost && (
+            <div className="mb-12 mt-10" id="keyword-focus">
+              <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 sm:p-8">
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">{lvSeoBoost.heading}</h2>
+                <div className="space-y-4 text-gray-700 leading-relaxed">
+                  {lvSeoBoost.paragraphs.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* FAQ SECTION - Clean accordion style */}
           <div className="mb-12" id="faq">
