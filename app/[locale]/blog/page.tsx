@@ -2,6 +2,7 @@ import {useTranslations} from 'next-intl';
 import {unstable_setRequestLocale} from 'next-intl/server';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import Image from 'next/image';
 import {Link} from '@/i18n/routing';
 import blogData from '@/data/blog.json';
@@ -89,19 +90,35 @@ export default async function BlogPage({params}: Props) {
   return (
     <main className="min-h-screen bg-gray-50">
       <Header />
+      <Breadcrumbs />
       
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-20 pt-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+      <section className="relative bg-gray-900 text-white overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-900/90 via-gray-900 to-gray-900" />
+        <div className="absolute inset-0 bg-cover bg-center opacity-15" style={{ backgroundImage: "url('/images/services/construction.webp')" }} />
+        <div className="absolute top-1/4 -left-20 w-64 h-64 bg-primary-500/15 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/3 -right-20 w-72 h-72 bg-primary-600/10 rounded-full blur-3xl" />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 md:py-28">
+          <div className="max-w-3xl">
+            <p className="text-primary-400 font-semibold uppercase tracking-wider text-sm mb-3">
+              {locale === 'lv' ? 'Blogs' : locale === 'nl-BE' ? 'Blog' : 'Blog'}
+            </p>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-5 leading-tight">
               {locale === 'lv' ? 'Jumtu ziņas un padomi' : locale === 'nl-BE' ? 'Daktips & Inzichten' : 'Roofing Insights & Tips'}
             </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            <p className="text-lg text-gray-300 leading-relaxed">
               {locale === 'lv' ? 'Ekspertu padomi, nozares tendences un praktiskas rokasgrāmatas jebkurām jumta vajadzībām' : locale === 'nl-BE' ? 'Deskundig advies, trends en praktische gidsen voor al uw dakbehoeften' : 'Expert advice, industry trends, and practical guides for all your roofing needs'}
             </p>
           </div>
         </div>
+
+        <div
+          className="absolute bottom-0 left-0 right-0 h-20"
+          style={{
+            background: 'linear-gradient(to top, rgb(249,250,251) 0%, rgba(249,250,251,0.9) 20%, rgba(249,250,251,0.5) 50%, rgba(249,250,251,0) 100%)'
+          }}
+        />
       </section>
 
       {/* Blog Grid */}

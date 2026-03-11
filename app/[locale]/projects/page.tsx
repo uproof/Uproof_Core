@@ -65,11 +65,32 @@ export default function ProjectsPage({params}: PageProps) {
       <Header />
       <Breadcrumbs />
       {/* Header */}
-      <section className="relative pt-32 pb-20 bg-gradient-to-br from-gray-900 via-gray-800 to-primary-900 overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-grid-pattern"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-5xl md:text-6xl font-bold text-white">{t('title')}</h1>
+      <section className="relative bg-gray-900 text-white overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-900/90 via-gray-900 to-gray-900" />
+        <div className="absolute inset-0 bg-cover bg-center opacity-15" style={{ backgroundImage: "url('/images/services/construction.webp')" }} />
+        <div className="absolute top-1/4 -left-20 w-64 h-64 bg-primary-500/15 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/3 -right-20 w-72 h-72 bg-primary-600/10 rounded-full blur-3xl" />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 md:py-28">
+          <div className="max-w-3xl">
+            <p className="text-primary-400 font-semibold uppercase tracking-wider text-sm mb-3">
+              {locale === 'nl-BE' ? 'Projecten' : locale === 'en' ? 'Projects' : 'Projekti'}
+            </p>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-5 leading-tight">{t('title')}</h1>
+            <p className="text-lg text-gray-300 leading-relaxed">
+              {locale === 'lv' && 'Apskatiet pabeigtos jumta projektus: metāla jumti, dakstiņu montāža, renovācija un remonts ar kvalitāti, kas balstīta uz pieredzi un 10 gadu garantiju.'}
+              {locale === 'en' && 'View completed roofing projects, including metal roofing, tile installation, renovation, and repair work delivered with certified quality and a 10-year warranty.'}
+              {locale === 'nl-BE' && 'Bekijk voltooide dakprojecten, waaronder metalen daken, pannendaken, renovatie en herstellingen met gecertificeerde kwaliteit en 10 jaar garantie.'}
+            </p>
+          </div>
         </div>
+
+        <div
+          className="absolute bottom-0 left-0 right-0 h-20"
+          style={{
+            background: 'linear-gradient(to top, rgb(249,250,251) 0%, rgba(249,250,251,0.9) 20%, rgba(249,250,251,0.5) 50%, rgba(249,250,251,0) 100%)'
+          }}
+        />
       </section>
       {/* Projects Grid */}
       <section className="py-20 bg-gray-50">

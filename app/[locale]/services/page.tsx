@@ -261,44 +261,40 @@ export default async function ServicesPage({params}: {params: Promise<{locale: s
     <main className="min-h-screen">
       <Header />
       <Breadcrumbs />
-      <section className="pt-14 pb-4 bg-gradient-to-b from-primary-50 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
-            {locale === 'lv' && 'UpRoof profesionālie jumta pakalpojumi Latvijā'}
-            {locale === 'en' && 'UpRoof Professional Roofing Services in Latvia'}
-            {locale === 'nl-BE' && 'UpRoof professionele dakdiensten in Letland'}
-          </h1>
-          <p className="mt-4 text-lg text-gray-600 max-w-3xl">
-            {locale === 'lv' && 'Pilns spektrs profesionālu jumta pakalpojumu Rīgā, Pierīgā un visā Latvijā: jumta būvniecība, jumta renovācija, jumta remonts, jumta apkope, noteksistēmu uzstādīšana un sniega tīrīšana 24/7. Sertificēti meistari ar 10 gadu garantiju.'}
-            {locale === 'en' && 'Complete range of professional roofing services in Riga, Jurmala and all Latvia: construction, renovation, repair, metal roofing, tile roofs, painting, gutter systems, snow and ice removal 24/7. Certified specialists with 10-year warranty.'}
-            {locale === 'nl-BE' && 'Volledig scala aan professionele dakdiensten in heel Letland: constructie, renovatie, reparatie, metalen daken, pannendaken, coating, goten, sneeuwruiming 24/7. Gecertificeerde specialisten met 10 jaar garantie.'}
-          </p>
-        </div>
-      </section>
-      <Services />
-      {locale === 'lv' && (
-        <section className="py-12 bg-white border-t border-gray-100">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-              Jumta renovācija un jumta būvniecība Latvijā
-            </h2>
-            <p className="mt-4 text-lg text-gray-700 max-w-4xl">
-              UpRoof komanda specializējas darbos, kur galvenais fokuss ir jumta renovācija un jumta būvniecība privātmājām, daudzdzīvokļu ēkām un komercobjektiem.
-              Ja jums nepieciešama profesionāla jumta renovācija vai pilna cikla jumta būvniecība, mēs nodrošinām precīzu tāmi, sertificētu brigādi un ilgtermiņa garantiju.
+      <section className="relative overflow-hidden bg-gray-900 text-white">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-900/90 via-gray-900 to-gray-900" />
+        <div className="absolute inset-0 bg-cover bg-center opacity-15" style={{ backgroundImage: "url('/images/services/construction.webp')" }} />
+        <div className="absolute -left-16 top-16 h-48 w-48 rounded-full bg-primary-500/15 blur-3xl" />
+        <div className="absolute -right-20 bottom-10 h-56 w-56 rounded-full bg-primary-400/10 blur-3xl" />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 md:py-28">
+          <div className="max-w-3xl">
+            <p className="text-primary-400 font-semibold uppercase tracking-wider text-sm mb-3">
+              {locale === 'lv' && 'Jumta pakalpojumi'}
+              {locale === 'en' && 'Roofing Services'}
+              {locale === 'nl-BE' && 'Dakdiensten'}
             </p>
-            <ul className="mt-6 space-y-3 text-gray-700">
-              <li>- Jumta būvniecība no projekta līdz gatavam jumtam ar pilnu tehnisko uzraudzību.</li>
-              <li>- Jumta renovācija esošiem objektiem, ieskaitot seguma nomaiņu un konstrukciju atjaunošanu.</li>
-              <li>- Jumta būvniecība Rīgā, Pierīgā un visā Latvijā ar materiālu un mezglu kvalitātes kontroli.</li>
-              <li>- Jumta renovācija Rīgā un Latvijas pilsētās ar skaidriem termiņiem un garantiju.</li>
-              <li>- Kombinēti risinājumi, kuros jumta renovācija tiek apvienota ar jaunu mezglu izbūvi un jumta būvniecība tiek plānota pa etapiem.</li>
-            </ul>
-            <p className="mt-6 text-base text-gray-600">
-              Pieprasiet bezmaksas novērtējumu: palīdzēsim izvēlēties, vai konkrētajam objektam izdevīgāka ir jumta renovācija vai pilna jumta būvniecība.
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-5 leading-tight">
+              {locale === 'lv' && 'UpRoof profesionālie jumta pakalpojumi Latvijā'}
+              {locale === 'en' && 'UpRoof Professional Roofing Services in Latvia'}
+              {locale === 'nl-BE' && 'UpRoof professionele dakdiensten in Letland'}
+            </h1>
+            <p className="text-lg text-gray-300 leading-relaxed">
+              {locale === 'lv' && 'Pilns spektrs profesionālu jumta pakalpojumu Rīgā, Pierīgā un visā Latvijā: jumta būvniecība, jumta renovācija, jumta remonts, jumta apkope, noteksistēmu uzstādīšana un sniega tīrīšana 24/7. Sertificēti meistari ar 10 gadu garantiju.'}
+              {locale === 'en' && 'A full range of professional roofing services across Riga, Jurmala, and Latvia, including construction, renovation, repair, metal roofing, tile roofs, painting, gutter systems, and 24/7 snow and ice removal. Certified specialists with a 10-year warranty.'}
+              {locale === 'nl-BE' && 'Volledig scala aan professionele dakdiensten in heel Letland: constructie, renovatie, reparatie, metalen daken, pannendaken, coating, goten, sneeuwruiming 24/7. Gecertificeerde specialisten met 10 jaar garantie.'}
             </p>
           </div>
-        </section>
-      )}
+        </div>
+
+        <div
+          className="absolute bottom-0 left-0 right-0 h-28"
+          style={{
+            background: 'linear-gradient(to top, rgb(255,255,255) 0%, rgba(255,255,255,0.96) 18%, rgba(255,255,255,0.82) 36%, rgba(255,255,255,0.58) 58%, rgba(255,255,255,0.24) 78%, rgba(255,255,255,0) 100%)'
+          }}
+        />
+      </section>
+      <Services />
       <Footer />
       <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(breadcrumbSchema)}} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(localBusinessSchema)}} />
