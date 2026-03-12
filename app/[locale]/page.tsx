@@ -51,14 +51,10 @@ export default async function HomePage({params}: Props) {
   const {locale} = await params;
   unstable_setRequestLocale(locale);
 
-  // Show snow removal banner during winter months (Nov-Mar)
-  const month = new Date().getMonth(); // 0-indexed
-  const isWinter = month >= 10 || month <= 2; // Nov(10), Dec(11), Jan(0), Feb(1), Mar(2)
-
   const bannerText: Record<string, {title: string; cta: string}> = {
-    lv: {title: 'Sniega un ledus tīrīšana no jumta – 24/7', cta: 'Pieteikties tagad'},
-    en: {title: 'Snow & Ice Removal from Roof – 24/7', cta: 'Request now'},
-    'nl-BE': {title: 'Sneeuw- en ijsverwijdering van dak – 24/7', cta: 'Aanvragen'},
+    lv: {title: 'Jumta remonts un renovācija — bezmaksas diagnostika', cta: 'Pieteikt apskati'},
+    en: {title: 'Roof Repair & Renovation — Free Roof Diagnostics', cta: 'Book inspection'},
+    'nl-BE': {title: 'Dakreparatie & renovatie — Gratis dakdiagnose', cta: 'Plan inspectie'},
   };
   const banner = bannerText[locale] || bannerText.lv;
 
@@ -87,17 +83,15 @@ export default async function HomePage({params}: Props) {
     <main className="min-h-screen">
   <Header showText={false} largeLogo={true} />
   <Hero />
-      {isWinter && (
-        <div className="bg-gray-900 text-white py-3">
+      <div className="bg-gray-900 text-white py-3">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-center">
             <p className="font-semibold text-sm sm:text-base">{banner.title}</p>
-            <a href={`/${locale}/urgency/sniega-tirisana`} className="inline-flex items-center gap-2 bg-white text-gray-900 px-5 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">
+            <a href={`/${locale}/services/jumta-apkope-remonts`} className="inline-flex items-center gap-2 bg-white text-gray-900 px-5 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">
               {banner.cta}
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
             </a>
           </div>
         </div>
-      )}
   <Services limit={4} />
       <StatsBar stats={statsData[locale] || statsData.lv} />
       <HomeClientSections>

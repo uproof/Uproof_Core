@@ -284,6 +284,20 @@ export default async function ServicesPage({params}: {params: Promise<{locale: s
               {locale === 'en' && 'A full range of professional roofing services across Riga, Jurmala, and Latvia, including construction, renovation, repair, metal roofing, tile roofs, painting, gutter systems, and 24/7 snow and ice removal. Certified specialists with a 10-year warranty.'}
               {locale === 'nl-BE' && 'Volledig scala aan professionele dakdiensten in heel Letland: constructie, renovatie, reparatie, metalen daken, pannendaken, coating, goten, sneeuwruiming 24/7. Gecertificeerde specialisten met 10 jaar garantie.'}
             </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a
+                href={`/${locale}/services/seasonal`}
+                className="inline-flex items-center gap-2 bg-white text-gray-900 px-5 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg shadow-white/20"
+              >
+                {locale === 'lv' ? 'Pavasara jumta pārbaude' : locale === 'nl-BE' ? 'Voorjaarscheck' : 'Spring roof care'}
+              </a>
+              <a
+                href={`/${locale}/contact`}
+                className="inline-flex items-center gap-2 bg-primary-500 text-white px-5 py-3 rounded-lg font-semibold hover:bg-primary-400 transition-colors shadow-lg shadow-primary-500/25"
+              >
+                {locale === 'lv' ? 'Pieteikt vizīti' : locale === 'nl-BE' ? 'Bezoek plannen' : 'Schedule visit'}
+              </a>
+            </div>
           </div>
         </div>
 

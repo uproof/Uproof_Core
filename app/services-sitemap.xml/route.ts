@@ -12,8 +12,14 @@ const serviceSlugs = [
   'jumta-remonts',
   'noteksistemu-uzstadisana',
   'jumta-krasosana',
-  'saules-dakstini'
+  'saules-dakstini',
+  'seasonal'
 ];
+
+function priorityFor(slug: string) {
+  if (slug === 'seasonal') return 0.95; // elevate seasonal checklist
+  return 0.85;
+}
 
 export async function GET() {
   const now = new Date().toISOString();
@@ -22,7 +28,7 @@ export async function GET() {
       serviceSlugs
         .map(
           (slug) =>
-            `<url><loc>${baseUrl}/${locale}/services/${slug}</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>`
+            `<url><loc>${baseUrl}/${locale}/services/${slug}</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>${priorityFor(slug).toFixed(2)}</priority></url>`
         )
         .join('\n')
     )

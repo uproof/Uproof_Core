@@ -10,6 +10,7 @@ const staticPaths = [
   '/blog',
   '/reviews',
   '/privacy-policy',
+  '/services/seasonal',
   '/urgency/caurs-jumts',
   '/urgency/sniega-tirisana'
 ];
@@ -21,7 +22,16 @@ export async function GET() {
       staticPaths
         .map((p) => {
           const url = `${baseUrl}/${locale}${p}`;
-          const priority = p === '' ? 1 : p.startsWith('/urgency/') ? 0.9 : p === '/contact' ? 0.9 : 0.8;
+          const priority =
+            p === ''
+              ? 1
+              : p === '/services/seasonal'
+                ? 0.95
+                : p.startsWith('/urgency/')
+                  ? 0.9
+                  : p === '/contact'
+                    ? 0.9
+                    : 0.8;
           return `<url><loc>${url}</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>${priority.toFixed(2)}</priority></url>`;
         })
         .join('\n')

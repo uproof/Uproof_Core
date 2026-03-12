@@ -28,6 +28,41 @@ export interface KeywordMappingEntry {
 
 export const keywordMapping: KeywordMappingEntry[] = [
   {
+    keyword: 'jumta diagnostika',
+    intent: 'technical',
+    primaryUrl: '/lv/services/jumta-apkope-remonts',
+    supportingUrls: ['/lv/urgency/caurs-jumts', '/lv/services/jumta-renovacija'],
+    notes: 'High spring intent after winter. Core query for inspections and condition checks.'
+  },
+  {
+    keyword: 'jumta apskate',
+    intent: 'technical',
+    primaryUrl: '/lv/services/jumta-apkope-remonts',
+    supportingUrls: ['/lv/urgency/caurs-jumts', '/lv/services/jumta-renovacija'],
+    notes: 'Diagnostic/inspection synonym. Keep same canonical page to avoid cannibalization.'
+  },
+  {
+    keyword: 'jumta noplūdes noteikšana',
+    intent: 'repair',
+    primaryUrl: '/lv/services/jumta-apkope-remonts',
+    supportingUrls: ['/lv/urgency/caurs-jumts'],
+    notes: 'Leak detection and localization query. Strong conversion intent.'
+  },
+  {
+    keyword: 'jumta logu hermetizācija',
+    intent: 'skylight',
+    primaryUrl: '/lv/services/jumta-logu-montaza',
+    supportingUrls: ['/lv/services/jumta-apkope-remonts'],
+    notes: 'Skylight sealing and leak prevention query. Skylight page is canonical.'
+  },
+  {
+    keyword: 'jumta logu remonts',
+    intent: 'skylight',
+    primaryUrl: '/lv/services/jumta-logu-montaza',
+    supportingUrls: ['/lv/services/jumta-apkope-remonts'],
+    notes: 'Repair-intent skylight query. Pair with maintenance page for internal links.'
+  },
+  {
     keyword: 'jumta būvniecība',
     intent: 'core-service',
     primaryUrl: '/lv/services/jumta-buvnieciba',
