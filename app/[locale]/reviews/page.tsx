@@ -1,6 +1,5 @@
 import {unstable_setRequestLocale} from 'next-intl/server';
 import {use} from 'react';
-import {useTranslations} from 'next-intl';
 import type {Metadata} from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -46,28 +45,9 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
 export default function ReviewsPage({params}: PageProps) {
   const {locale} = use(params);
   unstable_setRequestLocale(locale);
-  const t = useTranslations();
-
-  const aggregateRatingSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    '@id': 'https://uproof.eu/#organization',
-    name: 'UpRoof',
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      reviewCount: '47',
-      bestRating: '5',
-      worstRating: '1'
-    }
-  };
 
   return (
     <>
-      <script 
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(aggregateRatingSchema) }}
-      />
       <Header />
       <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
         <div className="container mx-auto px-4 py-8 sm:py-12">

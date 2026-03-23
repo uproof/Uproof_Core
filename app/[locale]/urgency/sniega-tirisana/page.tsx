@@ -53,6 +53,14 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 			'snow removal roof riga',
 			'roof snow cleaning latvia',
 		].join(', '),
+		robots: {
+			index: true,
+			follow: true,
+			googleBot: {
+				index: true,
+				follow: true
+			}
+		},
 		alternates: {
 			canonical,
 			languages: {

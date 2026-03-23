@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import InternalLinks from '@/components/InternalLinks';
+import {notFound} from 'next/navigation';
 
 const MATERIAL_SPECS: Record<string, { title: Record<string,string>; description: Record<string,string>; thickness?: string; finishes?: string[]; typicalUse?: string[]; }> = {
   'valcprofils': {
@@ -113,14 +114,24 @@ export default async function MaterialSpecPage({ params }: { params: Promise<{ s
   const {slug, locale} = await params;
   unstable_setRequestLocale(locale);
   const spec = MATERIAL_SPECS[slug];
-  if (!spec) return <main><p>Material not found</p></main>;
+  if (!spec) notFound();
+  const pageUrl = `https://uproof.eu/${locale}/materials/${slug}`;
 
   const productSchema = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: spec.title[locale],
     description: spec.description[locale],
+    url: pageUrl,
     material: slug,
+    offers: {
+      '@type': 'Offer',
+      url: pageUrl,
+      priceCurrency: 'EUR',
+      price: '0',
+      availability: 'https://schema.org/InStock',
+      seller: { '@id': 'https://uproof.eu/#organization' }
+    },
     additionalProperty: [
       spec.thickness && { '@type': 'PropertyValue', name: 'thickness', value: spec.thickness },
       spec.finishes && { '@type': 'PropertyValue', name: 'finishes', value: spec.finishes.join(', ') },

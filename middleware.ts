@@ -16,14 +16,6 @@ function resolveLocale(req: NextRequest): string {
 export default function middleware(request: NextRequest) {
   const {nextUrl, cookies} = request;
   const pathname = nextUrl.pathname;
-  const hostname = request.headers.get('host') || '';
-
-  // Redirect www to non-www
-  if (hostname.startsWith('www.')) {
-    const newUrl = new URL(request.url);
-    newUrl.hostname = hostname.replace('www.', '');
-    return NextResponse.redirect(newUrl, 301);
-  }
 
   // Handle old paths without locale - redirect to lv
   const oldPathsToRedirect = ['/ieteikumi', '/services', '/materials', '/reviews', '/projects', '/about', '/contact', '/blog'];

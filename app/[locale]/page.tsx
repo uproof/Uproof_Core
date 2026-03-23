@@ -120,7 +120,6 @@ export default async function HomePage({params}: Props) {
             openingHoursSpecification: [
               { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday'], opens: '08:00', closes: '18:00' }
             ],
-            aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.9', reviewCount: '47' },
             sameAs: [
               'https://www.tiktok.com/@uproof',
               'https://www.instagram.com/up_roof',

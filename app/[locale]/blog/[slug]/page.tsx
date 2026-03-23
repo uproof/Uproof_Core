@@ -61,6 +61,14 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
   return {
     title: `${post.title} | UpRoof Blog`,
     description: post.excerpt,
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true
+      }
+    },
     alternates: {
       canonical,
       languages,

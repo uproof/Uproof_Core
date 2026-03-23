@@ -59,6 +59,14 @@ export async function generateMetadata({params}: {params: Promise<{locale: strin
   return {
     title,
     description,
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true
+      }
+    },
     alternates: { canonical, languages },
     openGraph: { url: canonical, title, description, locale, type: 'website' },
     twitter: { title, description, card: 'summary_large_image' }

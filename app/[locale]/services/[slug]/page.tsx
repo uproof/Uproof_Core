@@ -681,6 +681,14 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
     title,
     description,
     keywords: entry?.keywords || 'jumta pakalpojumi Rīgā, jumtu būvniecība Latvijā',
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true
+      }
+    },
     alternates: { 
       canonical,
       languages,

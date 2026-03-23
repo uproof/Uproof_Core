@@ -48,10 +48,8 @@
     { "source": "/ieteikumi", "destination": "/lv/services", "permanent": true },
     { "source": "/services", "destination": "/lv/services", "permanent": true },
     { "source": "/materials", "destination": "/lv/services", "permanent": true },
-    { "source": "/reviews", "destination": "/lv", "permanent": true },
 
     { "source": "/:locale(lv|en|nl-BE)/materials", "destination": "/:locale/services", "permanent": true },
-    { "source": "/:locale(lv|en|nl-BE)/reviews", "destination": "/:locale", "permanent": true },
 
     { "source": "/:locale(lv|en|nl-BE)/cenas/:path*", "destination": "/:locale/services", "permanent": true },
 
@@ -107,6 +105,14 @@
     { "source": "/lv/services/roof-painting", "destination": "/lv/services/jumta-krasosana", "permanent": true },
     { "source": "/nl-BE/services/roof-painting", "destination": "/nl-BE/services/jumta-krasosana", "permanent": true },
     { "source": "/en/materials/roof-paint", "destination": "/en/materials/jumta-krasa", "permanent": true },
-    { "source": "/nl-BE/materials/roof-paint", "destination": "/nl-BE/materials/jumta-krasa", "permanent": true }
+    { "source": "/nl-BE/materials/roof-paint", "destination": "/nl-BE/materials/jumta-krasa", "permanent": true },
+
+    { "source": "/:locale(lv|en|nl-BE)/blog/roof-remonts-riga-cenas", "destination": "/:locale/blog/jumta-remonts-riga-cenas", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/blog/roof-repair-failure", "destination": "/:locale/blog/signs-roof-needs-repair", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/blog/kad-jamaina-yumta-segums", "destination": "/:locale/blog/kad-jamaina-jumta-segums", "permanent": true },
+    { "source": "/:locale(lv|en|nl-BE)/blog/sniega-slog-uz-jumta", "destination": "/:locale/blog/sniega-slogs-uz-jumta", "permanent": true },
+
+    { "source": "/en/services/roof-construction-installation", "destination": "/en/services/jumta-buvnieciba", "permanent": true },
+    { "source": "/en/services/roof-construction", "destination": "/en/services/jumta-buvnieciba", "permanent": true }
   ]
 }

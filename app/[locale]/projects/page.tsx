@@ -35,6 +35,14 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
   return {
     title,
     description,
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true
+      }
+    },
     alternates: { canonical, languages },
     openGraph: { url: canonical, title, description, type: 'website', locale },
     twitter: { title, description, card: 'summary_large_image' }
