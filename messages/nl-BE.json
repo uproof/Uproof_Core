@@ -159,6 +159,16 @@
         "title": "Appartementengebouw schildering",
         "location": "Riga, Letland",
         "description": "Appartementengebouw schildering in Riga."
+      },
+      "tiledRoofRepair": {
+        "title": "Pannendak herstelling en schoorsteenaansluiting herstel",
+        "location": "Riga, Letland",
+        "description": "Vervanging van beschadigde dakpannen, herstel van nokdetails en schoorsteenaansluiting met waterdichte plaatwerkoplossingen."
+      },
+      "ozolniekiRenovationProfiling": {
+        "title": "Dakrenovatie / staande-naad montage",
+        "location": "Ozolnieki, gemeente Jelgava",
+        "description": "Dakrenovatie en montage van staande-naad profiel voor een privéwoning in Ozolnieki, met waterdichte details en nauwkeurige afwerking."
       }
     }
   },
@@ -207,6 +217,14 @@
       "gutterSystem": {
         "title": "AFVOERSYSTEEM INSTALLATIE",
         "description": "Wij installeren afvoersystemen op gemakkelijk en moeilijk toegankelijke locaties en hoogtes. Wij zorgen ervoor dat goten altijd werken met het zelfstroom-mechanisme van water, waardoor hun functionaliteit duurzaam is. We voeren ook herstellingswerkzaamheden aan windkasten uit indien nodig voor succesvolle gootinstallatie."
+      },
+      "chimneyConnection": {
+        "title": "SCHOORSTEENAANSLUITING MONTAGE / HERSTEL",
+        "description": "Precisiewerk voor montage en herstelling van schoorsteenaansluitingen met waterdichte plaatwerkdetails. We dichten lekken af en herstellen duurzame waterdichting."
+      },
+      "tileRoofRepair": {
+        "title": "PANNENDAK HERSTELLING",
+        "description": "Pannendak herstelling met gemiddelde tot hoge moeilijkheidsgraad: vervanging van beschadigde pannen, herstel van nok en aansluitingen, lekdichting en preventief onderhoud."
       },
       "snowRemoval": {
         "title": "SNEEUW- EN IJSVERWIJDERING VAN DAK",

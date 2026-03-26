@@ -143,6 +143,16 @@
         "title": "Daudzdzīvokļu mājas krāsošana",
         "location": "Rīga, Latvija",
         "description": "Daudzdzīvokļu mājas krāsošana Rīgā."
+      },
+      "tiledRoofRepair": {
+        "title": "Dakstiņa jumta labošana un skursteņa pieslēguma atjaunošana",
+        "location": "Rīga, Latvija",
+        "description": "Bojāto dakstiņu nomaiņa, kores mezgla sakārtošana un skursteņa pieslēguma labošana ar hermētiskiem skārda risinājumiem."
+      },
+      "ozolniekiRenovationProfiling": {
+        "title": "Jumta renovācija / valcprofila montāža",
+        "location": "Ozolnieki, Jelgavas novads",
+        "description": "Jumta renovācija un valcprofila montāža privātīpašumam Ozolniekos, nodrošinot hermētiskus mezglus, precīzu montāžu un ilgtermiņa izturību."
       }
     }
   },
@@ -191,6 +201,14 @@
       "gutterSystem": {
         "title": "JUMTA NOTEKSISTĒMAS MONTĀŽA",
         "description": "Noteksistēmas uzstādam gan viegli gan sarežģīti pieejamās vietās un augstumos. Rūpējamies, lai notekas vienmēr strādātu ar ūdens paškrites mehānismu, tādā veidā padarot to funkcionalitāti ilgmūžīgu. Veicam arī vēja kastes atjaunošanas darbus, ja tas nepieciešams veiksmīgai noteksistēmas ierīkošanai."
+      },
+      "chimneyConnection": {
+        "title": "SKURSTEŅA PIESLĒGUMA MONTĀŽA / LABOŠANA",
+        "description": "Augstas precizitātes skursteņa pieslēguma montāža un labošana ar hermētiskiem skārda mezgliem. Novēršam noplūdes, atjaunojam hidroizolāciju un nodrošinām ilgtermiņa drošību."
+      },
+      "tileRoofRepair": {
+        "title": "DAKSTIŅA JUMTA LABOŠANA",
+        "description": "Vidējas līdz augstas sarežģītības dakstiņa jumta labošana: bojāto dakstiņu nomaiņa, kores un pieslēgumu atjaunošana, noplūžu novēršana un profilaktiskā apkope."
       },
       "snowRemoval": {
         "title": "SNIEGA UN LEDUS TĪRĪŠANA NO JUMTA",

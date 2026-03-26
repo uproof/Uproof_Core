@@ -5,6 +5,8 @@ const serviceSlugs = [
   'jumta-renovacija',
   'valcprofila-montaza',
   'dakstinu-montaza',
+  'skurstena-piesleguma-montaza-labosana',
+  'dakstina-jumta-labosana',
   'jumta-logu-montaza',
   'jumta-buvnieciba',
   'jumta-konstrukciju-montaza',

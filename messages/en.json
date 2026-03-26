@@ -153,6 +153,16 @@
         "title": "Multi-Apartment Building Painting",
         "location": "Riga, Latvia",
         "description": "Multi-apartment building painting in Riga."
+      },
+      "tiledRoofRepair": {
+        "title": "Tile Roof Repair and Chimney Flashing Restoration",
+        "location": "Riga, Latvia",
+        "description": "Replacement of damaged tiles, ridge detail restoration, and chimney flashing repair with leak-proof sheet-metal solutions."
+      },
+      "ozolniekiRenovationProfiling": {
+        "title": "Roof Renovation / Standing Seam Installation",
+        "location": "Ozolnieki, Jelgava Municipality",
+        "description": "Roof renovation and standing seam metal profile installation for a private property in Ozolnieki, including watertight details and precise finishing."
       }
     }
   },
@@ -201,6 +211,14 @@
       "gutterSystem": {
         "title": "GUTTER SYSTEM INSTALLATION",
         "description": "We install drainage systems in both easily and complexly accessible locations and heights. We ensure that gutters always operate with the water self-flow mechanism, making their functionality long-lasting. We also perform wind box restoration work when necessary for successful gutter installation."
+      },
+      "chimneyConnection": {
+        "title": "CHIMNEY FLASHING INSTALLATION / REPAIR",
+        "description": "High-precision chimney flashing installation and repair with watertight sheet-metal details. We stop leaks around penetrations, restore waterproofing, and secure long-term roof performance."
+      },
+      "tileRoofRepair": {
+        "title": "TILE ROOF REPAIR",
+        "description": "Medium-to-high difficulty tile roof repair: replacement of damaged tiles, ridge and flashing restoration, leak elimination, and preventive maintenance for longer roof life."
       },
       "snowRemoval": {
         "title": "SNOW AND ICE REMOVAL FROM ROOF",

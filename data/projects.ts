@@ -107,5 +107,23 @@ export const projects: Project[] = [
     services: ['painting'],
     descriptionKey: 'projects.items.rigaPainting.description',
     image: '/images/projects/project-11.webp'
+  },
+  {
+    id: 'tiled-repair-012',
+    titleKey: 'projects.items.tiledRoofRepair.title',
+    locationKey: 'projects.items.tiledRoofRepair.location',
+    year: 2026,
+    services: ['maintenance', 'tiling', 'chimney'],
+    descriptionKey: 'projects.items.tiledRoofRepair.description',
+    image: '/images/projects/project-12.webp'
+  },
+  {
+    id: 'ozolnieki-013',
+    titleKey: 'projects.items.ozolniekiRenovationProfiling.title',
+    locationKey: 'projects.items.ozolniekiRenovationProfiling.location',
+    year: 2026,
+    services: ['renovation', 'profiling'],
+    descriptionKey: 'projects.items.ozolniekiRenovationProfiling.description',
+    image: '/images/projects/project-13.webp'
   }
 ];

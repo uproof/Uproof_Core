@@ -14,6 +14,8 @@ const SERVICE_SLUGS = [
   'jumta-renovacija',
   'valcprofila-montaza',
   'dakstinu-montaza',
+  'skurstena-piesleguma-montaza-labosana',
+  'dakstina-jumta-labosana',
   'jumta-logu-montaza',
   'jumta-buvnieciba',
   'jumta-konstrukciju-montaza',
@@ -73,6 +75,32 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
       'nl-BE': 'Klei of betonnen pannendak installatie in België met juiste onderlaag ventilatie en hermetische plaatwerk aansluitingen. Duurzame en esthetische daken. 10 jaar garantie op vakmanschap. Actief in Kortrijk, Gent, Brugge, Antwerpen.'
     },
     keywords: 'dakstiņu montāža Rīgā, jumta ieklāšana, jumta seguma montāža, māla dakstiņi Latvijā, tile roof installation Riga, pannendak installatie België'
+  },
+  'skurstena-piesleguma-montaza-labosana': {
+    title: {
+      lv: 'Skursteņa pieslēguma montāža un labošana Rīgā | Hermētiski mezgli | UpRoof',
+      en: 'Chimney Flashing Installation and Repair in Riga | Leak-Proof Joints | UpRoof',
+      'nl-BE': 'Schoorsteenaansluiting montage en herstel | Waterdichte details | UpRoof'
+    },
+    description: {
+      lv: 'Skursteņa pieslēguma montāža un skursteņa pieslēguma labošana Rīgā un Pierīgā. Hermētiski skārda mezgli pie skursteņa, noplūžu novēršana un droša hidroizolācija ar garantiju.',
+      en: 'Professional chimney flashing installation and repair in Riga and Latvia. Leak-proof sheet metal details, sealing around chimney penetrations, and durable waterproofing with warranty.',
+      'nl-BE': 'Professionele montage en herstelling van schoorsteenaansluitingen met waterdichte plaatwerkdetails, lekdichting rond doorvoeren en duurzame waterdichting met garantie.'
+    },
+    keywords: 'skursteņa pieslēguma montāža, skursteņa pieslēguma labošana, skursteņa skārdošana Rīgā, chimney flashing repair Riga, schoorsteen aansluiting herstel'
+  },
+  'dakstina-jumta-labosana': {
+    title: {
+      lv: 'Dakstiņa jumta labošana Rīgā | Dakstiņu jumtu remonts ar garantiju | UpRoof',
+      en: 'Tile Roof Repair in Riga | Professional Tile Roof Fixing | UpRoof',
+      'nl-BE': 'Pannendak herstelling | Professionele pannendak reparatie | UpRoof'
+    },
+    description: {
+      lv: 'Dakstiņa jumta labošana Rīgā un Pierīgā: bojāto dakstiņu nomaiņa, kores un pieslēgumu atjaunošana, noplūžu novēršana un profilaktiska apkope ar garantiju.',
+      en: 'Tile roof repair in Riga and Latvia: replacing broken tiles, ridge and flashing restoration, leak elimination, and preventive maintenance with warranty.',
+      'nl-BE': 'Pannendak herstelling: vervanging van beschadigde pannen, herstel van nok en aansluitingen, lekdichting en preventief onderhoud met garantie.'
+    },
+    keywords: 'dakstiņa jumta labošana, dakstiņu jumta remonts, bojātu dakstiņu nomaiņa, tile roof repair Riga, pannendak herstelling'
   },
   'jumta-logu-montaza': {
     title: {
@@ -277,6 +305,52 @@ function getServiceContent(slug: string, locale: string) {
         process: ['Oude dak sloop en dakstructuur voorbereiding', 'Dakstructuurversterking en draagkrachtberekening voor pannengewicht', 'Schoorsteenrenovatie en -bouw', 'Dakisolatiewerk en thermische isolatielaag constructie', 'Ademend membraan/onderlaag installatie met ventilatiespouw', 'Panlatten en tengellatten nauwkeurige installatie en nivellering', 'Gootsysteem installatie en gootbeugel inbouw', 'Nauwkeurig pannen leggen, bevestigen met pannenklemmen en nokband installatie', 'Nok-, rand- en windelementen installatie met hermetische verbindingen', 'Dak veiligheidselementen installatie - sneeuwvangers, ladders, loopplanken', 'Windveer en afwerkelementen installatie', 'Bouwafval verwijdering, werkplaats organisatie en dak hermeticiteit verificatie'],
         qualityPoints: ['10 jaar garantie op vakmanschap', 'Pannenfabrikant garantie tot 50 jaar', 'Vuurveiligheidsklas A1', 'Specialisten zijn gecertificeerd voor pannendak installatie'],
         relatedServices: ['jumta-buvnieciba', 'jumta-apkope-remonts', 'valcprofila-montaza', 'jumta-renovacija']
+      }
+    },
+    'skurstena-piesleguma-montaza-labosana': {
+      lv: {
+        overview: 'Skursteņa pieslēguma montāža un skursteņa pieslēguma labošana ir augstas precizitātes darbs ar augstu sarežģītības līmeni. Mēs atjaunojam skārda mezglus pie skursteņa, novēršam noplūdes un izbūvējam ilgtermiņā drošu hidroizolāciju.',
+        benefits: ['Noplūžu novēršana pie skursteņa mezgla', 'Hermētiski skārda pieslēgumi ar ilgu kalpošanas laiku', 'Droša ūdens novadīšana prom no skursteņa pamatnes', 'Mazāks mitruma un pelējuma risks bēniņos', 'Garantija uz veikto montāžu un remontdarbiem'],
+        process: ['Skursteņa mezgla diagnostika un bojājumu kartēšana', 'Veco blīvējumu un bojāto elementu demontāža', 'Pamatnes sagatavošana un hidroizolācijas slāņa atjaunošana', 'Priekšautu, sānu un aizmugures skārda detaļu izgatavošana', 'Jauno pieslēgumu montāža ar hermētiskiem savienojumiem', 'Pieslēgumu pielāgošana konkrētam jumta segumam', 'Ūdens testa pārbaude un kvalitātes kontrole', 'Vidējais izpildes laiks: 1-2 darba dienas'],
+        qualityPoints: ['Sarežģītības līmenis: augsts', '5 gadu garantija uz mezgla labošanu', 'Pieredze darbā ar valcprofila un dakstiņu jumtiem', 'Skārda mezgli atbilstoši būvniecības prasībām', 'Foto fiksācija pirms un pēc darbu pabeigšanas'],
+        relatedServices: ['jumta-remonts', 'jumta-apkope-remonts', 'valcprofila-montaza', 'dakstinu-montaza']
+      },
+      en: {
+        overview: 'Chimney flashing installation and repair is a high-precision, high-difficulty service critical for roof watertightness. We rebuild sheet-metal details around chimney penetrations, stop leaks, and restore long-term waterproof performance.',
+        benefits: ['Stops leaks at chimney penetration areas', 'Durable and leak-proof flashing details', 'Reliable water drainage around the chimney base', 'Lower risk of attic moisture and mould', 'Warranty on installation and repair work'],
+        process: ['Inspection of chimney connection details', 'Removal of damaged sealants and old flashing', 'Base preparation and waterproof layer restoration', 'Fabrication of front, side and back flashing elements', 'Installation of new watertight flashing system', 'Integration with existing roofing material', 'Water test and final quality check', 'Typical completion time: 1-2 working days'],
+        qualityPoints: ['Difficulty level: high', '5-year warranty on chimney connection repair', 'Experience with standing seam and tile roofs', 'Flashing details aligned with building standards', 'Before/after photo documentation'],
+        relatedServices: ['jumta-remonts', 'jumta-apkope-remonts', 'valcprofila-montaza', 'dakstinu-montaza']
+      },
+      'nl-BE': {
+        overview: 'Montage en herstel van schoorsteenaansluitingen is een precisiewerk met hoge moeilijkheidsgraad en is cruciaal voor een waterdicht dak. Wij vernieuwen plaatwerkdetails rond de schoorsteen en dichten lekken duurzaam af.',
+        benefits: ['Voorkomt lekken rond de schoorsteendoorvoer', 'Duurzame en waterdichte plaatwerkdetails', 'Betrouwbare waterafvoer rond de schoorsteenvoet', 'Minder risico op vocht en schimmel op zolder', 'Garantie op montage en herstelwerk'],
+        process: ['Inspectie van de schoorsteenaansluiting', 'Verwijderen van oude en beschadigde afdichtingen', 'Voorbereiden van ondergrond en herstel waterdichting', 'Maken van voor-, zij- en achterflashing', 'Plaatsen van nieuwe waterdichte aansluitingen', 'Integratie met bestaand dakmateriaal', 'Watertest en eindcontrole', 'Gemiddelde uitvoering: 1-2 werkdagen'],
+        qualityPoints: ['Moeilijkheidsgraad: hoog', '5 jaar garantie op aansluitingherstel', 'Ervaring met staande naad en pannendaken', 'Uitvoering volgens bouwtechnische normen', 'Foto-documentatie voor en na uitvoering'],
+        relatedServices: ['jumta-remonts', 'jumta-apkope-remonts', 'valcprofila-montaza', 'dakstinu-montaza']
+      }
+    },
+    'dakstina-jumta-labosana': {
+      lv: {
+        overview: 'Dakstiņa jumta labošana ir vidējas līdz augstas sarežģītības darbs atkarībā no bojājumu apjoma un mezglu stāvokļa. Mēs veicam mērķētu remontu, nomainām bojātos dakstiņus un atjaunojam kritiskos pieslēgumus.',
+        benefits: ['Bojāto dakstiņu operatīva nomaiņa', 'Noplūžu novēršana bez pilnas jumta pārbūves', 'Kores un vējmalu mezglu stabilizācija', 'Mazākas izmaksas salīdzinot ar pilnu nomaiņu', 'Pagarināts dakstiņu jumta kalpošanas laiks'],
+        process: ['Jumta apskate un defektu karte', 'Bojāto dakstiņu demontāža un jaunu elementu piemeklēšana', 'Kores lentes un kores elementu atjaunošana', 'Pieslēgumu un skārda mezglu korekcijas pie sienām un skursteņiem', 'Noplūžu vietu hermetizācija un stiprinājumu pārbaude', 'Noslēdzošā kvalitātes pārbaude un ieteikumi turpmākai apkopei', 'Vidējais izpildes laiks: 1-3 darba dienas'],
+        qualityPoints: ['Sarežģītības līmenis: vidējs līdz augsts', '2 gadu garantija uz remonta darbiem', 'Speciālisti ar pieredzi māla un betona dakstiņu jumtos', 'Saderīgi materiāli atbilstoši esošajam segumam', 'Drošības prasību ievērošana visā remonta laikā'],
+        relatedServices: ['dakstinu-montaza', 'jumta-remonts', 'jumta-apkope-remonts', 'skurstena-piesleguma-montaza-labosana']
+      },
+      en: {
+        overview: 'Tile roof repair is typically medium-to-high difficulty depending on damage scope and detail complexity. We replace broken tiles, restore ridge details, and fix critical connections to stop leaks and extend roof life.',
+        benefits: ['Fast replacement of damaged tiles', 'Leak elimination without full roof reconstruction', 'Stabilization of ridge and edge details', 'Lower cost compared to complete re-roofing', 'Extended service life of tile roofing'],
+        process: ['Roof inspection and defect mapping', 'Removal of damaged tiles and matching replacements', 'Ridge tape and ridge element restoration', 'Adjustment of flashing details near walls and chimneys', 'Leak sealing and fastening checks', 'Final quality control with maintenance recommendations', 'Typical completion time: 1-3 working days'],
+        qualityPoints: ['Difficulty level: medium to high', '2-year warranty on repair works', 'Experienced team for clay and concrete tile roofs', 'Compatible materials matched to existing roof', 'Safety-first execution during all repair stages'],
+        relatedServices: ['dakstinu-montaza', 'jumta-remonts', 'jumta-apkope-remonts', 'skurstena-piesleguma-montaza-labosana']
+      },
+      'nl-BE': {
+        overview: 'Pannendak herstelling heeft meestal een gemiddelde tot hoge moeilijkheidsgraad, afhankelijk van de schade en details. We vervangen beschadigde pannen, herstellen nokdetails en dichten kritieke aansluitingen af.',
+        benefits: ['Snelle vervanging van kapotte dakpannen', 'Lekdichting zonder volledige dakvernieuwing', 'Stabilisatie van nok- en randdetails', 'Lagere kosten dan volledige dakvervanging', 'Langere levensduur van het pannendak'],
+        process: ['Dakinspectie en defectenkaart', 'Verwijderen van beschadigde pannen en vervangen door passende elementen', 'Herstel van nokband en nokelementen', 'Correctie van aansluitingen bij muren en schoorstenen', 'Lekdichting en controle van bevestigingen', 'Eindcontrole met onderhoudsadvies', 'Gemiddelde uitvoering: 1-3 werkdagen'],
+        qualityPoints: ['Moeilijkheidsgraad: gemiddeld tot hoog', '2 jaar garantie op herstellingswerken', 'Ervaren team voor klei- en betonpannen', 'Compatibele materialen passend bij bestaand dak', 'Veilige uitvoering tijdens alle herstelfases'],
+        relatedServices: ['dakstinu-montaza', 'jumta-remonts', 'jumta-apkope-remonts', 'skurstena-piesleguma-montaza-labosana']
       }
     },
     'jumta-logu-montaza': {
@@ -526,6 +600,40 @@ function getServiceFAQs(slug: string, locale: string) {
         {q: 'Verschil tussen klei en betonnen pannen?', a: 'Kleipannen zijn natuurlijker en gaan langer mee (tot 100 jaar), terwijl betonnen pannen economischer en maatvaster zijn.'},
         {q: 'Hoe lang gaat een pannendak mee?', a: 'Een correct geïnstalleerd pannendak gaat 50-100 jaar mee, wat het een van de beste langetermijninvesteringen maakt.'},
         {q: 'Waarom zijn kleipannen daken gebruikelijker in warme zuidelijke regio\'s?', a: 'De populariteit van kleipannen in Zuid-Europa is gerelateerd aan zowel historische als materiaaleigenschappen. Kleipannen zijn een lokaal beschikbare grondstof die zuiderlingen al eeuwenlang gebruiken. Ze zijn uitstekende bescherming tegen de hete zuidelijke zon omdat ze niet oververhitten en gemakkelijker verfrissende koelte binnenshuis bieden in de zomer. In landen als Spanje en Italië zijn de winters mild zonder extreme temperatuurschommelingen, dus gaat de pannendekking langer mee en wordt niet zo snel bros als in noordelijke klimaten.'}
+      ]
+    },
+    'skurstena-piesleguma-montaza-labosana': {
+      lv: [
+        {q: 'Kā saprast, ka jālabo skursteņa pieslēgums?', a: 'Tipiskas pazīmes ir mitruma pleķi pie skursteņa, noplūdes pēc stipra lietus vai sniega kušanas, kā arī bojāti skārda elementi ap skursteni.'},
+        {q: 'Vai var salabot tikai pieslēgumu, nemainot visu jumtu?', a: 'Jā, vairumā gadījumu pietiek ar lokālu skursteņa pieslēguma remontu vai pārbūvi, ja pārējais segums ir labā stāvoklī.'},
+        {q: 'Cik ilgi aizņem skursteņa pieslēguma montāža?', a: 'Parasti 1 darba dienu, sarežģītākiem mezgliem 1-2 dienas atkarībā no piekļuves un jumta konstrukcijas.'}
+      ],
+      en: [
+        {q: 'How do I know chimney flashing needs repair?', a: 'Common signs are moisture stains near the chimney, leaks after heavy rain or snow melt, and visible damage to flashing elements.'},
+        {q: 'Can you repair only the chimney connection without replacing the whole roof?', a: 'Yes, in most cases local chimney flashing repair or rebuild is enough when the remaining roof covering is in good condition.'},
+        {q: 'How long does chimney flashing installation take?', a: 'Usually 1 working day; complex details may take 1-2 days depending on access and roof structure.'}
+      ],
+      'nl-BE': [
+        {q: 'Hoe weet ik dat de schoorsteenaansluiting hersteld moet worden?', a: 'Typische signalen zijn vochtplekken rond de schoorsteen, lekken na hevige regen of dooi, en zichtbare schade aan de flashing.'},
+        {q: 'Kan alleen de aansluiting hersteld worden zonder volledig dak te vervangen?', a: 'Ja, in de meeste gevallen volstaat een lokale herstelling of heropbouw van de schoorsteenaansluiting.'},
+        {q: 'Hoe lang duurt montage of herstel van de schoorsteenaansluiting?', a: 'Meestal 1 werkdag, bij complexe details 1-2 dagen afhankelijk van bereikbaarheid en dakopbouw.'}
+      ]
+    },
+    'dakstina-jumta-labosana': {
+      lv: [
+        {q: 'Vai var nomainīt tikai dažus bojātus dakstiņus?', a: 'Jā, mēs veicam lokālu bojāto dakstiņu nomaiņu un pielāgojam jaunās detaļas esošajam segumam.'},
+        {q: 'Kad pietiek ar remontu, nevis pilnu nomaiņu?', a: 'Ja bojājumi ir lokāli un pamatkonstrukcija ir laba, dakstiņa jumta labošana ir ekonomiski izdevīgākais risinājums.'},
+        {q: 'Vai pēc remonta jumts izskatīsies vienmērīgs?', a: 'Mēs piemeklējam iespējami līdzīgus dakstiņus un atjaunojam mezglus, lai vizuāli un tehniski rezultāts būtu kvalitatīvs.'}
+      ],
+      en: [
+        {q: 'Can only a few damaged tiles be replaced?', a: 'Yes, we perform local replacement of damaged tiles and match new elements to the existing roof as closely as possible.'},
+        {q: 'When is repair enough instead of full replacement?', a: 'If damage is local and the main structure is sound, tile roof repair is usually the most cost-effective option.'},
+        {q: 'Will the roof look uniform after repair?', a: 'We match tile type and color as close as possible and restore related details for a clean visual and technical result.'}
+      ],
+      'nl-BE': [
+        {q: 'Kunnen enkel enkele beschadigde pannen vervangen worden?', a: 'Ja, we vervangen lokaal beschadigde pannen en stemmen de nieuwe elementen zo goed mogelijk af op het bestaande dak.'},
+        {q: 'Wanneer volstaat herstelling in plaats van volledige vervanging?', a: 'Als de schade lokaal is en de hoofdstructuur in goede staat is, is pannendak herstelling meestal de meest efficiënte keuze.'},
+        {q: 'Ziet het dak er na herstel nog egaal uit?', a: 'We kiezen zo passend mogelijke pannen en herstellen aansluitende details voor een technisch en visueel net resultaat.'}
       ]
     },
     'jumta-logu-montaza': {
@@ -880,6 +988,8 @@ export default async function ServiceLanding({params}: PageProps) {
     'jumta-renovacija': '/images/services/construction.webp',
     'valcprofila-montaza': '/images/services/metalprofile.webp',
     'dakstinu-montaza': '/images/services/tiledroofs.webp',
+    'skurstena-piesleguma-montaza-labosana': '/images/services/chimney-flashing-installation-repair.webp',
+    'dakstina-jumta-labosana': '/images/services/tile-roof-repair.webp',
     'jumta-buvnieciba': '/images/services/construction.webp',
     'jumta-konstrukciju-montaza': '/images/services/roof-structure.webp',
     'jumta-apkope-remonts': '/images/services/maintenance.webp',

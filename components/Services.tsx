@@ -65,6 +65,18 @@ export default function Services({ limit }: ServicesProps) {
       link: '/services/noteksistemu-uzstadisana'
     },
     {
+      title: t('chimneyConnection.title'),
+      description: t.rich('chimneyConnection.description'),
+      image: '/images/services/chimney-flashing-installation-repair.webp',
+      link: '/services/skurstena-piesleguma-montaza-labosana'
+    },
+    {
+      title: t('tileRoofRepair.title'),
+      description: t.rich('tileRoofRepair.description'),
+      image: '/images/services/tile-roof-repair.webp',
+      link: '/services/dakstina-jumta-labosana'
+    },
+    {
       title: t('snowRemoval.title'),
       description: t.rich('snowRemoval.description'),
       image: '/images/services/snowremoval.webp',
@@ -109,7 +121,7 @@ export default function Services({ limit }: ServicesProps) {
               {/* Image Section */}
               <div className="md:w-1/2 relative h-64 sm:h-80 md:h-96 overflow-hidden bg-gray-100">
                 <Image
-                  src={service.image}
+                  src={service.image || '/images/services/construction.webp'}
                   alt={service.title}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
