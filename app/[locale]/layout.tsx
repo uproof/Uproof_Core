@@ -370,6 +370,27 @@ export default async function LocaleLayout({
     }
   } as const;
 
+  const websiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': 'https://uproof.eu/#website',
+    url: 'https://uproof.eu',
+    name: 'UpRoof',
+    inLanguage: [
+      'lv-LV',
+      'en-US',
+      'nl-BE'
+    ],
+    publisher: {
+      '@id': 'https://uproof.eu/#organization'
+    },
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: 'https://uproof.eu/lv/blog?q={search_term_string}',
+      'query-input': 'required name=search_term_string'
+    }
+  } as const;
+
   return (
     <html lang={locale} className={inter.variable} suppressHydrationWarning>
       <head>
@@ -386,6 +407,12 @@ export default async function LocaleLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(orgSchema)
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteSchema)
           }}
         />
       </head>

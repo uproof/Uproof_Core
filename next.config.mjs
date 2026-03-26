@@ -11,11 +11,13 @@ const nextConfig = {
       // Backward compatibility for legacy segmented sitemap paths (pre Feb-2026 migration).
       { source: '/sitemaps/static.xml', destination: '/static-sitemap.xml' },
       { source: '/sitemaps/services.xml', destination: '/services-sitemap.xml' },
+      { source: '/sitemaps/projects.xml', destination: '/projects-sitemap.xml' },
       { source: '/sitemaps/blog.xml', destination: '/blog-sitemap.xml' },
       { source: '/sitemaps/materials.xml', destination: '/materials-sitemap.xml' },
       { source: '/sitemaps/cities.xml', destination: '/cities-sitemap.xml' },
       { source: '/sitemaps/static', destination: '/static-sitemap.xml' },
       { source: '/sitemaps/services', destination: '/services-sitemap.xml' },
+      { source: '/sitemaps/projects', destination: '/projects-sitemap.xml' },
       { source: '/sitemaps/blog', destination: '/blog-sitemap.xml' },
       { source: '/sitemaps/materials', destination: '/materials-sitemap.xml' },
       { source: '/sitemaps/cities', destination: '/cities-sitemap.xml' },

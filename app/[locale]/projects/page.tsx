@@ -60,12 +60,20 @@ export default function ProjectsPage({params}: PageProps) {
     '@type': 'CollectionPage',
     name: t('title'),
     url: `https://uproof.eu/${locale}/projects`,
-    hasPart: projects.map((p, idx) => ({
-      '@type': 'CreativeWork',
-      position: idx + 1,
-      name: p.id,
-      areaServed: locale === 'nl-BE' ? 'België' : 'Latvija'
-    }))
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: projects.map((p, idx) => ({
+        '@type': 'ListItem',
+        position: idx + 1,
+        url: `https://uproof.eu/${locale}/projects/${p.id}`,
+        item: {
+          '@type': 'CreativeWork',
+          name: p.id,
+          image: p.image ? `https://uproof.eu${p.image}` : undefined,
+          areaServed: locale === 'nl-BE' ? 'België' : 'Latvija'
+        }
+      }))
+    }
   };
 
   return (

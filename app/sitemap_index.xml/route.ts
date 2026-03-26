@@ -11,6 +11,7 @@ export async function GET() {
   const sitemapUrls = [
     '/static-sitemap.xml',
     '/services-sitemap.xml',
+    '/projects-sitemap.xml',
     '/blog-sitemap.xml',
     '/materials-sitemap.xml',
     '/cities-sitemap.xml'
