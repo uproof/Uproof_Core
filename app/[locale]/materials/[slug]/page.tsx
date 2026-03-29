@@ -86,6 +86,16 @@ const MATERIAL_SPECS: Record<string, { title: Record<string,string>; description
   }
 };
 
+const MATERIAL_IMAGE_BY_SLUG: Record<string, string> = {
+  'valcprofils': '/images/services/metalprofile.webp',
+  'pvc-tpo': '/images/blog/roofing-materials.jpg',
+  'bitumena-rulli': '/images/blog/roofing-materials.jpg',
+  'dakstini': '/images/services/tiledroofs.webp',
+  'bezazbesta-siferis': '/images/blog/roofing-materials.jpg',
+  'ruukki-classic': '/images/services/metalprofile.webp',
+  'jumta-krasa': '/images/services/Painting.webp'
+};
+
 export function generateStaticParams() {
   return Object.keys(MATERIAL_SPECS).map(slug => ({ slug }));
 }
@@ -116,6 +126,7 @@ export default async function MaterialSpecPage({ params }: { params: Promise<{ s
   const spec = MATERIAL_SPECS[slug];
   if (!spec) notFound();
   const pageUrl = `https://uproof.eu/${locale}/materials/${slug}`;
+  const productImageUrl = `https://uproof.eu${MATERIAL_IMAGE_BY_SLUG[slug] || '/images/blog/roofing-materials.jpg'}`;
 
   const productSchema = {
     '@context': 'https://schema.org',
@@ -123,6 +134,7 @@ export default async function MaterialSpecPage({ params }: { params: Promise<{ s
     name: spec.title[locale],
     description: spec.description[locale],
     url: pageUrl,
+    image: productImageUrl,
     material: slug,
     offers: {
       '@type': 'Offer',
