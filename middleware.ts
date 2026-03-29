@@ -40,6 +40,18 @@ export default function middleware(request: NextRequest) {
   if (localeMatch) {
     const localePrefix = localeMatch[1];
     const subpath = localeMatch[2];
+
+    // Redirect legacy page slugs to canonical slugs to avoid 404s and duplicate crawl paths.
+    const legacySlugRedirects: Record<string, string> = {
+      '/services/roof-renovation': '/services/jumta-renovacija',
+      '/urgency/through-the-roof': '/urgency/caurs-jumts'
+    };
+    const legacyMapped = legacySlugRedirects[subpath];
+    if (legacyMapped) {
+      const redirectUrl = new URL(`/${localePrefix}${legacyMapped}`, nextUrl);
+      return NextResponse.redirect(redirectUrl, 301);
+    }
+
     const mapped = latvianToEnglishPaths[subpath];
     if (mapped) {
       const redirectUrl = new URL(`/${localePrefix}${mapped}`, nextUrl);

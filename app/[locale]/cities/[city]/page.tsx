@@ -6,7 +6,8 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import InternalLinks from '@/components/InternalLinks';
 import MiersMethod from '@/components/MiersMethod';
 import { getCityContent } from '@/data/citiesContent';
-import {citiesByLocale, locales, belgiumCities} from '@/lib/cities';
+import {citiesByLocale, locales, belgiumCities, type Locale} from '@/lib/cities';
+import {notFound} from 'next/navigation';
 
 const BELGIUM_CITY_SET = new Set<string>(belgiumCities);
 
@@ -32,8 +33,22 @@ function cityName(slug: string, locale: string) {
   return map[slug]?.[locale] || map[slug]?.lv || slug;
 }
 
-export async function generateMetadata({params}: {params: Promise<{locale: string; city: string}>}): Promise<Metadata> {
+export async function generateMetadata({params}: {params: Promise<{locale: Locale; city: string}>}): Promise<Metadata> {
   const {locale, city} = await params;
+  const isKnownCity = (citiesByLocale[locale] ?? []).includes(city);
+  if (!isKnownCity) {
+    return {
+      title: 'Page Not Found | UpRoof',
+      robots: {
+        index: false,
+        follow: false,
+        googleBot: {
+          index: false,
+          follow: false
+        }
+      }
+    };
+  }
   const name = cityName(city, locale);
   const isBelgiumCity = BELGIUM_CITY_SET.has(city);
   const countryLabel = isBelgiumCity ? (locale === 'lv' ? 'Beļģijā' : locale === 'nl-BE' ? 'in België' : 'in Belgium') : (locale === 'nl-BE' ? 'in Letland' : locale === 'en' ? 'in Latvia' : 'Latvijā');
@@ -73,8 +88,11 @@ export async function generateMetadata({params}: {params: Promise<{locale: strin
   };
 }
 
-export default async function CityLanding({params}: {params: Promise<{locale: string; city: string}>}) {
+export default async function CityLanding({params}: {params: Promise<{locale: Locale; city: string}>}) {
   const {locale, city} = await params;
+  if (!(citiesByLocale[locale] ?? []).includes(city)) {
+    notFound();
+  }
   unstable_setRequestLocale(locale);
   const displayName = cityName(city, locale);
   const content = getCityContent(city, locale as any);

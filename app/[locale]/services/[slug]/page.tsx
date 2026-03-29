@@ -8,6 +8,7 @@ import MiersMethod from '@/components/MiersMethod';
 import Section from '@/components/Section';
 import Card from '@/components/Card';
 import Grid from '@/components/Grid';
+import {notFound} from 'next/navigation';
 
 // Service slugs focused on Latvian queries
 const SERVICE_SLUGS = [
@@ -765,6 +766,19 @@ function getServiceFAQs(slug: string, locale: string) {
 
 export async function generateMetadata({params}: PageProps): Promise<Metadata> {
   const {locale, slug} = await params;
+  if (!SERVICE_SLUGS.includes(slug)) {
+    return {
+      title: 'Page Not Found | UpRoof',
+      robots: {
+        index: false,
+        follow: false,
+        googleBot: {
+          index: false,
+          follow: false
+        }
+      }
+    };
+  }
   const entry = META[slug];
   const canonical = `https://uproof.eu/${locale}/services/${slug}`;
   
@@ -818,6 +832,9 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
 
 export default async function ServiceLanding({params}: PageProps) {
   const {locale, slug} = await params;
+  if (!SERVICE_SLUGS.includes(slug)) {
+    notFound();
+  }
   unstable_setRequestLocale(locale);
   const meta = META[slug];
   const title = meta?.title[locale] || meta?.title.lv || 'Jumta pakalpojums';
