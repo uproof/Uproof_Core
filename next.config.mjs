@@ -4,6 +4,17 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async redirects() {
+    return [
+      // These legacy EN Belgium city URLs should be explicit redirects, not rewrites.
+      { source: '/en/cities/brussel', destination: '/nl-BE/cities/brussel', permanent: true },
+      { source: '/en/cities/antwerpen', destination: '/nl-BE/cities/antwerpen', permanent: true },
+      { source: '/en/cities/gent', destination: '/nl-BE/cities/gent', permanent: true },
+      { source: '/en/cities/brugge', destination: '/nl-BE/cities/brugge', permanent: true },
+      { source: '/en/cities/leuven', destination: '/nl-BE/cities/leuven', permanent: true },
+      { source: '/en/cities/mechelen', destination: '/nl-BE/cities/mechelen', permanent: true },
+    ];
+  },
   async rewrites() {
     return [
       // Map common /sitemap.xml to the actual segmented index to avoid route conflicts.
@@ -21,12 +32,6 @@ const nextConfig = {
       { source: '/sitemaps/blog', destination: '/blog-sitemap.xml' },
       { source: '/sitemaps/materials', destination: '/materials-sitemap.xml' },
       { source: '/sitemaps/cities', destination: '/cities-sitemap.xml' },
-      { source: '/en/cities/brussel', destination: '/nl-BE/cities/brussel' },
-      { source: '/en/cities/antwerpen', destination: '/nl-BE/cities/antwerpen' },
-      { source: '/en/cities/gent', destination: '/nl-BE/cities/gent' },
-      { source: '/en/cities/brugge', destination: '/nl-BE/cities/brugge' },
-      { source: '/en/cities/leuven', destination: '/nl-BE/cities/leuven' },
-      { source: '/en/cities/mechelen', destination: '/nl-BE/cities/mechelen' },
     ];
   },
   images: {
