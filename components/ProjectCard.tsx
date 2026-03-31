@@ -13,11 +13,13 @@ type Props = {
   services: string[];
   descriptionKey: string;
   image?: string;
+  index?: number;
 };
 
-export default function ProjectCard({id, titleKey, locationKey, year, services, descriptionKey, image}: Props) {
+export default function ProjectCard({id, titleKey, locationKey, year, services, descriptionKey, image, index = 0}: Props) {
   const t = useTranslations();
   const tServiceTags = useTranslations('serviceTags');
+  const isAboveFold = index < 3;
   
   return (
     <motion.article
@@ -35,9 +37,11 @@ export default function ProjectCard({id, titleKey, locationKey, year, services, 
             alt={t(titleKey)}
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-            quality={60}
+            quality={55}
             className="object-cover transform group-hover:scale-105 transition-transform duration-700"
-            priority={false}
+            priority={isAboveFold}
+            loading={isAboveFold ? 'eager' : 'lazy'}
+            fetchPriority={isAboveFold ? 'high' : 'auto'}
           />
           {/* Subtle gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-70 group-hover:opacity-50 transition-opacity duration-500"></div>
