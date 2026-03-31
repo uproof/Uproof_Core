@@ -15,6 +15,19 @@ export default function Hero() {
     const video = videoRef.current;
     if (!video) return;
 
+    // Keep poster-only hero on devices/connections where video hurts UX.
+    const nav = navigator as Navigator & {
+      connection?: {saveData?: boolean; effectiveType?: string};
+    };
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isSmallScreen = window.innerWidth < 768;
+    const saveData = nav.connection?.saveData === true;
+    const slowConnection = ['slow-2g', '2g', '3g'].includes(nav.connection?.effectiveType || '');
+
+    if (prefersReducedMotion || isSmallScreen || saveData || slowConnection) {
+      return;
+    }
+
     // Start loading the video after the page has painted
     const startLoad = () => {
       video.preload = 'auto';
@@ -26,7 +39,8 @@ export default function Hero() {
     if ('requestIdleCallback' in window) {
       (window as Window & { requestIdleCallback: (cb: () => void) => void }).requestIdleCallback(startLoad);
     } else {
-      setTimeout(startLoad, 100);
+      const timer = setTimeout(startLoad, 100);
+      return () => clearTimeout(timer);
     }
   }, []);
 

@@ -115,7 +115,7 @@ export const projects: Project[] = [
     year: 2026,
     services: ['maintenance', 'tiling', 'chimney'],
     descriptionKey: 'projects.items.tiledRoofRepair.description',
-    image: '/images/projects/project-12.webp'
+    image: '/images/projects/project-12-v2.webp'
   },
   {
     id: 'ozolnieki-013',

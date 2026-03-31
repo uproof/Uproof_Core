@@ -35,6 +35,7 @@ export default function ProjectCard({id, titleKey, locationKey, year, services, 
             alt={t(titleKey)}
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+            quality={60}
             className="object-cover transform group-hover:scale-105 transition-transform duration-700"
             priority={false}
           />

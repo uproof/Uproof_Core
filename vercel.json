@@ -15,6 +15,15 @@
       ]
     },
     {
+      "source": "/videos/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
       "source": "/(.*)",
       "headers": [
         {
@@ -52,8 +61,6 @@
     { "source": "/:locale(lv|en|nl-BE)/materials", "destination": "/:locale/services", "permanent": true },
 
     { "source": "/:locale(lv|en|nl-BE)/cenas/:path*", "destination": "/:locale/services", "permanent": true },
-
-    { "source": "/:locale(lv|en|nl-BE)/projects/:slug", "destination": "/:locale/projects", "permanent": true },
 
     { "source": "/:locale(lv|en|nl-BE)/blog/1", "destination": "/:locale/blog/top-5-roofing-materials-2025", "permanent": true },
     { "source": "/:locale(lv|en|nl-BE)/blog/2", "destination": "/:locale/blog/how-to-maintain-roof-in-winter", "permanent": true },
