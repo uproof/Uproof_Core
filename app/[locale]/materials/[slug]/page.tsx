@@ -128,26 +128,25 @@ export default async function MaterialSpecPage({ params }: { params: Promise<{ s
   const pageUrl = `https://uproof.eu/${locale}/materials/${slug}`;
   const productImageUrl = `https://uproof.eu${MATERIAL_IMAGE_BY_SLUG[slug] || '/images/blog/roofing-materials.jpg'}`;
 
-  const productSchema = {
+  const materialPageSchema = {
     '@context': 'https://schema.org',
-    '@type': 'Product',
+    '@type': 'WebPage',
+    '@id': `${pageUrl}#webpage`,
+    url: pageUrl,
     name: spec.title[locale],
     description: spec.description[locale],
-    url: pageUrl,
-    image: productImageUrl,
-    material: slug,
-    offers: {
-      '@type': 'Offer',
-      url: pageUrl,
-      priceCurrency: 'EUR',
-      price: '0',
-      availability: 'https://schema.org/InStock',
-      seller: { '@id': 'https://uproof.eu/#organization' }
+    inLanguage: locale === 'lv' ? 'lv-LV' : locale === 'en' ? 'en-US' : 'nl-BE',
+    isPartOf: { '@id': 'https://uproof.eu/#website' },
+    about: {
+      '@type': 'Thing',
+      name: spec.title[locale],
+      description: spec.description[locale],
+      image: productImageUrl,
+      additionalProperty: [
+        spec.thickness && { '@type': 'PropertyValue', name: 'thickness', value: spec.thickness },
+        spec.finishes && { '@type': 'PropertyValue', name: 'finishes', value: spec.finishes.join(', ') },
+      ].filter(Boolean),
     },
-    additionalProperty: [
-      spec.thickness && { '@type': 'PropertyValue', name: 'thickness', value: spec.thickness },
-      spec.finishes && { '@type': 'PropertyValue', name: 'finishes', value: spec.finishes.join(', ') },
-    ].filter(Boolean),
   };
 
   const serviceSchema = {
@@ -218,7 +217,7 @@ export default async function MaterialSpecPage({ params }: { params: Promise<{ s
       </section>
       <InternalLinks locale={locale} currentSlug={slug} context="material" />
       <Footer />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(materialPageSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
     </main>
   );

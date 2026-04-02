@@ -159,10 +159,10 @@ export default async function SniegaTirisanaPage({params}: Props) {
 			'@type': 'OfferCatalog',
 			name: 'Sniega tīrīšanas pakalpojumi',
 			itemListElement: [
-				{'@type': 'Offer', itemOffered: {'@type': 'Service', name: 'Pilna cikla jumta tīrīšana no sniega un ledus'}},
-				{'@type': 'Offer', itemOffered: {'@type': 'Service', name: 'Lāsteku tīrīšana'}},
-				{'@type': 'Offer', itemOffered: {'@type': 'Service', name: 'Daudzdzīvokļu mājas jumta tīrīšana'}},
-				{'@type': 'Offer', itemOffered: {'@type': 'Service', name: 'Sniega izvešana ar traktoru'}},
+				{'@type': 'Service', name: 'Pilna cikla jumta tīrīšana no sniega un ledus'},
+				{'@type': 'Service', name: 'Lāsteku tīrīšana'},
+				{'@type': 'Service', name: 'Daudzdzīvokļu mājas jumta tīrīšana'},
+				{'@type': 'Service', name: 'Sniega izvešana ar traktoru'},
 			],
 		},
 		availableChannel: {

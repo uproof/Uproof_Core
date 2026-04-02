@@ -130,11 +130,11 @@ export default async function HomePage({params}: Props) {
               '@type': 'OfferCatalog',
               name: locale === 'lv' ? 'Jumta pakalpojumi' : locale === 'nl-BE' ? 'Dakdiensten' : 'Roofing Services',
               itemListElement: [
-                {'@type': 'Offer', itemOffered: {'@type': 'Service', name: locale === 'lv' ? 'Jumta renovācija' : locale === 'nl-BE' ? 'Dakrenovatie' : 'Roof Renovation'}},
-                {'@type': 'Offer', itemOffered: {'@type': 'Service', name: locale === 'lv' ? 'Jumta būvniecība' : locale === 'nl-BE' ? 'Dakbouw' : 'Roof Construction'}},
-                {'@type': 'Offer', itemOffered: {'@type': 'Service', name: locale === 'lv' ? 'Jumta remonts' : locale === 'nl-BE' ? 'Dakreparatie' : 'Roof Repair'}},
-                {'@type': 'Offer', itemOffered: {'@type': 'Service', name: locale === 'lv' ? 'Sniega un ledus tīrīšana no jumta' : locale === 'nl-BE' ? 'Sneeuw- en ijsverwijdering van dak' : 'Snow & Ice Removal from Roof'}},
-                {'@type': 'Offer', itemOffered: {'@type': 'Service', name: locale === 'lv' ? 'Jumta apkope' : locale === 'nl-BE' ? 'Dakonderhoud' : 'Roof Maintenance'}},
+                {'@type': 'Service', name: locale === 'lv' ? 'Jumta renovācija' : locale === 'nl-BE' ? 'Dakrenovatie' : 'Roof Renovation'},
+                {'@type': 'Service', name: locale === 'lv' ? 'Jumta būvniecība' : locale === 'nl-BE' ? 'Dakbouw' : 'Roof Construction'},
+                {'@type': 'Service', name: locale === 'lv' ? 'Jumta remonts' : locale === 'nl-BE' ? 'Dakreparatie' : 'Roof Repair'},
+                {'@type': 'Service', name: locale === 'lv' ? 'Sniega un ledus tīrīšana no jumta' : locale === 'nl-BE' ? 'Sneeuw- en ijsverwijdering van dak' : 'Snow & Ice Removal from Roof'},
+                {'@type': 'Service', name: locale === 'lv' ? 'Jumta apkope' : locale === 'nl-BE' ? 'Dakonderhoud' : 'Roof Maintenance'},
               ],
             },
             description: locale === 'nl-BE'

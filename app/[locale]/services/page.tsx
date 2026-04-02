@@ -149,44 +149,29 @@ export default async function ServicesPage({params}: {params: Promise<{locale: s
       name: locale === 'lv' ? 'Jumta pakalpojumi' : 'Roofing Services',
       itemListElement: [
         {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: locale === 'lv' ? 'Jumta būvniecība' : 'Roof Construction',
-            description: locale === 'lv' ? 'Jaunu jumtu būvniecība un montāža' : 'New roof construction and installation'
-          }
+          '@type': 'Service',
+          name: locale === 'lv' ? 'Jumta būvniecība' : 'Roof Construction',
+          description: locale === 'lv' ? 'Jaunu jumtu būvniecība un montāža' : 'New roof construction and installation'
         },
         {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: locale === 'lv' ? 'Jumta renovācija' : 'Roof Renovation',
-            description: locale === 'lv' ? 'Jumta atjaunošana un modernizācija' : 'Roof restoration and modernization'
-          }
+          '@type': 'Service',
+          name: locale === 'lv' ? 'Jumta renovācija' : 'Roof Renovation',
+          description: locale === 'lv' ? 'Jumta atjaunošana un modernizācija' : 'Roof restoration and modernization'
         },
         {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: locale === 'lv' ? 'Jumta remonts' : 'Roof Repair',
-            description: locale === 'lv' ? 'Jumta labošana un remontdarbi' : 'Roof fixing and repair work'
-          }
+          '@type': 'Service',
+          name: locale === 'lv' ? 'Jumta remonts' : 'Roof Repair',
+          description: locale === 'lv' ? 'Jumta labošana un remontdarbi' : 'Roof fixing and repair work'
         },
         {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: locale === 'lv' ? 'Metāla jumts' : 'Metal Roofing',
-            description: locale === 'lv' ? 'Metāla jumta montāža un uzstādīšana' : 'Metal roof installation and setup'
-          }
+          '@type': 'Service',
+          name: locale === 'lv' ? 'Metāla jumts' : 'Metal Roofing',
+          description: locale === 'lv' ? 'Metāla jumta montāža un uzstādīšana' : 'Metal roof installation and setup'
         },
         {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: locale === 'lv' ? 'Sniega tīrīšana' : 'Snow Removal',
-            description: locale === 'lv' ? 'Sniega un ledus tīrīšana no jumtiem 24/7' : 'Snow and ice removal from roofs 24/7'
-          }
+          '@type': 'Service',
+          name: locale === 'lv' ? 'Sniega tīrīšana' : 'Snow Removal',
+          description: locale === 'lv' ? 'Sniega un ledus tīrīšana no jumtiem 24/7' : 'Snow and ice removal from roofs 24/7'
         }
       ]
     },
@@ -226,25 +211,16 @@ export default async function ServicesPage({params}: {params: Promise<{locale: s
       name: locale === 'lv' ? 'Profesionālie jumta pakalpojumi' : 'Professional Roofing Services',
       itemListElement: [
         {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: locale === 'lv' ? 'Jumta būvniecība' : 'Roof Construction Services'
-          }
+          '@type': 'Service',
+          name: locale === 'lv' ? 'Jumta būvniecība' : 'Roof Construction Services'
         },
         {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: locale === 'lv' ? 'Jumta renovācija' : 'Roof Renovation Services'
-          }
+          '@type': 'Service',
+          name: locale === 'lv' ? 'Jumta renovācija' : 'Roof Renovation Services'
         },
         {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: locale === 'lv' ? 'Jumta remonts' : 'Roof Repair Services'
-          }
+          '@type': 'Service',
+          name: locale === 'lv' ? 'Jumta remonts' : 'Roof Repair Services'
         }
       ]
     }

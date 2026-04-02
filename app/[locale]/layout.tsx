@@ -291,67 +291,46 @@ export default async function LocaleLayout({
       name: 'Jumta pakalpojumi',
       itemListElement: [
         {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'Jumta būvniecība',
-            description: 'Pilna cikla jumta būvniecība Rīgā un Latvijā ar 10 gadu garantiju',
-            areaServed: 'Rīga, Pierīga, Latvija'
-          }
+          '@type': 'Service',
+          name: 'Jumta būvniecība',
+          description: 'Pilna cikla jumta būvniecība Rīgā un Latvijā ar 10 gadu garantiju',
+          areaServed: 'Rīga, Pierīga, Latvija'
         },
         {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'Jumta remonts',
-            description: 'Profesionāls jumta remonts Rīgā un Latvijā, jumta bojājumu remonts, jumta noplūdes remonts un steidzams avārijas jumta remonts',
-            areaServed: 'Rīga, Pierīga, Latvija'
-          }
+          '@type': 'Service',
+          name: 'Jumta remonts',
+          description: 'Profesionāls jumta remonts Rīgā un Latvijā, jumta bojājumu remonts, jumta noplūdes remonts un steidzams avārijas jumta remonts',
+          areaServed: 'Rīga, Pierīga, Latvija'
         },
         {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'Valcprofila jumta montāža',
-            description: 'Valcprofila jumta montāža Rīgā un Latvijā, stāvošās šuves jumta montāža un valcprofila jumta risinājumi',
-            areaServed: 'Rīga, Pierīga, Latvija'
-          }
+          '@type': 'Service',
+          name: 'Valcprofila jumta montāža',
+          description: 'Valcprofila jumta montāža Rīgā un Latvijā, stāvošās šuves jumta montāža un valcprofila jumta risinājumi',
+          areaServed: 'Rīga, Pierīga, Latvija'
         },
         {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'Metāla jumta montāža',
-            description: 'Metāla jumta montāža un metāla jumta uzstādīšana Rīgā un visā Latvijā',
-            areaServed: 'Rīga, Pierīga, Latvija'
-          }
+          '@type': 'Service',
+          name: 'Metāla jumta montāža',
+          description: 'Metāla jumta montāža un metāla jumta uzstādīšana Rīgā un visā Latvijā',
+          areaServed: 'Rīga, Pierīga, Latvija'
         },
         {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'Sniega tīrīšana no jumta',
-            description: 'Sniega un ledus tīrīšana no jumtiem Rīgā un Latvijā, jumta sniega tīrīšana 24/7 ziemas sezonā',
-            areaServed: 'Rīga, Pierīga, Latvija'
-          }
+          '@type': 'Service',
+          name: 'Sniega tīrīšana no jumta',
+          description: 'Sniega un ledus tīrīšana no jumtiem Rīgā un Latvijā, jumta sniega tīrīšana 24/7 ziemas sezonā',
+          areaServed: 'Rīga, Pierīga, Latvija'
         },
         {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'Jumta krāsošana',
-            description: 'Jumta krāsošana ar ilgnoturīgiem materiāliem Rīgā',
-            areaServed: 'Rīga, Pierīga, Latvija'
-          }
+          '@type': 'Service',
+          name: 'Jumta krāsošana',
+          description: 'Jumta krāsošana ar ilgnoturīgiem materiāliem Rīgā',
+          areaServed: 'Rīga, Pierīga, Latvija'
         },
         {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'Noteksistēmu uzstādīšana',
-            description: 'Kvalitatīva noteksistēmu montāža jumtam Rīgā',
-            areaServed: 'Rīga, Pierīga, Latvija'
-          }
+          '@type': 'Service',
+          name: 'Noteksistēmu uzstādīšana',
+          description: 'Kvalitatīva noteksistēmu montāža jumtam Rīgā',
+          areaServed: 'Rīga, Pierīga, Latvija'
         }
       ]
     },

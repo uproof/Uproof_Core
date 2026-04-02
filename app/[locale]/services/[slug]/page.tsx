@@ -950,18 +950,14 @@ export default async function ServiceLanding({params}: PageProps) {
       }
     },
     description,
-    offers: {
-      '@type': 'Offer',
-      priceSpecification: {
-        '@type': 'PriceSpecification',
-        priceCurrency: 'EUR',
-        price: '0',
-        eligibleQuantity: { '@type': 'QuantitativeValue', value: 1 }
-      },
-      availability: 'https://schema.org/InStock',
-      areaServed: locale === 'nl-BE' 
-        ? 'Kortrijk, Gent, Brugge, Roeselare, België'
-        : 'Rīga, Pierīga, Jūrmala, Jelgava, Latvija'
+    potentialAction: {
+      '@type': 'ContactAction',
+      name: locale === 'lv' ? 'Pieprasīt konsultāciju' : locale === 'nl-BE' ? 'Vraag advies aan' : 'Request consultation',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `https://uproof.eu/${locale}/contact`,
+        inLanguage: locale === 'lv' ? 'lv-LV' : locale === 'en' ? 'en-US' : 'nl-BE',
+      }
     }
   };
 
