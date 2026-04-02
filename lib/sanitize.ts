@@ -3,28 +3,17 @@
  */
 
 /**
- * Sanitize string input to prevent XSS attacks
- * Removes potentially dangerous HTML tags and scripts
+ * Normalize plain-text input.
+ * HTML and URL escaping should happen at the sink, not by stripping fragments here.
  */
 export function sanitizeInput(input: string): string {
   if (!input) return '';
-  
-  // Remove HTML tags
-  let sanitized = input.replace(/<[^>]*>/g, '');
-  
-  // Remove javascript: protocols
-  sanitized = sanitized.replace(/javascript:/gi, '');
-  
-  // Remove data: protocols
-  sanitized = sanitized.replace(/data:/gi, '');
-  
-  // Remove on* event handlers
-  sanitized = sanitized.replace(/on\w+\s*=\s*["'][^"']*["']/gi, '');
-  
-  // Trim whitespace
-  sanitized = sanitized.trim();
-  
-  return sanitized;
+
+  // Normalize control characters and repeated whitespace, but keep the text intact.
+  return input
+    .replace(/[\u0000-\u001F\u007F]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 /**
