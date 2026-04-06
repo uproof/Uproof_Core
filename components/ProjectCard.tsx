@@ -19,11 +19,12 @@ type Props = {
 export default function ProjectCard({id, titleKey, locationKey, year, services, descriptionKey, image, index = 0}: Props) {
   const t = useTranslations();
   const tServiceTags = useTranslations('serviceTags');
-  const isAboveFold = index < 3;
+  const isAboveFold = index < 6;
+  const imageSrc = image?.trim() ? image : '/images/projects/project-1.webp';
   
   return (
     <motion.article
-      initial={{opacity: 0, y: 20}}
+      initial={{opacity: 1, y: 0}}
       whileInView={{opacity: 1, y: 0}}
       viewport={{once: true, margin: "-50px"}}
       transition={{duration: 0.4}}
@@ -33,11 +34,12 @@ export default function ProjectCard({id, titleKey, locationKey, year, services, 
         {/* Image with overlay */}
         <div className="relative aspect-[16/10] w-full overflow-hidden">
           <Image
-            src={image || '/images/projects/placeholder.svg'}
+            src={imageSrc}
             alt={t(titleKey)}
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
             quality={55}
+            unoptimized
             className="object-cover transform group-hover:scale-105 transition-transform duration-700"
             priority={isAboveFold}
             loading={isAboveFold ? 'eager' : 'lazy'}
