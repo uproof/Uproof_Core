@@ -29,14 +29,17 @@ const blogPosts = blogData as Array<{
   excerpt: string;
   image: string;
   date: string;
+  status?: string;
   category: string;
   readTime?: string;
   author?: string;
   content?: string;
 }>;
 
+const publishedBlogPosts = blogPosts.filter((post) => post.status === 'published');
+
 function findPost(slug: string) {
-  return blogPosts.find(p => p.slug === slug) || blogPosts.find(p => String(p.id) === slug);
+  return publishedBlogPosts.find(p => p.slug === slug) || publishedBlogPosts.find(p => String(p.id) === slug);
 }
 
 export async function generateMetadata({params}: Props): Promise<Metadata> {
@@ -101,6 +104,7 @@ export default async function BlogPostPage({params}: Props) {
   }
 
   const postSlug = post.slug || String(post.id);
+  const hasAuthor = Boolean(post.author && post.author.trim());
   const cleanText = (post.content ?? '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
   const wordCount = cleanText ? cleanText.split(' ').length : undefined;
   const breadcrumbNames = {
@@ -194,8 +198,8 @@ export default async function BlogPostPage({params}: Props) {
             {post.title}
           </h1>
           <div className="flex items-center gap-4 text-gray-300">
-            <span>By {post.author}</span>
-            <span>•</span>
+            {hasAuthor ? <span>By {post.author}</span> : null}
+            {hasAuthor ? <span>•</span> : null}
             <time>
               {new Date(post.date).toLocaleDateString(locale, {
                 year: 'numeric',

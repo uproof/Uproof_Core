@@ -47,9 +47,12 @@ const blogPosts = blogData as Array<{
   excerpt: string;
   image: string;
   date: string;
+  status?: string;
   category: string;
   readTime?: string;
 }>;
+
+const publishedBlogPosts = blogPosts.filter((post) => post.status === 'published');
 
 const placeholderImage = '/images/blog/placeholder.jpg';
 
@@ -79,7 +82,7 @@ export default async function BlogPage({params}: Props) {
   const itemListSchema = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    itemListElement: blogPosts.map((post, index) => ({
+    itemListElement: publishedBlogPosts.map((post, index) => ({
       '@type': 'ListItem',
       position: index + 1,
       url: `https://uproof.eu/${locale}/blog/${post.slug || post.id}`,
@@ -125,9 +128,9 @@ export default async function BlogPage({params}: Props) {
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {blogPosts.map((post, index) => (
+            {publishedBlogPosts.map((post, index) => (
               <article
-                key={post.id}
+                key={post.slug || String(post.id)}
                 className="bg-white rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 group border border-gray-100"
               >
                 {/* Image */}
