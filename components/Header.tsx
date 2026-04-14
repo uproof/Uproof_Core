@@ -133,6 +133,9 @@ export default function Header({showText = true, largeLogo = false}: HeaderProps
               <Link href="/about" prefetch={false} className="text-gray-900 hover:text-primary-600 transition-colors font-medium px-4 py-3 hover:bg-primary-50 rounded-lg">
                 {t('about')}
               </Link>
+              <Link href="/blog" prefetch={false} className="text-gray-900 hover:text-primary-600 transition-colors font-medium px-4 py-3 hover:bg-primary-50 rounded-lg">
+                {t('blog') || 'Blog'}
+              </Link>
               <Link href="/contact" prefetch={false} className="text-gray-900 hover:text-primary-600 transition-colors font-medium px-4 py-3 hover:bg-primary-50 rounded-lg">
                 {t('contact')}
               </Link>
