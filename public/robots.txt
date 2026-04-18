@@ -1,0 +1,31 @@
+User-agent: *
+Allow: /
+Disallow: /api/admin/
+Disallow: /admin/
+Disallow: /*.json$
+Disallow: /uploads/
+
+# Sitemaps
+Sitemap: https://uproof.eu/sitemap_index.xml
+
+# Specific bot rules
+User-agent: Googlebot
+Allow: /
+Allow: /blog/
+Allow: /services/
+Disallow: /api/admin/
+Disallow: /admin/
+
+User-agent: Bingbot
+Allow: /
+Allow: /blog/
+Allow: /services/
+Disallow: /api/admin/
+Disallow: /admin/
+
+# Prevent crawling of slow/expensive operations
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
