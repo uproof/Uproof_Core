@@ -1,13 +1,28 @@
+import {Suspense} from 'react';
+import dynamicImport from 'next/dynamic';
 import {useTranslations} from 'next-intl';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import Services from '@/components/Services';
-import Solutions from '@/components/Solutions';
 import StatsBar from '@/components/StatsBar';
-import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
-import HomeClientSections from '@/components/HomeClientSections';
 import type {Metadata} from 'next';
+
+// Defer non-critical sections to improve FCP
+const DynamicSolutions = dynamicImport(() => import('@/components/Solutions'), {
+  loading: () => <div className="h-96 bg-gray-50" />,
+  ssr: true,
+});
+
+const DynamicHomeClientSections = dynamicImport(() => import('@/components/HomeClientSections'), {
+  loading: () => <div className="h-96 bg-gray-50" />,
+  ssr: true,
+});
+
+const DynamicContactSection = dynamicImport(() => import('@/components/ContactSection'), {
+  loading: () => <div className="h-96 bg-gray-50" />,
+  ssr: true,
+});
 
 type Props = {
   params: Promise<{locale: string}>;
@@ -92,10 +107,14 @@ export default async function HomePage({params}: Props) {
         </div>
   <Services limit={4} />
       <StatsBar stats={statsData[locale] || statsData.lv} />
-      <HomeClientSections>
-        <Solutions />
-      </HomeClientSections>
-      <ContactSection />
+      <Suspense fallback={<div className="h-96 bg-gray-50" />}>
+        <DynamicHomeClientSections>
+          <DynamicSolutions />
+        </DynamicHomeClientSections>
+      </Suspense>
+      <Suspense fallback={<div className="h-96 bg-gray-50" />}>
+        <DynamicContactSection />
+      </Suspense>
       <Footer />
       {/* LocalBusiness / Organization schema for Local SEO */}
       <script
