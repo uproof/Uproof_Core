@@ -1,4 +1,3 @@
-import {unstable_setRequestLocale} from 'next-intl/server';
 import type {Metadata} from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -142,7 +141,6 @@ export async function generateMetadata({params}: {params: Promise<{locale: strin
 
 export default async function SeasonalServicesPage({params}: {params: Promise<{locale: string}>}) {
   const {locale} = await params;
-  unstable_setRequestLocale(locale);
   const lang = localeCopy[locale] ? locale : 'lv';
   const copy = localeCopy[lang];
 

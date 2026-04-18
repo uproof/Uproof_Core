@@ -1,5 +1,4 @@
 import {useTranslations} from 'next-intl';
-import {unstable_setRequestLocale} from 'next-intl/server';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import Services from '@/components/Services';
@@ -49,7 +48,6 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 
 export default async function HomePage({params}: Props) {
   const {locale} = await params;
-  unstable_setRequestLocale(locale);
 
   const bannerText: Record<string, {title: string; cta: string}> = {
     lv: {title: 'Jumta remonts un renovācija — bezmaksas diagnostika', cta: 'Pieteikt apskati'},

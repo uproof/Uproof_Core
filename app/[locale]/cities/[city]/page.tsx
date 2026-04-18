@@ -1,4 +1,3 @@
-import {unstable_setRequestLocale} from 'next-intl/server';
 import type {Metadata} from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -93,7 +92,6 @@ export default async function CityLanding({params}: {params: Promise<{locale: Lo
   if (!(citiesByLocale[locale] ?? []).includes(city)) {
     notFound();
   }
-  unstable_setRequestLocale(locale);
   const displayName = cityName(city, locale);
   const content = getCityContent(city, locale as any);
 

@@ -1,4 +1,3 @@
-import {unstable_setRequestLocale} from 'next-intl/server';
 import type {Metadata} from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -835,7 +834,6 @@ export default async function ServiceLanding({params}: PageProps) {
   if (!SERVICE_SLUGS.includes(slug)) {
     notFound();
   }
-  unstable_setRequestLocale(locale);
   const meta = META[slug];
   const title = meta?.title[locale] || meta?.title.lv || 'Jumta pakalpojums';
   const baseTitle = title.split('|')[0]?.trim() || 'Jumta pakalpojums';

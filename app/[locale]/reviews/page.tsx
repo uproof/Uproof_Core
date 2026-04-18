@@ -1,4 +1,3 @@
-import {unstable_setRequestLocale} from 'next-intl/server';
 import {use} from 'react';
 import type {Metadata} from 'next';
 import Header from '@/components/Header';
@@ -44,7 +43,6 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
 
 export default function ReviewsPage({params}: PageProps) {
   const {locale} = use(params);
-  unstable_setRequestLocale(locale);
 
   return (
     <>

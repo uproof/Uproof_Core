@@ -1,4 +1,3 @@
-import {unstable_setRequestLocale} from 'next-intl/server';
 import {use} from 'react';
 import {useTranslations} from 'next-intl';
 import type {Metadata} from 'next';
@@ -51,7 +50,6 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
 
 export default function ProjectsPage({params}: PageProps) {
   const {locale} = use(params);
-  unstable_setRequestLocale(locale);
   const t = useTranslations('pages.projects');
 
   // JSON-LD for CollectionPage / ItemList of projects

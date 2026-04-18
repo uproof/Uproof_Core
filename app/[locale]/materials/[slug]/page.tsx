@@ -1,4 +1,3 @@
-import {unstable_setRequestLocale} from 'next-intl/server';
 import type {Metadata} from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -122,7 +121,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function MaterialSpecPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
   const {slug, locale} = await params;
-  unstable_setRequestLocale(locale);
   const spec = MATERIAL_SPECS[slug];
   if (!spec) notFound();
   const pageUrl = `https://uproof.eu/${locale}/materials/${slug}`;

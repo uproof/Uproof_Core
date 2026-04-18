@@ -1,6 +1,5 @@
 import {NextIntlClientProvider} from 'next-intl';
 import {getMessages} from 'next-intl/server';
-import {unstable_setRequestLocale} from 'next-intl/server';
 import {Inter} from 'next/font/google';
 import type {Metadata} from 'next';
 import {SpeedInsights} from '@vercel/speed-insights/next';
@@ -198,7 +197,6 @@ export default async function LocaleLayout({
   params: Promise<{locale: string}>;
 }) {
   const {locale} = await params;
-  unstable_setRequestLocale(locale);
   const messages = await getMessages();
   // Build Organization schema dynamically to allow small customizations
   const sameAs: string[] = [

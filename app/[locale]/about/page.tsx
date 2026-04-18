@@ -1,4 +1,4 @@
-import {unstable_setRequestLocale, getTranslations} from 'next-intl/server';
+import {getTranslations} from 'next-intl/server';
 import {use} from 'react';
 import {useTranslations} from 'next-intl';
 import type {Metadata} from 'next';
@@ -51,7 +51,6 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 
 export default function AboutPage({params}: Props) {
   const {locale} = use(params);
-  unstable_setRequestLocale(locale);
   const t = useTranslations('pages.about');
 
   const values = ['quality','reliability','certified','guarantee','contract','fixedcost','payment','partners','insurance'];

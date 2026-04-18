@@ -1,4 +1,3 @@
-import {unstable_setRequestLocale} from 'next-intl/server';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/Breadcrumbs';
@@ -110,7 +109,6 @@ const FAQ_ITEMS = [
 
 export default async function SniegaTirisanaPage({params}: Props) {
 	const {locale} = await params;
-	unstable_setRequestLocale(locale);
 
 	const faqSchema = {
 		'@context': 'https://schema.org',

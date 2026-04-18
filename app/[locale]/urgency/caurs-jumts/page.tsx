@@ -1,4 +1,3 @@
-import {unstable_setRequestLocale} from 'next-intl/server';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/Breadcrumbs';
@@ -50,7 +49,6 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 
 export default async function UrgencyLeakPage({ params }: Props) {
 	const { locale } = await params;
-	unstable_setRequestLocale(locale);
 	return (
 		<main className="min-h-screen">
 			<Header />

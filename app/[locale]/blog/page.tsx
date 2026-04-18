@@ -1,5 +1,4 @@
 import {useTranslations} from 'next-intl';
-import {unstable_setRequestLocale} from 'next-intl/server';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/Breadcrumbs';
@@ -61,7 +60,6 @@ const placeholderImage = '/images/blog/placeholder.jpg';
 
 export default async function BlogPage({params}: Props) {
   const {locale} = await params;
-  unstable_setRequestLocale(locale);
 
   const breadcrumbSchema = {
     '@context': 'https://schema.org',

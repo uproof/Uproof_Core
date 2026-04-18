@@ -1,5 +1,5 @@
-import {unstable_setRequestLocale, getTranslations} from 'next-intl/server';
 import type {Metadata} from 'next';
+import {getTranslations} from 'next-intl/server';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/Breadcrumbs';
@@ -77,7 +77,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function ServicesPage({params}: {params: Promise<{locale: string}>}) {
   const {locale} = await params;
-  unstable_setRequestLocale(locale);
   const t = await getTranslations('pages.services');
 
   const breadcrumbSchema = {

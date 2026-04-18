@@ -1,5 +1,5 @@
 import type {Metadata} from 'next';
-import {unstable_setRequestLocale, getTranslations} from 'next-intl/server';
+import {getTranslations} from 'next-intl/server';
 import {notFound} from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -82,7 +82,6 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
 
 export default async function ProjectDetailPage({params}: PageProps) {
   const {locale, slug} = await params;
-  unstable_setRequestLocale(locale);
 
   const project = projects.find((p) => p.id === slug);
   if (!project) {

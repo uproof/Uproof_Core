@@ -1,6 +1,5 @@
 import {use} from 'react';
 import {useTranslations} from 'next-intl';
-import {unstable_setRequestLocale} from 'next-intl/server';
 import type {Metadata} from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -42,7 +41,6 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 
 export default function PrivacyPolicyPage({params}: Props) {
   const {locale} = use(params);
-  unstable_setRequestLocale(locale);
   const t = useTranslations('privacy');
 
   return (

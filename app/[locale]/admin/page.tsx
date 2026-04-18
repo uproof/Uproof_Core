@@ -8,12 +8,10 @@ import {
 } from '@heroicons/react/24/outline';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import {isAdminAuthenticated} from '@/lib/adminAuth';
-import {unstable_setRequestLocale} from 'next-intl/server';
 import AdminLogout from '@/components/AdminLogout';
 
 export default async function AdminDashboard({params}: {params: Promise<{locale: string}>}) {
   const {locale} = await params;
-  unstable_setRequestLocale(locale);
   const ok = await isAdminAuthenticated();
   if (!ok) {
     redirect(`/${locale}/admin/login`);
