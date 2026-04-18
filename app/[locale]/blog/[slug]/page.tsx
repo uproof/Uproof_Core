@@ -7,12 +7,15 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import Image from 'next/image';
 import {Link} from '@/i18n/routing';
 import {notFound} from 'next/navigation';
+import DOMPurify from 'isomorphic-dompurify';
+import blogMetadata from '@/data/blog-metadata.json';
 import blogData from '@/data/blog.json';
 
 const locales = ['lv', 'en', 'nl-BE'];
 
 export function generateStaticParams() {
-  const published = blogData.filter((p: any) => p.status === 'published');
+  // Use lightweight metadata for params generation (12KB instead of 136KB)
+  const published = blogMetadata.filter((p: any) => p.status === 'published');
   return locales.flatMap(locale =>
     published.map(post => ({locale, slug: (post as any).slug || String(post.id)}))
   );
@@ -21,6 +24,9 @@ export function generateStaticParams() {
 type Props = {
   params: Promise<{locale: string; slug: string}>;
 };
+
+// Enable ISR: Revalidate every hour to refresh blog content without full rebuild
+export const revalidate = 3600;
 
 const blogPosts = blogData as Array<{
   id: number;
@@ -238,7 +244,7 @@ export default async function BlogPostPage({params}: Props) {
               [&_ol_li]:text-lg [&_ol_li]:text-gray-700 [&_ol_li]:leading-relaxed
               [&_a]:text-primary-600 [&_a]:font-semibold [&_a]:no-underline hover:[&_a]:underline
               [&_blockquote]:border-l-4 [&_blockquote]:border-primary-500 [&_blockquote]:pl-6 [&_blockquote]:italic [&_blockquote]:text-gray-600"
-            dangerouslySetInnerHTML={{__html: post.content ?? ''}}
+            dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(post.content ?? '')}}
           />
 
           {/* Share & Back */}

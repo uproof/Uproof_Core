@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isAdminAuthenticated } from '@/lib/adminAuth';
+import { validateCsrfToken } from '@/lib/csrf';
 import fs from 'fs/promises';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
@@ -48,6 +49,14 @@ export async function POST(request: NextRequest) {
   try {
     await ensureDirectories();
     const formData = await request.formData();
+    
+    // CSRF protection
+    const csrfToken = (formData.get('_csrf') as string) || request.headers.get('x-csrf-token') || '';
+    const validCsrf = await validateCsrfToken(csrfToken);
+    if (!validCsrf) {
+      return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
+    }
+    
     const title = formData.get('title') as string;
     const location = formData.get('location') as string;
     const description = formData.get('description') as string;
@@ -65,9 +74,26 @@ export async function POST(request: NextRequest) {
 
     // Handle image upload
     if (imageFile) {
+      // Validate file type
+      const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+      if (!ALLOWED_TYPES.includes(imageFile.type)) {
+        return NextResponse.json(
+          { error: 'Only JPEG, PNG, and WebP images are allowed' },
+          { status: 400 }
+        );
+      }
+      
+      // Validate file size (5MB max)
+      const MAX_SIZE = 5 * 1024 * 1024;
+      if (imageFile.size > MAX_SIZE) {
+        return NextResponse.json(
+          { error: 'File size must be less than 5MB' },
+          { status: 413 }
+        );
+      }
+      
       const buffer = await imageFile.arrayBuffer();
-      const ext = imageFile.name.split('.').pop() || 'jpg';
-      const fileName = `${id}.${ext}`;
+      const fileName = `${id}.jpg`; // Force .jpg extension regardless of input
       const fullPath = path.join(PUBLIC_UPLOADS, fileName);
       
       await fs.writeFile(fullPath, Buffer.from(buffer));

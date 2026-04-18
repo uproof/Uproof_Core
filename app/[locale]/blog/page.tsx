@@ -5,8 +5,11 @@ import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Image from 'next/image';
 import {Link} from '@/i18n/routing';
-import blogData from '@/data/blog.json';
+import blogData from '@/data/blog-metadata.json';
 import type {Metadata} from 'next';
+
+// Enable ISR: Revalidate every hour to refresh blog list without full rebuild
+export const revalidate = 3600;
 
 type Props = {
   params: Promise<{locale: string}>;

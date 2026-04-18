@@ -1,5 +1,6 @@
 import {NextRequest, NextResponse} from 'next/server';
 import {isAdminAuthenticated} from '@/lib/adminAuth';
+import {validateCsrfToken} from '@/lib/csrf';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -22,6 +23,14 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   if (!(await isAdminAuthenticated())) return NextResponse.json({ok: false}, {status: 401});
   const body = await req.json();
+  
+  // CSRF protection
+  const csrfToken = body._csrf || req.headers.get('x-csrf-token') || '';
+  const validCsrf = await validateCsrfToken(csrfToken);
+  if (!validCsrf) {
+    return NextResponse.json({ok: false, error: 'Invalid CSRF token'}, {status: 403});
+  }
+  
   const posts = await readPosts();
   const id = (posts.reduce((m, p) => Math.max(m, Number(p.id) || 0), 0) || 0) + 1;
   const newPost = {id, ...body, status: body.status ?? 'published', date: body.date || new Date().toISOString().slice(0, 10)};

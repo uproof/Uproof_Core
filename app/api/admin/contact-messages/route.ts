@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { isAdminAuthenticated } from '@/lib/adminAuth';
+import { checkRateLimit, RATE_LIMITS } from '@/lib/rateLimit';
 import fs from 'fs/promises';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
@@ -14,6 +16,11 @@ async function ensureFile() {
 }
 
 export async function GET() {
+  // Require admin auth for reading contact messages (PII)
+  const authenticated = await isAdminAuthenticated();
+  if (!authenticated) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
   try {
     await ensureFile();
     const content = await fs.readFile(CONTACT_MESSAGES_FILE, 'utf-8');
@@ -31,6 +38,17 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting for contact form submissions (prevent spam)
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+    const rateLimit = await checkRateLimit(`contact-${ip}`, RATE_LIMITS.CONTACT);
+    
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { error: 'Too many submissions. Please try again later.' },
+        { status: 429 }
+      );
+    }
+
     await ensureFile();
     const body = await request.json();
     const { name, email, phone, subject, message } = body;

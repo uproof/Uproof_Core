@@ -1,4 +1,6 @@
-import blogData from '@/data/blog.json';
+import blogData from '@/data/blog-metadata.json';
+
+// Enable ISR: Revalidate sitemap every 30 minutes
 export const revalidate = 1800;
 const baseUrl = 'https://uproof.eu';
 const locales = ['lv', 'en', 'nl-BE'];

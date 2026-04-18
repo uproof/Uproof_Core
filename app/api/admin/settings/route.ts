@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isAdminAuthenticated } from '@/lib/adminAuth';
+import { validateCsrfToken } from '@/lib/csrf';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -28,6 +29,7 @@ async function ensureSettingsFile() {
 }
 
 export async function GET() {
+  // Settings are public (needed to display contact info on portfolio site)
   try {
     await ensureSettingsFile();
     const content = await fs.readFile(SETTINGS_FILE, 'utf-8');
@@ -40,14 +42,22 @@ export async function GET() {
 }
 
 export async function PATCH(request: NextRequest) {
-  const authenticated = isAdminAuthenticated();
+  const authenticated = await isAdminAuthenticated();
   if (!authenticated) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
-    await ensureSettingsFile();
     const body = await request.json();
+    
+    // CSRF protection
+    const csrfToken = body._csrf || request.headers.get('x-csrf-token') || '';
+    const validCsrf = await validateCsrfToken(csrfToken);
+    if (!validCsrf) {
+      return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
+    }
+
+    await ensureSettingsFile();
 
     // Validate required fields
     if (!body.companyName || !body.companyEmail || !body.companyPhone) {

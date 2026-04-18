@@ -1,10 +1,17 @@
 import {NextRequest, NextResponse} from 'next/server';
 import {signToken} from '@/lib/adminAuth';
+import {generateCsrfToken} from '@/lib/csrf';
 
 // Simple in-memory rate limiter (per IP). Note: resets on serverless cold start.
 const attempts: Map<string, { count: number; resetAt: number }> = new Map();
 const WINDOW_MS = 10 * 60 * 1000; // 10 minutes
 const MAX_ATTEMPTS = 10; // allow 10 attempts per window
+
+export async function GET() {
+  // Generate CSRF token for the login form
+  const token = await generateCsrfToken();
+  return NextResponse.json({ csrfToken: token });
+}
 
 export async function POST(req: NextRequest) {
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';

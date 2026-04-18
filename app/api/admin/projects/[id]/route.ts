@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isAdminAuthenticated } from '@/lib/adminAuth';
+import { validateCsrfToken } from '@/lib/csrf';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -18,6 +19,14 @@ export async function PATCH(
   try {
     const { id } = await params;
     const formData = await request.formData();
+    
+    // CSRF protection
+    const csrfToken = (formData.get('_csrf') as string) || request.headers.get('x-csrf-token') || '';
+    const validCsrf = await validateCsrfToken(csrfToken);
+    if (!validCsrf) {
+      return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
+    }
+    
     const title = formData.get('title') as string;
     const location = formData.get('location') as string;
     const description = formData.get('description') as string;
@@ -45,21 +54,50 @@ export async function PATCH(
     const project = projects[projectIndex];
     let imagePath = project.image;
 
-    // Handle new image upload
+      // Handle new image upload
     if (imageFile) {
+      // Validate new file
+      const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+      if (!ALLOWED_TYPES.includes(imageFile.type)) {
+        return NextResponse.json(
+          { error: 'Only JPEG, PNG, and WebP images are allowed' },
+          { status: 400 }
+        );
+      }
+      
+      const MAX_SIZE = 5 * 1024 * 1024;
+      if (imageFile.size > MAX_SIZE) {
+        return NextResponse.json(
+          { error: 'File size must be less than 5MB' },
+          { status: 413 }
+        );
+      }
+      
       // Delete old image if exists
       if (project.image) {
         try {
+          // Validate old path before deletion
+          if (!validateImagePath(project.image)) {
+            throw new Error('Invalid old image path');
+          }
           const oldPath = path.join(process.cwd(), 'public', project.image);
-          await fs.unlink(oldPath);
-        } catch {
-          // Ignore if file doesn't exist
+          const normalizedPath = path.normalize(oldPath);
+          const baseDir = path.normalize(path.join(process.cwd(), 'public'));
+          
+          // Ensure the path is within the public directory
+          if (!normalizedPath.startsWith(baseDir)) {
+            throw new Error('Invalid image path');
+          }
+          
+          await fs.unlink(normalizedPath);
+        } catch (e) {
+          // Ignore if file doesn't exist or path is invalid
+          console.error('Error deleting old image:', e);
         }
       }
 
       const buffer = await imageFile.arrayBuffer();
-      const ext = imageFile.name.split('.').pop() || 'jpg';
-      const fileName = `${id}.${ext}`;
+      const fileName = `${id}.jpg`; // Force .jpg extension
       const fullPath = path.join(PUBLIC_UPLOADS, fileName);
       
       await fs.writeFile(fullPath, Buffer.from(buffer));
@@ -88,6 +126,13 @@ export async function PATCH(
   }
 }
 
+function validateImagePath(imagePath: string | undefined): boolean {
+  if (!imagePath) return true;
+  // Ensure path is under /uploads/projects/ only
+  const normalized = path.normalize(imagePath);
+  return normalized.startsWith('/uploads/projects/') && !normalized.includes('..');
+}
+
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -100,6 +145,14 @@ export async function DELETE(
   try {
     // Read existing projects
     const { id } = await params;
+    
+    // CSRF protection for DELETE
+    const csrfToken = request.headers.get('x-csrf-token') || '';
+    const validCsrf = await validateCsrfToken(csrfToken);
+    if (!validCsrf) {
+      return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
+    }
+    
     const content = await fs.readFile(PROJECTS_FILE, 'utf-8');
     const projects = JSON.parse(content);
     const projectIndex = projects.findIndex((p: any) => p.id === id);
@@ -116,10 +169,20 @@ export async function DELETE(
     // Delete image if exists
     if (project.image) {
       try {
+        // Validate path to prevent directory traversal
         const imagePath = path.join(process.cwd(), 'public', project.image);
-        await fs.unlink(imagePath);
-      } catch {
-        // Ignore if file doesn't exist
+        const normalizedPath = path.normalize(imagePath);
+        const baseDir = path.normalize(path.join(process.cwd(), 'public'));
+        
+        // Ensure the path is within the public directory
+        if (!normalizedPath.startsWith(baseDir)) {
+          throw new Error('Invalid image path');
+        }
+        
+        await fs.unlink(normalizedPath);
+      } catch (e) {
+        // Ignore if file doesn't exist or path is invalid
+        console.error('Error deleting image:', e);
       }
     }
 
