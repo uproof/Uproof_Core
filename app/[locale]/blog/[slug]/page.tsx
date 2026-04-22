@@ -6,9 +6,59 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import Image from 'next/image';
 import {Link} from '@/i18n/routing';
 import {notFound} from 'next/navigation';
-import DOMPurify from 'isomorphic-dompurify';
+import sanitizeHtml from 'sanitize-html';
 import blogMetadata from '@/data/blog-metadata.json';
 import blogData from '@/data/blog.json';
+
+const SANITIZE_OPTIONS: sanitizeHtml.IOptions = {
+  allowedTags: [
+    'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+    'p', 'br', 'hr',
+    'ul', 'ol', 'li',
+    'table', 'thead', 'tbody', 'tr', 'th', 'td',
+    'strong', 'b', 'em', 'i', 'u',
+    'blockquote', 'code', 'pre',
+    'a', 'span'
+  ],
+  allowedAttributes: {
+    a: ['href', 'target', 'rel'],
+    span: ['class'],
+    th: ['colspan', 'rowspan'],
+    td: ['colspan', 'rowspan']
+  },
+  allowedSchemes: ['http', 'https', 'mailto', 'tel'],
+  transformTags: {
+    a: (tagName, attribs) => {
+      const href = attribs.href || '';
+      const isInternal =
+        href.startsWith('/') ||
+        href.startsWith('#') ||
+        href.startsWith('./') ||
+        href.startsWith('../') ||
+        href.startsWith('https://uproof.eu') ||
+        href.startsWith('http://uproof.eu');
+
+      if (isInternal) {
+        return {
+          tagName,
+          attribs: {
+            ...attribs,
+            rel: attribs.rel || 'noopener'
+          }
+        };
+      }
+
+      return {
+        tagName,
+        attribs: {
+          ...attribs,
+          target: '_blank',
+          rel: 'noopener noreferrer'
+        }
+      };
+    }
+  }
+};
 
 const locales = ['lv', 'en', 'nl-BE'];
 
@@ -242,7 +292,7 @@ export default async function BlogPostPage({params}: Props) {
               [&_ol_li]:text-lg [&_ol_li]:text-gray-700 [&_ol_li]:leading-relaxed
               [&_a]:text-primary-600 [&_a]:font-semibold [&_a]:no-underline hover:[&_a]:underline
               [&_blockquote]:border-l-4 [&_blockquote]:border-primary-500 [&_blockquote]:pl-6 [&_blockquote]:italic [&_blockquote]:text-gray-600"
-            dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(post.content ?? '')}}
+            dangerouslySetInnerHTML={{__html: sanitizeHtml(post.content ?? '', SANITIZE_OPTIONS)}}
           />
 
           {/* Share & Back */}

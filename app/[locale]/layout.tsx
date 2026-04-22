@@ -371,10 +371,6 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={inter.variable} suppressHydrationWarning>
       <head>
-        <link rel="alternate" hrefLang="lv" href="https://uproof.eu/lv" />
-        <link rel="alternate" hrefLang="en" href="https://uproof.eu/en" />
-        <link rel="alternate" hrefLang="nl-BE" href="https://uproof.eu/nl-BE" />
-        <link rel="alternate" hrefLang="x-default" href="https://uproof.eu/lv" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

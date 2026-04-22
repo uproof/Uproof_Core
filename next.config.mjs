@@ -19,6 +19,9 @@ const nextConfig = {
     return [
       // Map common /sitemap.xml to the actual segmented index to avoid route conflicts.
       { source: '/sitemap.xml', destination: '/sitemap_index.xml' },
+      // Common legacy aliases used by external tools/crawlers.
+      { source: '/sitemap.txt', destination: '/sitemap_index.xml' },
+      { source: '/sitemap.txt/:name', destination: '/sitemaps/:name' },
       // Backward compatibility for legacy segmented sitemap paths (pre Feb-2026 migration).
       { source: '/sitemaps/static.xml', destination: '/static-sitemap.xml' },
       { source: '/sitemaps/services.xml', destination: '/services-sitemap.xml' },
