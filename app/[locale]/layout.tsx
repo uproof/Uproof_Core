@@ -18,10 +18,10 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL('https://uproof.eu'),
   title: {
-    default: 'UpRoof – Jumta pakalpojumi Latvijā | Būvniecība, Renovācija, Sniega tīrīšana 24/7',
+      default: 'Profesionāli Jumta Darbi Rīgā | UpRoof | Būvniecība, Remonts, Apkope | 10 Gadu Garantija',
     template: '%s | UpRoof'
   },
-  description: 'UpRoof profesionālie jumta pakalpojumi Rīgā un visā Latvijā: jumta remonts Rīgā, jumta būvniecība, jumta renovācija, valcprofila jumta montāža, metāla jumta montāža un sniega tīrīšana no jumta 24/7. 10 gadu garantija. +371 25612440',
+    description: 'UpRoof piedāvā pilna cikla jumta būvniecību, remontu, renovāciju un apkopi Rīgā, Pierīgā un visā Latvijā. Metāla jumti, dakstiņi, valcprofils, sniega tīrīšana 24/7. Sertificēti jumiķi, bezmaksas tāmes, 10 gadu garantija. +371 25612440',
   keywords: [
     'jumta pakalpojumi Latvijā',
     'jumta pakalpojumi Rīgā',

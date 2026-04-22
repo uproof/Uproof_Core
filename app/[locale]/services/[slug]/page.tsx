@@ -563,20 +563,20 @@ function getServiceFAQs(slug: string, locale: string) {
       ]
     },
     'valcprofila-montaza': {
-      lv: [
-        {q: 'Kāpēc izvēlēties valcprofilu?', a: 'Valcprofils nodrošina maksimālu hermētiskumu pateicoties dubultlocījumiem, ilgmūžību (50+ gadi) un modernu izskatu bez redzamiem skrūvju caurumiem.'},
-        {q: 'Vai var montēt valcprofilu ziemā?', a: 'Jā, valcprofila montāžu var veikt visu gadu, taču optimālie apstākļi ir temperatūrā virs -10°C ar minimālu nokrišņu risku.'},
-        {q: 'Kāda ir valcprofila garantija?', a: '10 gadu garantija uz montāžas darbu un 50 gadu ražotāja garantija uz materiālu, iekļaujot krāsas noturību un metāla integritāti.'},
-        {q: 'Vai metāla jumti ir skaļi?', a: 'Metāla jumti ir skaļāki salīdzinot ar citiem jumta segumiem, tomēr tas vairāk ir mīts nekā patiesība. Metāla jumtus var padarīt klusus iestrādājot skaņas slāpējošu kārtu. Ja jumts ir mansarda stāvā, siltinājums un vēdināšanas kanāls rada gaisa un siltinājuma barjeras. Ja jumts ir bez siltinājuma, aukstie bēniņi nodrošina pietiekamu attālumu. Lielākā daļa cilvēku apliecina, ka skaņa ikdienā nav traucējoša, dažkārt pat patīkama un nomierinoša.'}
-      ],
-      en: [
-        {q: 'Why choose standing seam?', a: 'Standing seam provides maximum hermeticity thanks to double-locks, longevity (50+ years) and modern appearance without visible screw holes.'},
-        {q: 'Can standing seam be installed in winter?', a: 'Yes, standing seam can be installed year-round, but optimal conditions are temperatures above -10°C with minimal precipitation risk.'},
-        {q: 'What is standing seam warranty?', a: '10-year warranty on installation work and 50-year manufacturer warranty on material, including paint durability and metal integrity.'},
-        {q: 'Are metal roofs noisy?', a: 'Metal roofs are louder compared to other roofing materials, but this is more myth than reality. Metal roofs can be made quiet by incorporating sound-dampening layers. If the roof is on an attic floor, insulation and ventilation create air and insulation barriers. If the roof has no insulation, the cold attic provides sufficient distance. Most people confirm that sound is not bothersome in daily life, and sometimes even pleasant and calming.'}
-      ],
-      'nl-BE': [
-        {q: 'Waarom kiezen voor staande naad?', a: 'Staande naad biedt maximale hermeticiteit dankzij dubbele sluitingen, duurzaamheid (50+ jaar) en modern uiterlijk zonder zichtbare schroefgaten.'},
+      title: {
+        lv: 'Metāla jumtu montāža un uzstādīšana Rīgā | Valcprofils + Ruukki | UpRoof',
+      description: {
+        lv: 'Valcprofila jumta montāža Rīgā un Pierīgā: metāla jumti ar Ruukki materiāliem. Ilgmūžīgs risinājums, 10 gadu garantija, sertificēti speciālisti. Bezmaksas tāme!'
+    'dakstinu-montaza': {
+      title: {
+        lv: 'Dakstiņu jumta ieklāšana Rīgā | Māla un betona dakstiņi | Sertificēti meistari | UpRoof',
+      description: {
+        lv: 'Dakstiņu jumta montāža Rīgā: māla un betona dakstiņi ar 50+ gadu garantiju. Sertificēti speciālisti, kvalitatīva izpilde, bezmaksas apskate. Izpildām Monier un Katepal dakstiņus.'
+    'jumta-logu-montaza': {
+      title: {
+        lv: 'Jumta logu montāža (Velux/Roto) Rīgā | Gaisma un ventilācija | Garantija | UpRoof',
+      description: {
+        lv: 'Jumta logu montāža Rīgā (Velux un Roto): dies papildu gaismu un ventilāciju, hermētiska uzstādīšana. 10 gadu garantija uz darbu, sertificēti instalatori. Bezmaksas konsultācija!'
         {q: 'Kan staande naad in winter geïnstalleerd worden?', a: 'Ja, staande naad kan het hele jaar door geïnstalleerd worden, maar optimale omstandigheden zijn temperaturen boven -10°C met minimaal neerslag risico.'},
         {q: 'Wat is de garantie op staande naad?', a: '10 jaar garantie op installatiewerk en 50 jaar fabrieksgarantie op materiaal, inclusief verfbaarheid en metaalintegriteit.'},
         {q: 'Zijn metalen daken luidruchtig?', a: 'Metalen daken zijn luider vergeleken met andere dakbedekkingsmaterialen, maar dit is meer mythe dan waarheid. Metalen daken kunnen stil gemaakt worden door geluiddempende lagen te verwerken. Als het dak op een zolderverdieping ligt, creëren isolatie en ventilatie lucht- en isolatiebarrières. Als het dak geen isolatie heeft, zorgt de koude zolder voor voldoende afstand. De meeste mensen bevestigen dat geluid niet storend is in het dagelijks leven, en soms zelfs aangenaam en kalmerend.'}
