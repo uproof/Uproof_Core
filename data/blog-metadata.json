@@ -358,5 +358,65 @@
     "readTime": "7 min read",
     "status": "published",
     "image": "/images/blog/winter-roof-care.jpg"
+  },
+  {
+    "id": 32,
+    "slug": "jumta-suces-noversana",
+    "title": "Jumta sūces novēršana: Ātra diagnostika un profesionāls remonts",
+    "excerpt": "Jumta noplūdes un sūces ir bīstamas. Uzziniet, kā identificēt un ātri novērst jumta sūces ar UpRoof profesionālo diagnostiku.",
+    "author": "UpRoof Team",
+    "date": "2026-04-22",
+    "category": "Avārijas remonts",
+    "readTime": "6 min read",
+    "status": "published",
+    "image": "/images/blog/roof-repair.jpg"
+  },
+  {
+    "id": 33,
+    "slug": "steidzams-jumta-remonts",
+    "title": "Steidzams jumta remonts: Kā rīkoties ārkārtējā situācijā",
+    "excerpt": "Avārijas situācijas jumtos prasās ātraiznešanu. Uzziniet, kā identifikāt steidzamus bojājumus un kad zvanīt UpRoof 24/7.",
+    "author": "UpRoof Team",
+    "date": "2026-04-22",
+    "category": "Avārijas remonts",
+    "readTime": "5 min read",
+    "status": "published",
+    "image": "/images/blog/roof-repair.jpg"
+  },
+  {
+    "id": 34,
+    "slug": "sniega-tirisana-no-jumta",
+    "title": "Sniega tīrīšana no jumta: Drošs risinājums ziemā",
+    "excerpt": "Sniega uzkrāšanās ir bīstama. Uzziniet, kā droši notīrīt sniegu un ledus no jumta ar UpRoof profesionālu pakalpojumu.",
+    "author": "UpRoof Team",
+    "date": "2026-04-22",
+    "category": "Ziemas apkope",
+    "readTime": "5 min read",
+    "status": "published",
+    "image": "/images/blog/winter-roof-care.jpg"
+  },
+  {
+    "id": 35,
+    "slug": "jumta-bojajumi-pets-vetras",
+    "title": "Jumta bojājumi pēc vētras: Avārijas remonts 24/7",
+    "excerpt": "Spēcīgas vētras noplēš jumtus un nojauč flešingu. Saznojušies bojājumi - gaidiet UpRoof avārijas remontu 24/7 pakalpojumu.",
+    "author": "UpRoof Team",
+    "date": "2026-04-22",
+    "category": "Avārijas remonts",
+    "readTime": "6 min read",
+    "status": "published",
+    "image": "/images/blog/roof-repair.jpg"
+  },
+  {
+    "id": 36,
+    "slug": "plisusi-jumti-nopluzes",
+    "title": "Plīsuši jumti un noplūdes: Ātri diagnostika un remonts",
+    "excerpt": "Plīstošs jumts bez nedelgiem remontiem izraisa ūdens bojājumus. Uzziniet, kā identifikāt pirmās brīdinājuma pazīmes.",
+    "author": "UpRoof Team",
+    "date": "2026-04-22",
+    "category": "Avārijas remonts",
+    "readTime": "5 min read",
+    "status": "published",
+    "image": "/images/blog/roof-repair.jpg"
   }
 ]
