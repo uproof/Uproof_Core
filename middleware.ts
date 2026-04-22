@@ -22,6 +22,19 @@ export default function middleware(request: NextRequest) {
   const {nextUrl, cookies} = request;
   const pathname = nextUrl.pathname;
 
+  // Normalize malformed sitemap index paths such as /lv/sitemap-index.xml/urgency.
+  const localizedSitemapIndexMatch = pathname.match(/^\/(lv|en|nl-BE)\/sitemap[-_]index\.xml(?:\/.+)?$/);
+  if (localizedSitemapIndexMatch) {
+    const redirectUrl = new URL('/sitemap_index.xml', nextUrl);
+    return NextResponse.redirect(redirectUrl, 301);
+  }
+
+  const sitemapIndexMatch = pathname.match(/^\/sitemap[-_]index\.xml\/.+$/);
+  if (sitemapIndexMatch) {
+    const redirectUrl = new URL('/sitemap_index.xml', nextUrl);
+    return NextResponse.redirect(redirectUrl, 301);
+  }
+
   // Normalize malformed sitemap crawler paths such as /lv/sitemap.txt/services.
   const localizedSitemapTxtMatch = pathname.match(/^\/(lv|en|nl-BE)\/sitemap\.txt\/([a-z-]+)$/);
   if (localizedSitemapTxtMatch) {
