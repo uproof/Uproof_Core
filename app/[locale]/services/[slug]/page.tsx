@@ -543,7 +543,7 @@ function getServiceContent(slug: string, locale: string) {
 }
 
 // Service-specific FAQs
-function getServiceFAQs(slug: string, locale: string) {
+function getServiceFAQs(slug: string, locale: string): Array<{q: string; a: string}> {
   const faqs: Record<string, Record<string, Array<{q: string; a: string}>>> = {
     'jumta-renovacija': {
       lv: [
@@ -563,43 +563,37 @@ function getServiceFAQs(slug: string, locale: string) {
       ]
     },
     'valcprofila-montaza': {
-      title: {
-        lv: 'Metāla jumtu montāža un uzstādīšana Rīgā | Valcprofils + Ruukki | UpRoof',
-      description: {
-        lv: 'Valcprofila jumta montāža Rīgā un Pierīgā: metāla jumti ar Ruukki materiāliem. Ilgmūžīgs risinājums, 10 gadu garantija, sertificēti speciālisti. Bezmaksas tāme!'
-    'dakstinu-montaza': {
-      title: {
-        lv: 'Dakstiņu jumta ieklāšana Rīgā | Māla un betona dakstiņi | Sertificēti meistari | UpRoof',
-      description: {
-        lv: 'Dakstiņu jumta montāža Rīgā: māla un betona dakstiņi ar 50+ gadu garantiju. Sertificēti speciālisti, kvalitatīva izpilde, bezmaksas apskate. Izpildām Monier un Katepal dakstiņus.'
-    'jumta-logu-montaza': {
-      title: {
-        lv: 'Jumta logu montāža (Velux/Roto) Rīgā | Gaisma un ventilācija | Garantija | UpRoof',
-      description: {
-        lv: 'Jumta logu montāža Rīgā (Velux un Roto): dies papildu gaismu un ventilāciju, hermētiska uzstādīšana. 10 gadu garantija uz darbu, sertificēti instalatori. Bezmaksas konsultācija!'
-        {q: 'Kan staande naad in winter geïnstalleerd worden?', a: 'Ja, staande naad kan het hele jaar door geïnstalleerd worden, maar optimale omstandigheden zijn temperaturen boven -10°C met minimaal neerslag risico.'},
-        {q: 'Wat is de garantie op staande naad?', a: '10 jaar garantie op installatiewerk en 50 jaar fabrieksgarantie op materiaal, inclusief verfbaarheid en metaalintegriteit.'},
-        {q: 'Zijn metalen daken luidruchtig?', a: 'Metalen daken zijn luider vergeleken met andere dakbedekkingsmaterialen, maar dit is meer mythe dan waarheid. Metalen daken kunnen stil gemaakt worden door geluiddempende lagen te verwerken. Als het dak op een zolderverdieping ligt, creëren isolatie en ventilatie lucht- en isolatiebarrières. Als het dak geen isolatie heeft, zorgt de koude zolder voor voldoende afstand. De meeste mensen bevestigen dat geluid niet storend is in het dagelijks leven, en soms zelfs aangenaam en kalmerend.'}
+      lv: [
+        {q: 'Kā saprast, ka valcprofila jumts ir pareizi uzstādīts?', a: 'Pareizi uzstādītam valcprofilam ir vienmērīgi dubultlocījumi, taisnas līnijas un hermētiski mezgli pie pieslēgumiem.'},
+        {q: 'Vai metāla jumts ir piemērots Latvijas klimatam?', a: 'Jā, valcprofils labi iztur sniegu, lietu un temperatūras svārstības, tāpēc tas ir viens no labākajiem risinājumiem Latvijā.'},
+        {q: 'Cik ilgi kalpo valcprofila jumts?', a: 'Ar pareizu montāžu un regulāru apkopi valcprofila jumts kalpo 50 gadus un ilgāk.'}
+      ],
+      en: [
+        {q: 'How can I tell if standing seam was installed correctly?', a: 'Correct installation has even double locks, straight lines and watertight details around connections.'},
+        {q: 'Is metal roofing suitable for the Latvian climate?', a: 'Yes, standing seam handles snow, rain and temperature swings very well, making it one of the best choices in Latvia.'},
+        {q: 'How long does a standing seam roof last?', a: 'With proper installation and maintenance, a standing seam roof can last 50 years or more.'}
+      ],
+      'nl-BE': [
+        {q: 'Hoe herken ik correct geplaatste staande naad?', a: 'Correcte installatie heeft gelijke dubbele sluitingen, rechte lijnen en waterdichte details rond aansluitingen.'},
+        {q: 'Is metaal geschikt voor het lokale klimaat?', a: 'Ja, staande naad presteert goed bij sneeuw, regen en temperatuurschommelingen.'},
+        {q: 'Hoe lang gaat een staande naad dak mee?', a: 'Met correcte installatie en onderhoud kan het 50 jaar of langer meegaan.'}
       ]
     },
     'dakstinu-montaza': {
       lv: [
         {q: 'Vai mans jumts izturēs dakstiņu svaru?', a: 'Mēs vienmēr veicam konstrukcijas nestspējas aprēķinu. Ja nepieciešams, veicam spāru pastiprināšanu pirms montāžas.'},
         {q: 'Kāda ir atšķirība starp māla un betona dakstiņiem?', a: 'Māla dakstiņi ir dabīgāki un ilgmūžīgāki (līdz 100 gadiem), bet betona dakstiņi ir ekonomiskāki un precīzāki izmēros.'},
-        {q: 'Cik ilgi kalpo dakstiņu jumts?', a: 'Pareizi uzklāts dakstiņu jumts kalpo 50-100 gadus, padarot to par vienu no izdevīgākajiem ieguldījumiem ilgtermiņā.'},
-        {q: 'Kāpēc dienvidu siltajās zemēs biežāk izmanto māla dakstiņu jumtus?', a: 'Māla dakstiņu popularitāte Dienvideiropā ir saistīta ar vēsturiskiem un materiāla īpašību faktoriem. Māla dakstiņi ir pieejams lokāli iegūstams resurs, ko dienvidnieki izmanto gadsimtiem ilgi. Tie ir labs glābiņš no karstās dienvidu saules, jo neuzkarst un vasarās vieglāk nodrošina atveldzinošu vēsumu telpās. Zemēs kā Spānija un Itālija ziemas ir mērenas bez straujām temperatūras svārstībām, līdz ar to dakstiņu segums kalpo ilgāk un nekļūst trausls tik ātri kā ziemeļu klimatā.'}
+        {q: 'Cik ilgi kalpo dakstiņu jumts?', a: 'Pareizi uzklāts dakstiņu jumts kalpo 50-100 gadus, padarot to par vienu no izdevīgākajiem ieguldījumiem ilgtermiņā.'}
       ],
       en: [
         {q: 'Will my roof support tile weight?', a: 'We always calculate structural load capacity. If necessary, we reinforce rafters before installation.'},
         {q: 'Difference between clay and concrete tiles?', a: 'Clay tiles are more natural and longer-lasting (up to 100 years), while concrete tiles are more economical and precise in dimensions.'},
-        {q: 'How long does a tile roof last?', a: 'A properly installed tile roof lasts 50-100 years, making it one of the best long-term investments.'},
-        {q: 'Why are clay tile roofs more common in warm southern regions?', a: 'Clay tile popularity in Southern Europe is related to both historical and material property factors. Clay tiles are a locally available resource that southerners have used for centuries. They are excellent protection from hot southern sun as they do not overheat and more easily provide refreshing coolness indoors in summer. In countries like Spain and Italy, winters are mild without extreme temperature fluctuations, so tile roofing lasts longer and does not become brittle as quickly as in northern climates.'}
+        {q: 'How long does a tile roof last?', a: 'A properly installed tile roof lasts 50-100 years, making it one of the best long-term investments.'}
       ],
       'nl-BE': [
         {q: 'Zal mijn dak het pannengewicht dragen?', a: 'Wij berekenen altijd de draagkracht. Indien nodig versterken we de spanten voor installatie.'},
         {q: 'Verschil tussen klei en betonnen pannen?', a: 'Kleipannen zijn natuurlijker en gaan langer mee (tot 100 jaar), terwijl betonnen pannen economischer en maatvaster zijn.'},
-        {q: 'Hoe lang gaat een pannendak mee?', a: 'Een correct geïnstalleerd pannendak gaat 50-100 jaar mee, wat het een van de beste langetermijninvesteringen maakt.'},
-        {q: 'Waarom zijn kleipannen daken gebruikelijker in warme zuidelijke regio\'s?', a: 'De populariteit van kleipannen in Zuid-Europa is gerelateerd aan zowel historische als materiaaleigenschappen. Kleipannen zijn een lokaal beschikbare grondstof die zuiderlingen al eeuwenlang gebruiken. Ze zijn uitstekende bescherming tegen de hete zuidelijke zon omdat ze niet oververhitten en gemakkelijker verfrissende koelte binnenshuis bieden in de zomer. In landen als Spanje en Italië zijn de winters mild zonder extreme temperatuurschommelingen, dus gaat de pannendekking langer mee en wordt niet zo snel bros als in noordelijke klimaten.'}
+        {q: 'Hoe lang gaat een pannendak mee?', a: 'Een correct geïnstalleerd pannendak gaat 50-100 jaar mee, wat het een van de beste langetermijninvesteringen maakt.'}
       ]
     },
     'skurstena-piesleguma-montaza-labosana': {
@@ -716,7 +710,7 @@ function getServiceFAQs(slug: string, locale: string) {
         {q: 'What warranty on emergency repair?', a: '2-year warranty on workmanship and materials. In case of water leak during warranty period, we fix it free of charge.'}
       ],
       'nl-BE': [
-        {q: 'Hoe snel kunnen jullie ter plekke zijn bij noodgeval?', a: 'We garanderen aankomst binnen 1-2 uur tijdens werkuren en 2-3 uur \'s nachts in Kortrijk en omgeving. 24/7 noodopvang.'},
+        {q: 'Hoe snel kunnen jullie ter plekke zijn bij noodgeval?', a: "We garanderen aankomst binnen 1-2 uur tijdens werkuren en 2-3 uur 's nachts in Kortrijk en omgeving. 24/7 noodopvang."},
         {q: 'Kunnen jullie repareren zonder compleet dak te slopen?', a: 'Ja, onze specialisten voeren lekdiagnose en lokale reparaties uit zonder compleet dak te vervangen tenzij nodig. Dit bespaard 40-60% op routineonderhoud.'},
         {q: 'Wat is de garantie op noodreparatie?', a: '2 jaar garantie op werk en materialen. Bij waterlek tijdens garantieperiode herstellen we het gratis.'}
       ]
