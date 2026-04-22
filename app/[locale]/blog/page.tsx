@@ -54,7 +54,9 @@ const blogPosts = blogData as Array<{
   readTime?: string;
 }>;
 
-const publishedBlogPosts = blogPosts.filter((post) => post.status === 'published');
+const publishedBlogPosts = blogPosts
+  .filter((post) => post.status === 'published')
+  .sort((left, right) => new Date(right.date).getTime() - new Date(left.date).getTime());
 
 const placeholderImage = '/images/blog/placeholder.jpg';
 

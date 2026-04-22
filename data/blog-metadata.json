@@ -286,5 +286,41 @@
     "readTime": "6 min read",
     "status": "published",
     "image": "/images/blog/pavasara-jumta-apkope.jpg"
+  },
+  {
+    "id": 26,
+    "slug": "how-to-tell-whether-your-lead-flashing-needs-replacing",
+    "title": "How to Tell Whether Your Lead Flashing Needs Replacing",
+    "excerpt": "Spot cracked, split, or slipped leadwork before it turns into leaks. Learn the warning signs around chimneys, dormers, valleys, and roof joints.",
+    "author": "UpRoof Team",
+    "date": "2026-04-22",
+    "category": "Leadwork",
+    "readTime": "6 min read",
+    "status": "published",
+    "image": "/images/blog/roof-repair.jpg"
+  },
+  {
+    "id": 27,
+    "slug": "signs-your-roof-needs-a-tune-up",
+    "title": "Signs Your Roof Needs a Tune-Up: 9 Early Warnings",
+    "excerpt": "If you're searching for signs your roof needs a tune-up, these are the issues to look for before small defects become repairs or replacement.",
+    "author": "UpRoof Team",
+    "date": "2026-04-21",
+    "category": "Maintenance",
+    "readTime": "7 min read",
+    "status": "published",
+    "image": "/images/blog/jumta-inspekcija.jpg"
+  },
+  {
+    "id": 28,
+    "slug": "preparing-your-roof-for-winter",
+    "title": "Preparing Your Roof for Winter: Snow, Ice, and Roof Lantern Checks",
+    "excerpt": "Use this pre-winter checklist to protect flashing, gutters, roof lanterns, and vulnerable edges before snow and ice arrive.",
+    "author": "UpRoof Team",
+    "date": "2026-04-20",
+    "category": "Winter Care",
+    "readTime": "7 min read",
+    "status": "published",
+    "image": "/images/blog/winter-roof-care.jpg"
   }
 ]
