@@ -322,5 +322,41 @@
     "readTime": "7 min read",
     "status": "published",
     "image": "/images/blog/winter-roof-care.jpg"
+  },
+  {
+    "id": 29,
+    "slug": "ka-saprast-ka-jumta-pieslegumi-jamaina",
+    "title": "Kā saprast, ka jumta pieslēgumi jāmaina?",
+    "excerpt": "Pārbaudiet skārda un svina pieslēgumus ap skursteni, jumta logiem un ielejām, lai laikus pamanītu plaisas, atlipšanu un noplūdes.",
+    "author": "UpRoof Team",
+    "date": "2026-04-22",
+    "category": "Jumta darbi",
+    "readTime": "6 min read",
+    "status": "published",
+    "image": "/images/blog/roof-repair.jpg"
+  },
+  {
+    "id": 30,
+    "slug": "pazimes-ka-jumtam-vajadzigs-tune-up",
+    "title": "Pazīmes, ka jumtam vajadzīga apkope un neliels tune-up",
+    "excerpt": "Ja meklējat signs your roof needs a tune-up, šis pārskats palīdzēs atpazīt agrīnas pazīmes pirms tās pārvēršas dārgā remontā.",
+    "author": "UpRoof Team",
+    "date": "2026-04-22",
+    "category": "Apkope",
+    "readTime": "7 min read",
+    "status": "published",
+    "image": "/images/blog/jumta-inspekcija.jpg"
+  },
+  {
+    "id": 31,
+    "slug": "ka-sagatavot-jumtu-ziemai",
+    "title": "Kā sagatavot jumtu ziemai: sniegs, ledus un jumta logi",
+    "excerpt": "Pirms sala pārbaudiet notekas, pieslēgumus un jumta logus, lai mazinātu sniega un ledus radītos bojājumus.",
+    "author": "UpRoof Team",
+    "date": "2026-04-22",
+    "category": "Ziemas apkope",
+    "readTime": "7 min read",
+    "status": "published",
+    "image": "/images/blog/winter-roof-care.jpg"
   }
 ]
