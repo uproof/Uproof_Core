@@ -1,8 +1,11 @@
 import createMiddleware from 'next-intl/middleware';
 import {routing} from './i18n/routing';
 import {NextRequest, NextResponse} from 'next/server';
+import {latviaCities, belgiumCities} from '@/lib/cities';
 
 const intlMiddleware = createMiddleware(routing);
+const LATVIA_CITY_SET = new Set<string>(latviaCities);
+const BELGIUM_CITY_SET = new Set<string>(belgiumCities);
 
 function isCrawler(request: NextRequest): boolean {
   const ua = (request.headers.get('user-agent') || '').toLowerCase();
@@ -62,6 +65,23 @@ export default function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl, 301);
   }
 
+  // Normalize mismatched locale/city combinations to canonical locale URLs.
+  const cityPathMatch = pathname.match(/^\/(lv|en|nl-BE)\/cities\/([a-z-]+)$/);
+  if (cityPathMatch) {
+    const localePrefix = cityPathMatch[1];
+    const city = cityPathMatch[2];
+
+    if (localePrefix === 'nl-BE' && LATVIA_CITY_SET.has(city)) {
+      const redirectUrl = new URL(`/en/cities/${city}`, nextUrl);
+      return NextResponse.redirect(redirectUrl, 301);
+    }
+
+    if ((localePrefix === 'lv' || localePrefix === 'en') && BELGIUM_CITY_SET.has(city)) {
+      const redirectUrl = new URL(`/nl-BE/cities/${city}`, nextUrl);
+      return NextResponse.redirect(redirectUrl, 301);
+    }
+  }
+
   // Redirect old Latvian slugs to current English slugs (with any locale prefix)
   const latvianToEnglishPaths: Record<string, string> = {
     '/pakalpojumi': '/services',
@@ -108,7 +128,7 @@ export default function middleware(request: NextRequest) {
     // For bots use deterministic locale to keep crawl/index signals stable.
     const locale = crawler ? routing.defaultLocale : (pref || resolveLocale(request));
     const redirectUrl = new URL(`/${locale}${pathname === '/' ? '' : pathname}`, nextUrl);
-    const response = NextResponse.redirect(redirectUrl);
+    const response = NextResponse.redirect(redirectUrl, 308);
     // Persist preference to avoid repeated geo checks (skip bot traffic).
     if (!crawler) {
       response.cookies.set('preferred_locale', locale, {

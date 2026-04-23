@@ -52,12 +52,15 @@ export async function generateMetadata({params}: {params: Promise<{locale: Local
   const isBelgiumCity = BELGIUM_CITY_SET.has(city);
   const countryLabel = isBelgiumCity ? (locale === 'lv' ? 'Beļģijā' : locale === 'nl-BE' ? 'in België' : 'in Belgium') : (locale === 'nl-BE' ? 'in Letland' : locale === 'en' ? 'in Latvia' : 'Latvijā');
   const canonical = `https://uproof.eu/${locale}/cities/${city}`;
-  const languages: Record<string,string> = {
-    lv: `https://uproof.eu/lv/cities/${city}`,
-    en: `https://uproof.eu/en/cities/${city}`,
-    'nl-BE': `https://uproof.eu/nl-BE/cities/${city}`,
-    'x-default': `https://uproof.eu/lv/cities/${city}`
-  };
+  const languages: Record<string,string> = {};
+  for (const altLocale of locales) {
+    if ((citiesByLocale[altLocale] ?? []).includes(city)) {
+      languages[altLocale] = `https://uproof.eu/${altLocale}/cities/${city}`;
+    }
+  }
+  languages['x-default'] = isBelgiumCity
+    ? `https://uproof.eu/nl-BE/cities/${city}`
+    : `https://uproof.eu/lv/cities/${city}`;
   const titleMap: Record<string,string> = {
     lv: `Jumta pakalpojumi ${name} | Būvniecība, remonts, apkope | UpRoof`,
     en: `Roofing Services in ${name} | Construction, Repair & Maintenance | UpRoof`,
