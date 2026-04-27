@@ -197,7 +197,7 @@ export default async function LocaleLayout({
   params: Promise<{locale: string}>;
 }) {
   const {locale} = await params;
-  const messages = await getMessages();
+  const messages = await getMessages({locale});
   // Build Organization schema dynamically to allow small customizations
   const sameAs: string[] = [
     'https://www.facebook.com/uproof',
@@ -390,7 +390,7 @@ export default async function LocaleLayout({
         />
       </head>
       <body className="font-sans">
-        <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider locale={locale} messages={messages}>
           <ErrorBoundary>
             {children}
             <LayoutClient gtmId={process.env.NEXT_PUBLIC_GTM_ID || ''} />

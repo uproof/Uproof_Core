@@ -1,25 +1,18 @@
 'use client';
 
 import {useLocale} from 'next-intl';
-import {useRouter} from '@/i18n/routing';
-import {usePathname as useNextPathname} from 'next/navigation';
-import {useState, useRef, useEffect} from 'react';
+import {usePathname, useRouter} from '@/i18n/routing';
+import {useState, useRef, useEffect, useTransition} from 'react';
 import {ChevronDownIcon, GlobeAltIcon} from '@heroicons/react/24/outline';
 
-const LOCALES = ['lv', 'en', 'nl-BE'];
+const LOCALES = ['lv', 'en', 'nl-BE'] as const;
 
 export default function LanguageSwitcher() {
   const router = useRouter();
-  const fullPathname = useNextPathname();
+  const pathname = usePathname();
   const currentLocale = useLocale();
-
-  // Strip locale prefix to get the locale-independent path
-  // next-intl 3.x usePathname() can return locale-prefixed paths on Next.js 15
-  const pathname = LOCALES.reduce(
-    (p, loc) => (p.startsWith(`/${loc}/`) ? p.slice(loc.length + 1) : p === `/${loc}` ? '/' : p),
-    fullPathname
-  );
   const [isOpen, setIsOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const languages = [
@@ -28,19 +21,21 @@ export default function LanguageSwitcher() {
     { code: 'nl-BE', name: 'Nederlands', shortName: 'NL', flag: '🇧🇪' },
   ];
 
-  const currentLanguage = languages.find((lang) => lang.code === currentLocale) || languages[0];
-
   const handleLanguageChange = (newLocale: string) => {
     // Don't navigate if clicking the current language
-    if (newLocale === currentLocale) {
+    if (newLocale === currentLocale || isPending) {
       setIsOpen(false);
       return;
     }
-    
-    // Use next-intl router with pathname and locale option
-    // pathname from usePathname() is already locale-independent (e.g., '/' or '/services')
-    // The router will automatically add the locale prefix
-    router.push(pathname, {locale: newLocale});
+
+    // Persist locale preference immediately to avoid geo-based redirect overrides.
+    document.cookie = `preferred_locale=${newLocale}; Path=/; Max-Age=15552000; SameSite=Lax`;
+
+    startTransition(() => {
+      // Keep the same route and only switch locale.
+      router.replace(pathname, {locale: newLocale});
+    });
+
     setIsOpen(false);
   };
 
@@ -62,6 +57,7 @@ export default function LanguageSwitcher() {
       {/* Dropdown Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
+        disabled={isPending}
         className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:border-primary-500 transition-all duration-200 shadow-sm hover:shadow-md"
       >
         <GlobeAltIcon className="w-4 h-4 text-gray-600" />
@@ -83,6 +79,7 @@ export default function LanguageSwitcher() {
                 <button
                   key={lang.code}
                   onClick={() => handleLanguageChange(lang.code)}
+                  disabled={isPending}
                   className={`w-full flex items-center gap-3 px-4 py-3 transition-all duration-200 ${
                     isActive
                       ? 'bg-primary-50 text-primary-700 font-semibold'

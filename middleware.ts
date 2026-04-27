@@ -12,18 +12,24 @@ function isCrawler(request: NextRequest): boolean {
   return /(googlebot|bingbot|yandexbot|duckduckbot|baiduspider|slurp|facebookexternalhit|twitterbot|linkedinbot|crawler|spider|bot)/.test(ua);
 }
 
-// Geo-based locale resolution: LV -> lv, BE -> nl-BE, else en.
-function resolveLocale(req: NextRequest): string {
-  const countryHeader = req.headers.get('x-vercel-ip-country') || '';
-  const country = countryHeader.toUpperCase();
-  if (country === 'LV') return 'lv';
-  if (country === 'BE') return 'nl-BE';
-  return 'en';
-}
-
 export default function middleware(request: NextRequest) {
   const {nextUrl, cookies} = request;
   const pathname = nextUrl.pathname;
+  const setLocale = nextUrl.searchParams.get('setLocale');
+
+  // Allow explicit locale changes to win before any default-locale redirects.
+  if (setLocale && ['lv', 'en', 'nl-BE'].includes(setLocale)) {
+    const prefixMatch = pathname.match(/^\/(lv|en|nl-BE)(\/|$)/);
+    const basePath = prefixMatch ? pathname.replace(/^\/(lv|en|nl-BE)/, '') || '' : pathname;
+    const targetPath = basePath === '/' ? '' : basePath;
+    const redirectUrl = new URL(`/${setLocale}${targetPath}`, nextUrl);
+    const response = NextResponse.redirect(redirectUrl);
+    response.cookies.set('preferred_locale', setLocale, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 180
+    });
+    return response;
+  }
 
   // Normalize malformed sitemap index paths such as /lv/sitemap-index.xml/urgency.
   const localizedSitemapIndexMatch = pathname.match(/^\/(lv|en|nl-BE)\/sitemap[-_]index\.xml(?:\/.+)?$/);
@@ -117,37 +123,20 @@ export default function middleware(request: NextRequest) {
     }
   }
 
-  // Skip if already has locale prefix
+  // Skip if already has locale prefix; the URL locale should control rendering.
   const hasLocalePrefix = /^\/(lv|en|nl-BE)(\/|$)/.test(pathname);
 
-  // User preference cookie overrides geo
-  const pref = cookies.get('preferred_locale')?.value;
   const crawler = isCrawler(request);
 
   if (!hasLocalePrefix) {
-    // For bots use deterministic locale to keep crawl/index signals stable.
-    const locale = crawler ? routing.defaultLocale : (pref || resolveLocale(request));
-    const redirectUrl = new URL(`/${locale}${pathname === '/' ? '' : pathname}`, nextUrl);
+    const redirectUrl = new URL(`/lv${pathname === '/' ? '' : pathname}`, nextUrl);
     const response = NextResponse.redirect(redirectUrl, 308);
-    // Persist preference to avoid repeated geo checks (skip bot traffic).
     if (!crawler) {
-      response.cookies.set('preferred_locale', locale, {
+      response.cookies.set('preferred_locale', 'lv', {
         path: '/',
         maxAge: 60 * 60 * 24 * 180 // 180 days
       });
     }
-    return response;
-  }
-
-  // Allow manual locale switch via query (?setLocale=lv) and store cookie
-  const setLocale = nextUrl.searchParams.get('setLocale');
-  if (setLocale && ['lv','en','nl-BE'].includes(setLocale)) {
-    const newUrl = new URL(pathname.replace(/^\/(lv|en|nl-BE)/, `/${setLocale}`) + nextUrl.search, nextUrl);
-    const response = NextResponse.redirect(newUrl);
-    response.cookies.set('preferred_locale', setLocale, {
-      path: '/',
-      maxAge: 60 * 60 * 24 * 180
-    });
     return response;
   }
 
