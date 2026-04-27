@@ -149,7 +149,7 @@ export default function ContactSection() {
                   type="text"
                   id="name"
                   className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent focus:bg-white transition-all duration-200"
-                  placeholder="Your name"
+                  placeholder={t('form.namePlaceholder') || 'Your name'}
                 />
                 {errors.name && (
                   <p className="text-red-500 text-sm mt-1.5">{t('form.nameError')}</p>
@@ -200,7 +200,7 @@ export default function ContactSection() {
                   id="message"
                   rows={4}
                   className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent focus:bg-white transition-all duration-200 resize-none"
-                  placeholder="Tell us about your project..."
+                  placeholder={t('form.messagePlaceholder') || 'Tell us about your project...'}
                 />
                 {errors.message && (
                   <p className="text-red-500 text-sm mt-1.5">{t('form.messageError')}</p>

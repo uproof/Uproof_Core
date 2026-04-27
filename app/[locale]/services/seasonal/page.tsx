@@ -41,6 +41,12 @@ const localeCopy: Record<string, {
         body: 'Seguma mazgāšana, sūnu un aplikuma noņemšana, vietējs pārklājuma remonts un virsmas sagatavošana krāsošanai.',
         href: '/services/jumta-krasosana',
         pill: 'Sezonas laikā'
+      },
+      {
+        title: 'Vētras un vēja bojājumi: steidzama rīcība',
+        body: 'Pēc stipra vēja pārbaudām seguma pacēlumus, kore un pieslēgumus, apturam noplūdes un nodrošinām pagaidu aizsardzību.',
+        href: '/urgency/vetras-jumta-bojajumi',
+        pill: 'Pēc vētras'
       }
     ]
   },
@@ -72,6 +78,12 @@ const localeCopy: Record<string, {
         body: 'Wash the roof, remove moss and buildup, spot-repair coating, prep surfaces for repainting.',
         href: '/services/jumta-krasosana',
         pill: 'During dry days'
+      },
+      {
+        title: 'Storm and wind damage: emergency response',
+        body: 'After heavy wind we inspect lifted roofing sections, ridge lines and flashings, stop leaks and secure temporary weather cover.',
+        href: '/urgency/vetras-jumta-bojajumi',
+        pill: 'After storms'
       }
     ]
   },
@@ -103,6 +115,12 @@ const localeCopy: Record<string, {
         body: 'Dak reinigen, mos en aanslag verwijderen, coating lokaal bijwerken, ondergrond voorbereiden op schilderen.',
         href: '/services/jumta-krasosana',
         pill: 'Bij droog weer'
+      },
+      {
+        title: 'Storm- en windschade: spoedaanpak',
+        body: 'Na harde wind controleren we op opgetilde dakdelen en beschadigde aansluitingen, stoppen lekken en plaatsen tijdelijke bescherming.',
+        href: '/urgency/vetras-jumta-bojajumi',
+        pill: 'Na storm'
       }
     ]
   }

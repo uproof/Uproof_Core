@@ -161,6 +161,29 @@ export const keywordMapping: KeywordMappingEntry[] = [
     notes: 'Differentiate emergency vs planned repair cost structures.'
   },
 
+  // ── Storm/wind damage keywords (seasonal + emergency) ────────────
+  {
+    keyword: 'vētras bojāts jumts',
+    intent: 'urgency',
+    primaryUrl: '/lv/urgency/vetras-jumta-bojajumi',
+    supportingUrls: ['/lv/urgency/caurs-jumts', '/lv/services/jumta-apkope-remonts'],
+    notes: 'Primary storm emergency keyword. Landing page is the conversion target.'
+  },
+  {
+    keyword: 'vēja bojājumi jumtam',
+    intent: 'urgency',
+    primaryUrl: '/lv/urgency/vetras-jumta-bojajumi',
+    supportingUrls: ['/lv/urgency/caurs-jumts', '/lv/services/jumta-renovacija'],
+    notes: 'Strong wind damage variant; use same page to avoid cannibalization.'
+  },
+  {
+    keyword: 'jumta remonts pēc vētras',
+    intent: 'urgency',
+    primaryUrl: '/lv/urgency/vetras-jumta-bojajumi',
+    supportingUrls: ['/lv/urgency/caurs-jumts', '/lv/services/jumta-apkope-remonts'],
+    notes: 'Post-storm repair intent with high conversion probability.'
+  },
+
   // ── Snow removal keywords (seasonal high-volume) ──────────────────
   {
     keyword: 'sniega tīrīšana no jumta',

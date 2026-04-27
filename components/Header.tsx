@@ -88,6 +88,14 @@ export default function Header({showText = true, largeLogo = false}: HeaderProps
               {t('blog') || 'Blog'}
               <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary-500 group-hover:w-3/4 transition-all duration-300 rounded-full"></span>
             </Link>
+            <Link
+              href="/urgency/vetras-jumta-bojajumi"
+              prefetch={false}
+              className="px-4 py-2 bg-red-50 text-red-700 hover:bg-red-100 hover:text-red-800 transition-all font-semibold rounded-lg border border-red-200 text-sm"
+              aria-label={t('stormDamage') || 'Storm Damage'}
+            >
+              {t('stormDamage') || 'Storm Damage'}
+            </Link>
             <Link href="/services/seasonal" prefetch={false} className="px-4 py-2 text-gray-700 hover:text-gray-900 transition-all font-semibold relative group rounded-lg hover:bg-gray-50 text-sm">
               {t('seasonalServices') || 'Seasonal services'}
             </Link>
@@ -135,6 +143,14 @@ export default function Header({showText = true, largeLogo = false}: HeaderProps
               </Link>
               <Link href="/blog" prefetch={false} className="text-gray-900 hover:text-primary-600 transition-colors font-medium px-4 py-3 hover:bg-primary-50 rounded-lg">
                 {t('blog') || 'Blog'}
+              </Link>
+              <Link
+                href="/urgency/vetras-jumta-bojajumi"
+                prefetch={false}
+                className="text-red-700 hover:text-red-800 transition-colors font-semibold px-4 py-3 bg-red-50 hover:bg-red-100 rounded-lg border border-red-200"
+                aria-label={t('stormDamage') || 'Storm Damage'}
+              >
+                {t('stormDamage') || 'Storm Damage'}
               </Link>
               <Link href="/contact" prefetch={false} className="text-gray-900 hover:text-primary-600 transition-colors font-medium px-4 py-3 hover:bg-primary-50 rounded-lg">
                 {t('contact')}

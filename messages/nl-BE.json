@@ -14,7 +14,8 @@
     "materials": "Materialen",
     "reviews": "Beoordelingen",
     "seasonalServices": "Seizoensdiensten",
-    "snowRemoval": "Sneeuwruiming"
+    "snowRemoval": "Sneeuwruiming",
+    "stormDamage": "Stormschade"
   },
   "breadcrumbs": {
     "home": "Home",
@@ -320,9 +321,11 @@
     "title": "Contacteer ons",
     "form": {
       "name": "Naam",
+      "namePlaceholder": "Uw naam",
       "phone": "Tel.",
       "email": "E-mail",
       "message": "Kunnen we helpen?",
+      "messagePlaceholder": "Vertel ons over uw project...",
       "submit": "Inloggen",
       "sending": "VERZENDEN...",
       "required": "(verplicht)",

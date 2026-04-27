@@ -14,7 +14,8 @@
     "materials": "Materiāli",
     "reviews": "Atsauksmes",
     "seasonalServices": "Sezonālie pakalpojumi",
-    "snowRemoval": "Sniega tīrīšana"
+    "snowRemoval": "Sniega tīrīšana",
+    "stormDamage": "Vētras bojājumi"
   },
   "breadcrumbs": {
     "home": "Sākums",
@@ -304,9 +305,11 @@
     "title": "SAZINIES AR MUMS",
     "form": {
       "name": "Vārds",
+      "namePlaceholder": "Jūsu vārds",
       "phone": "Tel.nr",
       "email": "E-pasts",
       "message": "Kā varam palīdzēt?",
+      "messagePlaceholder": "Pastāstiet mums par savu projektu...",
       "submit": "PIETEIKTIES",
       "sending": "SŪTA...",
       "required": "(obligāts)",

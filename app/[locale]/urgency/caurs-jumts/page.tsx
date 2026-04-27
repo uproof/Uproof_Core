@@ -131,6 +131,7 @@ export default async function UrgencyLeakPage({ params }: Props) {
 					<h3 className="font-semibold text-gray-900 mb-3">{locale === 'lv' ? 'Saistītie pakalpojumi' : locale === 'en' ? 'Related Services' : 'Gerelateerde diensten'}</h3>
 					<ul className="space-y-2">
 						<li><Link href="/urgency/sniega-tirisana" className="text-gray-600 hover:text-gray-900 hover:underline text-sm">{locale === 'lv' ? 'Sniega tīrīšana no jumta Rīgā – 24/7' : locale === 'en' ? 'Snow Removal from Roof in Riga – 24/7' : 'Sneeuwruiming van het dak in Riga – 24/7'}</Link></li>
+						<li><Link href="/urgency/vetras-jumta-bojajumi" className="text-gray-600 hover:text-gray-900 hover:underline text-sm">{locale === 'lv' ? 'Vētras un vēja bojāts jumts – steidzams remonts' : locale === 'en' ? 'Wind & storm roof damage – emergency repair' : 'Dakschade door wind en storm – spoedherstel'}</Link></li>
 						<li><Link href="/services/jumta-apkope-remonts" className="text-gray-600 hover:text-gray-900 hover:underline text-sm">{locale === 'lv' ? 'Jumta apkope un remonts' : locale === 'en' ? 'Roof Maintenance & Repair' : 'Dakonderhoud & Reparatie'}</Link></li>
 					</ul>
 				</div>

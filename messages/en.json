@@ -14,7 +14,8 @@
     "materials": "Materials",
     "reviews": "Reviews",
     "seasonalServices": "Seasonal services",
-    "snowRemoval": "Snow Removal"
+    "snowRemoval": "Snow Removal",
+    "stormDamage": "Storm Damage"
   },
   "breadcrumbs": {
     "home": "Home",
@@ -314,9 +315,11 @@
     "title": "GET IN TOUCH",
     "form": {
       "name": "Name",
+      "namePlaceholder": "Your name",
       "phone": "Phone",
       "email": "Email",
       "message": "How can we help?",
+      "messagePlaceholder": "Tell us about your project...",
       "submit": "SEND MESSAGE",
       "sending": "SENDING...",
       "required": "(required)",

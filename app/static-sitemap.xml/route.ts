@@ -12,6 +12,7 @@ const staticPaths = [
   '/privacy-policy',
   '/services/seasonal',
   '/urgency/caurs-jumts',
+  '/urgency/vetras-jumta-bojajumi',
   '/urgency/sniega-tirisana'
 ];
 

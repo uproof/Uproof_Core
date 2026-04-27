@@ -3,7 +3,7 @@
 import {useTranslations} from 'next-intl';
 import {motion} from 'framer-motion';
 import Image from 'next/image';
-import {Link} from '@/i18n/routing';
+import {Link, useRouter} from '@/i18n/routing';
 
 type ServicesProps = {
   limit?: number;
@@ -12,6 +12,12 @@ type ServicesProps = {
 export default function Services({ limit }: ServicesProps) {
   const t = useTranslations('home.services');
   const tButtons = useTranslations('home.services.buttons');
+  const router = useRouter();
+
+  const isInteractiveTarget = (target: EventTarget | null): boolean => {
+    if (!(target instanceof Element)) return false;
+    return Boolean(target.closest('a, button, input, textarea, select, [role="button"], [role="link"]'));
+  };
 
   const services = [
     {
@@ -116,7 +122,19 @@ export default function Services({ limit }: ServicesProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.5, delay: index * 0.08 }}
-              className={`group flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} bg-white rounded-2xl shadow-card hover:shadow-card-hover transition-all duration-500 overflow-hidden border border-gray-100`}
+              className={`group flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} bg-white rounded-2xl shadow-card hover:shadow-card-hover transition-all duration-500 overflow-hidden border border-gray-100 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2`}
+              role="link"
+              tabIndex={0}
+              aria-label={`${service.title} — ${tButtons('learnMore')}`}
+              onClick={(event) => {
+                if (isInteractiveTarget(event.target)) return;
+                router.push(service.link);
+              }}
+              onKeyDown={(event) => {
+                if (event.key !== 'Enter' && event.key !== ' ') return;
+                event.preventDefault();
+                router.push(service.link);
+              }}
             >
               {/* Image Section */}
               <div className="md:w-1/2 relative h-64 sm:h-80 md:h-96 overflow-hidden bg-gray-100">
