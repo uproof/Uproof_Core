@@ -50,7 +50,7 @@ export default function FAQ() {
             {t('title')}
           </h2>
           <p className="text-gray-600 max-w-xl mx-auto">
-            Find answers to commonly asked questions about our roofing services.
+            {t('subtitle')}
           </p>
         </motion.div>
 

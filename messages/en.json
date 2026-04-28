@@ -62,7 +62,7 @@
           "description": "We offer a 10-year warranty on all completed work."
         },
         "contract": {
-          "title": "CONTRACT CLARITY",
+          "title": "Contact Us",
           "description": "All terms, materials, methods, and results are specified in the contract."
         },
         "fixedcost": {
@@ -241,6 +241,7 @@
     },
     "faq": {
       "title": "QUESTIONS AND ANSWERS",
+      "subtitle": "Find answers to commonly asked questions about our roofing services.",
       "q1": {
         "question": "What services do we offer?",
         "answer": "We specialize in high-quality roof construction, starting with the construction and renovation of roof structures, to the installation of roofing with all the necessary roof accessories and additional parts. For your convenience, we offer all the necessary roof solutions, including chimney renovation, skylight installation, gutter installation, construction of safety elements and others. We offer a 10-year warranty for the installation of our rolled profile roofs!"
@@ -391,6 +392,7 @@
     },
     "contact": {
       "title": "Contact Us",
+      "intro": "Have a project in mind? We'd love to hear from you.",
       "content": "If you have any questions about this privacy policy or wish to exercise your rights, please contact us:"
     }
   },
@@ -404,7 +406,7 @@
     "servicesLink": "Services",
     "blogLink": "Blog",
     "contactLink": "Contact",
-    "snowRemoval": "Snow Removal",
+    "stormDamage": "Storm Damage",
     "roofLeak": "Roof Leak?"
   }
   ,

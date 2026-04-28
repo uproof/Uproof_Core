@@ -1,6 +1,6 @@
 'use client';
 
-import {useTranslations} from 'next-intl';
+import {useLocale, useMessages, useTranslations} from 'next-intl';
 import {useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {EnvelopeIcon, PhoneIcon} from '@heroicons/react/24/outline';
@@ -15,8 +15,22 @@ type FormData = {
 
 export default function ContactSection() {
   const t = useTranslations('contact');
+  const locale = useLocale();
+  const messages = useMessages() as {
+    contact?: {
+      intro?: string;
+    };
+  };
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  const introByLocale: Record<string, string> = {
+    en: "Have a project in mind? We'd love to hear from you.",
+    lv: 'Ir kāds projekts prātā? Mēs labprāt par to uzzinātu.',
+    'nl-BE': 'Heeft u een project in gedachten? We horen graag van u.'
+  };
+
+  const contactIntro = messages.contact?.intro || introByLocale[locale] || introByLocale.en;
 
   const {
     register,
@@ -119,7 +133,7 @@ export default function ContactSection() {
             {t('title')}
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Have a project in mind? We&apos;d love to hear from you.
+            {contactIntro}
           </p>
         </div>
 
@@ -240,25 +254,25 @@ export default function ContactSection() {
               </h3>
               
               <div className="space-y-5">
-                <a href="tel:+37125612440" className="flex items-center gap-4 p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors group">
-                  <div className="w-12 h-12 rounded-xl bg-gray-100 border border-gray-200 flex items-center justify-center transition-colors">
-                    <PhoneIcon className="w-6 h-6 text-gray-700" />
+                <a href="tel:+37125612440" className="flex items-center gap-4 p-4 rounded-xl bg-primary-50 border border-primary-100 hover:bg-primary-100 transition-all duration-300 group shadow-sm hover:shadow-md">
+                  <div className="w-12 h-12 rounded-xl bg-primary-600 border border-primary-600 flex items-center justify-center transition-colors group-hover:bg-primary-500 group-hover:border-primary-500">
+                    <PhoneIcon className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500 mb-0.5">Phone</p>
-                    <p className="text-lg font-semibold text-gray-900 transition-colors">
+                    <p className="text-sm text-primary-600 mb-0.5 font-medium">Phone</p>
+                    <p className="text-lg font-semibold text-gray-900 transition-colors group-hover:text-primary-900">
                       +371 25612440
                     </p>
                   </div>
                 </a>
 
-                <a href="mailto:karlis.uproof@gmail.com" className="flex items-center gap-4 p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors group">
-                  <div className="w-12 h-12 rounded-xl bg-gray-100 border border-gray-200 flex items-center justify-center transition-colors">
-                    <EnvelopeIcon className="w-6 h-6 text-gray-700" />
+                <a href="mailto:karlis.uproof@gmail.com" className="flex items-center gap-4 p-4 rounded-xl bg-primary-50 border border-primary-100 hover:bg-primary-100 transition-all duration-300 group shadow-sm hover:shadow-md">
+                  <div className="w-12 h-12 rounded-xl bg-primary-600 border border-primary-600 flex items-center justify-center transition-colors group-hover:bg-primary-500 group-hover:border-primary-500">
+                    <EnvelopeIcon className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500 mb-0.5">Email</p>
-                    <p className="text-lg font-semibold text-gray-900 transition-colors">
+                    <p className="text-sm text-primary-600 mb-0.5 font-medium">Email</p>
+                    <p className="text-lg font-semibold text-gray-900 transition-colors group-hover:text-primary-900">
                       karlis.uproof@gmail.com
                     </p>
                   </div>

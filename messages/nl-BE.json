@@ -247,6 +247,7 @@
     },
     "faq": {
       "title": "VRAGEN EN ANTWOORDEN",
+      "subtitle": "Vind antwoorden op veelgestelde vragen over onze dakdiensten.",
       "q1": {
         "question": "Welke diensten bieden wij aan?",
         "answer": "Wij zijn gespecialiseerd in hoogwaardige dakconstructie, van het bouwen en renoveren van dakconstructies tot het plaatsen van dakbedekking met alle benodigde accessoires en extra details. Voor uw gemak bieden wij alle oplossingen voor uw dak, waaronder schoorsteenrenovatie, dakraaminstallatie, installatie van afvoersystemen, veiligheidsvoorzieningen en meer. Voor montage van staande naad metalen daken bieden wij 10 jaar garantie!"
@@ -397,6 +398,7 @@
     },
     "contact": {
       "title": "Neem contact met ons op",
+      "intro": "Heeft u een project in gedachten? We horen graag van u.",
       "content": "Als u vragen heeft over dit privacybeleid of uw rechten wilt uitoefenen, neem dan contact met ons op:"
     }
   },
@@ -411,7 +413,7 @@
       "servicesLink": "Diensten",
       "blogLink": "Blog",
       "contactLink": "Contact",
-      "snowRemoval": "Sneeuwruiming",
+      "stormDamage": "Stormschade",
       "roofLeak": "Daklek?"
     },
   "Cities": {

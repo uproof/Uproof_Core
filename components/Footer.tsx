@@ -15,8 +15,8 @@ export default function Footer() {
       {/* Gradient accent at top */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary-500/30 to-transparent" />
       
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-5 md:gap-6 mb-5 md:mb-6">
           {/* Company Info */}
           <div className="md:col-span-1">
             <h3 className="text-2xl font-bold text-white mb-4 tracking-tight">UpRoof</h3>
@@ -27,8 +27,8 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-300 mb-5">{t('quickLinks') || 'Quick Links'}</h4>
-            <ul className="space-y-3">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-300 mb-2.5">{t('quickLinks') || 'Quick Links'}</h4>
+            <ul className="space-y-1.5">
               <li>
                 <Link href="/" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-primary-500 transition-colors"></span>
@@ -54,9 +54,9 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/urgency/sniega-tirisana" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2 group">
+                <Link href="/urgency/vetras-jumta-bojajumi" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 rounded-full bg-red-600 group-hover:bg-red-400 transition-colors"></span>
-                  {t('snowRemoval') || 'Sniega tīrīšana'}
+                  {t('stormDamage') || 'Storm Damage'}
                 </Link>
               </li>
               <li>
@@ -70,8 +70,8 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-300 mb-5">{t('contactTitle') || 'Contact'}</h4>
-            <ul className="space-y-3">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-300 mb-2.5">{t('contactTitle') || 'Contact'}</h4>
+            <ul className="space-y-1.5">
               <li>
                 <a href="mailto:karlis.uproof@gmail.com" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2 group">
                   <svg className="w-4 h-4 text-gray-500 group-hover:text-primary-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -93,7 +93,7 @@ export default function Footer() {
 
             {/* Social Media */}
             <div>
-              <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-300 mb-5">{t('followUs') || 'Follow Us'}</h4>
+              <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-300 mb-2.5">{t('followUs') || 'Follow Us'}</h4>
               <div className="flex gap-3">
                 {/* Google Business Profile */}
                 {process.env.NEXT_PUBLIC_GBP_URL && (
@@ -166,7 +166,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-gray-800/50 pt-8 text-center">
+        <div className="border-t border-gray-800/50 pt-4 text-center">
           <div className="flex items-center justify-center gap-3 flex-wrap text-gray-500 text-sm">
             <p className="flex items-center gap-2">
               © {currentYear} UpRoof. {t('rights')}.

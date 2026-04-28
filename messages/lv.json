@@ -231,6 +231,7 @@
     },
     "faq": {
       "title": "JAUTĀJUMI UN ATBILDES",
+      "subtitle": "Atrodiet atbildes uz biežāk uzdotajiem jautājumiem par mūsu jumta pakalpojumiem.",
       "q1": {
         "question": "Kādus pakalpojumus mēs piedāvājam?",
         "answer": "Mēs specializējamies augstas kvalitātes jumtu būvniecībā, sākot ar jumta konstrukciju izbūvi un atjaunošanu, līdz jumta seguma montāžai ar visiem nepieciešamajiem jumta aksesuāriem un papildus detaļām. Jūsu ērtībām, piedāvājam visus jumtam nepieciešamos risinājumus, tā skaitā skursteņu atjaunošanu, jumta logu montāžu, noteksistēmas montāžu, drošības elementu izbūvi un citus. Mūsu valcprofila jumtu montāžai piedāvājam 10 gadu garantiju!"
@@ -303,6 +304,7 @@
   },
   "contact": {
     "title": "SAZINIES AR MUMS",
+    "intro": "Ir kāds projekts prātā? Mēs labprāt par to uzzinātu.",
     "form": {
       "name": "Vārds",
       "namePlaceholder": "Jūsu vārds",
@@ -394,7 +396,7 @@
     "servicesLink": "Pakalpojumi",
     "blogLink": "Blogs",
     "contactLink": "Kontakti",
-    "snowRemoval": "Sniega tīrīšana no jumta",
+    "stormDamage": "Vētras bojājumi",
     "roofLeak": "Tek jumts?"
   }
   ,
