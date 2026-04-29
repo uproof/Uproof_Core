@@ -92,6 +92,7 @@ const blogPosts = blogData as Array<{
 }>;
 
 const publishedBlogPosts = blogPosts.filter((post) => post.status === 'published');
+const placeholderImage = '/images/blog/placeholder.svg';
 
 function findPost(slug: string) {
   return publishedBlogPosts.find(p => p.slug === slug) || publishedBlogPosts.find(p => String(p.id) === slug);
@@ -107,6 +108,7 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 
   const postSlug = post.slug || String(post.id);
   const canonical = `https://uproof.eu/${locale}/blog/${postSlug}`;
+  const imageSrc = post.image?.trim() ? post.image : placeholderImage;
   
   // Generate hreflang alternates for blog post
   const languages: Record<string, string> = {
@@ -159,6 +161,7 @@ export default async function BlogPostPage({params}: Props) {
 
   const postSlug = post.slug || String(post.id);
   const hasAuthor = Boolean(post.author && post.author.trim());
+  const imageSrc = post.image?.trim() ? post.image : placeholderImage;
   const cleanText = (post.content ?? '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
   const wordCount = cleanText ? cleanText.split(' ').length : undefined;
   const breadcrumbNames = {
@@ -173,7 +176,7 @@ export default async function BlogPostPage({params}: Props) {
     '@id': `https://uproof.eu/${locale}/blog/${postSlug}#article`,
     headline: post.title,
     description: post.excerpt,
-    image: `https://uproof.eu${post.image}`,
+    image: `https://uproof.eu${imageSrc}`,
     datePublished: post.date,
     dateModified: post.date,
     author: {
@@ -271,7 +274,7 @@ export default async function BlogPostPage({params}: Props) {
           {/* Featured Image */}
           <div className="mb-12 relative h-96 rounded-xl overflow-hidden bg-gray-100">
             <Image
-              src={post.image}
+              src={imageSrc}
               alt={post.title}
               fill
               className="object-cover"

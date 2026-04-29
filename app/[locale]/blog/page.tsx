@@ -58,8 +58,6 @@ const publishedBlogPosts = blogPosts
   .filter((post) => post.status === 'published')
   .sort((left, right) => new Date(right.date).getTime() - new Date(left.date).getTime());
 
-const placeholderImage = '/images/blog/placeholder.jpg';
-
 export default async function BlogPage({params}: Props) {
   const {locale} = await params;
 
@@ -140,7 +138,7 @@ export default async function BlogPage({params}: Props) {
                 <Link href={`/blog/${post.slug || post.id}`} className="block">
                   <div className="relative h-64 overflow-hidden bg-slate-100">
                     <Image
-                      src={post.image?.trim() ? post.image : placeholderImage}
+                      src={post.image?.trim() ? post.image : `/images/blog/${post.slug || post.id}.svg`}
                       alt={post.title}
                       fill
                       sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
