@@ -30,13 +30,28 @@ const SANITIZE_OPTIONS: sanitizeHtml.IOptions = {
   transformTags: {
     a: (tagName, attribs) => {
       const href = attribs.href || '';
-      const isInternal =
-        href.startsWith('/') ||
-        href.startsWith('#') ||
-        href.startsWith('./') ||
-        href.startsWith('../') ||
-        href.startsWith('https://uproof.eu') ||
-        href.startsWith('http://uproof.eu');
+      
+      // Check for relative or hash links
+      if (href.startsWith('/') || href.startsWith('#') || href.startsWith('./') || href.startsWith('../')) {
+        return {
+          tagName,
+          attribs: {
+            ...attribs,
+            rel: attribs.rel || 'noopener'
+          }
+        };
+      }
+
+      // For absolute URLs, parse and validate the host
+      let isInternal = false;
+      try {
+        const url = new URL(href);
+        const allowedHosts = ['uproof.eu', 'www.uproof.eu'];
+        isInternal = allowedHosts.includes(url.hostname);
+      } catch {
+        // Invalid URL format - treat as external
+        isInternal = false;
+      }
 
       if (isInternal) {
         return {
