@@ -64,12 +64,12 @@ export async function generateMetadata({params}: {params: Promise<{locale: Local
   const titleMap: Record<string,string> = {
     lv: `Jumta pakalpojumi ${name} | Būvniecība, remonts, apkope | UpRoof`,
     en: `Roofing Services in ${name} | Construction, Repair & Maintenance | UpRoof`,
-    'nl-BE': `Dakdiensten in ${name} | Constructie, Renovatie & Onderhoud | UpRoof`
+    'nl-BE': `Dakdekker in ${name} | Dakwerken, dakbedekking & herstellingen | UpRoof`
   };
   const descMap: Record<string,string> = {
     lv: `Profesionāli jumta pakalpojumi ${name} ${countryLabel}: jumta būvniecība, jumta renovācija, jumta remonts, valcprofils, noteksistēmas un jumta logi. 10 gadu garantija. Bezmaksas novērtējums.`,
     en: `Professional roofing services in ${name} ${countryLabel}: roof construction, roof renovation, roof repair, standing seam, gutters and skylights. 10-year warranty. Free assessment.`,
-    'nl-BE': `Professionele dakdiensten in ${name} ${countryLabel}: dakbouw, dakrenovatie, dakreparatie, staande naad, goten en dakramen. 10 jaar garantie. Gratis evaluatie.`
+    'nl-BE': `Professionele dakwerken in ${name} ${countryLabel}: dakbedekking, dakrenovatie, dakreparatie, lekdetectie, staande naad, bitumen, PVC, TPO, goten en dakramen. 10 jaar garantie. Gratis evaluatie.`
   };
   const title = titleMap[locale] || titleMap.lv;
   const description = descMap[locale] || descMap.lv;
@@ -100,7 +100,7 @@ export default async function CityLanding({params}: {params: Promise<{locale: Lo
 
   // Basic service bullet points reused per city
   const services = locale === 'nl-BE'
-    ? ['Dakrenovatie','Staande naad montage','Pannendaken','Dakramen','Dakonderhoud','Gootsystemen']
+    ? ['Dakwerken','Dakrenovatie','Dakbedekking','Lekdetectie','Staande naad montage','Pannendaken','Dakramen','Dakonderhoud','Gootsystemen']
     : locale === 'en'
     ? ['Roof renovation','Standing seam install','Tile roofing','Skylight installation','Roof maintenance','Gutter systems']
     : ['Jumta renovācija','Valcprofila montāža','Dakstiņu jumti','Jumta logu montāža','Jumta apkope','Noteksistēmas'];
@@ -131,6 +131,11 @@ export default async function CityLanding({params}: {params: Promise<{locale: Lo
                   <li key={s} className="flex items-start"><span className="text-primary-600 mr-2">•</span><span>{s}</span></li>
                 ))}
               </ul>
+              {locale === 'nl-BE' && (
+                <p className="mt-4 text-sm text-gray-600 leading-relaxed">
+                  Populaire zoekopdrachten in deze regio: dakdekker, dakwerken, dakbedekking, dakherstelling, lek in dak, bitumen dakbedekking, PVC dakmembraan en TPO dakmembraan.
+                </p>
+              )}
             </div>
             <div className="bg-primary-600/10 rounded-xl p-6 border border-primary-200">
               <h2 className="text-2xl font-semibold mb-4">

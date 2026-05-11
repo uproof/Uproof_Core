@@ -12,15 +12,16 @@ const localeCopy: Record<string, {
   subtitle: string;
   cta: string;
   cards: { title: string; body: string; href: string; pill: string }[];
+  seoPoints: string[];
 }> = {
   lv: {
-    title: 'Pavasara darbi jumtam – pārbaude un profilakse',
-    subtitle: 'Rūpīgi sakop jumtu pēc ziemas: diagnostika, noplūžu novēršana, notekas, jumta logu hermētika un seguma mazgāšana.',
+    title: 'Jumta pārbaude, diagnostika un profilakse pēc ziemas',
+    subtitle: 'Pavasara jumta apskate pēc ziemas: noplūžu diagnostika, skārda pieslēgumi, jumta logu hermētika, notekas un seguma mazgāšana.',
     cta: 'Uzsākt pieteikumu',
     cards: [
       {
-        title: 'Jumta diagnostika un noplūžu apturēšana',
-        body: 'Termokamera/inspekcija, savienojumu blīvēšana, avārijas labojumi un fotofiksācija ar ieteikumiem.',
+        title: 'Jumta diagnostika un noplūžu noteikšana',
+        body: 'Termokamera, jumta apskate, noplūžu apturēšana, savienojumu blīvēšana un fotofiksācija ar ieteikumiem.',
         href: '/services/jumta-apkope-remonts',
         pill: 'Prioritāte: nekavējoties'
       },
@@ -48,16 +49,22 @@ const localeCopy: Record<string, {
         href: '/urgency/vetras-jumta-bojajumi',
         pill: 'Pēc vētras'
       }
+    ],
+    seoPoints: [
+      'Kā saprast, vai jumtam vajag remontu vai pilnu nomaiņu',
+      'Kad jāpārbauda skārda pieslēgumi pie skursteņiem, jumta logiem un kore',
+      'Ko darīt, ja parādās jumta noplūde, sūces vai bojātas notekas',
+      'Kādi segumi jāizvērtē pēc ziemas: valcprofils, dakstiņi, bitumena ruļļi, PVC un TPO membrānas'
     ]
   },
   en: {
-    title: 'Spring roof care – inspection first, leaks prevented',
-    subtitle: 'Close out winter: diagnostics, leak sealing, gutter tune-up, skylight flashing, roof wash and paint prep.',
+    title: 'Roof inspection, leak diagnosis and spring maintenance',
+    subtitle: 'Close out winter with roof inspection, leak diagnosis, flashing checks, gutter tune-up, skylight sealing and roof wash.',
     cta: 'Book spring visit',
     cards: [
       {
-        title: 'Roof diagnostics & leak stop',
-        body: 'Thermal/visual check, flashing re-seal, emergency leak stop, photo report with fixes.',
+        title: 'Roof diagnostics and leak detection',
+        body: 'Thermal and visual inspection, flashing reseal, emergency leak stop, photo report with fixes.',
         href: '/services/jumta-apkope-remonts',
         pill: 'Priority: ASAP'
       },
@@ -85,16 +92,22 @@ const localeCopy: Record<string, {
         href: '/urgency/vetras-jumta-bojajumi',
         pill: 'After storms'
       }
+    ],
+    seoPoints: [
+      'How to tell if flashing or leadwork needs replacing',
+      'Signs your roof needs replacing versus a targeted repair',
+      'Roof leak diagnosis for flashing, valleys, skylights and gutters',
+      'Winter damage checks for bitumen, PVC membrane roofing systems and TPO membrane roofs'
     ]
   },
   'nl-BE': {
-    title: 'Voorjaarszorg voor het dak – eerst inspecteren, dan voorkomen',
-    subtitle: 'Na de winter: diagnose, lekdichting, goten reinigen, dakramen afdichten, dak reinigen en schilderklaar maken.',
+    title: 'Dakinspectie, lekdiagnose en voorjaarsonderhoud',
+    subtitle: 'Na de winter: dakinspectie, lekdiagnose, aansluitingen controleren, goten reinigen, dakramen afdichten en dak reinigen.',
     cta: 'Voorjaarsbezoek plannen',
     cards: [
       {
-        title: 'Dakdiagnose en lekstop',
-        body: 'Thermische/visuele check, aansluitingen opnieuw afdichten, noodherstel en fotoverslag met acties.',
+        title: 'Dakdiagnose en lekdetectie',
+        body: 'Thermische en visuele check, aansluitingen opnieuw afdichten, noodherstel en fotoverslag met acties.',
         href: '/services/jumta-apkope-remonts',
         pill: 'Prioriteit: direct'
       },
@@ -122,6 +135,12 @@ const localeCopy: Record<string, {
         href: '/urgency/vetras-jumta-bojajumi',
         pill: 'Na storm'
       }
+    ],
+    seoPoints: [
+      'Hoe je ziet dat een flashing of loodslabben vervangen moet worden',
+      'Signalen dat je dak aan vervanging toe is in plaats van een kleine herstelling',
+      'Lekdiagnose bij dakbedekking, dakramen, goten en aansluitingen',
+      'Controle van bitumen, PVC-membraan en TPO-membraan na winterweer'
     ]
   }
 };
@@ -140,6 +159,16 @@ export async function generateMetadata({params}: {params: Promise<{locale: strin
   return {
     title: localeCopy[lang].title,
     description: localeCopy[lang].subtitle,
+    keywords: [
+      locale === 'lv' ? 'jumta apskate' : locale === 'nl-BE' ? 'dakinspectie' : 'roof inspection',
+      locale === 'lv' ? 'jumta diagnostika' : locale === 'nl-BE' ? 'lekdiagnose dak' : 'roof leak diagnosis',
+      locale === 'lv' ? 'jumta remonts pēc ziemas' : locale === 'nl-BE' ? 'voorjaars dakonderhoud' : 'spring roof maintenance',
+      locale === 'lv' ? 'skārda pieslēgumi' : locale === 'nl-BE' ? 'flashing dak' : 'roof flashing',
+      locale === 'lv' ? 'noteku tīrīšana' : locale === 'nl-BE' ? 'gootreiniging' : 'gutter cleaning',
+      locale === 'lv' ? 'bitumena ruļļi' : locale === 'nl-BE' ? 'bitumen rol roofing' : 'bitumen roll roofing',
+      locale === 'lv' ? 'PVC membrāna' : locale === 'nl-BE' ? 'PVC dakmembraan' : 'PVC membrane roofing',
+      locale === 'lv' ? 'TPO membrāna' : locale === 'nl-BE' ? 'TPO dakmembraan' : 'TPO membrane roofing'
+    ],
     alternates: { canonical, languages },
     openGraph: {
       title: localeCopy[lang].title,
@@ -191,6 +220,18 @@ export default async function SeasonalServicesPage({params}: {params: Promise<{l
 
       <section id="spring-list" className="relative z-10 -mt-6 pb-12 sm:pb-16 md:pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-8 rounded-2xl border border-gray-200 bg-white p-6 sm:p-8 shadow-card">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
+              {lang === 'lv' ? 'Ko pārbaudīt pēc ziemas' : lang === 'nl-BE' ? 'Wat controleren na de winter' : 'What to check after winter'}
+            </h2>
+            <div className="grid gap-4 md:grid-cols-2">
+              {copy.seoPoints.map((point) => (
+                <div key={point} className="rounded-xl bg-gray-50 border border-gray-100 p-4 text-gray-700 leading-relaxed">
+                  {point}
+                </div>
+              ))}
+            </div>
+          </div>
           <div className="grid gap-6 sm:gap-8 md:grid-cols-2">
             {copy.cards.map((card, idx) => (
               <div key={idx} className="bg-white rounded-2xl shadow-card border border-gray-100 p-6 sm:p-7 flex flex-col gap-3">

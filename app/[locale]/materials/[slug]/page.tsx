@@ -5,39 +5,51 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import InternalLinks from '@/components/InternalLinks';
 import {notFound} from 'next/navigation';
 
-const MATERIAL_SPECS: Record<string, { title: Record<string,string>; description: Record<string,string>; thickness?: string; finishes?: string[]; typicalUse?: string[]; }> = {
+const MATERIAL_SPECS: Record<string, { title: Record<string,string>; description: Record<string,string>; thickness?: string; finishes?: string[]; typicalUse?: string[]; searchHints?: Record<string, string[]>; }> = {
   'valcprofils': {
-    title: { lv: 'Valcprofila jumta materiāls', en: 'Standing Seam (Valcprofils) Roofing Material', 'nl-BE': 'Staande naad dakmateriaal' },
+    title: { lv: 'Valcprofila jumta materiāls', en: 'Standing Seam / Roof Flashing Metal', 'nl-BE': 'Staande naad / dakplaatwerk' },
     description: {
-      lv: 'Profesionāls valcprofila jumta segums ar dubultajām locījuma hermētiskajām šuvēm, piemērots ilgnoturīgiem projektiem.',
-      en: 'Professional standing seam metal roofing with double lock seams for longevity and weather resistance.',
-      'nl-BE': 'Professionele staande naad metalen dakbedekking met dubbele sluitnaden voor duurzaamheid.'
+      lv: 'Profesionāls valcprofila jumta segums ar dubultajām locījuma hermētiskajām šuvēm, piemērots ilgnoturīgiem projektiem un sarežģītiem skārda pieslēgumiem.',
+      en: 'Professional standing seam metal roofing with double-lock seams for longevity, weather resistance, flashing and roof leak control.',
+      'nl-BE': 'Professionele staande naad metalen dakbedekking met dubbele sluitnaden voor duurzaamheid, flashing en waterdichte aansluitingen.'
     },
     thickness: '0.5mm–0.6mm',
     finishes: ['Matte','Semi-matte'],
-    typicalUse: ['Residential pitched roofs','Heritage buildings','Complex flashing zones']
+    typicalUse: ['Residential pitched roofs','Heritage buildings','Complex flashing zones'],
+    searchHints: {
+      en: ['roof flashing', 'leadwork replacement', 'standing seam roof', 'metal roof repair'],
+      'nl-BE': ['dakplaatwerk', 'flashing dak', 'staande naad dakbedekking', 'dakherstelling']
+    }
   },
   'pvc-tpo': {
-    title: { lv: 'PVC / TPO plēves jumts', en: 'PVC / TPO Membrane Roofing', 'nl-BE': 'PVC / TPO dakfolie' },
+    title: { lv: 'PVC / TPO plēves jumts', en: 'PVC membrane roofing system / TPO membrane', 'nl-BE': 'PVC dakmembraan / TPO-membraan' },
     description: {
-      lv: 'Plakanajiem jumtiem ar augstu hidroizolāciju – PVC un TPO membrānas risinājumi.',
-      en: 'Flat roof waterproofing solutions using PVC and TPO membranes.',
-      'nl-BE': 'Waterdichte oplossingen voor platte daken met PVC en TPO membranen.'
+      lv: 'Plakanajiem jumtiem ar augstu hidroizolāciju – PVC un TPO membrānas risinājumi, kas labi darbojas kā membrānas jumta sistēma.',
+      en: 'Flat roof waterproofing solutions using PVC membrane roofing system and TPO membrane roofing for durable low-slope roofs.',
+      'nl-BE': 'Waterdichte oplossingen voor platte daken met PVC-dakmembraan en TPO-membraan als moderne dakfolie.'
     },
     thickness: '1.2mm–1.8mm',
     finishes: ['Light Grey','White'],
-    typicalUse: ['Flat roofs','Commercial buildings','Energy-efficient retrofits']
+    typicalUse: ['Flat roofs','Commercial buildings','Energy-efficient retrofits'],
+    searchHints: {
+      en: ['PVC membrane roofing system', 'TPO membrane', 'flat roof membrane roofing', 'roofing membrane'],
+      'nl-BE': ['PVC dakfolie', 'TPO dakfolie', 'dakmembraan plat dak', 'waterdichte dakfolie']
+    }
   },
   'bitumena-rulli': {
-    title: { lv: 'Bitumena ruļļu segums', en: 'Bitumen Roll Roofing', 'nl-BE': 'Bitumen rol dakbedekking' },
+    title: { lv: 'Bitumena ruļļu segums', en: 'Bitumen Roll Roofing / Roofing Rolls', 'nl-BE': 'Bitumen rol dakbedekking / rol roofing' },
     description: {
-      lv: 'Ekonomisks risinājums plakanajiem jumtiem ar vairākslāņu hidroizolāciju.',
-      en: 'Economical multi-layer waterproofing solution for flat roofs.',
-      'nl-BE': 'Economische meerlaagse waterdichting voor platte daken.'
+      lv: 'Ekonomisks risinājums plakanajiem jumtiem ar vairākslāņu hidroizolāciju un stabilu bitumena ruļļu klājumu.',
+      en: 'Economical multi-layer waterproofing solution for flat roofs using bitumen rolls, roll roofing and repair-friendly sheets.',
+      'nl-BE': 'Economische meerlaagse waterdichting voor platte daken met bitumen rollen en rol roofing.'
     },
     thickness: '3–5mm (layers)',
     finishes: ['Granulated','Smooth'],
-    typicalUse: ['Garages','Outbuildings','Industrial']
+    typicalUse: ['Garages','Outbuildings','Industrial'],
+    searchHints: {
+      en: ['bitumen roll roofing', 'roofing rolls', 'roll on roofing', 'bitumen roof'],
+      'nl-BE': ['bitumen rollen', 'bitumen op rol', 'rol roofing', 'bitumen dakbedekking']
+    }
   },
   'dakstini': {
     title: { lv: 'Keramikas / betona dakstiņi', en: 'Clay / Concrete Roof Tiles', 'nl-BE': 'Kleien / betonnen dakpannen' },
@@ -210,6 +222,12 @@ export default async function MaterialSpecPage({ params }: { params: Promise<{ s
                 <li><strong>{locale==='lv'?'Kā novērst kondensāciju?':'How to prevent condensation?'}</strong> {locale==='lv'?'Pareiza ventilācija un precīzi skārda/folijas pieslēgumi.':'Proper ventilation and precise sheet/membrane connections.'}</li>
               </ul>
             </div>
+            {spec.searchHints?.[locale] && spec.searchHints[locale].length > 0 && (
+              <div className="md:col-span-2 bg-white shadow rounded-lg p-5 border border-gray-100">
+                <h2 className="font-semibold mb-2">Search terms we cover</h2>
+                <p className="text-sm text-gray-700 leading-relaxed">{spec.searchHints[locale].join(' • ')}</p>
+              </div>
+            )}
           </div>
         </div>
       </section>

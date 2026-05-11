@@ -128,6 +128,7 @@ export default function InternalLinks({ locale, currentSlug, context }: Internal
             <ul className="space-y-2 text-sm">
               <li><CitiesPopover locale={locale as Locale} /></li>
               <li><Link href={'/blog'} className="text-primary-700 hover:underline">{locale==='nl-BE'?'Blogartikelen':locale==='en'?'Blog articles':'Blog raksti'}</Link></li>
+              <li><Link href={'/blog/how-to-tell-whether-your-lead-flashing-needs-replacing'} className="text-primary-700 hover:underline">{locale==='nl-BE'?'Loodslabben en flashing':locale==='en'?'Lead flashing guide':'Skārda pieslēgumu pārbaude'}</Link></li>
               <li><Link href={'/projects'} className="text-primary-700 hover:underline">{locale==='nl-BE'?'Projekten':locale==='en'?'Projects':'Projekti'}</Link></li>
               <li><Link href={'/urgency/caurs-jumts'} className="text-primary-700 hover:underline">{locale==='nl-BE'?'Lek in het dak?':locale==='en'?'Roof leak emergency':'Tek jumts, ko darīt?'}</Link></li>
               <li><Link href={'/urgency/sniega-tirisana'} className="text-primary-700 hover:underline">{locale==='nl-BE'?'Sneeuw verwijderen van dak':locale==='en'?'Snow removal from roof':'Sniega tīrīšana no jumta'}</Link></li>
