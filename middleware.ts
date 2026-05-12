@@ -31,6 +31,16 @@ export default function middleware(request: NextRequest) {
     return response;
   }
 
+  // Normalize stacked/doubled locale paths like /lv/en/... or /en/lv/... to single locale.
+  // These are typically malformed bot requests or parameter pollution attempts.
+  const stackedLocaleMatch = pathname.match(/^\/(lv|en|nl-BE)\/(lv|en|nl-BE)(\/.*)?$/);
+  if (stackedLocaleMatch) {
+    const primaryLocale = stackedLocaleMatch[1];
+    const remainder = stackedLocaleMatch[3] || '';
+    const redirectUrl = new URL(`/${primaryLocale}${remainder}`, nextUrl);
+    return NextResponse.redirect(redirectUrl, 301);
+  }
+
   // Normalize malformed sitemap index paths such as /lv/sitemap-index.xml/urgency.
   const localizedSitemapIndexMatch = pathname.match(/^\/(lv|en|nl-BE)\/sitemap[-_]index\.xml(?:\/.+)?$/);
   if (localizedSitemapIndexMatch) {
@@ -62,6 +72,39 @@ export default function middleware(request: NextRequest) {
   // Keep sitemap utility paths locale-agnostic to avoid crawler inconsistency.
   if (pathname.startsWith('/sitemaps/')) {
     return NextResponse.next();
+  }
+
+  // Handle malformed or crawler-generated 'news-sitemap.xml' requests.
+  // Examples observed in logs:
+  // - /lv/news-sitemap.xml/services  -> should serve /lv/services
+  // - /news-sitemap.xml/services      -> should serve /services (defaults handled later)
+  // - /news-sitemap.xml                -> redirect to canonical blog sitemap
+  const localizedNewsSitemapMatch = pathname.match(/^\/(lv|en|nl-BE)\/news-sitemap\.xml(?:\/(.*))?$/);
+  if (localizedNewsSitemapMatch) {
+    const locale = localizedNewsSitemapMatch[1];
+    const remainder = localizedNewsSitemapMatch[2];
+    if (!remainder) {
+      // /lv/news-sitemap.xml -> blog sitemap
+      const redirectUrl = new URL('/blog-sitemap.xml', nextUrl);
+      return NextResponse.redirect(redirectUrl, 301);
+    }
+    // /lv/news-sitemap.xml/services/... -> /lv/services/...
+    const redirectUrl = new URL(`/${locale}/${remainder}`, nextUrl);
+    return NextResponse.redirect(redirectUrl, 301);
+  }
+
+  const newsSitemapMatch = pathname.match(/^\/news-sitemap\.xml(?:\/(.*))?$/);
+  if (newsSitemapMatch) {
+    const remainder = newsSitemapMatch[1];
+    if (!remainder) {
+      // /news-sitemap.xml -> blog sitemap
+      const redirectUrl = new URL('/blog-sitemap.xml', nextUrl);
+      return NextResponse.redirect(redirectUrl, 301);
+    }
+    // /news-sitemap.xml/services/... -> strip prefix and let normal routing apply
+    // Prefer redirect to the stripped path so middleware logic and locale detection runs consistently.
+    const redirectUrl = new URL(`/${remainder}`, nextUrl);
+    return NextResponse.redirect(redirectUrl, 301);
   }
 
   // Handle old paths without locale - redirect to lv
