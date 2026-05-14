@@ -125,6 +125,13 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
   const canonical = `https://uproof.eu/${locale}/blog/${postSlug}`;
   const imageSrc = post.image?.trim() ? post.image : placeholderImage;
   
+  // Get enhanced metadata if available
+  const postMetadata = blogMetadata.find((m: any) => m.slug === postSlug || m.id === post.id);
+  const metaDescription = postMetadata?.metaDescription || post.excerpt;
+  const ogDescription = postMetadata?.socialMeta?.ogDescription || metaDescription;
+  const twitterDescription = postMetadata?.socialMeta?.twitterDescription || metaDescription;
+  const twitterCardValue = (postMetadata?.socialMeta?.twitterCard as 'summary_large_image' | 'summary' | 'player' | 'app') || 'summary_large_image';
+  
   // Generate hreflang alternates for blog post
   const languages: Record<string, string> = {
     lv: `https://uproof.eu/lv/blog/${postSlug}`,
@@ -135,7 +142,7 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 
   return {
     title: `${post.title} | UpRoof Blog`,
-    description: post.excerpt,
+    description: metaDescription,
     robots: {
       index: true,
       follow: true,
@@ -149,8 +156,8 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
       languages,
     },
     openGraph: {
-      title: post.title,
-      description: post.excerpt,
+      title: postMetadata?.socialMeta?.ogTitle || post.title,
+      description: ogDescription,
       url: canonical,
       type: 'article',
       publishedTime: post.date,
@@ -158,9 +165,9 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
       locale: locale === 'lv' ? 'lv_LV' : locale === 'en' ? 'en_US' : 'nl_BE',
     },
     twitter: {
-      card: 'summary_large_image',
-      title: post.title,
-      description: post.excerpt,
+      card: twitterCardValue,
+      title: postMetadata?.socialMeta?.twitterTitle || post.title,
+      description: twitterDescription,
     },
   };
 }
@@ -184,14 +191,24 @@ export default async function BlogPostPage({params}: Props) {
     blog: locale === 'lv' ? 'Blogs' : locale === 'nl-BE' ? 'Blog' : 'Blog',
   };
 
-  // BlogPosting structured data
-  const articleSchema = {
+  // Get enhanced metadata if available
+  const postMetadata = blogMetadata.find((m: any) => m.slug === postSlug || m.id === post.id);
+  const keywords = postMetadata?.keywords?.join(', ') || `${post.category}, ${post.title}`;
+  const imageAlt = postMetadata?.imageAlt || post.title;
+  const schemaType = postMetadata?.schemaType || 'BlogPosting';
+
+  // BlogPosting structured data with enhanced fields
+  const articleSchema: any = {
     '@context': 'https://schema.org',
     '@type': ['BlogPosting', 'Article'],
     '@id': `https://uproof.eu/${locale}/blog/${postSlug}#article`,
     headline: post.title,
     description: post.excerpt,
-    image: `https://uproof.eu${imageSrc}`,
+    image: {
+      '@type': 'ImageObject',
+      url: `https://uproof.eu${imageSrc}`,
+      caption: imageAlt,
+    },
     datePublished: post.date,
     dateModified: post.date,
     author: {
@@ -214,9 +231,14 @@ export default async function BlogPostPage({params}: Props) {
     },
     inLanguage: locale === 'lv' ? 'lv-LV' : locale === 'en' ? 'en-US' : 'nl-BE',
     articleSection: post.category,
-    keywords: `${post.category}, ${post.title}, jumta darbi, jumta seguma montāža, jumta nomaiņa`,
+    keywords,
     wordCount,
   };
+
+  // Add HowTo schema for how-to articles
+  if (schemaType === 'HowTo' && postMetadata?.relatedPosts) {
+    articleSchema['@type'].push('HowTo');
+  }
 
   // BreadcrumbList structured data
   const breadcrumbSchema = {
@@ -243,6 +265,41 @@ export default async function BlogPostPage({params}: Props) {
       },
     ],
   };
+
+  // Featured Snippets schema for comparison/decision blogs
+  const schemas = [articleSchema, breadcrumbSchema];
+  
+  if (postMetadata?.featuredSnippets && postMetadata.featuredSnippets.length > 0) {
+    const faqSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: postMetadata.featuredSnippets.map((snippet: string, idx: number) => ({
+        '@type': 'Question',
+        name: snippet,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: `See the blog post for detailed information about: ${snippet}`
+        }
+      }))
+    };
+    schemas.push(faqSchema);
+  }
+
+  // Internal links with proper locale support - replace hardcoded locale with current locale
+  const getLocaleAwareLink = (url: string, currentLocale: string) => {
+    // Replace hardcoded locale in URL with current locale
+    const urlMatch = url.match(/^\/([a-z-]+)\//);
+    if (urlMatch) {
+      return url.replace(`/${urlMatch[1]}/`, `/${currentLocale}/`);
+    }
+    // If no locale in URL, add current locale
+    return `/${currentLocale}${url}`;
+  };
+
+  const internalLinksHtml = postMetadata?.internalLinks?.map((link: any) => {
+    const localeAwareUrl = getLocaleAwareLink(link.url, locale);
+    return `<li><a href="${localeAwareUrl}" class="text-primary-600 font-semibold hover:underline">${link.anchor}</a></li>`;
+  }).join('') || '';
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -297,11 +354,11 @@ export default async function BlogPostPage({params}: Props) {
             />
           </div>
 
-          {/* Content */}
+          {/* Content with anchor support */}
           <div 
             className="max-w-none
-              [&_h2]:text-4xl [&_h2]:font-extrabold [&_h2]:text-gray-900 [&_h2]:mb-6 [&_h2]:mt-12 [&_h2]:pb-4 [&_h2]:border-b [&_h2]:border-gray-200
-              [&_h3]:text-2xl [&_h3]:font-bold [&_h3]:text-gray-800 [&_h3]:mb-4 [&_h3]:mt-8
+              [&_h2]:text-4xl [&_h2]:font-extrabold [&_h2]:text-gray-900 [&_h2]:mb-6 [&_h2]:mt-12 [&_h2]:pb-4 [&_h2]:border-b [&_h2]:border-gray-200 [&_h2]:scroll-mt-20
+              [&_h3]:text-2xl [&_h3]:font-bold [&_h3]:text-gray-800 [&_h3]:mb-4 [&_h3]:mt-8 [&_h3]:scroll-mt-20
               [&_p]:text-lg [&_p]:text-gray-700 [&_p]:leading-relaxed [&_p]:mb-6
               [&_strong]:font-bold [&_strong]:text-gray-900 [&_strong]:text-lg
               [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-6 [&_ul]:space-y-2
@@ -309,7 +366,11 @@ export default async function BlogPostPage({params}: Props) {
               [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-6 [&_ol]:space-y-2
               [&_ol_li]:text-lg [&_ol_li]:text-gray-700 [&_ol_li]:leading-relaxed
               [&_a]:text-primary-600 [&_a]:font-semibold [&_a]:no-underline hover:[&_a]:underline
-              [&_blockquote]:border-l-4 [&_blockquote]:border-primary-500 [&_blockquote]:pl-6 [&_blockquote]:italic [&_blockquote]:text-gray-600"
+              [&_blockquote]:border-l-4 [&_blockquote]:border-primary-500 [&_blockquote]:pl-6 [&_blockquote]:italic [&_blockquote]:text-gray-600
+              [&_table]:w-full [&_table]:border-collapse [&_table]:mb-6
+              [&_thead]:bg-gray-100
+              [&_th]:text-left [&_th]:px-4 [&_th]:py-3 [&_th]:font-bold [&_th]:text-gray-900 [&_th]:border [&_th]:border-gray-300
+              [&_td]:px-4 [&_td]:py-3 [&_td]:border [&_td]:border-gray-300"
             dangerouslySetInnerHTML={{__html: sanitizeHtml(post.content ?? '', SANITIZE_OPTIONS)}}
           />
 
@@ -327,9 +388,23 @@ export default async function BlogPostPage({params}: Props) {
 
       <Footer />
       
-      {/* Structured Data */}
+      {/* Structured Data - Article + Breadcrumb + Optional FAQ/Snippets */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(articleSchema)}} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(breadcrumbSchema)}} />
+      {postMetadata?.featuredSnippets && postMetadata.featuredSnippets.length > 0 && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: postMetadata.featuredSnippets.map((snippet: string) => ({
+            '@type': 'Question',
+            name: snippet,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: `See the blog post for detailed information about: ${snippet}`
+            }
+          }))
+        })}} />
+      )}
     </main>
   );
 }

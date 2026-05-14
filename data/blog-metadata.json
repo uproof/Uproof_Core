@@ -3,420 +3,1833 @@
     "id": 1,
     "slug": "top-5-roofing-materials-2025",
     "title": "Top 5 Roofing Materials for 2025",
-    "excerpt": "Discover the most durable and durable roofing materials that will protect your home for decades.",
+    "metaDescription": "Top 5 roofing materials for 2025: metal, tile, shingles, flat membranes, wood. Compare durability, cost, lifespan for your home.",
+    "excerpt": "Discover the most durable roofing materials that will protect your home for decades.",
     "author": "UpRoof Team",
     "date": "2025-01-15",
     "category": "Materials",
+    "tags": [
+      "roofing-materials",
+      "comparison",
+      "durability",
+      "home-improvement"
+    ],
+    "keywords": [
+      "best roofing materials",
+      "roofing options 2025",
+      "durable roof",
+      "metal vs shingles",
+      "roof material comparison"
+    ],
     "readTime": "5 min read",
     "status": "published",
-    "image": "/images/blog/roofing-materials.jpg"
+    "image": "/images/blog/roofing-materials.jpg",
+    "imageAlt": "Top roofing materials comparison - metal, tile, asphalt shingles, flat membranes",
+    "seoScore": 78,
+    "internalLinks": [
+      {
+        "url": "/blog/metal-profile-roofs-guide",
+        "anchor": "Metal roofs",
+        "placement": "Introduction"
+      },
+      {
+        "url": "/blog/roof-painting-metal-roof-guide",
+        "anchor": "Maintenance tips",
+        "placement": "Materials section"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Top 5 Roofing Materials for 2025",
+      "ogDescription": "Best roofing materials: metal, tile, shingles. Compare durability, lifespan, and value.",
+      "twitterTitle": "Best Roofing Materials 2025 🏠",
+      "twitterDescription": "Metal, tile, shingles, membranes: comparison guide for homeowners.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Comparison & Decision"
   },
   {
     "id": 2,
     "slug": "how-to-maintain-roof-in-winter",
     "title": "How to Maintain Your Roof in Winter",
+    "metaDescription": "Winter roof maintenance: snow removal, ice dam prevention, safety tips. Protect your roof from cold weather damage.",
     "excerpt": "Essential tips for keeping your roof in perfect condition during the harsh winter months.",
     "author": "UpRoof Team",
     "date": "2025-01-10",
     "category": "Maintenance",
+    "tags": [
+      "winter-maintenance",
+      "ice-dams",
+      "snow-removal",
+      "seasonal-care"
+    ],
+    "keywords": [
+      "winter roof maintenance",
+      "ice dam prevention",
+      "snow removal",
+      "roof care tips",
+      "winter roof inspection"
+    ],
     "readTime": "4 min read",
     "status": "published",
-    "image": "/images/blog/winter-maintenance.jpg"
+    "image": "/images/blog/winter-maintenance.jpg",
+    "imageAlt": "Winter roof maintenance - gutter cleaning, ice dam prevention, snow removal safety",
+    "seoScore": 80,
+    "internalLinks": [
+      {
+        "url": "/blog/winter-roof-care-snow-ice-tips",
+        "anchor": "Snow removal safety",
+        "placement": "Main section"
+      },
+      {
+        "url": "/blog/preparing-your-roof-for-winter",
+        "anchor": "Pre-winter checklist",
+        "placement": "Conclusion"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Winter Roof Maintenance Guide",
+      "ogDescription": "Keep your roof safe this winter: snow removal, ice dams, gutters. Complete maintenance checklist.",
+      "twitterTitle": "Winter Roof Care ❄️",
+      "twitterDescription": "Prevent winter damage: ice dams, snow buildup, gutter problems. Expert tips.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Learn & Maintenance"
   },
   {
     "id": 3,
     "slug": "signs-roof-needs-repair",
     "title": "Signs Your Roof Needs Repair or Replacement",
+    "metaDescription": "Signs your roof needs repair: water stains, missing shingles, sagging, flashing damage. When to call a professional roofer.",
     "excerpt": "Learn to identify the warning signs that indicate whether your roof needs a targeted repair or a full replacement.",
     "author": "UpRoof Team",
     "date": "2025-01-05",
     "category": "Tips",
+    "tags": [
+      "roof-repair",
+      "roof-replacement",
+      "inspection",
+      "warning-signs"
+    ],
+    "keywords": [
+      "roof repair signs",
+      "roof replacement indicators",
+      "leaking roof",
+      "roof inspection checklist",
+      "roof damage"
+    ],
     "readTime": "6 min read",
     "status": "published",
-    "image": "/images/blog/roof-repair.jpg"
+    "image": "/images/blog/roof-repair.jpg",
+    "imageAlt": "Roof damage signs - water stains, missing shingles, sagging, damaged flashing",
+    "seoScore": 81,
+    "internalLinks": [
+      {
+        "url": "/blog/roof-leak-detection-checklist",
+        "anchor": "Leak detection",
+        "placement": "Early warnings section"
+      },
+      {
+        "url": "/blog/signs-your-roof-needs-a-tune-up",
+        "anchor": "Roof tune-up",
+        "placement": "Maintenance section"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "8 Signs Your Roof Needs Repair",
+      "ogDescription": "Spot roof problems early: water stains, missing shingles, flashing damage, sagging.",
+      "twitterTitle": "Does Your Roof Need Repair? 🔍",
+      "twitterDescription": "8 warning signs: stains, shingles, gutters. When to call a roofer.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Problem Diagnosis"
   },
   {
     "id": 4,
     "slug": "metal-profile-roofs-guide",
     "title": "Complete Guide to Metal Profile Roofs",
+    "metaDescription": "Metal profile roofs: standing seam & rolled metal. 40-60+ year lifespan, low maintenance, installation & maintenance guide.",
     "excerpt": "Everything you need to know about rolled metal and standing seam roofs: durability and installation.",
     "author": "UpRoof Team",
     "date": "2025-02-01",
     "category": "Materials",
+    "tags": [
+      "metal-roofs",
+      "standing-seam",
+      "installation",
+      "guide"
+    ],
+    "keywords": [
+      "metal profile roof",
+      "standing seam",
+      "rolled metal",
+      "metal roof installation",
+      "metal roof maintenance"
+    ],
     "readTime": "7 min read",
     "status": "published",
-    "image": "/images/blog/metal-profile-guide.jpg"
+    "image": "/images/blog/metal-profile-guide.jpg",
+    "imageAlt": "Metal profile roofs - standing seam and rolled metal installation details",
+    "seoScore": 83,
+    "internalLinks": [
+      {
+        "url": "/blog/top-5-roofing-materials-2025",
+        "anchor": "Roofing materials",
+        "placement": "Introduction"
+      },
+      {
+        "url": "/blog/roof-painting-metal-roof-guide",
+        "anchor": "Metal roof painting",
+        "placement": "Maintenance"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Complete Guide to Metal Roofs",
+      "ogDescription": "Metal roofing: 40-60+ years durability. Installation, types, maintenance, benefits.",
+      "twitterTitle": "Metal Roofing Guide 🏗️",
+      "twitterDescription": "Standing seam vs rolled metal: durability, cost, installation. Expert guide.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Learn & Decide"
   },
   {
     "id": 5,
     "slug": "skylight-installation-pros-cons",
     "title": "Skylight Installation: Pros and Cons",
+    "metaDescription": "Skylight installation guide: benefits, risks, types, proper waterproofing. Avoid leaks with professional installation.",
     "excerpt": "Natural light transforms interiors - learn when skylights are the right choice and how to install them properly.",
     "author": "UpRoof Team",
     "date": "2025-02-10",
     "category": "Skylights",
+    "tags": [
+      "skylights",
+      "installation",
+      "waterproofing",
+      "natural-light"
+    ],
+    "keywords": [
+      "skylight installation",
+      "roof windows",
+      "skylight types",
+      "waterproofing skylights",
+      "skylight leaks"
+    ],
     "readTime": "6 min read",
     "status": "published",
-    "image": "/images/blog/skylight-installation.jpg"
+    "image": "/images/blog/skylight-installation.jpg",
+    "imageAlt": "Skylight installation - proper flashing, waterproofing, and mounting details",
+    "seoScore": 79,
+    "internalLinks": [
+      {
+        "url": "/blog/roof-leak-detection-checklist",
+        "anchor": "Leak detection",
+        "placement": "Risk section"
+      },
+      {
+        "url": "/blog/gutter-system-installation-guide",
+        "anchor": "Drainage systems",
+        "placement": "Waterproofing"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Skylight Installation: Complete Guide",
+      "ogDescription": "Skylights add natural light but require proper installation. Risks, types, and waterproofing tips.",
+      "twitterTitle": "Skylight Installation 💡",
+      "twitterDescription": "Natural light benefits vs risks: proper installation prevents leaks. Expert tips.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "How-to & Decision"
   },
   {
     "id": 6,
     "slug": "gutter-system-installation-guide",
     "title": "Gutter System Installation: A Step-by-Step Overview",
-    "excerpt": "A reliable drainage system protects facades and foundations. Here’s how professionals install gutters the right way.",
+    "metaDescription": "Gutter installation guide: 5 steps, materials, maintenance. Protect your foundation with proper drainage system.",
+    "excerpt": "A reliable drainage system protects facades and foundations. Here's how professionals install gutters the right way.",
     "author": "UpRoof Team",
     "date": "2025-02-18",
     "category": "Drainage",
+    "tags": [
+      "gutters",
+      "drainage",
+      "installation",
+      "step-by-step"
+    ],
+    "keywords": [
+      "gutter installation",
+      "gutter systems",
+      "drainage solutions",
+      "downspouts",
+      "gutter maintenance"
+    ],
     "readTime": "5 min read",
     "status": "published",
-    "image": "/images/blog/gutter-system-overview.jpg"
+    "image": "/images/blog/gutter-system-overview.jpg",
+    "imageAlt": "Gutter installation - brackets, sealing, downspouts, proper slope for drainage",
+    "seoScore": 82,
+    "internalLinks": [
+      {
+        "url": "/blog/signs-roof-needs-repair",
+        "anchor": "Gutter problems",
+        "placement": "Warning signs"
+      },
+      {
+        "url": "/blog/how-to-maintain-roof-in-winter",
+        "anchor": "Gutter maintenance",
+        "placement": "Maintenance section"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Gutter Installation: Step-by-Step Guide",
+      "ogDescription": "Proper gutter installation protects your home. Materials, 5-step process, maintenance requirements.",
+      "twitterTitle": "Gutter Installation Guide 🌧️",
+      "twitterDescription": "Step-by-step gutter installation: materials, slope, downspouts, guards.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "How-to & Installation"
   },
   {
     "id": 7,
     "slug": "winter-roof-care-snow-ice-tips",
     "title": "Winter Roof Care: Snow and Ice Removal Safety Tips",
+    "metaDescription": "Winter roof care: safe snow removal, ice dams, roof rakes, professional removal. Protect your home from winter damage.",
     "excerpt": "Prevent ice dams and roof damage with safe winter maintenance practices.",
     "author": "UpRoof Team",
     "date": "2025-02-24",
     "category": "Maintenance",
+    "tags": [
+      "winter-care",
+      "snow-removal",
+      "ice-dams",
+      "safety"
+    ],
+    "keywords": [
+      "winter roof care",
+      "snow removal methods",
+      "ice dam prevention",
+      "safe roof raking",
+      "roof stress test"
+    ],
     "readTime": "4 min read",
     "status": "published",
-    "image": "/images/blog/winter-roof-care.jpg"
+    "image": "/images/blog/winter-roof-care.jpg",
+    "imageAlt": "Safe snow removal from roof - proper techniques and safety equipment",
+    "seoScore": 80,
+    "internalLinks": [
+      {
+        "url": "/blog/how-to-maintain-roof-in-winter",
+        "anchor": "Winter maintenance",
+        "placement": "Introduction"
+      },
+      {
+        "url": "/blog/preparing-your-roof-for-winter",
+        "anchor": "Pre-winter prep",
+        "placement": "Prevention section"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Winter Roof Care & Safety Tips",
+      "ogDescription": "Safe snow and ice removal: roof rakes, ice dams, professional help. Expert winter roof care.",
+      "twitterTitle": "Winter Roof Safety ⛄",
+      "twitterDescription": "Snow load limits, safe removal, ice dams. Protect your roof this winter.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Learn & Safety"
   },
   {
     "id": 8,
     "slug": "roof-leak-detection-checklist",
     "title": "Roof Leak Detection Checklist (DIY vs Professional)",
+    "metaDescription": "Roof leak detection checklist: DIY inspection vs professional. Find leaks, source identification, when to call roofer.",
     "excerpt": "Find common leak sources like flashing, valleys, penetrations, and gutters—know when to call a professional.",
     "author": "UpRoof Team",
     "date": "2025-03-02",
     "category": "Repair",
+    "tags": [
+      "leak-detection",
+      "roof-inspection",
+      "troubleshooting",
+      "DIY"
+    ],
+    "keywords": [
+      "roof leak detection",
+      "find roof leaks",
+      "leak source",
+      "interior water stains",
+      "professional leak inspection"
+    ],
     "readTime": "6 min read",
     "status": "published",
-    "image": "/images/blog/leak-detection-checklist.jpg"
+    "image": "/images/blog/leak-detection-checklist.jpg",
+    "imageAlt": "Roof leak detection areas - flashing, valleys, vents, chimneys, gutters",
+    "seoScore": 81,
+    "internalLinks": [
+      {
+        "url": "/blog/signs-roof-needs-repair",
+        "anchor": "Roof damage signs",
+        "placement": "Introduction"
+      },
+      {
+        "url": "/blog/jumta-suces-noversana",
+        "anchor": "Leak repair",
+        "placement": "Professional repair section"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Roof Leak Detection Checklist",
+      "ogDescription": "Find roof leaks: DIY checklist, common sources, professional inspection. When to call help.",
+      "twitterTitle": "Roof Leak Detection Guide 💧",
+      "twitterDescription": "DIY leak finder: flashing, valleys, vents. Professional leak detection tips.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Problem Diagnosis"
   },
   {
     "id": 9,
     "slug": "roof-painting-metal-roof-guide",
     "title": "Roof Painting: When and How to Repaint a Metal Roof",
+    "metaDescription": "Metal roof painting guide: preparation, primer, application, repainting schedule. Extend roof life with proper coating.",
     "excerpt": "A step-by-step framework for surface preparation, priming, and painting to maximize coating longevity.",
     "author": "UpRoof Team",
     "date": "2025-03-10",
     "category": "Painting",
+    "tags": [
+      "roof-painting",
+      "metal-roofs",
+      "coating",
+      "maintenance"
+    ],
+    "keywords": [
+      "metal roof painting",
+      "roof repainting",
+      "roof coating",
+      "paint preparation",
+      "roof color options"
+    ],
     "readTime": "7 min read",
     "status": "published",
-    "image": "/images/blog/roof-painting-metal.jpg"
+    "image": "/images/blog/roof-painting-metal.jpg",
+    "imageAlt": "Metal roof painting process - surface preparation, priming, coating application",
+    "seoScore": 79,
+    "internalLinks": [
+      {
+        "url": "/blog/metal-profile-roofs-guide",
+        "anchor": "Metal roofs",
+        "placement": "Maintenance section"
+      },
+      {
+        "url": "/blog/roof-painting-metal-roof-guide",
+        "anchor": "Recoating",
+        "placement": "Longevity tips"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Metal Roof Painting: Complete Guide",
+      "ogDescription": "Repaint metal roofs: preparation, primer, application. Extend coating life.",
+      "twitterTitle": "Metal Roof Painting Guide 🎨",
+      "twitterDescription": "Surface prep, primer, paint application: step-by-step metal roof painting.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "How-to & Maintenance"
   },
   {
     "id": 10,
     "slug": "jumta-remonts-riga-cenas",
     "title": "Jumta remonts Rīgā 2025: kas ietekmē darbu apjomu",
+    "metaDescription": "Jumta remonts Rīgā 2025: cena, faktori, seguma montāža. Uzziniet, kas ietekmē darbu apjomu un remontes izmaksas.",
     "excerpt": "Jumta darbi Rīgā 2025? Detalizēts ceļvedis par jumta remonta, jumta seguma montāžas un jumta nomaiņas galvenajiem faktoriem.",
     "author": "UpRoof Team",
     "date": "2025-03-15",
     "category": "Jumta remonts",
+    "tags": [
+      "jumta-remonts",
+      "cenas",
+      "Rīga",
+      "jumta-darbi"
+    ],
+    "keywords": [
+      "jumta remonts Rīgā",
+      "jumta seguma montāža",
+      "jumta remonts cena",
+      "jumta darbi",
+      "profesionāls jumta remonts"
+    ],
     "readTime": "8 min read",
     "status": "published",
-    "image": "/images/blog/jumta-remonts-cena.jpg"
+    "image": "/images/blog/jumta-remonts-cena.jpg",
+    "imageAlt": "Jumta remonts Rīgā - seguma montāža, darbu apjomu faktori",
+    "seoScore": 77,
+    "internalLinks": [
+      {
+        "url": "/lv/blog/valcprofila-montaza-soli-pa-solim",
+        "anchor": "Valcprofila montāža",
+        "placement": "Montāžas sekcija"
+      },
+      {
+        "url": "/lv/blog/kad-jamaina-jumta-segums",
+        "anchor": "Kad nomainīt jumtu",
+        "placement": "Noslēgums"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Jumta remonts Rīgā 2025",
+      "ogDescription": "Jumta remonta cena, faktori, timeline. Profesionāls jumta remonts Rīgā.",
+      "twitterTitle": "Jumta Remonts Rīgā 💰",
+      "twitterDescription": "Jumta remonts: kas ietekmē cenu? Profesiionāli jumta darbi 2025.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Local Services & Pricing"
   },
   {
     "id": 11,
     "slug": "kad-jamaina-jumta-segums",
     "title": "Kad jāmaina jumta segums? Pazīmes, ka jūsu jumts ir novecojis",
-    "excerpt": "Kad vajag jumta nomaiņu? Pazīmes, ka jumta segums ir novecojis un nepieciešama jauna jumta ieklāšana. Ceļvedis par jumta seguma montāžu un metāla jumta montāžu.",
+    "metaDescription": "Kad mainīt jumtu? Pazīmes, ka jumta segums jānomaina. Jumta nomaiņa: timing, darbu process, investīcija.",
+    "excerpt": "Kad vajag jumta nomaiņu? Pazīmes, ka jumta segums ir novecojis un nepieciešama jauna jumta ieklāšana.",
     "author": "UpRoof Team",
     "date": "2025-03-18",
     "category": "Apkope",
+    "tags": [
+      "jumta-nomaina",
+      "pazīmes",
+      "novecošanās",
+      "apkope"
+    ],
+    "keywords": [
+      "kad nomainīt jumtu",
+      "jumta nomaiņa",
+      "novecošanās pazīmes",
+      "jumta segums",
+      "dzīves ilgums"
+    ],
     "readTime": "7 min read",
     "status": "published",
-    "image": "/images/blog/kad-jaizsimaina-jumts.jpg"
+    "image": "/images/blog/kad-jaizsimaina-jumts.jpg",
+    "imageAlt": "Jumta nomaiņas pazīmes - novecojis segums, bojājumi, noplūdes",
+    "seoScore": 78,
+    "internalLinks": [
+      {
+        "url": "/lv/blog/jumta-remonts-riga-cenas",
+        "anchor": "Jumta remonts cena",
+        "placement": "Izmaksas sekcija"
+      },
+      {
+        "url": "/lv/blog/valcprofils-vs-bitumens",
+        "anchor": "Materiālu salīdzinājums",
+        "placement": "Materiāla izvēle"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Kad Nomainīt Jumtu?",
+      "ogDescription": "Jumta seguma nomaiņa: pazīmes, ka jumts ir novecojis. Novecošanās timeline.",
+      "twitterTitle": "Jumta Nomaiņas Laiks ⏰",
+      "twitterDescription": "Pazīmes, ka jumts jānomaina. Jumta dzīves ilgums un nomaiņas timeline.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Decision & Maintenance"
   },
   {
     "id": 12,
     "slug": "valcprofils-vs-bitumens",
     "title": "Valcprofils vs Šindeļi: Kurš jumts ir labāks?",
+    "metaDescription": "Valcprofils vs šindeļi: porīgs salīdzinājums. Durability, cena, montāža, apkope - kuram dot priekšroku?",
     "excerpt": "Valcprofils vs šindeļi - detalizēts jumta seguma montāžas salīdzinājums: ilgmūžība un vērtība ilgtermiņā.",
     "author": "UpRoof Team",
     "date": "2025-03-21",
     "category": "Materiāli",
+    "tags": [
+      "valcprofils",
+      "šindeļi",
+      "salīdzinājums",
+      "materiāli"
+    ],
+    "keywords": [
+      "valcprofils vs šindeļi",
+      "metallist vs šingli",
+      "jumta materiāli",
+      "materiālu salīdzinājums",
+      "labākais jumts"
+    ],
     "readTime": "8 min read",
     "status": "published",
-    "image": "/images/blog/valcprofils-vs-bitumens.jpg"
+    "image": "/images/blog/valcprofils-vs-bitumens.jpg",
+    "imageAlt": "Valcprofila un šindķu jumtu salīdzinājums - materiāli, ilgmūžība, cena",
+    "seoScore": 81,
+    "internalLinks": [
+      {
+        "url": "/lv/blog/top-5-roofing-materials-2025",
+        "anchor": "Jumta materiāli",
+        "placement": "Ievads"
+      },
+      {
+        "url": "/lv/blog/kad-jamaina-jumta-segums",
+        "anchor": "Jumta nomaiņa",
+        "placement": "Noslēgums"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Valcprofils vs Šindeļi - Kurš Labāks?",
+      "ogDescription": "Salīdzinājums: valcprofils vai šindeļi? Ilgmūžība, cena, montāža, apkope.",
+      "twitterTitle": "Valcprofils vs Šindeļi 🏠",
+      "twitterDescription": "Kurš jumts labāks? Salīdzinājums: durability, cena, maintenance.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Comparison & Decision"
   },
   {
     "id": 13,
     "slug": "jumts-tek-avarijas-remonts",
     "title": "Jumts tek? Avārijas remonts 24/7 – Kā rīkoties",
-    "excerpt": "Jumts tek – ko darīt? Avārijas jumta darbi 24/7 Rīgā. Uzziniet, kā rīkoties, kad nepieciešama jumta nomaiņa vai noteku montāža pēc avārijas.",
+    "metaDescription": "Jumts tek? Avārijas remonts 24/7 Rīgā. Ko darīt, kad jumts nūc? Steidzama palīdzība neplūdēm.",
+    "excerpt": "Jumts tek – ko darīt? Avārijas jumta darbi 24/7 Rīgā. Uzziniet, kā rīkoties, kad nepieciešama steidzama palīdzība.",
     "author": "UpRoof Team",
     "date": "2025-03-24",
     "category": "Avārija",
+    "tags": [
+      "avārija",
+      "noplūde",
+      "24/7",
+      "steidzams-remonts"
+    ],
+    "keywords": [
+      "jumts tek",
+      "avārijas remonts",
+      "noplūde",
+      "steidzams remonts",
+      "ūdens bojājumi"
+    ],
     "readTime": "6 min read",
     "status": "published",
-    "image": "/images/blog/jumts-tek-avarija.jpg"
+    "image": "/images/blog/jumts-tek-avarija.jpg",
+    "imageAlt": "Jumta noplūde un avārijas remonts - ātra palīdzība un tūlītējie risinājumi",
+    "seoScore": 80,
+    "internalLinks": [
+      {
+        "url": "/lv/blog/roof-leak-detection-checklist",
+        "anchor": "Noplūdes diagnostika",
+        "placement": "Noplūdes identifikācija"
+      },
+      {
+        "url": "/lv/blog/jumta-suces-noversana",
+        "anchor": "Jumta noplūde",
+        "placement": "Noslēgums"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Jumts tek? Avārijas Remonts 24/7",
+      "ogDescription": "Avārijas jumta remonts 24/7 Rīgā. Noplūdes novēršana, ātra palīdzība.",
+      "twitterTitle": "Avārijas Jumta Remonts 🚨",
+      "twitterDescription": "Jumts tek? 24/7 avārijas remonts Rīgā. Ātra palīdzība noplūdēm.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Emergency Services"
   },
   {
     "id": 14,
     "slug": "valcprofila-montaza-soli-pa-solim",
     "title": "Valcprofila montāža: Solis pa solim – ko dara labākie jumta meistari?",
-    "excerpt": "Valcprofila montāža soli pa solim – metāla jumta montāža un jumta seguma ieklāšana ar profesionālu kvalitāti. Ceļvedis par jumta darbu procesu.",
+    "metaDescription": "Valcprofila montāža soli pa solim: profesionāla metāla jumta montāža. Seguma ieklāšana - instrukcija.",
+    "excerpt": "Valcprofila montāža soli pa solim – metāla jumta montāža un jumta seguma ieklāšana ar profesionālu kvalitāti.",
     "author": "UpRoof Team",
     "date": "2025-03-27",
     "category": "Montāža",
+    "tags": [
+      "montāža",
+      "valcprofils",
+      "samm-sammult",
+      "profesiionāls"
+    ],
+    "keywords": [
+      "valcprofila montāža",
+      "metāla jumta montāža",
+      "jumta seguma ieklāšana",
+      "paigalduse process",
+      "profesionāla montāža"
+    ],
     "readTime": "7 min read",
     "status": "published",
-    "image": "/images/blog/valcprofila-montaza-process.jpg"
+    "image": "/images/blog/valcprofila-montaza-process.jpg",
+    "imageAlt": "Valcprofila montāžas process - posmi, materiāli, profesionāli paņēmieni",
+    "seoScore": 82,
+    "internalLinks": [
+      {
+        "url": "/lv/blog/metal-profile-roofs-guide",
+        "anchor": "Valcprofila īpašības",
+        "placement": "Ievads"
+      },
+      {
+        "url": "/lv/blog/jumta-remonts-riga-cenas",
+        "anchor": "Montāžas cena",
+        "placement": "Izmaksas sekcija"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Valcprofila Montāža: Solis Pa Solim",
+      "ogDescription": "Metāla jumta montāža: profesionāls process, materiāli, darbu secība.",
+      "twitterTitle": "Valcprofila Montāža 🔧",
+      "twitterDescription": "Soli pa solim jumta seguma ieklāšana. Profesionāli paņēmieni.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "How-to & Installation"
   },
   {
     "id": 15,
     "slug": "noteksistemas-montaza-celvedis",
     "title": "Noteksistēmas montāža: Kāpēc tās svarīgas un kā tās aprūpēt",
-    "excerpt": "Noteku montāža un noteksistēmu uzstādīšana: pilns ceļvedis par jumta darbu neatņemamu daļu – materiālu izvēle, montāžas process un apkope.",
+    "metaDescription": "Noteksistēmas montāža: nozīme, materiāli, apkope. Drenaažes sistēmas jumta darbam.",
+    "excerpt": "Noteku montāža un noteksistēmu uzstādīšana: pilns ceļvedis par jumta darbu neatņemamu daļu.",
     "author": "UpRoof Team",
     "date": "2025-03-30",
     "category": "Noteku sistēmas",
+    "tags": [
+      "notekas",
+      "drenaaze",
+      "sistēmas",
+      "montāža"
+    ],
+    "keywords": [
+      "noteksistēma",
+      "noteku montāža",
+      "drenaažes sistēma",
+      "jumta drenaaze",
+      "ūdens novadīšana"
+    ],
     "readTime": "7 min read",
     "status": "published",
-    "image": "/images/blog/notekas-montaza.jpg"
+    "image": "/images/blog/notekas-montaza.jpg",
+    "imageAlt": "Noteksistēmas montāža - komponenti, installation process, drenaažes risinājumi",
+    "seoScore": 79,
+    "internalLinks": [
+      {
+        "url": "/lv/blog/gutter-system-installation-guide",
+        "anchor": "Gutteri un drenaaze",
+        "placement": "Dranaažes sekcija"
+      },
+      {
+        "url": "/lv/blog/jumta-remonts-riga-cenas",
+        "anchor": "Noteku sistēmu montāža",
+        "placement": "Darbu apjoms"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Noteksistēmas Montāža",
+      "ogDescription": "Noteku sistēmu nozīme, montāža, apkope. Efektīva ūdens novadīšana.",
+      "twitterTitle": "Noteku Sistēmas 💧",
+      "twitterDescription": "Drenaažes sistēma: montāža, apkope. Ūdens novadīšana jumtam.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "How-to & Technical"
   },
   {
     "id": 16,
     "slug": "jumta-inspekcija-profesionali",
     "title": "Jumta inspekcija: Ko dara profesionāļi un kāpēc tas svarīgi",
+    "metaDescription": "Jumta inspekcija: profesionāla pārbaude, ko pārbaudīt, kāpēc svarīgi. Drošības diagnostika.",
     "excerpt": "Profesionāla jumta inspekcija palīdz laikus pamanīt bojājumus un novērst dārgus remontus nākotnē.",
     "author": "UpRoof Team",
     "date": "2025-04-02",
     "category": "Inspekcija",
+    "tags": [
+      "inspekcija",
+      "diagnostika",
+      "pārbaude",
+      "profesionāla"
+    ],
+    "keywords": [
+      "jumta inspekcija",
+      "jumta pārbaude",
+      "profesionāla diagnostika",
+      "jumta bojājumi",
+      "inspektori"
+    ],
     "readTime": "6 min read",
     "status": "published",
-    "image": "/images/blog/jumta-inspekcija.jpg"
+    "image": "/images/blog/jumta-inspekcija.jpg",
+    "imageAlt": "Jumta profesionāla inspekcija - pārbaudes punkti, diagnostika, novērtējums",
+    "seoScore": 78,
+    "internalLinks": [
+      {
+        "url": "/lv/blog/signs-roof-needs-repair",
+        "anchor": "Jumta problēmas",
+        "placement": "Diagnooze sekcija"
+      },
+      {
+        "url": "/lv/blog/jumta-suces-noversana",
+        "anchor": "Jumta remonts",
+        "placement": "Noslēgums"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Profesionāla Jumta Inspekcija",
+      "ogDescription": "Ko dara rūferi: jumta pārbaude, diagnostika, noplūžu noturēšana.",
+      "twitterTitle": "Jumta Inspekcija 🔍",
+      "twitterDescription": "Profesionāla jumta pārbaude: ko pārbaudīt, kāpēc svarīgi.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Professional Services"
   },
   {
     "id": 17,
     "slug": "sniega-tirisana-no-jumta-riga",
     "title": "STEIDZAMI: Sniega tīrīšana no jumta Rīgā 2026 – Oficiāls brīdinājums",
-    "excerpt": "Rīgas pašvaldība izsludinājusi oficiālu brīdinājumu par sniegu uz jumtiem. UpRoof piedāvā profesionālu jumta tīrīšanu no sniega un ledus 24/7.",
+    "metaDescription": "Sniega tīrīšana no jumta Rīgā 2026: 24/7 avārijas pakalpojumi. Sniegiem bīstami šķēršļi.",
+    "excerpt": "Rīgas pašvaldība izsludinājusi oficiālu brīdinājumu par sniegu uz jumtiem. Profesionāla tīrīšana 24/7.",
     "author": "UpRoof Team",
     "date": "2026-02-13",
     "category": "Ziemas apkope",
+    "tags": [
+      "sniega-tirisana",
+      "rīga",
+      "brīdinājums",
+      "24/7"
+    ],
+    "keywords": [
+      "sniega tīrīšana Rīgā",
+      "jumta sniegs",
+      "sniega slogs",
+      "avārijas remonts",
+      "ziemas pakalpojumi"
+    ],
     "readTime": "8 min read",
     "status": "published",
-    "image": "/images/blog/sniega-tirisana-no-jumta.jpg"
+    "image": "/images/blog/sniega-tirisana-no-jumta.jpg",
+    "imageAlt": "Sniega tīrīšana no Rīgas māju jumtiem - drošības pasākumi, profesionāla palīdzība",
+    "seoScore": 81,
+    "internalLinks": [
+      {
+        "url": "/lv/blog/winter-roof-care-snow-ice-tips",
+        "anchor": "Sniega novadīšana",
+        "placement": "Drošības sekcija"
+      },
+      {
+        "url": "/lv/blog/sniega-slogs-uz-jumta",
+        "anchor": "Sniega slogs",
+        "placement": "Riski"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Sniega Tīrīšana no Jumta Rīgā",
+      "ogDescription": "Rīga 2026: sniega bīstamība uz jumtiem. 24/7 profesionāla tīrīšana.",
+      "twitterTitle": "Sniega Tīrīšana Rīgā ⛄",
+      "twitterDescription": "Oficāls brīdinājums: sniegs uz jumtiem. 24/7 avārijas pakalpojumi.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Local Emergency Services"
   },
   {
     "id": 18,
     "slug": "lasteku-tirisana-jumta-tirisana-no-ledus",
     "title": "Lāsteku un ledus tīrīšana no jumta: drošs risinājums ziemā",
-    "excerpt": "Lāstekas un ledus uz jumta ir bīstami. Uzziniet, kā droši noņemt lāstekas un novērst ledus veidošanos ar UpRoof profesionālo palīdzību.",
+    "metaDescription": "Lāstekas un ledus uz jumta: droša tīrīšana, bīstamības novēršana. Ziemas problēmas risinājumi.",
+    "excerpt": "Lāstekas un ledus uz jumta ir bīstami. Uzziniet, kā droši noņemt lāstekas ar profesionālo palīdzību.",
     "author": "UpRoof Team",
     "date": "2026-02-13",
     "category": "Ziemas apkope",
+    "tags": [
+      "lāstekas",
+      "ledus",
+      "tīrīšana",
+      "drošiba"
+    ],
+    "keywords": [
+      "lāstekas tīrīšana",
+      "ledus novēršana",
+      "jumta ledus",
+      "droša tīrīšana",
+      "ziemas bīstamības"
+    ],
     "readTime": "7 min read",
     "status": "published",
-    "image": "/images/blog/lasteku-tirisana-ledus.jpg"
+    "image": "/images/blog/lasteku-tirisana-ledus.jpg",
+    "imageAlt": "Lāsteku un ledus tīrīšana no jumta - drošības metodes, rīki",
+    "seoScore": 80,
+    "internalLinks": [
+      {
+        "url": "/lv/blog/sniega-slogs-uz-jumta",
+        "anchor": "Sniega risks",
+        "placement": "Riski"
+      },
+      {
+        "url": "/lv/blog/winter-roof-care-snow-ice-tips",
+        "anchor": "Drošā tīrīšana",
+        "placement": "Paņēmieni"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Lāsteku Tīrīšana: Drošs Risinājums",
+      "ogDescription": "Lāstekas un ledus: droša tīrīšana, bīstamības novēršana, profesionāla palīdzība.",
+      "twitterTitle": "Lāsteku & Ledus Tīrīšana 🧊",
+      "twitterDescription": "Droša tīrīšana: lāstekas un ledus. Profesionāli risinājumi.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Safety & Services"
   },
   {
     "id": 19,
     "slug": "sniega-slogs-uz-jumta",
     "title": "Sniega slogs uz jumta: Kad tas ir bīstami un kad jāzvana profesionāļiem?",
-    "excerpt": "Slapjš sniegs var svērt 250 kg/m²! Uzziniet, cik daudz sniega jūsu jumts var izturēt, kā atpazīt briesmas signālus un kad nekavējoties jāizsauc jumta tīrīšanas speciālisti.",
+    "metaDescription": "Sniega slogs: kad ir bīstams, kā mērīt, strukturālie riski. Kad zvanīt jumta speciālistiem?",
+    "excerpt": "Slapjš sniegs var svērt 250 kg/m²! Uzziniet, cik daudz jūsu jumts var izturēt.",
     "author": "UpRoof Team",
     "date": "2026-02-13",
     "category": "Ziemas apkope",
+    "tags": [
+      "sniega-slogs",
+      "bīstamiba",
+      "rizika-analīze"
+    ],
+    "keywords": [
+      "sniega slogs jumtam",
+      "sniega svars",
+      "jumta slodze",
+      "bīstams sniegs",
+      "strukturālie riski"
+    ],
     "readTime": "9 min read",
     "status": "published",
-    "image": "/images/blog/sniega-slogs-jumts.jpg"
+    "image": "/images/blog/sniega-slogs-jumts.jpg",
+    "imageAlt": "Sniega slogs uz jumta - slodzes aprēķini, bīstamības pazīmes",
+    "seoScore": 82,
+    "internalLinks": [
+      {
+        "url": "/lv/blog/winter-roof-care-snow-ice-tips",
+        "anchor": "Sniega apkope",
+        "placement": "Preventīvie pasākumi"
+      },
+      {
+        "url": "/lv/blog/sniega-tirisana-no-jumta-riga",
+        "anchor": "Profesionāla tīrīšana",
+        "placement": "Palīdzības izsaukšana"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Sniega Slogs Jumtam",
+      "ogDescription": "Sniega slogs: aprēķini, bīstamības pazīmes, strukturālie riski.",
+      "twitterTitle": "Sniega Slogs Jumtam ⚠️",
+      "twitterDescription": "Cik sniega jumts var izturēt? Riski, pazīmes, kad zvanīt.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Safety Information"
   },
   {
     "id": 20,
     "slug": "sniega-tirisana-daudzdzivoklu-maja",
     "title": "Sniega tīrīšana no daudzdzīvokļu mājas jumta – Pienākumi un risinājumi",
-    "excerpt": "Kas ir atbildīgs par sniega tīrīšanu no daudzdzīvokļu mājas jumta? Apsaimniekotāja pienākumi, iedzīvotāju tiesības un kā pareizi organizēt jumta tīrīšanu ziemā.",
+    "metaDescription": "Sniega tīrīšana: daudzdzīvokļu mājas pienākumi, iedzīvotāju tiesības. Kā organizēt ziemas apkopi?",
+    "excerpt": "Kas atbildīgs par sniega tīrīšanu? Apsaimniekotāja pienākumi un iedzīvotāju tiesības.",
     "author": "UpRoof Team",
     "date": "2026-02-15",
     "category": "Ziemas apkope",
+    "tags": [
+      "daudzdzīvokļu",
+      "pienākumi",
+      "sniega-tirisana"
+    ],
+    "keywords": [
+      "daudzdzīvokļu sniega tīrīšana",
+      "apsaimniekotāja pienākumi",
+      "iedzīvotāju tiesības",
+      "komunālie darbi"
+    ],
     "readTime": "7 min read",
     "status": "published",
-    "image": "/images/blog/daudzdzivoklu-sniega-tirisana.jpg"
+    "image": "/images/blog/daudzdzivoklu-sniega-tirisana.jpg",
+    "imageAlt": "Daudzdzīvokļu mājas jumta sniega tīrīšana - pienākumi, organizācija",
+    "seoScore": 77,
+    "internalLinks": [
+      {
+        "url": "/lv/blog/sniega-tirisana-ar-traktoru",
+        "anchor": "Traktora tīrīšana",
+        "placement": "Lielākie objekti"
+      },
+      {
+        "url": "/lv/blog/sniega-tirisana-no-jumta-riga",
+        "anchor": "Rīgas noteikumi",
+        "placement": "Likumdošana"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Sniega Tīrīšana: Daudzdzīvokļu Mājas",
+      "ogDescription": "Pienākumi, tiesības, organizācija. Sniega tīrīšana daudzdzīvokļu mājās.",
+      "twitterTitle": "Sniega Tīrīšana: Daudzdzīvokļi 🏢",
+      "twitterDescription": "Pienākumi, tiesības, risinājumi. Sniega tīrīšana komunālos mājos.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Information & Responsibilities"
   },
   {
     "id": 21,
     "slug": "ka-izvelieties-sniega-tirisanas-pakalpojumu",
     "title": "Kā izvēlēties sniega tīrīšanas pakalpojumu sniedzēju Rīgā – 7 svarīgākie kritēriji",
-    "excerpt": "Ne visi sniega tīrīšanas pakalpojumi ir vienādi. Uzziniet 7 svarīgākos kritērijus, kā izvēlēties uzticamu un profesionālu jumta tīrīšanas speciālistu Rīgā.",
+    "metaDescription": "Sniega tīrīšanas pakalpojums: 7 kritēriji izvēlei. Profesionāls un uzticams sniega tīrīšanas pārvaldnieks.",
+    "excerpt": "7 svarīgākie kritēriji, kā izvēlēties uzticamu jumta tīrīšanas speciālistu Rīgā.",
     "author": "UpRoof Team",
     "date": "2026-02-16",
     "category": "Ziemas apkope",
+    "tags": [
+      "pakalpojums-izvēle",
+      "kritēriji",
+      "profesionāls"
+    ],
+    "keywords": [
+      "sniega tīrīšanas pakalpojums",
+      "tīrīšanas uzņēmums",
+      "profesionāli tīrīši",
+      "pakalpojuma izvēle",
+      "Rīga"
+    ],
     "readTime": "6 min read",
     "status": "published",
-    "image": "/images/blog/ka-izvelieties-sniega-tirisanu.jpg"
+    "image": "/images/blog/ka-izvelieties-sniega-tirisanu.jpg",
+    "imageAlt": "Sniega tīrīšanas pakalpojuma izvēle - kritēriji, uzņēmumi, reputācija",
+    "seoScore": 79,
+    "internalLinks": [
+      {
+        "url": "/lv/blog/sniega-tirisana-no-jumta-riga",
+        "anchor": "UpRoof pakalpojumi",
+        "placement": "Rekomendācijas"
+      },
+      {
+        "url": "/lv/blog/jumta-inspekcija-profesionali",
+        "anchor": "Profesionāla palīdzība",
+        "placement": "Noslēgums"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Sniega Tīrīšanas Pakalpojuma Izvēle",
+      "ogDescription": "7 kritēriji uzticama sniega tīrīšanas uzņēmuma izvēlei Rīgā.",
+      "twitterTitle": "Sniega Tīrīšanas Uzņēmums 🏢",
+      "twitterDescription": "7 kritēriji izvēlei: reputācija, cena, drošība, nozīme.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Service Provider Selection"
   },
   {
     "id": 22,
     "slug": "sniega-tirisana-ar-traktoru",
     "title": "Sniega tīrīšana ar traktoru un sniega izvešana – Kad tas ir nepieciešams?",
-    "excerpt": "Lieliem objektiem, daudzdzīvokļu māju pagalmiem un komercobjektiem sniega tīrīšana ar traktoru un pilnīga sniega izvešana ir efektīvākais risinājums. Uzziniet, kad un kāpēc.",
+    "metaDescription": "Traktora sniega tīrīšana: kad nepieciešama, lielākie objekti. Efektīva sniega izvešana.",
+    "excerpt": "Traktora sniega tīrīšana lieliem objektiem. Efektīvākais risinājums daudzdzīvokļu un komercobjektiem.",
     "author": "UpRoof Team",
     "date": "2026-02-17",
     "category": "Ziemas apkope",
+    "tags": [
+      "traktors",
+      "sniega-tirisana",
+      "lieli-objekti"
+    ],
+    "keywords": [
+      "traktora sniega tīrīšana",
+      "sniega izvešana",
+      "lielie objekti",
+      "komercobjekti"
+    ],
     "readTime": "5 min read",
     "status": "published",
-    "image": "/images/blog/sniega-tirisana-traktors.jpg"
+    "image": "/images/blog/sniega-tirisana-traktors.jpg",
+    "imageAlt": "Sniega tīrīšana ar traktoru - lielākie objekti, sniega izvešana",
+    "seoScore": 76,
+    "internalLinks": [
+      {
+        "url": "/lv/blog/sniega-tirisana-daudzdzivoklu-maja",
+        "anchor": "Daudzdzīvokļu mājas",
+        "placement": "Piemēri"
+      },
+      {
+        "url": "/lv/blog/sniega-tirisana-no-jumta-riga",
+        "anchor": "Avārijas pakalpojumi",
+        "placement": "Noslēgums"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Sniega Tīrīšana ar Traktoru",
+      "ogDescription": "Traktora tīrīšana: lieliem objektiem, efektīva sniega izvešana.",
+      "twitterTitle": "Traktora Sniega Tīrīšana 🚜",
+      "twitterDescription": "Lielākie objekti: efektīva traktora sniega tīrīšana.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Service Information"
   },
   {
     "id": 24,
     "slug": "jumta-bojajumi-diagnoza",
     "title": "Jumta bojājumi: Kā atpazīt un kas ir jāremontē",
-    "excerpt": "Praktiska instrukcija Latvijas māju īpašniekiem - kā atpazīt jumta problēmas, pilnīgs bojājumu katalogs un remontes procesa apraksts.",
+    "metaDescription": "Jumta bojājumi: diagnoza, pazīmes, atpazīšana. Pilnīgs Latvijas māju īpašnieku ceļvedis.",
+    "excerpt": "Praktiska instrukcija – kā atpazīt jumta problēmas un pilnīgs bojājumu katalogs.",
     "author": "UpRoof Team",
     "date": "2026-04-10",
     "category": "Padomi",
+    "tags": [
+      "bojājumi",
+      "diagnoza",
+      "atpazīšana"
+    ],
+    "keywords": [
+      "jumta bojājumi",
+      "bojājumu diagnoza",
+      "jumta problēmas",
+      "atpazīšana",
+      "remonts"
+    ],
     "readTime": "7 min read",
     "status": "published",
-    "image": "/images/blog/jumta-bojajumi-diagnoza.jpg"
+    "image": "/images/blog/jumta-bojajumi-diagnoza.jpg",
+    "imageAlt": "Jumta bojājumu diagnoza - pazīmes, kategorizācija, remontes nozīme",
+    "seoScore": 79,
+    "internalLinks": [
+      {
+        "url": "/lv/blog/signs-roof-needs-repair",
+        "anchor": "Bojājumu pazīmes",
+        "placement": "Ievads"
+      },
+      {
+        "url": "/lv/blog/roof-leak-detection-checklist",
+        "anchor": "Noplūdes diagnostika",
+        "placement": "Problēmu sekcija"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Jumta Bojājumu Diagnoza",
+      "ogDescription": "Kā atpazīt jumta problēmas? Diagnostika, pazīmes, bojājumi.",
+      "twitterTitle": "Jumta Bojājumu Diagnoza 🔍",
+      "twitterDescription": "Atpazīst jumta problēmas: diagnoza un remontes nozīme.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Problem Diagnosis"
   },
   {
     "id": 25,
     "slug": "pavasara-jumta-apkope",
     "title": "Pavasara jumta apkope: Labākā laika sākt remontu",
-    "excerpt": "Pavasaris ir ideāls laiks jumta remontiem. Uzziniet, kā pārbaudīt jumtu pēc ziemas, plānot remontu un izvēlēties piemērotus materiālus.",
+    "metaDescription": "Pavasara jumta apkope: sezonas labākie darbi, remonti. Pavasaris ideāls jumta remontiem.",
+    "excerpt": "Pavasaris ir ideāls laiks jumta remontiem. Uzziniet, kā pārbaudīt jumtu pēc ziemas.",
     "author": "UpRoof Team",
     "date": "2026-04-12",
     "category": "Apkope",
+    "tags": [
+      "pavasaris",
+      "sezonāla-apkope",
+      "remonts"
+    ],
+    "keywords": [
+      "pavasara jumta apkope",
+      "sezonas darbi",
+      "pavasara pārbaude",
+      "pēc-ziemas remonts"
+    ],
     "readTime": "6 min read",
     "status": "published",
-    "image": "/images/blog/pavasara-jumta-apkope.jpg"
+    "image": "/images/blog/pavasara-jumta-apkope.jpg",
+    "imageAlt": "Pavasara jumta apkope - sezonālie darbi, inspekcija, remonts",
+    "seoScore": 77,
+    "internalLinks": [
+      {
+        "url": "/lv/blog/how-to-maintain-roof-in-winter",
+        "anchor": "Ziemas apkope",
+        "placement": "Sezonāla apkope"
+      },
+      {
+        "url": "/lv/blog/jumta-bojajumi-diagnoza",
+        "anchor": "Bojājumu atpazīšana",
+        "placement": "Diagnoza"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Pavasara Jumta Apkope",
+      "ogDescription": "Pavasaris: labākais laiks jumta remontiem. Pārbaudes un apkope.",
+      "twitterTitle": "Pavasara Jumta Apkope 🌱",
+      "twitterDescription": "Pavasarī: ideāls laiks remontiem. Apkope un pārbaudes.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Seasonal Maintenance"
   },
   {
     "id": 26,
     "slug": "how-to-tell-whether-your-lead-flashing-needs-replacing",
     "title": "How to Tell Whether Your Lead Flashing Needs Replacing",
-    "excerpt": "Spot cracked, split, or slipped leadwork before it turns into leaks. Learn the warning signs around chimneys, dormers, valleys, and roof joints.",
+    "metaDescription": "Lead flashing inspection: when to replace, damage signs. Roof flashing around chimneys, skylights, valleys.",
+    "excerpt": "Spot cracked, split, or slipped leadwork before it turns into leaks. Warning signs around chimneys and valleys.",
     "author": "UpRoof Team",
     "date": "2026-04-22",
     "category": "Leadwork",
+    "tags": [
+      "flashing",
+      "leadwork",
+      "inspection",
+      "repair"
+    ],
+    "keywords": [
+      "lead flashing",
+      "roof flashing",
+      "flashing damage",
+      "chimney flashing",
+      "valley flashing"
+    ],
     "readTime": "6 min read",
     "status": "published",
-    "image": "/images/blog/how-to-tell-whether-your-lead-flashing-needs-replacing.jpg"
+    "image": "/images/blog/how-to-tell-whether-your-lead-flashing-needs-replacing.jpg",
+    "imageAlt": "Lead flashing inspection - damage signs, cracks, replacement timing",
+    "seoScore": 78,
+    "internalLinks": [
+      {
+        "url": "/blog/roof-leak-detection-checklist",
+        "anchor": "Flashing leaks",
+        "placement": "Leak sources"
+      },
+      {
+        "url": "/blog/signs-roof-needs-repair",
+        "anchor": "Flashing damage",
+        "placement": "Warning signs"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Lead Flashing Replacement Guide",
+      "ogDescription": "When to replace lead flashing: damage signs, inspection, prevention.",
+      "twitterTitle": "Lead Flashing Inspection 🔍",
+      "twitterDescription": "Spot flashing damage: cracks, splits, leaks. Replacement timing.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Inspection & Maintenance"
   },
   {
     "id": 27,
     "slug": "signs-your-roof-needs-a-tune-up",
     "title": "Signs Your Roof Needs a Tune-Up: 9 Early Warnings",
-    "excerpt": "If you're searching for signs your roof needs a tune-up, these are the issues to look for before small defects become repairs or replacement.",
+    "metaDescription": "9 signs your roof needs maintenance: wear, aging, damage. Early tune-up prevents expensive repairs.",
+    "excerpt": "Early warnings before small defects become repairs or replacement. Look for these 9 key indicators.",
     "author": "UpRoof Team",
     "date": "2026-04-21",
     "category": "Maintenance",
+    "tags": [
+      "tune-up",
+      "maintenance",
+      "early-warning",
+      "inspection"
+    ],
+    "keywords": [
+      "roof tune-up",
+      "early maintenance",
+      "preventive care",
+      "roof inspection",
+      "maintenance tips"
+    ],
     "readTime": "7 min read",
     "status": "published",
-    "image": "/images/blog/signs-your-roof-needs-a-tune-up.jpg"
+    "image": "/images/blog/signs-your-roof-needs-a-tune-up.jpg",
+    "imageAlt": "Roof tune-up signs - early maintenance indicators, prevention",
+    "seoScore": 80,
+    "internalLinks": [
+      {
+        "url": "/blog/signs-roof-needs-repair",
+        "anchor": "Repair signs",
+        "placement": "Prevention section"
+      },
+      {
+        "url": "/blog/jumta-inspekcija-profesionali",
+        "anchor": "Professional inspection",
+        "placement": "Maintenance"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "9 Signs Your Roof Needs Tune-Up",
+      "ogDescription": "Early maintenance prevents expensive repairs. 9 key warning signs.",
+      "twitterTitle": "Roof Tune-Up Signs ⚠️",
+      "twitterDescription": "Early warnings: maintenance signs, prevention, inspector tips.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Preventive Maintenance"
   },
   {
     "id": 28,
     "slug": "preparing-your-roof-for-winter",
     "title": "Preparing Your Roof for Winter: Snow, Ice, and Roof Lantern Checks",
-    "excerpt": "Use this pre-winter checklist to protect flashing, gutters, roof lanterns, and vulnerable edges before snow and ice arrive.",
+    "metaDescription": "Pre-winter roof checklist: flashing, gutters, skylights. Prepare for snow and ice this winter.",
+    "excerpt": "Use this pre-winter checklist to protect flashing, gutters, roof lanterns before snow arrives.",
     "author": "UpRoof Team",
     "date": "2026-04-20",
     "category": "Winter Care",
+    "tags": [
+      "winter-prep",
+      "pre-winter",
+      "checklist",
+      "seasonal"
+    ],
+    "keywords": [
+      "winter roof prep",
+      "pre-winter checklist",
+      "roof preparation",
+      "winter ready",
+      "seasonal maintenance"
+    ],
     "readTime": "7 min read",
     "status": "published",
-    "image": "/images/blog/preparing-your-roof-for-winter.jpg"
+    "image": "/images/blog/preparing-your-roof-for-winter.jpg",
+    "imageAlt": "Pre-winter roof preparation - checklist, flashing, gutters, skylights",
+    "seoScore": 81,
+    "internalLinks": [
+      {
+        "url": "/blog/winter-roof-care-snow-ice-tips",
+        "anchor": "Winter care",
+        "placement": "Prevention"
+      },
+      {
+        "url": "/blog/how-to-maintain-roof-in-winter",
+        "anchor": "Winter maintenance",
+        "placement": "Post-prep"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Pre-Winter Roof Preparation",
+      "ogDescription": "Winter checklist: protect your roof before snow arrives. Flashing, gutters, skylights.",
+      "twitterTitle": "Winter Roof Prep ❄️",
+      "twitterDescription": "Pre-winter checklist: ready your roof for snow, ice, cold.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Seasonal Preparation"
   },
   {
     "id": 29,
     "slug": "ka-saprast-ka-jumta-pieslegumi-jamaina",
     "title": "Kā saprast, ka jumta pieslēgumi jāmaina?",
-    "excerpt": "Pārbaudiet skārda un svina pieslēgumus ap skursteni, jumta logiem un ielejām, lai laikus pamanītu plaisas, atlipšanu un noplūdes.",
+    "metaDescription": "Jumta pieslēgumi: kad mainīt, bojājumi, pārbaude. Skārna un svina pieslēgumi.",
+    "excerpt": "Pārbaudiet pieslēgumus ap skursteni, jumta logiem un ielejām, lai laikus pamanītu plaisas.",
     "author": "UpRoof Team",
     "date": "2026-04-22",
     "category": "Jumta darbi",
+    "tags": [
+      "pieslēgumi",
+      "skārna",
+      "svins",
+      "remonts"
+    ],
+    "keywords": [
+      "jumta pieslēgumi",
+      "skārnas pieslēgumi",
+      "svina pieslēgumi",
+      "bojājumi",
+      "nomaiņa"
+    ],
     "readTime": "6 min read",
     "status": "published",
-    "image": "/images/blog/ka-saprast-ka-jumta-pieslegumi-jamaina.jpg"
+    "image": "/images/blog/ka-saprast-ka-jumta-pieslegumi-jamaina.jpg",
+    "imageAlt": "Jumta pieslēgumu pārbaude - skārna, svins, bojājumi, noplūdes",
+    "seoScore": 78,
+    "internalLinks": [
+      {
+        "url": "/lv/blog/signs-roof-needs-repair",
+        "anchor": "Pieslēgumu bojājumi",
+        "placement": "Pārbaudes sekcija"
+      },
+      {
+        "url": "/lv/blog/how-to-tell-whether-your-lead-flashing-needs-replacing",
+        "anchor": "Pieslēgumu nomaiņa",
+        "placement": "Noslēgums"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Jumta Pieslēgumi: Kad Mainīt?",
+      "ogDescription": "Pieslēgumu pārbaude: bojājumi, nomaiņas pazīmes, diagnoza.",
+      "twitterTitle": "Jumta Pieslēgumi 🔧",
+      "twitterDescription": "Kad nomainīt? Pārbaudes un bojājumu pazīmes.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Inspection & Repair"
   },
   {
     "id": 30,
     "slug": "pazimes-ka-jumtam-vajadzigs-tune-up",
     "title": "Pazīmes, ka jumtam vajadzīga apkope un neliels tune-up",
-    "excerpt": "Ja meklējat signs your roof needs a tune-up, šis pārskats palīdzēs atpazīt agrīnas pazīmes pirms tās pārvēršas dārgā remontā.",
+    "metaDescription": "Jumta apkopes pazīmes: agrīnā diagnoza, preventīvs tune-up. Drošs un efektīvs remonts.",
+    "excerpt": "Pazīmes agrīnai diagnozei pirms tās kļūst par dārgā remonta nepieciešamību.",
     "author": "UpRoof Team",
     "date": "2026-04-22",
     "category": "Apkope",
+    "tags": [
+      "apkope",
+      "tune-up",
+      "preventīvs",
+      "remonts"
+    ],
+    "keywords": [
+      "jumta apkope",
+      "tune-up",
+      "agrīnā diagnoza",
+      "preventīvs remonts",
+      "apkopes pazīmes"
+    ],
     "readTime": "7 min read",
     "status": "published",
-    "image": "/images/blog/pazimes-ka-jumtam-vajadzigs-tune-up.jpg"
+    "image": "/images/blog/pazimes-ka-jumtam-vajadzigs-tune-up.jpg",
+    "imageAlt": "Jumta apkopes pazīmes - agra diagnoza, preventīvs tune-up",
+    "seoScore": 77,
+    "internalLinks": [
+      {
+        "url": "/lv/blog/signs-your-roof-needs-a-tune-up",
+        "anchor": "Tune-up pazīmes",
+        "placement": "Ievads"
+      },
+      {
+        "url": "/lv/blog/pavasara-jumta-apkope",
+        "anchor": "Sezonāla apkope",
+        "placement": "Sezonas darbi"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Jumta Tune-Up Pazīmes",
+      "ogDescription": "Agrīnā diagnoza: kad jumtam nepieciešama apkope? Preventīvs remonts.",
+      "twitterTitle": "Jumta Tune-Up 🔧",
+      "twitterDescription": "Pazīmes apkopei: agra diagnoza, preventīvs remonts.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Preventive Maintenance"
   },
   {
     "id": 31,
     "slug": "ka-sagatavot-jumtu-ziemai",
     "title": "Kā sagatavot jumtu ziemai: sniegs, ledus un jumta logi",
-    "excerpt": "Pirms sala pārbaudiet notekas, pieslēgumus un jumta logus, lai mazinātu sniega un ledus radītos bojājumus.",
+    "metaDescription": "Ziemai sagatavošanās: sniega un ledus novēršana, jumta logi, drošība. Pilnīga pārbaude.",
+    "excerpt": "Pirms sala pārbaudiet notekas, pieslēgumus un jumta logus, lai mazinātu sniega bojājumus.",
     "author": "UpRoof Team",
     "date": "2026-04-22",
     "category": "Ziemas apkope",
+    "tags": [
+      "ziemai-sagatavošanās",
+      "pārbaude",
+      "drošiba"
+    ],
+    "keywords": [
+      "sagatavošanās ziemai",
+      "pre-winter checklist",
+      "jumta logi",
+      "sniega novēršana",
+      "ledus preventija"
+    ],
     "readTime": "7 min read",
     "status": "published",
-    "image": "/images/blog/ka-sagatavot-jumtu-ziemai.jpg"
+    "image": "/images/blog/ka-sagatavot-jumtu-ziemai.jpg",
+    "imageAlt": "Jumta sagatavošanās ziemai - pārbaudes, noteku tīrīšana, drošības pasākumi",
+    "seoScore": 79,
+    "internalLinks": [
+      {
+        "url": "/lv/blog/preparing-your-roof-for-winter",
+        "anchor": "Ziemas pārbaude",
+        "placement": "Sagatavošanās"
+      },
+      {
+        "url": "/lv/blog/sniega-slogs-uz-jumta",
+        "anchor": "Sniega risks",
+        "placement": "Riski"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Jumta Sagatavošanās Ziemai",
+      "ogDescription": "Pārbaude pirms ziemas: noteku, pieslēgumi, jumta logi, drošiba.",
+      "twitterTitle": "Sagatavošanās Ziemai ❄️",
+      "twitterDescription": "Pilnīga jumta pārbaude: sniegs, ledus, drošība.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Seasonal Preparation"
   },
   {
     "id": 32,
     "slug": "jumta-suces-noversana",
     "title": "Jumta sūces novēršana: Ātra diagnostika un profesionāls remonts",
-    "excerpt": "Jumta noplūdes un sūces ir bīstamas. Uzziniet, kā identificēt un ātri novērst jumta sūces ar UpRoof profesionālo diagnostiku.",
+    "metaDescription": "Jumta noplūde: ātri jānovērš. Diagnostika, remonts, ūdens bojājumi. Profesionāla palīdzība.",
+    "excerpt": "Jumta noplūdes un sūces ir bīstamas. Uzziniet, kā identificēt un ātri novērst.",
     "author": "UpRoof Team",
     "date": "2026-04-22",
     "category": "Avārijas remonts",
+    "tags": [
+      "noplūde",
+      "ātra-diagnostika",
+      "avārija"
+    ],
+    "keywords": [
+      "jumta noplūde",
+      "sūces novēršana",
+      "noplūdes diagnoza",
+      "ūdens bojājumi",
+      "ātra palīdzība"
+    ],
     "readTime": "6 min read",
     "status": "published",
-    "image": "/images/blog/jumta-suces-noversana.jpg"
+    "image": "/images/blog/jumta-suces-noversana.jpg",
+    "imageAlt": "Jumta noplūdes diagnostika un ātra novēršana - profesionāls remonts",
+    "seoScore": 80,
+    "internalLinks": [
+      {
+        "url": "/lv/blog/roof-leak-detection-checklist",
+        "anchor": "Noplūdes diagnoza",
+        "placement": "Diagnoza"
+      },
+      {
+        "url": "/lv/blog/jumts-tek-avarijas-remonts",
+        "anchor": "Avārijas remonts",
+        "placement": "Noslēgums"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Jumta Noplūdes Novēršana",
+      "ogDescription": "Ātri: noplūdes diagnostika, ātra remonts, ūdens bojājumu novēršana.",
+      "twitterTitle": "Noplūdes Novēršana 🚨",
+      "twitterDescription": "Ātri: diagnostika un profesionāls remonts. Ūdens bojājumi.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Emergency Services"
   },
   {
     "id": 33,
     "slug": "steidzams-jumta-remonts",
     "title": "Steidzams jumta remonts: Kā rīkoties ārkārtējā situācijā",
-    "excerpt": "Avārijas situācijās jumtam nepieciešama ātra rīcība. Uzziniet, kā pamanīt steidzamus bojājumus un kad zvanīt UpRoof 24/7.",
+    "metaDescription": "Ārkārtēja situācija? Steidzami jumta remonti. Avārijas rīcības plāns, uzņēmuma saziņa.",
+    "excerpt": "Avārijas situācijās jumtam nepieciešama ātra rīcība. Uzziniet, kā rīkoties.",
     "author": "UpRoof Team",
     "date": "2026-04-22",
     "category": "Avārijas remonts",
+    "tags": [
+      "avārija",
+      "steidzams",
+      "ārkārtēja"
+    ],
+    "keywords": [
+      "steidzams remonts",
+      "avārijas remonts",
+      "ārkārtēja situācija",
+      "ātri palīdzība",
+      "avārijas plāns"
+    ],
     "readTime": "5 min read",
     "status": "published",
-    "image": "/images/blog/steidzams-jumta-remonts.jpg"
+    "image": "/images/blog/steidzams-jumta-remonts.jpg",
+    "imageAlt": "Ārkārtēja jumta remonts - drošības pasākumi, ātra rīcība",
+    "seoScore": 79,
+    "internalLinks": [
+      {
+        "url": "/lv/blog/jumts-tek-avarijas-remonts",
+        "anchor": "Avārijas remonts",
+        "placement": "Ievads"
+      },
+      {
+        "url": "/lv/blog/jumta-suces-noversana",
+        "anchor": "Noplūde novēršana",
+        "placement": "Rīcības plāns"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Steidzams Jumta Remonts",
+      "ogDescription": "Avārijas situācija? Ātri rīcības plāns un profesionāls remonts.",
+      "twitterTitle": "Avārijas Remonts 🚨",
+      "twitterDescription": "Ārkārtēja situācija: rīcības plāns, uzņēmuma saziņa.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Emergency Response"
   },
   {
     "id": 34,
     "slug": "sniega-tirisana-no-jumta",
     "title": "Sniega tīrīšana no jumta: Drošs risinājums ziemā",
-    "excerpt": "Sniega uzkrāšanās ir bīstama. Uzziniet, kā droši notīrīt sniegu un ledus no jumta ar UpRoof profesionālu pakalpojumu.",
+    "metaDescription": "Droša sniega tīrīšana: metodika, rīki, profesionāla palīdzība. Ziemas mājas drošiba.",
+    "excerpt": "Sniega uzkrāšanās ir bīstama. Uzziniet, kā droši notīrīt sniegu un ledus.",
     "author": "UpRoof Team",
     "date": "2026-04-22",
     "category": "Ziemas apkope",
+    "tags": [
+      "sniega-tirisana",
+      "drošiba",
+      "ziema"
+    ],
+    "keywords": [
+      "sniega tīrīšana",
+      "droša tīrīšana",
+      "sniega slodze",
+      "ziemas risinājumi",
+      "ledus novēršana"
+    ],
     "readTime": "5 min read",
     "status": "published",
-    "image": "/images/blog/sniega-tirisana-jumts-riga.jpg"
+    "image": "/images/blog/sniega-tirisana-jumts-riga.jpg",
+    "imageAlt": "Droša sniega tīrīšana no jumta - metodika, profesionāla palīdzība",
+    "seoScore": 78,
+    "internalLinks": [
+      {
+        "url": "/lv/blog/winter-roof-care-snow-ice-tips",
+        "anchor": "Drošā tīrīšana",
+        "placement": "Metodes"
+      },
+      {
+        "url": "/lv/blog/sniega-tirisana-no-jumta-riga",
+        "anchor": "Profesionāla tīrīšana",
+        "placement": "Noslēgums"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Droša Sniega Tīrīšana",
+      "ogDescription": "Sniega tīrīšana: drošas metodes, rīki, profesionāla palīdzība.",
+      "twitterTitle": "Sniega Tīrīšana ⛄",
+      "twitterDescription": "Drošā tīrīšana: metodika, rīki, profesionāla palīdzība.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Safety & Services"
   },
   {
     "id": 35,
     "slug": "jumta-bojajumi-pets-vetras",
     "title": "Jumta bojājumi pēc vētras: Avārijas remonts 24/7",
-    "excerpt": "Spēcīgas vētras var noplēst jumta materiālu un sabojāt pieslēgumus. Bojājumus nepieciešams novērst nekavējoties ar UpRoof avārijas remontu 24/7.",
+    "metaDescription": "Vētra bojāja jumtu? Avārijas remonts 24/7. Ātra novērtējums un remonts.",
+    "excerpt": "Spēcīgas vētras var sabojāt jumtu. Bojājumus jānovērš nekavējoties.",
     "author": "UpRoof Team",
     "date": "2026-04-22",
     "category": "Avārijas remonts",
+    "tags": [
+      "vētra",
+      "bojājumi",
+      "avārija"
+    ],
+    "keywords": [
+      "vētra bojājumi",
+      "jumta bojājumi",
+      "avārijas remonts",
+      "vētra",
+      "ātra palīdzība"
+    ],
     "readTime": "6 min read",
     "status": "published",
-    "image": "/images/blog/jumta-bojajumi-pets-vetras.jpg"
+    "image": "/images/blog/jumta-bojajumi-pets-vetras.jpg",
+    "imageAlt": "Vētras jumta bojājumi - avārijas remonts, drošības pasākumi",
+    "seoScore": 79,
+    "internalLinks": [
+      {
+        "url": "/lv/blog/jumts-tek-avarijas-remonts",
+        "anchor": "Avārijas remonts",
+        "placement": "Ievads"
+      },
+      {
+        "url": "/lv/blog/steidzams-jumta-remonts",
+        "anchor": "Steidzams remonts",
+        "placement": "Rīcības plāns"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Vētra Bojāja Jumtu?",
+      "ogDescription": "Vētra bojājumi: avārijas remonts 24/7, ātra palīdzība.",
+      "twitterTitle": "Vētra Bojājumi 🌪️",
+      "twitterDescription": "Vētra bojāja jumtu? 24/7 avārijas remonts.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Emergency Services"
   },
   {
     "id": 36,
     "slug": "plisusi-jumti-nopluzes",
     "title": "Plīsuši jumti un noplūdes: Ātra diagnostika un remonts",
-    "excerpt": "Plīsušs jumts bez savlaicīga remonta rada ūdens bojājumus. Uzziniet, kā atpazīt pirmās brīdinājuma pazīmes.",
+    "metaDescription": "Plīsušs jumts? Ūdens bojājumi. Ātra diagnostika un profesionāls remonts.",
+    "excerpt": "Plīsušs jumts rada noplūdes. Uzziniet, kā atpazīt un ātri novērst.",
     "author": "UpRoof Team",
     "date": "2026-04-22",
     "category": "Avārijas remonts",
+    "tags": [
+      "plīsums",
+      "noplūde",
+      "remonts"
+    ],
+    "keywords": [
+      "plīsušs jumts",
+      "plīsumi",
+      "noplūdes",
+      "ūdens bojājumi",
+      "remonts"
+    ],
     "readTime": "5 min read",
     "status": "published",
-    "image": "/images/blog/plisusi-jumti-nopluzes.jpg"
+    "image": "/images/blog/plisusi-jumti-nopluzes.jpg",
+    "imageAlt": "Plīsušs jumts ar noplūdēm - diagnostika un remonts",
+    "seoScore": 77,
+    "internalLinks": [
+      {
+        "url": "/lv/blog/roof-leak-detection-checklist",
+        "anchor": "Noplūdes diagnostika",
+        "placement": "Diagnoza"
+      },
+      {
+        "url": "/lv/blog/jumta-suces-noversana",
+        "anchor": "Noplūdes novēršana",
+        "placement": "Remonts"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Plīsušs Jumts un Noplūdes",
+      "ogDescription": "Plīsums jumtā: diagnostika, ūdens bojājumi, ātra remonts.",
+      "twitterTitle": "Plīsušs Jumts 🔨",
+      "twitterDescription": "Noplūdes un bojājumi: diagnostika, ātra remonts.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Problem Diagnosis"
+  },
+  {
+    "id": 37,
+    "slug": "metallist-profiilkatused-juhend-et",
+    "title": "Metallist profiilkatused - täielik juhend",
+    "metaDescription": "Metallist profiilkatused: 40-60+ aastat vastupidavust, minimaalne hooldus ja paigaldus. Eelised, puudused ja pikaajaline väärtus. Tasuta konsultatsioon.",
+    "excerpt": "Kõik, mida peate teadma metallist profiilkatuste kohta: vastupidavus, paigaldus ja pikaaegne kasutus.",
+    "author": "UpRoof Team",
+    "date": "2026-05-01",
+    "category": "Materjalid",
+    "tags": [
+      "metallist-katused",
+      "juhend",
+      "vastupidavus",
+      "paigaldus",
+      "materjalid"
+    ],
+    "keywords": [
+      "metallist profiilkatus",
+      "metallist katusekatted",
+      "katuse vastupidavus",
+      "metallist katuse paigaldus",
+      "pikaajaline katus"
+    ],
+    "readTime": "7 min lugemine",
+    "status": "published",
+    "image": "/images/blog/metal-profile-guide.jpg",
+    "imageAlt": "Metallist profiilkatuse detailne ülevaade - vertikaalsed siidseamed, ühendused ja paigaldusprotsess",
+    "relatedPosts": [
+      38,
+      39
+    ],
+    "contentLength": 1250,
+    "seoScore": 82,
+    "internalLinks": [
+      {
+        "url": "/et/blog/metallist-vs-shingli-katused-et",
+        "anchor": "Võrdlus šingli katustega",
+        "placement": "3-4. lõik"
+      },
+      {
+        "url": "/et/blog/metallist-katuse-paigaldus-samm-sammult-et",
+        "anchor": "Paigalduse samm-sammult juhend",
+        "placement": "6. lõik"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Metallist profiilkatused - täielik juhend",
+      "ogDescription": "Metallist profiilkatused: vastupidavus, paigaldus ja pikaajaline väärtus. Saate teada kõike, mis on vaja.",
+      "twitterTitle": "Metallist Profiilkatused: Täielik Juhend 🏠",
+      "twitterDescription": "40-60+ aastat vastupidavust, minimaalne hooldus. Avastage metallist katuste eelised.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Learn & Decide"
+  },
+  {
+    "id": 38,
+    "slug": "metallist-vs-shingli-katused-et",
+    "title": "Metallist profiilkatus vs šingli katused - kumb on parem?",
+    "metaDescription": "Metallist vs šingli katused - võrdlus vastupidavuse, hoolduse, hinna ja paigalduse järgi. Aidame valida teie majale sobiva katuse.",
+    "excerpt": "Detailne võrdlus metallist ja šingli katuste vahel: vastupidavus, hooldus ja pikaajaline väärtus.",
+    "author": "UpRoof Team",
+    "date": "2026-05-02",
+    "category": "Võrdlus",
+    "tags": [
+      "metallist-katused",
+      "šingli-katused",
+      "võrdlus",
+      "materjalid",
+      "valiku-juhend"
+    ],
+    "keywords": [
+      "metallist katus vs šingli",
+      "katuse valiku juhend",
+      "parim katusmaterjalid",
+      "metallist vs šingli",
+      "katuse võrdlus"
+    ],
+    "readTime": "8 min lugemine",
+    "status": "published",
+    "image": "/images/blog/valcprofils-vs-bitumens.jpg",
+    "imageAlt": "Metallist ja šingli katuste võrdlus - vastupidavus, hooldus, kestvus ja välimus",
+    "relatedPosts": [
+      37,
+      39
+    ],
+    "contentLength": 1450,
+    "seoScore": 85,
+    "internalLinks": [
+      {
+        "url": "/et/blog/metallist-profiilkatused-juhend-et",
+        "anchor": "Metallist katuste detailne juhend",
+        "placement": "Sissejuhatus"
+      },
+      {
+        "url": "/et/blog/metallist-katuse-paigaldus-samm-sammult-et",
+        "anchor": "Paigaldamise samm-sammult juhend",
+        "placement": "Paigalduse sektsiooni lõpus"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Metallist vs Šingli Katused - Kumb on Parem?",
+      "ogDescription": "Võrdlus vastupidavuse, hoolduse, hinna ja paigalduse järgi. Aidame valida teie majale sobiva katuse.",
+      "twitterTitle": "Metallist vs Šingli Katused: Täielik Võrdlus 🏠",
+      "twitterDescription": "Võrdlus: vastupidavus, hooldus, hind. Millal valida metallist? Millal šingli?",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "Comparison & Decision",
+    "featuredSnippets": [
+      "Võrdlustabel",
+      "Kumb valida?",
+      "Vastupidavus võrdlus"
+    ]
+  },
+  {
+    "id": 39,
+    "slug": "metallist-katuse-paigaldus-samm-sammult-et",
+    "title": "Metallist katuse paigaldus: samm-sammult juhend",
+    "metaDescription": "Metallist katuse paigaldus samm-sammult - professionaalse kvaliteediga katusekatete paigaldamise täielik juhend ja protsess.",
+    "excerpt": "Metallist katuse paigaldus samm-sammult - professionaalse kvaliteediga katusekatete paigaldamise juhend.",
+    "author": "UpRoof Team",
+    "date": "2026-05-03",
+    "category": "Paigaldus",
+    "tags": [
+      "paigaldus",
+      "metallist-katused",
+      "samm-sammult",
+      "juhend",
+      "professionaalne"
+    ],
+    "keywords": [
+      "metallist katuse paigaldus",
+      "katuse paigaldamise juhend",
+      "katusekatete paigaldus",
+      "professionaalne paigaldus",
+      "katuse paigaldus samm-sammult"
+    ],
+    "readTime": "7 min lugemine",
+    "status": "published",
+    "image": "/images/blog/valcprofila-montaza-process.jpg",
+    "imageAlt": "Metallist katuse paigaldus - alumised kihid, isolatsioon, difuusioonmembraan ja metallplaadid",
+    "relatedPosts": [
+      37,
+      38
+    ],
+    "contentLength": 1300,
+    "seoScore": 87,
+    "internalLinks": [
+      {
+        "url": "/et/blog/metallist-profiilkatused-juhend-et",
+        "anchor": "Metallist katuste omadused ja vastupidavus",
+        "placement": "Sissejuhatus"
+      },
+      {
+        "url": "/et/blog/metallist-vs-shingli-katused-et",
+        "anchor": "Miks valida metallist katused",
+        "placement": "Lõppsõna/CTA"
+      }
+    ],
+    "socialMeta": {
+      "ogTitle": "Metallist Katuse Paigaldus - Samm-sammult Juhend",
+      "ogDescription": "Metallist katuse paigaldus samm-sammult - professionaalse kvaliteediga paigaldamise täielik juhend.",
+      "twitterTitle": "Metallist Katuse Paigaldus: Samm-sammult 🏗️",
+      "twitterDescription": "Juhend professionaalsele paigaldamisele: ettevalmistus, kihid, metallplaadid, ühendused.",
+      "twitterCard": "summary_large_image"
+    },
+    "searchIntent": "How-to / Step-by-step",
+    "schemaType": "HowTo"
   }
 ]
