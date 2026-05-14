@@ -111,7 +111,7 @@ export default async function ServicesPage({params}: {params: Promise<{locale: s
       : 'Professional roofing services in Riga, Latvia: construction, renovation, repair, metal roofing, snow removal',
     priceRange: '€€',
     telephone: '+371-25612440',
-    email: 'info@uproof.eu',
+    email: 'contact@uproof.eu',
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'Rīga',

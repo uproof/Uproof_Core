@@ -69,7 +69,7 @@ export default function ContactSection() {
     const apiKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
     
     if (!apiKey || apiKey === 'YOUR_WEB3FORMS_KEY_HERE') {
-      alert('Contact form is not configured yet. Please contact us directly at karlis.uproof@gmail.com or call +371 25612440');
+      alert('Contact form is not configured yet. Please contact us directly at contact@uproof.eu or call +371 25612440');
       setIsSubmitting(false);
       return;
     }
@@ -120,7 +120,7 @@ export default function ContactSection() {
     } catch (error) {
       console.error('Error submitting form:', error);
       setIsSubmitting(false);
-      alert('There was an error sending your message. Please try again or contact us directly at karlis.uproof@gmail.com or +371 25612440');
+      alert('There was an error sending your message. Please try again or contact us directly at contact@uproof.eu or +371 25612440');
     }
   };
 
@@ -266,14 +266,14 @@ export default function ContactSection() {
                   </div>
                 </a>
 
-                <a href="mailto:karlis.uproof@gmail.com" className="flex items-center gap-4 p-4 rounded-xl bg-primary-50 border border-primary-100 hover:bg-primary-100 transition-all duration-300 group shadow-sm hover:shadow-md">
+                <a href="mailto:contact@uproof.eu" className="flex items-center gap-4 p-4 rounded-xl bg-primary-50 border border-primary-100 hover:bg-primary-100 transition-all duration-300 group shadow-sm hover:shadow-md">
                   <div className="w-12 h-12 rounded-xl bg-primary-600 border border-primary-600 flex items-center justify-center transition-colors group-hover:bg-primary-500 group-hover:border-primary-500">
                     <EnvelopeIcon className="w-6 h-6 text-white" />
                   </div>
                   <div>
                     <p className="text-sm text-primary-600 mb-0.5 font-medium">Email</p>
                     <p className="text-lg font-semibold text-gray-900 transition-colors group-hover:text-primary-900">
-                      karlis.uproof@gmail.com
+                      contact@uproof.eu
                     </p>
                   </div>
                 </a>

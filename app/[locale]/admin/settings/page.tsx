@@ -18,7 +18,7 @@ type SiteSettings = {
   socialFacebook?: string;
   socialInstagram?: string;
   socialLinkedIn?: string;
-  socialTwitter?: string;
+  socialTiktok?: string;
 };
 
 export default function SiteSettings() {
@@ -249,13 +249,13 @@ export default function SiteSettings() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1">Twitter URL</label>
+                <label className="block text-sm font-medium text-gray-900 mb-1">TikTok URL</label>
                 <input
                   type="url"
-                  value={settings.socialTwitter || ''}
-                  onChange={(e) => handleChange('socialTwitter', e.target.value)}
+                  value={settings.socialTiktok || ''}
+                  onChange={(e) => handleChange('socialTiktok', e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent"
-                  placeholder="https://twitter.com/yourprofile"
+                  placeholder="https://www.tiktok.com/@yourprofile"
                 />
               </div>
             </div>

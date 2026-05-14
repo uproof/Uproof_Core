@@ -14,7 +14,7 @@ async function ensureSettingsFile() {
       companyName: 'UpRoof Roofing Services',
       companyAddress: '123 Main Street, Your City',
       companyPhone: '+1 (555) 000-0000',
-      companyEmail: 'info@uproof.com',
+      companyEmail: 'contact@uproof.eu',
       companyDescription: 'Professional roofing services for residential and commercial properties.',
       seoTitle: 'Professional Roofing Services | UpRoof',
       seoDescription: 'High-quality roofing installation, repair, and maintenance services.',
@@ -22,7 +22,7 @@ async function ensureSettingsFile() {
       socialFacebook: '',
       socialInstagram: '',
       socialLinkedIn: '',
-      socialTwitter: '',
+      socialTiktok: 'https://www.tiktok.com/@uproof',
     };
     await fs.writeFile(SETTINGS_FILE, JSON.stringify(defaultSettings, null, 2));
   }

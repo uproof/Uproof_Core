@@ -191,7 +191,7 @@ export default async function VetrasJumtaBojajumiPage({params}: Props) {
 			'@id': 'https://uproof.eu/#organization',
 			name: 'UpRoof (SIA UpLift)',
 			telephone: '+37125612440',
-			email: 'karlis.uproof@gmail.com',
+			email: 'contact@uproof.eu',
 			url: 'https://uproof.eu',
 		},
 		areaServed: ['Rīga', 'Pierīga', 'Jūrmala', 'Mārupe', 'Ādaži', 'Salaspils', 'Ogre', 'Jelgava'],
@@ -361,8 +361,8 @@ export default async function VetrasJumtaBojajumiPage({params}: Props) {
 						<a href="tel:+37125612440" className="inline-flex items-center justify-center bg-white text-slate-900 font-bold px-8 py-4 rounded-xl hover:bg-slate-100 transition-colors">
 							{text.primaryCta}
 						</a>
-						<a href="mailto:karlis.uproof@gmail.com" className="inline-flex items-center justify-center border-2 border-white/30 text-white font-semibold px-8 py-4 rounded-xl hover:bg-white/10 transition-colors">
-							karlis.uproof@gmail.com
+						<a href="mailto:contact@uproof.eu" className="inline-flex items-center justify-center border-2 border-white/30 text-white font-semibold px-8 py-4 rounded-xl hover:bg-white/10 transition-colors">
+							contact@uproof.eu
 						</a>
 					</div>
 				</div>

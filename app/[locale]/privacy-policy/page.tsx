@@ -101,7 +101,7 @@ export default function PrivacyPolicyPage({params}: Props) {
             <p className="text-gray-700 leading-relaxed mb-4">{t('contact.content')}</p>
             <div className="bg-gray-50 p-6 rounded-lg">
               <p className="font-semibold text-gray-900">SIA UpLift</p>
-              <p className="text-gray-700">Email: karlis.uproof@gmail.com</p>
+              <p className="text-gray-700">Email: contact@uproof.eu</p>
               <p className="text-gray-700">Phone: +371 25612440</p>
             </div>
           </section>
