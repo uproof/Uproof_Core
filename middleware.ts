@@ -31,6 +31,14 @@ export default function middleware(request: NextRequest) {
     return response;
   }
 
+  // Redirect urgency directory without subpage to first urgency item.
+  const urgencyDirectoryMatch = pathname.match(/^\/(lv|en|nl-BE)\/urgency\/?$/);
+  if (urgencyDirectoryMatch) {
+    const locale = urgencyDirectoryMatch[1];
+    const redirectUrl = new URL(`/${locale}/urgency/caurs-jumts`, nextUrl);
+    return NextResponse.redirect(redirectUrl, 301);
+  }
+
   // Normalize stacked/doubled locale paths like /lv/en/... or /en/lv/... to single locale.
   // These are typically malformed bot requests or parameter pollution attempts.
   const stackedLocaleMatch = pathname.match(/^\/(lv|en|nl-BE)\/(lv|en|nl-BE)(\/.*)?$/);
@@ -104,6 +112,26 @@ export default function middleware(request: NextRequest) {
     // /news-sitemap.xml/services/... -> strip prefix and let normal routing apply
     // Prefer redirect to the stripped path so middleware logic and locale detection runs consistently.
     const redirectUrl = new URL(`/${remainder}`, nextUrl);
+    return NextResponse.redirect(redirectUrl, 301);
+  }
+
+  // Handle malformed sitemap.html patterns (e.g., /sitemap.html/privacy-policy).
+  // These are bot-injected paths with incorrect file extensions; redirect to canonical sitemap.
+  const sitemapHtmlMatch = pathname.match(/^\/sitemap\.html(?:\/(.*))?$/);
+  if (sitemapHtmlMatch) {
+    const redirectUrl = new URL('/sitemap_index.xml', nextUrl);
+    return NextResponse.redirect(redirectUrl, 301);
+  }
+
+  // Redirect well-known files requested under locale prefix to root.
+  // Bots sometimes probe /{locale}/.well-known/*, but these must be at root.
+  // Example: /lv/apple-app-site-association -> /.well-known/apple-app-site-association
+  const localizedWellKnownMatch = pathname.match(/^\/(lv|en|nl-BE)\/(apple-app-site-association|well-known\/.+)$/);
+  if (localizedWellKnownMatch) {
+    const wellKnownPath = localizedWellKnownMatch[2];
+    const redirectUrl = wellKnownPath.startsWith('apple-app-site-association')
+      ? new URL('/.well-known/apple-app-site-association', nextUrl)
+      : new URL(`/.well-known/${wellKnownPath.replace('well-known/', '')}`, nextUrl);
     return NextResponse.redirect(redirectUrl, 301);
   }
 
