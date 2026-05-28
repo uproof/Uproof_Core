@@ -20,6 +20,7 @@ export default function Breadcrumbs() {
     about: t('about'),
     contact: t('contact'),
     blog: t('blog'),
+    career: t('career'),
   };
 
   return (

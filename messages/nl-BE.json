@@ -10,6 +10,7 @@
     "about": "Over ons",
     "contact": "Contact",
     "blog": "Blog",
+    "careers": "Carrière",
     "cities": "Steden",
     "materials": "Materialen",
     "reviews": "Beoordelingen",
@@ -23,7 +24,8 @@
     "projects": "Projecten",
     "about": "Over ons",
     "contact": "Contact",
-    "blog": "Blog"
+    "blog": "Blog",
+    "career": "Carrière"
   },
   "serviceTags": {
     "construction": "Constructie",
@@ -43,6 +45,53 @@
     },
     "projects": {
       "title": "Voltooide projecten"
+    },
+    "career": {
+      "title": "Werken bij UpRoof",
+      "heroKicker": "Werken bij UpRoof",
+      "heroIntro": "We zoeken mensen die willen werken met duidelijke processen, hoge standaarden en tastbare resultaten.",
+      "eyebrow": "Werken bij UpRoof",
+      "intro": "Sluit je aan bij een team dat hoogwaardige dakprojecten uitvoert in heel Letland. We zoeken betrouwbare mensen die precisie, veiligheid en een stabiele werkcultuur waarderen.",
+      "benefitsLabel": "Wat wij bieden",
+      "benefitsTitle": "Stabiel werk met een duidelijke aanpak",
+      "benefitsIntro": "Dit zijn de belangrijkste redenen waarom mensen bij ons willen werken. We blijven gericht op een helder proces, kwaliteitswerk en langdurige samenwerking.",
+      "benefits": {
+        "schedule": {
+          "title": "Stabiel werkschema",
+          "description": "Werk met een voorspelbare planning en een georganiseerde dagelijkse flow."
+        },
+        "work": {
+          "title": "Kwaliteitsprojecten",
+          "description": "Werk aan goed georganiseerde projecten met zichtbare resultaten."
+        },
+        "latvia": {
+          "title": "Werk in Letland",
+          "description": "Projecten in Riga, de regio en daarbuiten."
+        }
+      },
+      "formTitle": "Solliciteer op een functie",
+      "formIntro": "Vul de aanvraag in en voeg je cv toe. We nemen contact op met kandidaten waarvan het profiel past bij de functie.",
+      "formHint": "Upload een pdf-, doc- of docx-cv tot 10 MB.",
+      "fields": {
+        "fullName": "Volledige naam",
+        "email": "E-mail",
+        "phone": "Telefoonnummer",
+        "location": "Stad / locatie",
+        "locationPlaceholder": "Brussel",
+        "experience": "Werkervaring",
+        "experiencePlaceholder": "2+ jaar ervaring",
+        "message": "Vertel iets over jezelf",
+        "messagePlaceholder": "Vertel ons welk werk je zoekt en wat je ervaring is.",
+        "cv": "Voeg cv toe",
+        "submit": "Verstuur aanvraag",
+        "sending": "Versturen...",
+        "success": "Aanvraag verzonden. We nemen binnenkort contact op.",
+        "error": "Er ging iets mis bij het verzenden van de aanvraag. Probeer het opnieuw of mail naar contact@uproof.eu.",
+        "configError": "Carrièreformulier is nog niet ingesteld. Stel de form key in.",
+        "fileError": "Het cv moet een PDF-, DOC- of DOCX-bestand zijn van maximaal 10 MB.",
+        "requiredError": "Dit veld is verplicht",
+        "captchaError": "Voltooi de captcha-verificatie."
+      }
     },
     "contact": {
       "title": "Neem contact op"
@@ -412,6 +461,7 @@
       "home": "Home",
       "servicesLink": "Diensten",
       "blogLink": "Blog",
+      "careers": "Carrière",
       "contactLink": "Contact",
       "stormDamage": "Stormschade",
       "roofLeak": "Daklek?"

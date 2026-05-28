@@ -10,6 +10,7 @@
     "about": "Par mums",
     "contact": "Kontakti",
     "blog": "Blogs",
+    "careers": "Karjera",
     "cities": "Pilsētas",
     "materials": "Materiāli",
     "reviews": "Atsauksmes",
@@ -23,7 +24,8 @@
     "projects": "Projekti",
     "about": "Par mums",
     "contact": "Kontakti",
-    "blog": "Blogs"
+    "blog": "Blogs",
+    "career": "Karjera"
   },
   "serviceTags": {
     "construction": "Būvniecība",
@@ -40,6 +42,53 @@
   "pages": {
     "services": {"title": "Mūsu jumtu pakalpojumi"},
     "projects": {"title": "Pabeigtie projekti"},
+    "career": {
+      "title": "Karjera UpRoof",
+      "heroKicker": "Darbs UpRoof",
+      "heroIntro": "Mēs meklējam cilvēkus, kuri grib strādāt ar sakārtotu procesu, augstām prasībām un reāliem rezultātiem.",
+      "eyebrow": "Karjera UpRoof",
+      "intro": "Pievienojies komandai, kas strādā ar kvalitatīviem jumta projektiem visā Latvijā. Meklējam atbildīgus speciālistus, kas novērtē precizitāti, drošību un stabilu darba kultūru.",
+      "benefitsLabel": "Ko mēs piedāvājam",
+      "benefitsTitle": "Stabils darbs ar skaidru pieeju",
+      "benefitsIntro": "Vienā vietā ir galvenie iemesli, kāpēc cilvēki izvēlas strādāt ar mums. Mēs turamies pie skaidra procesa, kvalitatīva darba un ilgtermiņa sadarbības.",
+      "benefits": {
+        "schedule": {
+          "title": "Stabils darba grafiks",
+          "description": "Darbs ar saprotamu plānu un sakārtotu ikdienu."
+        },
+        "work": {
+          "title": "Kvalitatīvi projekti",
+          "description": "Darbs pie sakārtotiem un redzamiem rezultātiem."
+        },
+        "latvia": {
+          "title": "Darbs Latvijā",
+          "description": "Objekti Rīgā, Pierīgā un citur Latvijā."
+        }
+      },
+      "formTitle": "Pieteikties vakancei",
+      "formIntro": "Aizpildi pieteikumu un pievieno savu CV. Mēs sazināsimies ar kandidātiem, kuru profils atbilst darba iespējām.",
+      "formHint": "CV pievieno PDF, DOC vai DOCX formātā līdz 10 MB.",
+      "fields": {
+        "fullName": "Vārds un uzvārds",
+        "email": "E-pasts",
+        "phone": "Tālruņa numurs",
+        "location": "Pilsēta / atrašanās vieta",
+        "locationPlaceholder": "Rīga",
+        "experience": "Darba pieredze",
+        "experiencePlaceholder": "2+ gadi jumta darbos",
+        "message": "Pastāsti par sevi",
+        "messagePlaceholder": "Pastāsti, kādu darbu meklē un kāda ir tava pieredze.",
+        "cv": "Pievieno CV",
+        "submit": "Nosūtīt pieteikumu",
+        "sending": "Sūta...",
+        "success": "Pieteikums nosūtīts. Mēs sazināsimies ar tevi tuvākajā laikā.",
+        "error": "Radās kļūda, nosūtot pieteikumu. Lūdzu, mēģini vēlreiz vai raksti uz contact@uproof.eu.",
+        "configError": "Karjeras forma vēl nav konfigurēta. Lūdzu, iestatiet form key.",
+        "fileError": "CV jābūt PDF, DOC vai DOCX failam līdz 10 MB.",
+        "requiredError": "Šis lauks ir obligāts",
+        "captchaError": "Lūdzu, apstiprini captcha verifikāciju."
+      }
+    },
     "about": {
   "title": "Par UpRoof",
   "description": "UpRoof ir jumtu būvniecības eksperti ar ilggadēju pieredzi un aizrautību pret savu darbu. Mēs piedāvājam pilna cikla jumta risinājumus – no projektēšanas un materiālu izvēles līdz montāžai, krāsošanai un ilgtermiņa apkopei. Mūsu komanda sastāv no sertificētiem speciālistiem, kuri rūpējas par katru detaļu, lai nodrošinātu augstāko kvalitāti, drošību un estētiku. UpRoof klientiem sniedz individuālu pieeju, skaidru komunikāciju un garantētu rezultātu. Mēs lepojamies ar paveiktajiem projektiem un esam uzticams partneris gan privātmāju, gan uzņēmumu jumtu būvniecībā.",
@@ -395,6 +444,7 @@
     "home": "Sākums",
     "servicesLink": "Pakalpojumi",
     "blogLink": "Blogs",
+    "careers": "Karjera",
     "contactLink": "Kontakti",
     "stormDamage": "Vētras bojājumi",
     "roofLeak": "Tek jumts?"

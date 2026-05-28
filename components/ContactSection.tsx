@@ -65,15 +65,6 @@ export default function ContactSection() {
       return;
     }
     
-    // Validate API key is configured
-    const apiKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
-    
-    if (!apiKey || apiKey === 'YOUR_WEB3FORMS_KEY_HERE') {
-      alert('Contact form is not configured yet. Please contact us directly at contact@uproof.eu or call +371 25612440');
-      setIsSubmitting(false);
-      return;
-    }
-    
     try {
       // Save to admin contact messages database
       const msgResponse = await fetch('/api/admin/contact-messages', {
@@ -90,15 +81,18 @@ export default function ContactSection() {
         })
       });
 
-      // Using Web3Forms API - FREE service to receive emails
-      const response = await fetch('https://api.web3forms.com/submit', {
+      if (!msgResponse.ok) {
+        throw new Error('Failed to save contact message');
+      }
+
+      // Send through the server proxy so the Web3Forms key never reaches the browser.
+      const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          Accept: 'application/json'
         },
         body: JSON.stringify({
-          access_key: apiKey,
           name: sanitizedData.name,
           phone: sanitizedData.phone,
           email: sanitizedData.email,
@@ -107,15 +101,15 @@ export default function ContactSection() {
         })
       });
 
-      const result = await response.json();
-      
-      if (result.success) {
+      const result = await response.json().catch(() => null);
+
+      if (response.ok && result?.ok) {
         setSubmitSuccess(true);
         setIsSubmitting(false);
         reset();
         setTimeout(() => setSubmitSuccess(false), 5000);
       } else {
-        throw new Error('Form submission failed');
+        throw new Error(result?.error || 'Form submission failed');
       }
     } catch (error) {
       console.error('Error submitting form:', error);

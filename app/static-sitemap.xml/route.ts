@@ -7,6 +7,7 @@ const staticPaths = [
   '/projects',
   '/about',
   '/contact',
+  '/career',
   '/blog',
   '/reviews',
   '/privacy-policy',
@@ -30,7 +31,7 @@ export async function GET() {
                 ? 0.95
                 : p.startsWith('/urgency/')
                   ? 0.9
-                  : p === '/contact'
+                  : p === '/contact' || p === '/career'
                     ? 0.9
                     : 0.8;
           return `<url><loc>${url}</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>${priority.toFixed(2)}</priority></url>`;
