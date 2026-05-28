@@ -10,6 +10,7 @@
     "about": "About Us",
     "contact": "Contact",
     "blog": "Blog",
+    "careers": "Careers",
     "cities": "Cities",
     "materials": "Materials",
     "reviews": "Reviews",
@@ -23,7 +24,8 @@
     "projects": "Projects",
     "about": "About Us",
     "contact": "Contact",
-    "blog": "Blog"
+    "blog": "Blog",
+    "career": "Careers"
   },
   "serviceTags": {
     "construction": "Construction",

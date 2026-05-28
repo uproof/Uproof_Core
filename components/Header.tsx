@@ -66,37 +66,41 @@ export default function Header({showText = true, largeLogo = false}: HeaderProps
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex md:items-center md:space-x-1">
-            <Link href="/" prefetch={false} className="px-4 py-2 text-gray-700 hover:text-gray-900 transition-all font-medium relative group rounded-lg hover:bg-gray-50">
+          <div className="hidden md:flex md:items-center md:space-x-0.5">
+            <Link href="/" prefetch={false} className="px-3 py-2 text-gray-700 hover:text-gray-900 transition-all font-medium relative group rounded-lg hover:bg-gray-50 whitespace-nowrap text-sm">
               {t('home')}
               <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary-500 group-hover:w-3/4 transition-all duration-300 rounded-full"></span>
             </Link>
-            <Link href="/services" prefetch={false} className="px-4 py-2 text-gray-700 hover:text-gray-900 transition-all font-medium relative group rounded-lg hover:bg-gray-50">
+            <Link href="/services" prefetch={false} className="px-3 py-2 text-gray-700 hover:text-gray-900 transition-all font-medium relative group rounded-lg hover:bg-gray-50 whitespace-nowrap text-sm">
               {t('services')}
               <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary-500 group-hover:w-3/4 transition-all duration-300 rounded-full"></span>
             </Link>
-            <Link href="/projects" prefetch={false} className="px-4 py-2 text-gray-700 hover:text-gray-900 transition-all font-medium relative group rounded-lg hover:bg-gray-50">
+            <Link href="/projects" prefetch={false} className="px-3 py-2 text-gray-700 hover:text-gray-900 transition-all font-medium relative group rounded-lg hover:bg-gray-50 whitespace-nowrap text-sm">
               {t('projects')}
               <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary-500 group-hover:w-3/4 transition-all duration-300 rounded-full"></span>
             </Link>
             {/* Cities link removed from global header per request */}
-            <Link href="/about" prefetch={false} className="px-4 py-2 text-gray-700 hover:text-gray-900 transition-all font-medium relative group rounded-lg hover:bg-gray-50">
+            <Link href="/about" prefetch={false} className="px-3 py-2 text-gray-700 hover:text-gray-900 transition-all font-medium relative group rounded-lg hover:bg-gray-50 whitespace-nowrap text-sm">
               {t('about')}
               <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary-500 group-hover:w-3/4 transition-all duration-300 rounded-full"></span>
             </Link>
-            <Link href="/blog" prefetch={false} className="px-4 py-2 text-gray-700 hover:text-gray-900 transition-all font-medium relative group rounded-lg hover:bg-gray-50">
+            <Link href="/blog" prefetch={false} className="px-3 py-2 text-gray-700 hover:text-gray-900 transition-all font-medium relative group rounded-lg hover:bg-gray-50 whitespace-nowrap text-sm">
               {t('blog') || 'Blog'}
+              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary-500 group-hover:w-3/4 transition-all duration-300 rounded-full"></span>
+            </Link>
+            <Link href="/career" prefetch={false} className="px-3 py-2 text-gray-700 hover:text-gray-900 transition-all font-medium relative group rounded-lg hover:bg-gray-50 whitespace-nowrap text-sm">
+              {t('careers') || 'Careers'}
               <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary-500 group-hover:w-3/4 transition-all duration-300 rounded-full"></span>
             </Link>
             <Link
               href="/urgency/vetras-jumta-bojajumi"
               prefetch={false}
-              className="px-4 py-2 bg-red-50 text-red-700 hover:bg-red-100 hover:text-red-800 transition-all font-semibold rounded-lg border border-red-200 text-sm"
+              className="px-3 py-2 bg-red-50 text-red-700 hover:bg-red-100 hover:text-red-800 transition-all font-semibold rounded-lg border border-red-200 text-xs whitespace-nowrap"
               aria-label={t('stormDamage') || 'Storm Damage'}
             >
               {t('stormDamage') || 'Storm Damage'}
             </Link>
-            <Link href="/services/seasonal" prefetch={false} className="px-4 py-2 text-gray-700 hover:text-gray-900 transition-all font-semibold relative group rounded-lg hover:bg-gray-50 text-sm">
+            <Link href="/services/seasonal" prefetch={false} className="px-3 py-2 text-gray-700 hover:text-gray-900 transition-all font-semibold relative group rounded-lg hover:bg-gray-50 text-xs whitespace-nowrap">
               {t('seasonalServices') || 'Seasonal services'}
             </Link>
             <Link href="/contact" className="ml-4 px-6 py-2.5 bg-primary-500 text-white font-semibold hover:bg-primary-600 transition-all duration-300 shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 transform hover:-translate-y-0.5 rounded-lg text-sm tracking-wide">
@@ -143,6 +147,9 @@ export default function Header({showText = true, largeLogo = false}: HeaderProps
               </Link>
               <Link href="/blog" prefetch={false} className="text-gray-900 hover:text-primary-600 transition-colors font-medium px-4 py-3 hover:bg-primary-50 rounded-lg">
                 {t('blog') || 'Blog'}
+              </Link>
+              <Link href="/career" prefetch={false} className="text-gray-900 hover:text-primary-600 transition-colors font-medium px-4 py-3 hover:bg-primary-50 rounded-lg">
+                {t('careers') || 'Careers'}
               </Link>
               <Link
                 href="/urgency/vetras-jumta-bojajumi"
