@@ -1,3 +1,9 @@
+
+const safeDateLocales: Record<string, string> = {
+  lv: 'lv-LV',
+  en: 'en-US',
+  'nl-BE': 'nl-BE',
+};
 import {useTranslations} from 'next-intl';
 import type {Metadata} from 'next';
 import Header from '@/components/Header';
@@ -330,7 +336,7 @@ export default async function BlogPostPage({params}: Props) {
             {hasAuthor ? <span>By {post.author}</span> : null}
             {hasAuthor ? <span>•</span> : null}
             <time>
-              {new Date(post.date).toLocaleDateString(locale, {
+              {new Date(post.date).toLocaleDateString(safeDateLocales[locale] || 'en-US', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric'

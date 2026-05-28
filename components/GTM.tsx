@@ -3,6 +3,14 @@
 import Script from 'next/script';
 import {useEffect, useRef, useState} from 'react';
 
+function parseConsent(value: string): {analytics?: boolean} | null {
+  try {
+    return JSON.parse(value) as {analytics?: boolean};
+  } catch {
+    return null;
+  }
+}
+
 type Props = {
   gtmId: string;
 };
@@ -17,8 +25,8 @@ export default function GTM({gtmId}: Props) {
     try {
       const stored = localStorage.getItem('cookie-consent');
       if (stored) {
-        const prefs = JSON.parse(stored) as {analytics?: boolean};
-        if (prefs.analytics) setEnabled(true);
+        const prefs = parseConsent(stored);
+        if (prefs?.analytics) setEnabled(true);
       }
     } catch {}
 

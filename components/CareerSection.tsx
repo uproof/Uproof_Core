@@ -1,9 +1,8 @@
 'use client';
 
 import {useTranslations} from 'next-intl';
-import {useRef, useState} from 'react';
+import {type BaseSyntheticEvent, useState} from 'react';
 import {useForm} from 'react-hook-form';
-import HCaptcha from '@hcaptcha/react-hcaptcha';
 import {
   ArrowRightIcon,
   BriefcaseIcon,
@@ -12,7 +11,6 @@ import {
   DocumentArrowUpIcon,
   MapPinIcon,
 } from '@heroicons/react/24/outline';
-import {sanitizeEmail, sanitizeInput, sanitizePhone} from '@/lib/sanitize';
 
 type CareerFormValues = {
   fullName: string;
@@ -21,7 +19,6 @@ type CareerFormValues = {
   location: string;
   experience: string;
   message: string;
-  hCaptchaToken: string;
   cv: FileList;
 };
 
@@ -35,34 +32,17 @@ const allowedFileTypes = new Set([
 export default function CareerSection() {
   const t = useTranslations('pages.career');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState('');
-  const captchaRef = useRef<HCaptcha | null>(null);
 
   const {
     register,
     handleSubmit,
-    setValue,
-    watch,
-    reset,
     formState: {errors},
   } = useForm<CareerFormValues>();
 
-  const captchaToken = watch('hCaptchaToken');
-
-  const onCaptchaVerify = (token: string) => {
-    setValue('hCaptchaToken', token, {shouldValidate: true});
-    setSubmitError('');
-  };
-
-  const onCaptchaExpire = () => {
-    setValue('hCaptchaToken', '', {shouldValidate: true});
-  };
-
-  const onSubmit = async (data: CareerFormValues) => {
+  const onSubmit = async (data: CareerFormValues, event?: BaseSyntheticEvent) => {
     setIsSubmitting(true);
     setSubmitError('');
-    setSubmitSuccess(false);
 
     const file = data.cv?.[0];
     if (!file) {
@@ -77,45 +57,8 @@ export default function CareerSection() {
       return;
     }
 
-    const payload = new FormData();
-    payload.append('_subject', `UpRoof career application - ${sanitizeInput(data.fullName)}`);
-    payload.append('_replyto', sanitizeEmail(data.email));
-    payload.append('fullName', sanitizeInput(data.fullName));
-    payload.append('email', sanitizeEmail(data.email));
-    payload.append('phone', sanitizePhone(data.phone));
-    payload.append('location', sanitizeInput(data.location));
-    payload.append('experience', sanitizeInput(data.experience));
-    payload.append('message', sanitizeInput(data.message));
-    payload.append('h-captcha-response', data.hCaptchaToken || '');
-    payload.append('cv', file, file.name);
-
-    try {
-      if (!data.hCaptchaToken) {
-        throw new Error(t('fields.captchaError'));
-      }
-
-      const response = await fetch('/api/career', {
-        method: 'POST',
-        body: payload,
-      });
-
-      if (!response.ok) {
-        const result = await response.json().catch(() => null);
-        throw new Error(result?.error || t('fields.error'));
-      }
-
-      setSubmitSuccess(true);
-      reset();
-      captchaRef.current?.resetCaptcha();
-      setTimeout(() => setSubmitSuccess(false), 5000);
-    } catch (error) {
-      console.error('Error submitting career application:', error);
-      setSubmitError(error instanceof Error ? error.message : t('fields.error'));
-      captchaRef.current?.resetCaptcha();
-      setValue('hCaptchaToken', '', {shouldValidate: true});
-    } finally {
-      setIsSubmitting(false);
-    }
+    // Hand off to the native form submission so the action attribute is used.
+    event?.currentTarget?.submit();
   };
 
   return (
@@ -135,6 +78,14 @@ export default function CareerSection() {
               <p className="mt-5 max-w-2xl text-lg text-gray-600 leading-relaxed">
                 {t('intro')}
               </p>
+              {/* Categories we are hiring for */}
+              <div className="mt-4">
+                <p className="font-semibold text-gray-800">{t('categoriesTitle')}</p>
+                <ul className="mt-2 list-decimal list-inside text-gray-600">
+                  <li>{t('categories.one')}</li>
+                  <li>{t('categories.two')}</li>
+                </ul>
+              </div>
             </div>
 
             <div className="rounded-2xl bg-gray-900 text-white p-6 md:p-7 shadow-soft-xl">
@@ -177,24 +128,25 @@ export default function CareerSection() {
             <p className="mt-3 text-gray-600 leading-relaxed">{t('formIntro')}</p>
             <p className="mt-2 text-sm text-gray-500">{t('formHint')}</p>
 
-            {submitSuccess && (
-              <div className="mt-6 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-green-700 text-sm">
-                {t('fields.success')}
-              </div>
-            )}
-
             {submitError && (
               <div className="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-700 text-sm">
                 {submitError}
               </div>
             )}
 
-            <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-5">
+            <form
+              action="https://formspree.io/f/xgoqdodr"
+              method="POST"
+              encType="multipart/form-data"
+              onSubmit={handleSubmit(onSubmit)}
+              className="mt-6 space-y-5"
+            >
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
                   <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">{t('fields.fullName')} <span className="text-red-500">*</span></label>
                   <input
                     {...register('fullName', {required: t('fields.requiredError')})}
+                    name="fullName"
                     id="fullName"
                     type="text"
                     className="w-full border border-gray-200 bg-gray-50 px-4 py-3 focus:border-transparent focus:bg-white focus:ring-2 focus:ring-primary-500 transition-all"
@@ -210,6 +162,7 @@ export default function CareerSection() {
                       required: t('fields.requiredError'),
                       pattern: {value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: t('fields.email')},
                     })}
+                    name="email"
                     id="email"
                     type="email"
                     className="w-full border border-gray-200 bg-gray-50 px-4 py-3 focus:border-transparent focus:bg-white focus:ring-2 focus:ring-primary-500 transition-all"
@@ -224,6 +177,7 @@ export default function CareerSection() {
                   <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">{t('fields.phone')}</label>
                   <input
                     {...register('phone')}
+                    name="phone"
                     id="phone"
                     type="tel"
                     className="w-full border border-gray-200 bg-gray-50 px-4 py-3 focus:border-transparent focus:bg-white focus:ring-2 focus:ring-primary-500 transition-all"
@@ -235,6 +189,7 @@ export default function CareerSection() {
                   <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">{t('fields.location')}</label>
                   <input
                     {...register('location')}
+                    name="location"
                     id="location"
                     type="text"
                     className="w-full border border-gray-200 bg-gray-50 px-4 py-3 focus:border-transparent focus:bg-white focus:ring-2 focus:ring-primary-500 transition-all"
@@ -247,6 +202,7 @@ export default function CareerSection() {
                 <label htmlFor="experience" className="block text-sm font-medium text-gray-700 mb-2">{t('fields.experience')}</label>
                 <input
                   {...register('experience')}
+                  name="experience"
                   id="experience"
                   type="text"
                   className="w-full border border-gray-200 bg-gray-50 px-4 py-3 focus:border-transparent focus:bg-white focus:ring-2 focus:ring-primary-500 transition-all"
@@ -258,6 +214,7 @@ export default function CareerSection() {
                 <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">{t('fields.message')}</label>
                 <textarea
                   {...register('message')}
+                  name="message"
                   id="message"
                   rows={5}
                   className="w-full resize-none border border-gray-200 bg-gray-50 px-4 py-3 focus:border-transparent focus:bg-white focus:ring-2 focus:ring-primary-500 transition-all"
@@ -274,6 +231,7 @@ export default function CareerSection() {
                   </div>
                   <input
                     {...register('cv', {required: t('fields.requiredError')})}
+                    name="cv"
                     id="cv"
                     type="file"
                     accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
@@ -283,26 +241,9 @@ export default function CareerSection() {
                 {errors.cv && <p className="mt-1.5 text-sm text-red-500">{errors.cv.message}</p>}
               </div>
 
-              <input
-                type="hidden"
-                {...register('hCaptchaToken', {required: t('fields.captchaError')})}
-              />
-              <div className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-4">
-                <HCaptcha
-                  ref={captchaRef}
-                  sitekey="50b2fe65-b00b-4b9e-ad62-3ba471098be2"
-                  reCaptchaCompat={false}
-                  onVerify={onCaptchaVerify}
-                  onExpire={onCaptchaExpire}
-                />
-                {errors.hCaptchaToken && (
-                  <p className="mt-2 text-sm text-red-500">{errors.hCaptchaToken.message}</p>
-                )}
-              </div>
-
               <button
                 type="submit"
-                disabled={isSubmitting || !captchaToken}
+                disabled={isSubmitting}
                 className="btn btn-primary w-full gap-2 px-6 py-4 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? t('fields.sending') : t('fields.submit')}

@@ -58,6 +58,12 @@ const publishedBlogPosts = blogPosts
   .filter((post) => post.status === 'published')
   .sort((left, right) => new Date(right.date).getTime() - new Date(left.date).getTime());
 
+const safeDateLocales: Record<string, string> = {
+  lv: 'lv-LV',
+  en: 'en-US',
+  'nl-BE': 'nl-BE',
+};
+
 export default async function BlogPage({params}: Props) {
   const {locale} = await params;
 
@@ -175,7 +181,7 @@ export default async function BlogPage({params}: Props) {
                   {/* Date & Read More */}
                   <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                     <time className="text-sm text-gray-500">
-                      {new Date(post.date).toLocaleDateString(locale, {
+                      {new Date(post.date).toLocaleDateString(safeDateLocales[locale] || 'en-US', {
                         month: 'short',
                         day: 'numeric',
                         year: 'numeric'

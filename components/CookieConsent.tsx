@@ -6,6 +6,14 @@ import {useTranslations} from 'next-intl';
 import {XMarkIcon} from '@heroicons/react/24/outline';
 import {motion, AnimatePresence} from 'framer-motion';
 
+function parseConsent<T>(value: string): T | null {
+  try {
+    return JSON.parse(value) as T;
+  } catch {
+    return null;
+  }
+}
+
 export default function CookieConsent() {
   const t = useTranslations('cookies');
   const [showBanner, setShowBanner] = useState(false);
@@ -23,7 +31,12 @@ export default function CookieConsent() {
       setTimeout(() => setShowBanner(true), 1000);
     } else {
       // Load saved preferences
-      const saved = JSON.parse(consent);
+      const saved = parseConsent<typeof preferences>(consent);
+      if (!saved) {
+        setShowBanner(true);
+        return;
+      }
+
       setPreferences(saved);
       
       // Enable analytics if consented

@@ -65,6 +65,11 @@
           "description": "Projects in Riga, the surrounding region, and beyond."
         }
       },
+      "categoriesTitle": "We are hiring for",
+      "categories": {
+        "one": "Professional roofers",
+        "two": "Roofing assistants"
+      },
       "formTitle": "Apply for a role",
       "formIntro": "Fill in the application and attach your CV. We will contact candidates whose profile matches the role.",
       "formHint": "Upload a PDF, DOC, or DOCX CV up to 10 MB.",
@@ -83,10 +88,8 @@
         "sending": "Sending...",
         "success": "Application sent. We will be in touch soon.",
         "error": "Something went wrong while sending the application. Please try again or email contact@uproof.eu.",
-        "configError": "Career form is not configured yet. Please set the form key.",
         "fileError": "CV must be a PDF, DOC, or DOCX file up to 10 MB.",
-        "requiredError": "This field is required",
-        "captchaError": "Please complete the captcha verification."
+        "requiredError": "This field is required"
       }
     },
     "about": {

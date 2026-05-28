@@ -20,6 +20,12 @@ const descriptions: Record<string, string> = {
   'nl-BE': 'UpRoof privacybeleid. Ontdek hoe wij uw persoonsgegevens verzamelen, gebruiken en beschermen.',
 };
 
+const safeDateLocales: Record<string, string> = {
+  lv: 'lv-LV',
+  en: 'en-US',
+  'nl-BE': 'nl-BE',
+};
+
 export async function generateMetadata({params}: Props): Promise<Metadata> {
   const {locale} = await params;
   const canonical = `https://uproof.eu/${locale}/privacy-policy`;
@@ -42,6 +48,11 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 export default function PrivacyPolicyPage({params}: Props) {
   const {locale} = use(params);
   const t = useTranslations('privacy');
+  const formattedDate = new Intl.DateTimeFormat(safeDateLocales[locale] || 'en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(new Date());
 
   return (
     <main className="min-h-screen">
@@ -54,7 +65,7 @@ export default function PrivacyPolicyPage({params}: Props) {
         
         <div className="prose prose-lg max-w-none">
           <p className="text-gray-600 mb-8">
-            {t('lastUpdated')}: {new Date().toLocaleDateString(locale)}
+            {t('lastUpdated')}: {formattedDate}
           </p>
 
           <section className="mb-8">

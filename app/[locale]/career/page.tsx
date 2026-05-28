@@ -1,6 +1,5 @@
-import {use} from 'react';
 import type {Metadata} from 'next';
-import {useTranslations} from 'next-intl';
+import {getTranslations} from 'next-intl/server';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/Breadcrumbs';
@@ -11,7 +10,8 @@ type Props = {
 };
 
 const titles: Record<string, string> = {
-  lv: 'Karjera UpRoof | Vakances jumta nozarē Latvijā',
+  // Latvian title uses 'Darbs' instead of 'Karjera'
+  lv: 'Darbs UpRoof | Vakances jumta nozarē Latvijā',
   en: 'Careers at UpRoof | Roofing Jobs in Latvia',
   'nl-BE': 'Werken bij UpRoof | Dakvacatures in Letland',
 };
@@ -53,9 +53,9 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
   };
 }
 
-export default function CareerPage({params}: Props) {
-  const {locale} = use(params);
-  const t = useTranslations('pages.career');
+export default async function CareerPage({params}: Props) {
+  const {locale} = await params;
+  const t = await getTranslations({locale, namespace: 'pages.career'});
 
   return (
     <main className="min-h-screen bg-gray-50">

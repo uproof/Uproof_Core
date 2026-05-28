@@ -69,6 +69,11 @@
           "description": "Projecten in Riga, de regio en daarbuiten."
         }
       },
+      "categoriesTitle": "We zoeken voor de volgende hoofdcategorieën",
+      "categories": {
+        "one": "Professionele dakdekkers",
+        "two": "Dakdekker hulpen"
+      },
       "formTitle": "Solliciteer op een functie",
       "formIntro": "Vul de aanvraag in en voeg je cv toe. We nemen contact op met kandidaten waarvan het profiel past bij de functie.",
       "formHint": "Upload een pdf-, doc- of docx-cv tot 10 MB.",
@@ -87,10 +92,8 @@
         "sending": "Versturen...",
         "success": "Aanvraag verzonden. We nemen binnenkort contact op.",
         "error": "Er ging iets mis bij het verzenden van de aanvraag. Probeer het opnieuw of mail naar contact@uproof.eu.",
-        "configError": "Carrièreformulier is nog niet ingesteld. Stel de form key in.",
         "fileError": "Het cv moet een PDF-, DOC- of DOCX-bestand zijn van maximaal 10 MB.",
-        "requiredError": "Dit veld is verplicht",
-        "captchaError": "Voltooi de captcha-verificatie."
+        "requiredError": "Dit veld is verplicht"
       }
     },
     "contact": {

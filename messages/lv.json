@@ -10,7 +10,7 @@
     "about": "Par mums",
     "contact": "Kontakti",
     "blog": "Blogs",
-    "careers": "Karjera",
+    "careers": "Darba iespējas",
     "cities": "Pilsētas",
     "materials": "Materiāli",
     "reviews": "Atsauksmes",
@@ -25,7 +25,7 @@
     "about": "Par mums",
     "contact": "Kontakti",
     "blog": "Blogs",
-    "career": "Karjera"
+    "career": "Darbs"
   },
   "serviceTags": {
     "construction": "Būvniecība",
@@ -43,10 +43,10 @@
     "services": {"title": "Mūsu jumtu pakalpojumi"},
     "projects": {"title": "Pabeigtie projekti"},
     "career": {
-      "title": "Karjera UpRoof",
+      "title": "Darbs UpRoof",
       "heroKicker": "Darbs UpRoof",
       "heroIntro": "Mēs meklējam cilvēkus, kuri grib strādāt ar sakārtotu procesu, augstām prasībām un reāliem rezultātiem.",
-      "eyebrow": "Karjera UpRoof",
+      "eyebrow": "Darbs UpRoof",
       "intro": "Pievienojies komandai, kas strādā ar kvalitatīviem jumta projektiem visā Latvijā. Meklējam atbildīgus speciālistus, kas novērtē precizitāti, drošību un stabilu darba kultūru.",
       "benefitsLabel": "Ko mēs piedāvājam",
       "benefitsTitle": "Stabils darbs ar skaidru pieeju",
@@ -64,6 +64,11 @@
           "title": "Darbs Latvijā",
           "description": "Objekti Rīgā, Pierīgā un citur Latvijā."
         }
+      },
+      "categoriesTitle": "Meklējam šādas galvenās kategorijas",
+      "categories": {
+        "one": "Profesionāli jumiķi",
+        "two": "Jumiķa palīgi"
       },
       "formTitle": "Pieteikties vakancei",
       "formIntro": "Aizpildi pieteikumu un pievieno savu CV. Mēs sazināsimies ar kandidātiem, kuru profils atbilst darba iespējām.",
@@ -83,10 +88,8 @@
         "sending": "Sūta...",
         "success": "Pieteikums nosūtīts. Mēs sazināsimies ar tevi tuvākajā laikā.",
         "error": "Radās kļūda, nosūtot pieteikumu. Lūdzu, mēģini vēlreiz vai raksti uz contact@uproof.eu.",
-        "configError": "Karjeras forma vēl nav konfigurēta. Lūdzu, iestatiet form key.",
         "fileError": "CV jābūt PDF, DOC vai DOCX failam līdz 10 MB.",
-        "requiredError": "Šis lauks ir obligāts",
-        "captchaError": "Lūdzu, apstiprini captcha verifikāciju."
+        "requiredError": "Šis lauks ir obligāts"
       }
     },
     "about": {
@@ -444,7 +447,7 @@
     "home": "Sākums",
     "servicesLink": "Pakalpojumi",
     "blogLink": "Blogs",
-    "careers": "Karjera",
+    "careers": "Darbs",
     "contactLink": "Kontakti",
     "stormDamage": "Vētras bojājumi",
     "roofLeak": "Tek jumts?"
