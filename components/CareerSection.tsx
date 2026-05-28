@@ -1,8 +1,8 @@
 'use client';
 
 import {useTranslations} from 'next-intl';
-import {type BaseSyntheticEvent, useState} from 'react';
-import {useForm} from 'react-hook-form';
+import {type FormEvent, useState} from 'react';
+import {ValidationError, useForm} from '@formspree/react';
 import {
   ArrowRightIcon,
   BriefcaseIcon,
@@ -11,16 +11,6 @@ import {
   DocumentArrowUpIcon,
   MapPinIcon,
 } from '@heroicons/react/24/outline';
-
-type CareerFormValues = {
-  fullName: string;
-  email: string;
-  phone: string;
-  location: string;
-  experience: string;
-  message: string;
-  cv: FileList;
-};
 
 const allowedFileTypes = new Set([
   'application/pdf',
@@ -31,34 +21,26 @@ const allowedFileTypes = new Set([
 
 export default function CareerSection() {
   const t = useTranslations('pages.career');
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const [state, handleSubmit] = useForm('xgoqdodr');
 
-  const {
-    register,
-    handleSubmit,
-    formState: {errors},
-  } = useForm<CareerFormValues>();
-
-  const onSubmit = async (data: CareerFormValues, event?: BaseSyntheticEvent) => {
-    setIsSubmitting(true);
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     setSubmitError('');
 
-    const file = data.cv?.[0];
-    if (!file) {
+    const formData = new FormData(event.currentTarget);
+    const file = formData.get('cv');
+
+    if (!(file instanceof File)) {
       setSubmitError(t('fields.fileError'));
-      setIsSubmitting(false);
       return;
     }
 
     if (!allowedFileTypes.has(file.type) || file.size > 10 * 1024 * 1024) {
       setSubmitError(t('fields.fileError'));
-      setIsSubmitting(false);
       return;
     }
 
-    // Hand off to the native form submission so the action attribute is used.
-    event?.currentTarget?.submit();
+    await handleSubmit(event);
   };
 
   return (
@@ -134,41 +116,49 @@ export default function CareerSection() {
               </div>
             )}
 
+            <ValidationError
+              errors={state.errors}
+              className="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-700 text-sm"
+            />
+
+            {state.succeeded && (
+              <div className="mt-6 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-green-700 text-sm">
+                {t('fields.success')}
+              </div>
+            )}
+
             <form
               action="https://formspree.io/f/xgoqdodr"
               method="POST"
               encType="multipart/form-data"
-              onSubmit={handleSubmit(onSubmit)}
+              onSubmit={onSubmit}
               className="mt-6 space-y-5"
             >
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
                   <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">{t('fields.fullName')} <span className="text-red-500">*</span></label>
                   <input
-                    {...register('fullName', {required: t('fields.requiredError')})}
                     name="fullName"
                     id="fullName"
                     type="text"
+                    required
                     className="w-full border border-gray-200 bg-gray-50 px-4 py-3 focus:border-transparent focus:bg-white focus:ring-2 focus:ring-primary-500 transition-all"
                     placeholder={t('fields.fullName')}
                   />
-                  {errors.fullName && <p className="mt-1.5 text-sm text-red-500">{errors.fullName.message}</p>}
+                  <ValidationError field="fullName" errors={state.errors} className="mt-1.5 text-sm text-red-500" />
                 </div>
 
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">{t('fields.email')} <span className="text-red-500">*</span></label>
                   <input
-                    {...register('email', {
-                      required: t('fields.requiredError'),
-                      pattern: {value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: t('fields.email')},
-                    })}
                     name="email"
                     id="email"
                     type="email"
+                    required
                     className="w-full border border-gray-200 bg-gray-50 px-4 py-3 focus:border-transparent focus:bg-white focus:ring-2 focus:ring-primary-500 transition-all"
                     placeholder="you@example.com"
                   />
-                  {errors.email && <p className="mt-1.5 text-sm text-red-500">{errors.email.message}</p>}
+                  <ValidationError field="email" errors={state.errors} className="mt-1.5 text-sm text-red-500" />
                 </div>
               </div>
 
@@ -176,7 +166,6 @@ export default function CareerSection() {
                 <div>
                   <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">{t('fields.phone')}</label>
                   <input
-                    {...register('phone')}
                     name="phone"
                     id="phone"
                     type="tel"
@@ -188,7 +177,6 @@ export default function CareerSection() {
                 <div>
                   <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">{t('fields.location')}</label>
                   <input
-                    {...register('location')}
                     name="location"
                     id="location"
                     type="text"
@@ -201,7 +189,6 @@ export default function CareerSection() {
               <div>
                 <label htmlFor="experience" className="block text-sm font-medium text-gray-700 mb-2">{t('fields.experience')}</label>
                 <input
-                  {...register('experience')}
                   name="experience"
                   id="experience"
                   type="text"
@@ -213,7 +200,6 @@ export default function CareerSection() {
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">{t('fields.message')}</label>
                 <textarea
-                  {...register('message')}
                   name="message"
                   id="message"
                   rows={5}
@@ -230,24 +216,24 @@ export default function CareerSection() {
                     <span>{t('formHint')}</span>
                   </div>
                   <input
-                    {...register('cv', {required: t('fields.requiredError')})}
                     name="cv"
                     id="cv"
                     type="file"
+                    required
                     accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                     className="mt-4 block w-full text-sm text-gray-500 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-600 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-primary-700"
                   />
                 </div>
-                {errors.cv && <p className="mt-1.5 text-sm text-red-500">{errors.cv.message}</p>}
+                <ValidationError field="cv" errors={state.errors} className="mt-1.5 text-sm text-red-500" />
               </div>
 
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={state.submitting}
                 className="btn btn-primary w-full gap-2 px-6 py-4 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isSubmitting ? t('fields.sending') : t('fields.submit')}
-                {!isSubmitting && <ArrowRightIcon className="h-5 w-5" />}
+                {state.submitting ? t('fields.sending') : t('fields.submit')}
+                {!state.submitting && <ArrowRightIcon className="h-5 w-5" />}
               </button>
             </form>
 
