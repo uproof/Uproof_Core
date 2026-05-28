@@ -40,7 +40,53 @@
   "pages": {
     "services": {"title": "Our Roofing Services"},
     "projects": {"title": "Completed Projects"},
-    "contact": {"title": "Contact Us"},
+    "career": {
+      "title": "Careers at UpRoof",
+      "heroKicker": "Working at UpRoof",
+      "heroIntro": "We are looking for people who want to work with clear processes, high standards, and tangible results.",
+      "eyebrow": "Careers at UpRoof",
+      "intro": "Join a team that delivers high-quality roofing projects across Latvia. We are looking for reliable people who value precision, safety, and a steady work culture.",
+      "benefitsLabel": "What we offer",
+      "benefitsTitle": "Stable work with a clear approach",
+      "benefitsIntro": "These are the main reasons people choose to work with us. We stay focused on a clear process, quality work, and long-term cooperation.",
+      "benefits": {
+        "schedule": {
+          "title": "Stable work schedule",
+          "description": "Work with a predictable plan and an organized day-to-day flow."
+        },
+        "work": {
+          "title": "Quality projects",
+          "description": "Work on well-managed jobs with visible results."
+        },
+        "latvia": {
+          "title": "Work across Latvia",
+          "description": "Projects in Riga, the surrounding region, and beyond."
+        }
+      },
+      "formTitle": "Apply for a role",
+      "formIntro": "Fill in the application and attach your CV. We will contact candidates whose profile matches the role.",
+      "formHint": "Upload a PDF, DOC, or DOCX CV up to 10 MB.",
+      "fields": {
+        "fullName": "Full name",
+        "email": "Email",
+        "phone": "Phone number",
+        "location": "City / location",
+        "locationPlaceholder": "Riga",
+        "experience": "Work experience",
+        "experiencePlaceholder": "2+ years in roofing",
+        "message": "Tell us about yourself",
+        "messagePlaceholder": "Tell us what role you are looking for and what experience you have.",
+        "cv": "Attach CV",
+        "submit": "Send application",
+        "sending": "Sending...",
+        "success": "Application sent. We will be in touch soon.",
+        "error": "Something went wrong while sending the application. Please try again or email contact@uproof.eu.",
+        "configError": "Career form is not configured yet. Please set the form key.",
+        "fileError": "CV must be a PDF, DOC, or DOCX file up to 10 MB.",
+        "requiredError": "This field is required",
+        "captchaError": "Please complete the captcha verification."
+      }
+    },
     "about": {
   "title": "About UpRoof",
   "description": "UpRoof are roofing experts with years of experience and a passion for quality. We deliver complete roofing solutions including design, material selection, installation, painting and long-term maintenance. Our certified specialists pay attention to every detail, ensuring the highest standards of quality, safety and aesthetics. We offer a personal approach, clear communication and guaranteed results. We take pride in our completed projects and are a trusted partner for both private homes and businesses.",
@@ -81,18 +127,9 @@
           "title": "SAFETY & INSURANCE",
           "description": "We follow all safety measures and are insured."
         }
-      },
-      "roofPainting": {
-        "title": "Roof Painting – Apartment Building",
-        "location": "Jelgava, Latvia",
-        "description": "Mechanical roof cleaning, primer application, and double coating for long-term durability."
-      },
-      "roofMaintenance": {
-        "title": "Roof Maintenance and Gutter Cleaning",
-        "location": "Sigulda, Latvia",
-        "description": "Snow removal, damage inspection, and drainage system cleaning for safe operation."
       }
-    }
+    },
+    "contact": {"title": "Contact Us"}
   },
   "projects": {
     "title": "Projects",
