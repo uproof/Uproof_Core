@@ -45,34 +45,52 @@
     "career": {
       "title": "Darbs UpRoof",
       "heroKicker": "Darbs UpRoof",
-      "heroIntro": "Mēs meklējam cilvēkus, kuri grib strādāt ar sakārtotu procesu, augstām prasībām un reāliem rezultātiem.",
+      "heroIntro": "Meklējam jumiķus un jumiķa palīgus, kuri grib strādāt sakārtotā komandā, ar skaidru procesu un kvalitatīvu rezultātu.",
       "eyebrow": "Darbs UpRoof",
-      "intro": "Pievienojies komandai, kas strādā ar kvalitatīviem jumta projektiem visā Latvijā. Meklējam atbildīgus speciālistus, kas novērtē precizitāti, drošību un stabilu darba kultūru.",
-      "benefitsLabel": "Ko mēs piedāvājam",
-      "benefitsTitle": "Stabils darbs ar skaidru pieeju",
-      "benefitsIntro": "Vienā vietā ir galvenie iemesli, kāpēc cilvēki izvēlas strādāt ar mums. Mēs turamies pie skaidra procesa, kvalitatīva darba un ilgtermiņa sadarbības.",
+      "intro": "Pievienojies UpRoof komandai. Darbs pie jumtu projektiem visā Latvijā ar drošu darba vidi, sakārtotu procesu un ilgtermiņa sadarbību.",
+      "benefitsLabel": "Ko piedāvājam",
+      "benefitsTitle": "Stabils darbs ar skaidru procesu",
+      "benefitsIntro": "Pie mums svarīga ir precizitāte, drošība un atbildīga attieksme. Mēs veidojam sakārtotu darba ritmu un kvalitāti, uz kuru var paļauties.",
       "benefits": {
         "schedule": {
-          "title": "Stabils darba grafiks",
-          "description": "Darbs ar saprotamu plānu un sakārtotu ikdienu."
+          "title": "Skaidrs darba ritms",
+          "description": "Darbs ar saprotamu plānu, kārtību un prognozējamu ikdienu."
         },
         "work": {
-          "title": "Kvalitatīvi projekti",
-          "description": "Darbs pie sakārtotiem un redzamiem rezultātiem."
+          "title": "Kvalitatīvi objekti",
+          "description": "Darbs pie rūpīgi organizētiem projektiem ar redzamu rezultātu."
         },
         "latvia": {
-          "title": "Darbs Latvijā",
+          "title": "Darbs visā Latvijā",
           "description": "Objekti Rīgā, Pierīgā un citur Latvijā."
         }
       },
-      "categoriesTitle": "Meklējam šādas galvenās kategorijas",
+      "categoriesTitle": "Vakances",
       "categories": {
         "one": "Profesionāli jumiķi",
         "two": "Jumiķa palīgi"
       },
+      "formPanelKicker": "Pieteikšanās",
+      "formPanelTitle": "Aizpildi pieteikumu Tally formā",
+      "formPanelIntro": "Forma ir vienkārša, ātra un piemērota CV pievienošanai. Pēc pieteikuma saņemšanas mēs sazināsimies ar kandidātiem, kuru profils atbilst vakancēm.",
       "formTitle": "Pieteikties vakancei",
-      "formIntro": "Aizpildi pieteikumu un pievieno savu CV. Mēs sazināsimies ar kandidātiem, kuru profils atbilst darba iespējām.",
+      "formIntro": "Aizpildi pieteikumu un pievieno savu CV.",
       "formHint": "CV pievieno PDF, DOC vai DOCX formātā līdz 10 MB.",
+      "formBadge": "Tally forma",
+      "formFeatures": {
+        "direct": {
+          "title": "Tieši komandai",
+          "description": "Pieteikums nonāk pie mūsu komandas bez liekas starpniecības."
+        },
+        "fast": {
+          "title": "Ātra aizpildīšana",
+          "description": "Forma ir ērta arī telefonā un neaizņem daudz laika."
+        },
+        "review": {
+          "title": "Operatīva izskatīšana",
+          "description": "Mēs pārskatām pieteikumus un sazināmies ar piemērotajiem kandidātiem."
+        }
+      },
       "fields": {
         "fullName": "Vārds un uzvārds",
         "email": "E-pasts",
@@ -86,7 +104,7 @@
         "cv": "Pievieno CV",
         "submit": "Nosūtīt pieteikumu",
         "sending": "Sūta...",
-        "success": "Pieteikums nosūtīts. Mēs sazināsimies ar tevi tuvākajā laikā.",
+        "success": "Pieteikums nosūtīts. Mēs ar tevi sazināsimies tuvākajā laikā.",
         "error": "Radās kļūda, nosūtot pieteikumu. Lūdzu, mēģini vēlreiz vai raksti uz contact@uproof.eu.",
         "fileError": "CV jābūt PDF, DOC vai DOCX failam līdz 10 MB.",
         "requiredError": "Šis lauks ir obligāts"

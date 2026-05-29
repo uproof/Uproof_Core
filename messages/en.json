@@ -45,34 +45,52 @@
     "career": {
       "title": "Careers at UpRoof",
       "heroKicker": "Working at UpRoof",
-      "heroIntro": "We are looking for people who want to work with clear processes, high standards, and tangible results.",
+      "heroIntro": "We are looking for roofers and roofing assistants who want to work in a well-organized team with a clear process and quality results.",
       "eyebrow": "Careers at UpRoof",
-      "intro": "Join a team that delivers high-quality roofing projects across Latvia. We are looking for reliable people who value precision, safety, and a steady work culture.",
+      "intro": "Join UpRoof and work on roofing projects across Latvia with a safe workplace, an organized process, and long-term cooperation.",
       "benefitsLabel": "What we offer",
-      "benefitsTitle": "Stable work with a clear approach",
-      "benefitsIntro": "These are the main reasons people choose to work with us. We stay focused on a clear process, quality work, and long-term cooperation.",
+      "benefitsTitle": "Stable work with a clear process",
+      "benefitsIntro": "We value precision, safety, and a responsible attitude. The team works with a structured rhythm and reliable quality.",
       "benefits": {
         "schedule": {
-          "title": "Stable work schedule",
+          "title": "Clear work rhythm",
           "description": "Work with a predictable plan and an organized day-to-day flow."
         },
         "work": {
-          "title": "Quality projects",
-          "description": "Work on well-managed jobs with visible results."
+          "title": "Quality sites",
+          "description": "Work on carefully organized jobs with visible results."
         },
         "latvia": {
           "title": "Work across Latvia",
           "description": "Projects in Riga, the surrounding region, and beyond."
         }
       },
-      "categoriesTitle": "We are hiring for",
+      "categoriesTitle": "Open roles",
       "categories": {
         "one": "Professional roofers",
         "two": "Roofing assistants"
       },
+      "formPanelKicker": "Application",
+      "formPanelTitle": "Complete the application in Tally",
+      "formPanelIntro": "The form is simple, quick, and ready for CV uploads. After review, we will contact candidates whose profile matches the role.",
       "formTitle": "Apply for a role",
-      "formIntro": "Fill in the application and attach your CV. We will contact candidates whose profile matches the role.",
+      "formIntro": "Fill in the application and attach your CV.",
       "formHint": "Upload a PDF, DOC, or DOCX CV up to 10 MB.",
+      "formBadge": "Tally form",
+      "formFeatures": {
+        "direct": {
+          "title": "Direct to our team",
+          "description": "Your application goes straight to the team, without extra steps."
+        },
+        "fast": {
+          "title": "Quick to complete",
+          "description": "The form is easy to use on mobile and takes only a few minutes."
+        },
+        "review": {
+          "title": "Reviewed promptly",
+          "description": "We review applications and contact suitable candidates."
+        }
+      },
       "fields": {
         "fullName": "Full name",
         "email": "Email",

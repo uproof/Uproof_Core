@@ -49,34 +49,52 @@
     "career": {
       "title": "Werken bij UpRoof",
       "heroKicker": "Werken bij UpRoof",
-      "heroIntro": "We zoeken mensen die willen werken met duidelijke processen, hoge standaarden en tastbare resultaten.",
+      "heroIntro": "We are looking for roofers and roofing assistants who want to work in a well-organized team with a clear process and quality results.",
       "eyebrow": "Werken bij UpRoof",
-      "intro": "Sluit je aan bij een team dat hoogwaardige dakprojecten uitvoert in heel Letland. We zoeken betrouwbare mensen die precisie, veiligheid en een stabiele werkcultuur waarderen.",
-      "benefitsLabel": "Wat wij bieden",
-      "benefitsTitle": "Stabiel werk met een duidelijke aanpak",
-      "benefitsIntro": "Dit zijn de belangrijkste redenen waarom mensen bij ons willen werken. We blijven gericht op een helder proces, kwaliteitswerk en langdurige samenwerking.",
+      "intro": "Join UpRoof and work on roofing projects across Latvia with a safe workplace, an organized process, and long-term cooperation.",
+      "benefitsLabel": "What we offer",
+      "benefitsTitle": "Stable work with a clear process",
+      "benefitsIntro": "We value precision, safety, and a responsible attitude. The team works with a structured rhythm and reliable quality.",
       "benefits": {
         "schedule": {
-          "title": "Stabiel werkschema",
-          "description": "Werk met een voorspelbare planning en een georganiseerde dagelijkse flow."
+          "title": "Clear work rhythm",
+          "description": "Work with a predictable plan and an organized day-to-day flow."
         },
         "work": {
-          "title": "Kwaliteitsprojecten",
-          "description": "Werk aan goed georganiseerde projecten met zichtbare resultaten."
+          "title": "Quality sites",
+          "description": "Work on carefully organized jobs with visible results."
         },
         "latvia": {
-          "title": "Werk in Letland",
-          "description": "Projecten in Riga, de regio en daarbuiten."
+          "title": "Work across Latvia",
+          "description": "Projects in Riga, the surrounding region, and beyond."
         }
       },
-      "categoriesTitle": "We zoeken voor de volgende hoofdcategorieën",
+      "categoriesTitle": "Open roles",
       "categories": {
-        "one": "Professionele dakdekkers",
-        "two": "Dakdekker hulpen"
+        "one": "Professional roofers",
+        "two": "Roofing assistants"
       },
-      "formTitle": "Solliciteer op een functie",
-      "formIntro": "Vul de aanvraag in en voeg je cv toe. We nemen contact op met kandidaten waarvan het profiel past bij de functie.",
-      "formHint": "Upload een pdf-, doc- of docx-cv tot 10 MB.",
+      "formPanelKicker": "Application",
+      "formPanelTitle": "Complete the application in Tally",
+      "formPanelIntro": "The form is simple, quick, and ready for CV uploads. After review, we will contact candidates whose profile matches the role.",
+      "formTitle": "Apply for a role",
+      "formIntro": "Fill in the application and attach your CV.",
+      "formHint": "Upload a PDF, DOC, or DOCX CV up to 10 MB.",
+      "formBadge": "Tally form",
+      "formFeatures": {
+        "direct": {
+          "title": "Direct to our team",
+          "description": "Your application goes straight to the team, without extra steps."
+        },
+        "fast": {
+          "title": "Quick to complete",
+          "description": "The form is easy to use on mobile and takes only a few minutes."
+        },
+        "review": {
+          "title": "Reviewed promptly",
+          "description": "We review applications and contact suitable candidates."
+        }
+      },
       "fields": {
         "fullName": "Volledige naam",
         "email": "E-mail",
@@ -87,12 +105,12 @@
         "experiencePlaceholder": "2+ jaar ervaring",
         "message": "Vertel iets over jezelf",
         "messagePlaceholder": "Vertel ons welk werk je zoekt en wat je ervaring is.",
-        "cv": "Voeg cv toe",
-        "submit": "Verstuur aanvraag",
-        "sending": "Versturen...",
+        "cv": "Cv toevoegen",
+        "submit": "Aanvraag verzenden",
+        "sending": "Verzenden...",
         "success": "Aanvraag verzonden. We nemen binnenkort contact op.",
         "error": "Er ging iets mis bij het verzenden van de aanvraag. Probeer het opnieuw of mail naar contact@uproof.eu.",
-        "fileError": "Het cv moet een PDF-, DOC- of DOCX-bestand zijn van maximaal 10 MB.",
+        "fileError": "Cv moet een PDF-, DOC- of DOCX-bestand zijn van maximaal 10 MB.",
         "requiredError": "Dit veld is verplicht"
       }
     },
