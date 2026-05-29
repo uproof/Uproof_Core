@@ -11,7 +11,7 @@ import {
 } from '@heroicons/react/24/outline';
 import type {CareerJob} from '@/lib/career';
 
-const careerFormUrl = 'https://tally.so/r/zxLx4q?hideTitle=1&transparentBackground=1&alignLeft=1';
+const careerFormUrl = 'https://tally.so/r/zxLx4q?hideTitle=1&alignLeft=1';
 
 type Props = {
   jobs: CareerJob[];
@@ -53,23 +53,26 @@ export default function CareerSection({jobs}: Props) {
               </p>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-4">
               {activeJobs.length > 0 ? activeJobs.map((job) => (
-                <article key={job.id} className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition-transform duration-300 hover:-translate-y-1">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <h3 className="text-lg font-bold text-gray-900">{job.title}</h3>
-                      <p className="mt-1 text-sm text-gray-500">{job.location}</p>
+                <article key={job.id} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-transform duration-300 hover:-translate-y-1 md:p-7">
+                  <div className="flex flex-wrap items-start justify-between gap-4">
+                    <div className="space-y-2">
+                      <h3 className="text-xl font-bold text-gray-900">{job.title}</h3>
+                      <p className="text-sm font-medium text-gray-500">{job.location}</p>
                     </div>
                     <span className="rounded-full bg-primary-50 px-3 py-1 text-xs font-semibold text-primary-700">
                       {job.type}
                     </span>
                   </div>
-                  <p className="mt-4 text-sm leading-relaxed text-gray-600">{job.summary}</p>
-                  <p className="mt-3 text-sm leading-relaxed text-gray-500">{job.description}</p>
+
+                  <div className="mt-5 space-y-3 border-t border-gray-100 pt-5">
+                    <p className="text-sm leading-relaxed text-gray-600">{job.summary}</p>
+                    <p className="text-sm leading-relaxed text-gray-500">{job.description}</p>
+                  </div>
                 </article>
               )) : (
-                <div className="rounded-2xl border border-dashed border-gray-300 bg-white p-6 text-sm text-gray-500 sm:col-span-2">
+                <div className="rounded-2xl border border-dashed border-gray-300 bg-white p-6 text-sm text-gray-500">
                   {t('jobsEmpty')}
                 </div>
               )}
@@ -102,11 +105,11 @@ export default function CareerSection({jobs}: Props) {
               </p>
               <p className="mt-3 text-sm text-gray-500">{t('formHint')}</p>
 
-              <div className="mt-6 overflow-hidden rounded-[1.5rem] border border-gray-200 bg-gray-50 p-3 shadow-inner md:p-5 lg:p-6">
+              <div className="mt-6 overflow-hidden rounded-[1.5rem] border border-gray-200 bg-white p-4 shadow-inner md:p-6 lg:p-7">
                 <iframe
                   src={careerFormUrl}
                   title={t('formTitle')}
-                  className="h-[1450px] w-full border-0 bg-white"
+                  className="h-[1260px] w-full border-0 bg-white"
                   loading="lazy"
                 />
               </div>
