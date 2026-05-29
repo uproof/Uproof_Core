@@ -16,6 +16,7 @@ export type KeywordIntent =
   | 'painting'
   | 'profile'
   | 'technical'
+  | 'career'
   | 'snow-removal';
 
 export interface KeywordMappingEntry {
@@ -27,6 +28,27 @@ export interface KeywordMappingEntry {
 }
 
 export const keywordMapping: KeywordMappingEntry[] = [
+  {
+    keyword: 'profesionāli jumiķi',
+    intent: 'career',
+    primaryUrl: '/lv/career',
+    supportingUrls: ['/lv/services/jumta-buvnieciba', '/lv/about'],
+    notes: 'Career intent for experienced roofers. Route to the hiring page, not a service page.'
+  },
+  {
+    keyword: 'jumiķa palīgi',
+    intent: 'career',
+    primaryUrl: '/lv/career',
+    supportingUrls: ['/lv/services/jumta-buvnieciba', '/lv/about'],
+    notes: 'Entry-level roofing assistant hiring intent; use the career page as canonical.'
+  },
+  {
+    keyword: 'darbs jumiķiem',
+    intent: 'career',
+    primaryUrl: '/lv/career',
+    supportingUrls: ['/lv/services/jumta-buvnieciba', '/lv/services/jumta-renovacija'],
+    notes: 'General roofing jobs intent. Keep the career landing page canonical.'
+  },
   {
     keyword: 'jumta diagnostika',
     intent: 'technical',

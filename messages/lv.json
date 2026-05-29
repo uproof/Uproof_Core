@@ -65,11 +65,10 @@
           "description": "Objekti Rīgā, Pierīgā un citur Latvijā."
         }
       },
-      "categoriesTitle": "Vakances",
-      "categories": {
-        "one": "Profesionāli jumiķi",
-        "two": "Jumiķa palīgi"
-      },
+      "jobsLabel": "Atvērtās vakances",
+      "jobsTitle": "Profesionāli jumiķi un jumiķa palīgi",
+      "jobsIntro": "Šeit redzēsi aktuālās vakances, kuras var pievienot vai atjaunināt no admin paneļa bez programmēšanas.",
+      "jobsEmpty": "Pašlaik nav publicētu vakances pozīciju. Pievieno tās admin panelī, lai tās parādītos šeit.",
       "formPanelKicker": "Pieteikšanās",
       "formPanelTitle": "Aizpildi pieteikumu Tally formā",
       "formPanelIntro": "Forma ir vienkārša, ātra un piemērota CV pievienošanai. Pēc pieteikuma saņemšanas mēs sazināsimies ar kandidātiem, kuru profils atbilst vakancēm.",

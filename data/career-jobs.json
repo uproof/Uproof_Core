@@ -1,0 +1,22 @@
+[
+  {
+    "id": "professional-roofer",
+    "title": "Profesionāls jumiķis",
+    "location": "Rīga, Pierīga un objekti visā Latvijā",
+    "type": "Pilna slodze",
+    "summary": "Darbs pie kvalitatīviem jumta projektiem ar sakārtotu procesu, drošu darba vidi un stabilu komandu.",
+    "description": "Ideāli piemērots pieredzējušam jumiķim, kurš pārzina jumta montāžu, precīzu mezglu izpildi un atbildīgu darbu uz objekta.",
+    "active": true,
+    "order": 1
+  },
+  {
+    "id": "roofing-assistant",
+    "title": "Jumiķa palīgs",
+    "location": "Rīga, Pierīga un objekti visā Latvijā",
+    "type": "Pilna slodze",
+    "summary": "Ieejas līmeņa vakance cilvēkam, kurš vēlas mācīties jumta darbus un augt kopā ar pieredzējušu komandu.",
+    "description": "Piemērots kandidātam ar atbildīgu attieksmi, vēlmi strādāt fizisku darbu un apgūt jumiķa prasmes praksē.",
+    "active": true,
+    "order": 2
+  }
+]

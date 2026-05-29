@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import CareerSection from '@/components/CareerSection';
+import {getCareerJobs} from '@/lib/career';
 
 type Props = {
   params: Promise<{locale: string}>;
@@ -11,15 +12,38 @@ type Props = {
 
 const titles: Record<string, string> = {
   // Latvian title uses 'Darbs' instead of 'Karjera'
-  lv: 'Darbs UpRoof | Vakances jumta nozarē Latvijā',
-  en: 'Careers at UpRoof | Roofing Jobs in Latvia',
-  'nl-BE': 'Werken bij UpRoof | Dakvacatures in Letland',
+  lv: 'Darbs UpRoof | Profesionāli jumiķi un jumiķa palīgi',
+  en: 'Careers at UpRoof | Professional Roofers and Assistants',
+  'nl-BE': 'Werken bij UpRoof | Dakwerkers en assistenten',
 };
 
 const descriptions: Record<string, string> = {
-  lv: 'Pievienojies UpRoof komandai un piesakiies vakancēm jumta nozarē. Aizpildi pieteikumu, pievieno savu CV un mēs sazināsimies ar kandidātiem.',
-  en: 'Join the UpRoof team and apply for roofing jobs in Latvia. Fill out the application, attach your CV, and we will contact shortlisted candidates.',
-  'nl-BE': 'Sluit je aan bij het UpRoof-team en solliciteer naar dakvacatures in Letland. Vul het formulier in, voeg je cv toe en wij nemen contact op met geselecteerde kandidaten.',
+  lv: 'Apskati vakances profesionāliem jumiķiem un jumiķa palīgiem UpRoof komandā. Aizpildi pieteikumu un pievieno savu CV.',
+  en: 'See open jobs for professional roofers and roofing assistants at UpRoof. Fill out the application and attach your CV.',
+  'nl-BE': 'Bekijk vacatures voor dakwerkers en assistenten bij UpRoof. Vul het formulier in en voeg je cv toe.',
+};
+
+const keywords: Record<string, string[]> = {
+  lv: [
+    'darbs jumiķiem',
+    'profesionāli jumiķi',
+    'jumiķa palīgi',
+    'vakances jumta nozarē',
+    'darbs jumta nozarē Latvijā',
+    'jumiķu vakances',
+  ],
+  en: [
+    'roofing jobs Latvia',
+    'professional roofers',
+    'roofing assistants',
+    'roofing vacancies',
+  ],
+  'nl-BE': [
+    'dakwerk vacatures',
+    'dakwerkers',
+    'assistent dakwerker',
+    'jobs in de daksector',
+  ],
 };
 
 export async function generateMetadata({params}: Props): Promise<Metadata> {
@@ -29,6 +53,7 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
   return {
     title: titles[locale] || titles.lv,
     description: descriptions[locale] || descriptions.lv,
+    keywords: keywords[locale] || keywords.lv,
     alternates: {
       canonical,
       languages: {
@@ -56,6 +81,66 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 export default async function CareerPage({params}: Props) {
   const {locale} = await params;
   const t = await getTranslations({locale, namespace: 'pages.career'});
+  const canonical = `https://uproof.eu/${locale}/career`;
+  const jobs = await getCareerJobs();
+  const pageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${canonical}#webpage`,
+    url: canonical,
+    name: titles[locale] || titles.lv,
+    description: descriptions[locale] || descriptions.lv,
+    inLanguage: locale === 'lv' ? 'lv-LV' : locale === 'en' ? 'en-US' : 'nl-BE',
+    about: [
+      {
+        '@type': 'Thing',
+        name: locale === 'lv' ? 'Profesionāli jumiķi' : 'Professional roofers',
+      },
+      {
+        '@type': 'Thing',
+        name: locale === 'lv' ? 'Jumiķa palīgi' : 'Roofing assistants',
+      },
+    ],
+    isPartOf: {
+      '@type': 'WebSite',
+      '@id': 'https://uproof.eu/#website',
+      url: 'https://uproof.eu',
+      name: 'UpRoof',
+    },
+  };
+
+  const jobListSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: titles[locale] || titles.lv,
+    itemListElement: jobs
+      .filter((job) => job.active !== false)
+      .map((job, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        item: {
+          '@type': 'JobPosting',
+          title: job.title,
+          description: job.summary,
+          datePosted: new Date().toISOString().slice(0, 10),
+          employmentType: job.type,
+          hiringOrganization: {
+            '@type': 'Organization',
+            '@id': 'https://uproof.eu/#organization',
+            name: 'UpRoof',
+            sameAs: 'https://uproof.eu',
+          },
+          jobLocation: {
+            '@type': 'Place',
+            address: {
+              '@type': 'PostalAddress',
+              addressLocality: job.location,
+              addressCountry: 'LV',
+            },
+          },
+        },
+      })),
+  };
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -86,7 +171,17 @@ export default async function CareerPage({params}: Props) {
         </div>
       </section>
 
-      <CareerSection />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{__html: JSON.stringify(pageSchema)}}
+      />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{__html: JSON.stringify(jobListSchema)}}
+      />
+
+      <CareerSection jobs={jobs} />
       <Footer />
     </main>
   );

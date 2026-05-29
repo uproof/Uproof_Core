@@ -65,11 +65,10 @@
           "description": "Projects in Riga, the surrounding region, and beyond."
         }
       },
-      "categoriesTitle": "Open roles",
-      "categories": {
-        "one": "Professional roofers",
-        "two": "Roofing assistants"
-      },
+      "jobsLabel": "Open jobs",
+      "jobsTitle": "Professional roofers and roofing assistants",
+      "jobsIntro": "Here you’ll see the current job positions that can be added or updated from the admin panel without coding.",
+      "jobsEmpty": "There are no published job positions yet. Add them in the admin panel and they will appear here.",
       "formPanelKicker": "Application",
       "formPanelTitle": "Complete the application in Tally",
       "formPanelIntro": "The form is simple, quick, and ready for CV uploads. After review, we will contact candidates whose profile matches the role.",

@@ -4,7 +4,8 @@ import {
   PencilSquareIcon,
   DocumentTextIcon,
   HomeIcon,
-  ChartBarIcon
+  ChartBarIcon,
+  BriefcaseIcon,
 } from '@heroicons/react/24/outline';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import {isAdminAuthenticated} from '@/lib/adminAuth';
@@ -123,6 +124,29 @@ export default async function AdminDashboard({params}: {params: Promise<{locale:
               <p className="text-gray-600 mb-4">Manage portfolio projects and gallery</p>
               <div className="flex items-center text-orange-600 font-semibold">
                 Manage Projects
+                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+              </div>
+            </div>
+          </Link>
+
+          {/* Career Positions Manager */}
+          <Link href={`/${locale}/admin/career`}>
+            <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow cursor-pointer group">
+              <div className="flex items-center justify-between mb-4">
+                <div className="bg-emerald-100 p-3 rounded-lg group-hover:bg-emerald-200 transition-colors">
+                  <BriefcaseIcon className="w-8 h-8 text-emerald-600" />
+                </div>
+                <span className="text-sm font-semibold text-green-600 flex items-center gap-1">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  Active
+                </span>
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Career Positions</h3>
+              <p className="text-gray-600 mb-4">Add, edit, or hide job positions without code changes</p>
+              <div className="flex items-center text-emerald-600 font-semibold">
+                Manage Careers
                 <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
               </div>
             </div>
