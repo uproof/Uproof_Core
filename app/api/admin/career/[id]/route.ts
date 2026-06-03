@@ -1,6 +1,20 @@
 import {NextRequest, NextResponse} from 'next/server';
+import {revalidatePath} from 'next/cache';
 import {isAdminAuthenticated} from '@/lib/adminAuth';
 import {CareerJob, getCareerJobs, normalizeCareerJob, saveCareerJobs} from '@/lib/career';
+import {pingGoogleSitemap} from '@/lib/careerSeo';
+
+function refreshCareerArtifacts(jobs: CareerJob[]) {
+  for (const locale of ['lv', 'en', 'nl-BE']) {
+    revalidatePath(`/${locale}/career`);
+    for (const job of jobs.filter((item) => item.active !== false)) {
+      revalidatePath(`/${locale}/career/${job.slug}`);
+    }
+  }
+
+  revalidatePath('/career-sitemap.xml');
+  revalidatePath('/sitemap_index.xml');
+}
 
 export async function PATCH(request: NextRequest, {params}: {params: Promise<{id: string}>}) {
   if (!(await isAdminAuthenticated())) {
@@ -27,6 +41,12 @@ export async function PATCH(request: NextRequest, {params}: {params: Promise<{id
       description: String(body.description ?? current.description).trim(),
       active: body.active ?? current.active,
       order: Number(body.order ?? current.order ?? index + 1),
+      datePosted: String(body.datePosted ?? current.datePosted ?? new Date().toISOString().slice(0, 10)),
+      validThrough: String(body.validThrough ?? current.validThrough ?? '2026-09-01'),
+      addressLocality: String(body.addressLocality ?? current.addressLocality ?? 'Riga'),
+      addressRegion: String(body.addressRegion ?? current.addressRegion ?? 'Pierīga'),
+      addressCountry: String(body.addressCountry ?? current.addressCountry ?? 'LV'),
+      updatedAt: new Date().toISOString(),
     });
 
     if (!updated.title || !updated.location || !updated.type || !updated.summary || !updated.description) {
@@ -36,6 +56,8 @@ export async function PATCH(request: NextRequest, {params}: {params: Promise<{id
     jobs[index] = updated;
     jobs.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     await saveCareerJobs(jobs);
+    refreshCareerArtifacts(jobs);
+    await pingGoogleSitemap('https://uproof.eu/career-sitemap.xml');
 
     return NextResponse.json({job: updated});
   } catch (error) {
@@ -59,6 +81,8 @@ export async function DELETE(_: NextRequest, {params}: {params: Promise<{id: str
     }
 
     await saveCareerJobs(nextJobs);
+    refreshCareerArtifacts(nextJobs);
+    await pingGoogleSitemap('https://uproof.eu/career-sitemap.xml');
     return NextResponse.json({success: true});
   } catch (error) {
     console.error('Error deleting career job:', error);

@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import {Link} from '@/i18n/routing';
 import {projects} from '@/data/projects';
+import {getServicePath} from '@/lib/serviceSeo';
 
 type PageProps = {
   params: Promise<{locale: string; slug: string}>;
@@ -191,7 +192,7 @@ export default async function ProjectDetailPage({params}: PageProps) {
               {linkedServices.map((s) => (
                 <li key={s.serviceKey}>
                   <Link
-                    href={`/services/${s.slug}`}
+                    href={getServicePath(locale, s.slug)}
                     className="inline-flex px-3 py-1.5 text-sm font-medium bg-primary-50 text-primary-700 rounded-lg hover:bg-primary-100"
                   >
                     {t(`serviceTags.${s.serviceKey}`)}

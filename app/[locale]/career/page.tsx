@@ -5,20 +5,22 @@ import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import CareerSection from '@/components/CareerSection';
 import {getCareerJobs} from '@/lib/career';
+import {getCareerJobStructuredData, getCareerJobUrl} from '@/lib/careerSeo';
+
+export const dynamic = 'force-dynamic';
 
 type Props = {
   params: Promise<{locale: string}>;
 };
 
 const titles: Record<string, string> = {
-  // Latvian title uses 'Darbs' instead of 'Karjera'
-  lv: 'Darbs UpRoof | Profesionāli jumiķi un jumiķa palīgi',
+  lv: 'Vakances: Darbs Jumiķiem un Palīgiem Rīgā | UpRoof',
   en: 'Careers at UpRoof | Professional Roofers and Assistants',
   'nl-BE': 'Werken bij UpRoof | Dakwerkers en assistenten',
 };
 
 const descriptions: Record<string, string> = {
-  lv: 'Apskati vakances profesionāliem jumiķiem un jumiķa palīgiem UpRoof komandā. Aizpildi pieteikumu un pievieno savu CV.',
+  lv: 'Apskati aktuālās vakances profesionāliem jumiķiem un jumiķa palīgiem UpRoof komandā. Atver konkrētu vakanci, apskati detaļas un piesakies tieši.',
   en: 'See open jobs for professional roofers and roofing assistants at UpRoof. Fill out the application and attach your CV.',
   'nl-BE': 'Bekijk vacatures voor dakwerkers en assistenten bij UpRoof. Vul het formulier in en voeg je cv toe.',
 };
@@ -49,10 +51,12 @@ const keywords: Record<string, string[]> = {
 export async function generateMetadata({params}: Props): Promise<Metadata> {
   const {locale} = await params;
   const canonical = `https://uproof.eu/${locale}/career`;
+  const title = titles[locale] || titles.lv;
+  const description = descriptions[locale] || descriptions.lv;
 
   return {
-    title: titles[locale] || titles.lv,
-    description: descriptions[locale] || descriptions.lv,
+    title,
+    description,
     keywords: keywords[locale] || keywords.lv,
     alternates: {
       canonical,
@@ -64,16 +68,25 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
       },
     },
     openGraph: {
-      title: titles[locale] || titles.lv,
-      description: descriptions[locale] || descriptions.lv,
+      title,
+      description,
       url: canonical,
       type: 'website',
       siteName: 'UpRoof',
+      images: [
+        {
+          url: '/images/icons/career-header.png',
+          width: 1200,
+          height: 630,
+          alt: 'UpRoof karjeras vakances jumiķiem',
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: titles[locale] || titles.lv,
-      description: descriptions[locale] || descriptions.lv,
+      title,
+      description,
+      images: ['/images/icons/career-header.png'],
     },
   };
 }
@@ -83,6 +96,7 @@ export default async function CareerPage({params}: Props) {
   const t = await getTranslations({locale, namespace: 'pages.career'});
   const canonical = `https://uproof.eu/${locale}/career`;
   const jobs = await getCareerJobs();
+  const activeJobs = jobs.filter((job) => job.active !== false);
   const pageSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
@@ -107,39 +121,6 @@ export default async function CareerPage({params}: Props) {
       url: 'https://uproof.eu',
       name: 'UpRoof',
     },
-  };
-
-  const jobListSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    name: titles[locale] || titles.lv,
-    itemListElement: jobs
-      .filter((job) => job.active !== false)
-      .map((job, index) => ({
-        '@type': 'ListItem',
-        position: index + 1,
-        item: {
-          '@type': 'JobPosting',
-          title: job.title,
-          description: job.summary,
-          datePosted: new Date().toISOString().slice(0, 10),
-          employmentType: job.type,
-          hiringOrganization: {
-            '@type': 'Organization',
-            '@id': 'https://uproof.eu/#organization',
-            name: 'UpRoof',
-            sameAs: 'https://uproof.eu',
-          },
-          jobLocation: {
-            '@type': 'Place',
-            address: {
-              '@type': 'PostalAddress',
-              addressLocality: job.location,
-              addressCountry: 'LV',
-            },
-          },
-        },
-      })),
   };
 
   return (
@@ -176,12 +157,17 @@ export default async function CareerPage({params}: Props) {
         dangerouslySetInnerHTML={{__html: JSON.stringify(pageSchema)}}
       />
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{__html: JSON.stringify(jobListSchema)}}
-      />
+      {activeJobs.map((job) => (
+        <script
+          key={job.id}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(getCareerJobStructuredData(job, locale, getCareerJobUrl(locale, job))),
+          }}
+        />
+      ))}
 
-      <CareerSection jobs={jobs} />
+      <CareerSection jobs={jobs} locale={locale} />
       <Footer />
     </main>
   );

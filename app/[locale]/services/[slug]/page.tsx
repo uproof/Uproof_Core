@@ -8,6 +8,7 @@ import Section from '@/components/Section';
 import Card from '@/components/Card';
 import Grid from '@/components/Grid';
 import {notFound} from 'next/navigation';
+import {getCanonicalServiceSlug, getLocalizedServiceSlug, getServiceLanguages} from '@/lib/serviceSeo';
 
 // Service slugs focused on Latvian queries
 const SERVICE_SLUGS = [
@@ -32,7 +33,7 @@ type PageProps = {
 
 export function generateStaticParams() {
   const locales = ['lv','en','nl-BE'];
-  return locales.flatMap(locale => SERVICE_SLUGS.map(slug => ({ locale, slug })));
+  return locales.flatMap((locale) => SERVICE_SLUGS.map((slug) => ({ locale, slug: getLocalizedServiceSlug(locale, slug) })));
 }
 
 // Multi-locale metadata with geographic keywords per region
@@ -759,7 +760,8 @@ function getServiceFAQs(slug: string, locale: string): Array<{q: string; a: stri
 
 export async function generateMetadata({params}: PageProps): Promise<Metadata> {
   const {locale, slug} = await params;
-  if (!SERVICE_SLUGS.includes(slug)) {
+  const serviceSlug = getCanonicalServiceSlug(locale, slug);
+  if (!SERVICE_SLUGS.includes(serviceSlug as (typeof SERVICE_SLUGS)[number])) {
     return {
       title: 'Page Not Found | UpRoof',
       robots: {
@@ -772,16 +774,11 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
       }
     };
   }
-  const entry = META[slug];
-  const canonical = `https://uproof.eu/${locale}/services/${slug}`;
+  const entry = META[serviceSlug];
+  const canonical = `https://uproof.eu/${locale}/services/${getLocalizedServiceSlug(locale, serviceSlug)}`;
   
   // Generate hreflang alternates for this service page across all locales
-  const languages: Record<string, string> = {
-    lv: `https://uproof.eu/lv/services/${slug}`,
-    en: `https://uproof.eu/en/services/${slug}`,
-    'nl-BE': `https://uproof.eu/nl-BE/services/${slug}`,
-    'x-default': `https://uproof.eu/lv/services/${slug}`, // Default to Latvian
-  };
+  const languages = getServiceLanguages(serviceSlug);
   
   const title = entry?.title[locale] || entry?.title.lv || 'Jumta pakalpojums Rīgā | UpRoof';
   const descriptionBase = entry?.description[locale] || entry?.description.lv || 'Profesionāli jumta pakalpojumi Rīgā, Pierīgā un visā Latvijā ar garantiju.';
@@ -825,10 +822,11 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
 
 export default async function ServiceLanding({params}: PageProps) {
   const {locale, slug} = await params;
-  if (!SERVICE_SLUGS.includes(slug)) {
+  const serviceSlug = getCanonicalServiceSlug(locale, slug);
+  if (!SERVICE_SLUGS.includes(serviceSlug as (typeof SERVICE_SLUGS)[number])) {
     notFound();
   }
-  const meta = META[slug];
+  const meta = META[serviceSlug];
   const title = meta?.title[locale] || meta?.title.lv || 'Jumta pakalpojums';
   const baseTitle = title.split('|')[0]?.trim() || 'Jumta pakalpojums';
   const uiTitle = baseTitle
@@ -872,7 +870,7 @@ export default async function ServiceLanding({params}: PageProps) {
     : 'Ātra reakcija Rīgā, Jūrmalā, Jelgavā, Ogrē, Salaspilī, Ķekavā un Pierīgā (1-2 darba dienas). Bezmaksas novērtējums visās apkalpojamās teritorijās.';
 
   // Service-specific detailed content
-  const serviceContent = getServiceContent(slug, locale);
+  const serviceContent = getServiceContent(serviceSlug, locale);
 
   const commonBenefits: Record<string, string[]> = {
     lv: ['Sertificēta un pieredzējusi brigāde', 'Precīza darbu dokumentācija un kontrole', 'Skaidra tāme un termiņi pirms darbu sākuma'],
@@ -902,10 +900,10 @@ export default async function ServiceLanding({params}: PageProps) {
   const serviceSchema = {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    '@id': `https://uproof.eu/${locale}/services/${slug}#service`,
+    '@id': `https://uproof.eu/${locale}/services/${getLocalizedServiceSlug(locale, serviceSlug)}#service`,
     name: baseTitle,
     serviceType: baseTitle,
-    url: `https://uproof.eu/${locale}/services/${slug}`,
+    url: `https://uproof.eu/${locale}/services/${getLocalizedServiceSlug(locale, serviceSlug)}`,
     inLanguage: locale === 'lv' ? 'lv-LV' : locale === 'en' ? 'en-US' : 'nl-BE',
     // Locale-specific geographic areas served
     areaServed: locale === 'nl-BE' ? [
@@ -983,7 +981,7 @@ export default async function ServiceLanding({params}: PageProps) {
         '@type': 'ListItem',
         position: 3,
         name: baseTitle,
-        item: `https://uproof.eu/${locale}/services/${slug}`,
+        item: `https://uproof.eu/${locale}/services/${getLocalizedServiceSlug(locale, serviceSlug)}`,
       },
     ],
   };
@@ -1004,7 +1002,7 @@ export default async function ServiceLanding({params}: PageProps) {
     'jumta-logu-montaza': '/images/services/skylights.webp',
     'saules-dakstini': '/images/services/tiledroofs.webp',
   };
-  const heroImage = heroImages[slug] || '/images/services/construction.webp';
+  const heroImage = heroImages[serviceSlug] || '/images/services/construction.webp';
 
   const lvSeoBoostBySlug: Record<string, {heading: string; paragraphs: string[]}> = {
     'valcprofila-montaza': {
@@ -1050,7 +1048,7 @@ export default async function ServiceLanding({params}: PageProps) {
       ]
     }
   };
-  const lvSeoBoost = locale === 'lv' ? lvSeoBoostBySlug[slug] : undefined;
+  const lvSeoBoost = locale === 'lv' ? lvSeoBoostBySlug[serviceSlug] : undefined;
 
   return (
     <main className="min-h-screen">

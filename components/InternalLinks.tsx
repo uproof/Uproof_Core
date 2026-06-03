@@ -1,6 +1,7 @@
 import {Link} from '@/i18n/routing';
 import type { Locale } from '@/lib/cities';
 import CitiesPopover from '@/components/CitiesPopover';
+import {getServicePath} from '@/lib/serviceSeo';
 
 type InternalLinksProps = {
   locale: string | Locale;
@@ -108,10 +109,10 @@ export default function InternalLinks({ locale, currentSlug, context }: Internal
             <h3 className="font-semibold text-gray-800 text-lg">{servicesLabel}</h3>
             <ul className="space-y-2 text-sm">
               {context !== 'service' && SERVICE_SLUGS.slice(0,4).map(slug => (
-                <li key={slug}><Link href={`/services/${slug}`} className="text-primary-700 hover:underline">{serviceAnchor(slug, locale)}</Link></li>
+                <li key={slug}><Link href={getServicePath(locale, slug)} className="text-primary-700 hover:underline">{serviceAnchor(slug, locale)}</Link></li>
               ))}
               {context === 'service' && relatedServices.slice(0,5).map(slug => (
-                <li key={slug}><Link href={`/services/${slug}`} className="text-primary-700 hover:underline">{serviceAnchor(slug, locale)}</Link></li>
+                <li key={slug}><Link href={getServicePath(locale, slug)} className="text-primary-700 hover:underline">{serviceAnchor(slug, locale)}</Link></li>
               ))}
             </ul>
           </nav>

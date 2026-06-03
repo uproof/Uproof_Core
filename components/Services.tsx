@@ -1,9 +1,10 @@
 'use client';
 
-import {useTranslations} from 'next-intl';
+import {useLocale, useTranslations} from 'next-intl';
 import {motion} from 'framer-motion';
 import Image from 'next/image';
 import {Link, useRouter} from '@/i18n/routing';
+import {getServicePath} from '@/lib/serviceSeo';
 
 type ServicesProps = {
   limit?: number;
@@ -12,6 +13,7 @@ type ServicesProps = {
 export default function Services({ limit }: ServicesProps) {
   const t = useTranslations('home.services');
   const tButtons = useTranslations('home.services.buttons');
+  const locale = useLocale();
   const router = useRouter();
 
   const isInteractiveTarget = (target: EventTarget | null): boolean => {
@@ -26,73 +28,73 @@ export default function Services({ limit }: ServicesProps) {
         bold: (chunks) => <strong>{chunks}</strong>,
       }),
       image: '/images/services/construction.webp',
-      link: '/services/jumta-buvnieciba'
+      link: getServicePath(locale, 'jumta-buvnieciba')
     },
     {
       title: t('roofStructure.title'),
       description: t.rich('roofStructure.description'),
       image: '/images/services/roof-structure.webp',
-      link: '/services/jumta-konstrukciju-montaza'
+      link: getServicePath(locale, 'jumta-konstrukciju-montaza')
     },
     {
       title: t('painting.title'),
       description: t.rich('painting.description'),
       image: '/images/services/Painting.webp',
-      link: '/services/jumta-krasosana'
+      link: getServicePath(locale, 'jumta-krasosana')
     },
     {
       title: t('maintenance.title'),
       description: t.rich('maintenance.description'),
       image: '/images/services/maintenance.webp',
-      link: '/services/jumta-apkope-remonts'
+      link: getServicePath(locale, 'jumta-apkope-remonts')
     },
     {
       title: t('metalProfile.title'),
       description: t.rich('metalProfile.description'),
       image: '/images/services/metalprofile.webp',
-      link: '/services/valcprofila-montaza'
+      link: getServicePath(locale, 'valcprofila-montaza')
     },
     {
       title: t('tiledRoof.title'),
       description: t.rich('tiledRoof.description'),
       image: '/images/services/tiledroofs.webp',
-      link: '/services/dakstinu-montaza'
+      link: getServicePath(locale, 'dakstinu-montaza')
     },
     {
       title: t('skylights.title'),
       description: t.rich('skylights.description'),
       image: '/images/services/skylights.webp',
-      link: '/services/jumta-logu-montaza'
+      link: getServicePath(locale, 'jumta-logu-montaza')
     },
     {
       title: t('gutterSystem.title'),
       description: t.rich('gutterSystem.description'),
       image: '/images/services/guttersystem.webp',
-      link: '/services/noteksistemu-uzstadisana'
+      link: getServicePath(locale, 'noteksistemu-uzstadisana')
     },
     {
       title: t('chimneyConnection.title'),
       description: t.rich('chimneyConnection.description'),
       image: '/images/services/chimney-flashing-installation-repair.webp',
-      link: '/services/skurstena-piesleguma-montaza-labosana'
+      link: getServicePath(locale, 'skurstena-piesleguma-montaza-labosana')
     },
     {
       title: t('tileRoofRepair.title'),
       description: t.rich('tileRoofRepair.description'),
       image: '/images/services/tile-roof-repair.webp',
-      link: '/services/dakstina-jumta-labosana'
+      link: getServicePath(locale, 'dakstina-jumta-labosana')
     },
     {
       title: t('snowRemoval.title'),
       description: t.rich('snowRemoval.description'),
       image: '/images/services/snowremoval.webp',
-      link: '/services/jumta-apkope-remonts'
+      link: getServicePath(locale, 'jumta-apkope-remonts')
     },
     {
       title: t('leafCleaning.title'),
       description: t.rich('leafCleaning.description'),
       image: '/images/services/leafcleaning.webp',
-      link: '/services/jumta-apkope-remonts'
+      link: getServicePath(locale, 'jumta-apkope-remonts')
     },
   ];
 

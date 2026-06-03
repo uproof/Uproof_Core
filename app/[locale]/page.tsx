@@ -40,15 +40,15 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
   };
 
   const titles: Record<string, string> = {
-    lv: 'UpRoof – Jumta būvniecība, renovācija un remonts Latvijā | Sniega tīrīšana 24/7',
-    en: 'UpRoof – Professional Roofing Services in Latvia | Construction, Renovation & Snow Removal 24/7',
-    'nl-BE': 'UpRoof – Professionele Dakdiensten in Letland | Renovatie, Reparatie & Sneeuwruiming',
+    lv: 'UpRoof | Jumta būvniecība, remonts un renovācija Latvijā',
+    en: 'Professional Roofing Services in Latvia | UpRoof',
+    'nl-BE': 'Professionele Dakdiensten in Letland | UpRoof',
   };
 
   const descriptions: Record<string, string> = {
-    lv: 'UpRoof profesionālie jumta pakalpojumi Rīgā, Pierīgā un visā Latvijā: jaunu jumtu būvniecība, renovācija, remonts, metāla jumti, valcprofila montāža, valcprofila jumta montāža, valcprofila jumts Rīga, metāla jumta montāža, dakstiņu jumti, jumta krāsošana, notekas, sniega tīrīšana 24/7. 10 gadu garantija. +371 25612440',
-    en: 'UpRoof professional roofing services in Riga, Jurmala and all Latvia: construction, renovation, repair, metal roofing, tile roofs, painting, gutters, snow & ice removal 24/7. 10-year warranty. +371 25612440',
-    'nl-BE': 'UpRoof professionele dakdiensten in Letland: constructie, renovatie, reparatie, metalen daken, pannendaken, coating, goten, sneeuwruiming 24/7. 10 jaar garantie.',
+    lv: 'Profesionāli jumta pakalpojumi Rīgā, Pierīgā un visā Latvijā: būvniecība, renovācija, remonts, valcprofils, dakstiņi, noteksistēmas un apkope ar garantiju.',
+    en: 'Professional roofing services in Riga and throughout Latvia: construction, renovation, repair, standing seam roofing, tile roofs, gutters and maintenance with warranty.',
+    'nl-BE': 'Professionele dakdiensten in Letland: dakbouw, renovatie, reparatie, staande naad, pannendaken, goten en onderhoud met garantie.',
   };
 
   return {

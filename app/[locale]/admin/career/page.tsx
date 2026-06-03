@@ -4,6 +4,7 @@ import {useEffect, useMemo, useState} from 'react';
 import {useParams} from 'next/navigation';
 import Link from 'next/link';
 import {ArrowLeftIcon, PlusIcon, PencilIcon, TrashIcon, EyeIcon} from '@heroicons/react/24/outline';
+import {getCareerJobPath} from '@/lib/careerSeo';
 
 type CareerJob = {
   id: string;
@@ -316,7 +317,7 @@ export default function CareerManagerPage() {
                   <button onClick={() => handleDelete(job.id)} className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-red-50 text-red-700 hover:bg-red-100 transition">
                     <TrashIcon className="w-4 h-4" /> Delete
                   </button>
-                  <Link href={`/${locale}/career`} className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition">
+                  <Link href={getCareerJobPath(locale, job)} className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition">
                     <EyeIcon className="w-4 h-4" /> View
                   </Link>
                 </div>

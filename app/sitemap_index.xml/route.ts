@@ -14,7 +14,8 @@ export async function GET() {
     '/projects-sitemap.xml',
     '/blog-sitemap.xml',
     '/materials-sitemap.xml',
-    '/cities-sitemap.xml'
+    '/cities-sitemap.xml',
+    '/career-sitemap.xml'
   ];
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls

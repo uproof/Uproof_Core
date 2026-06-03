@@ -1,10 +1,20 @@
 import {NextRequest, NextResponse} from 'next/server';
+import {revalidatePath} from 'next/cache';
 import {isAdminAuthenticated} from '@/lib/adminAuth';
-import fs from 'fs/promises';
-import path from 'path';
 import {CareerJob, getCareerJobs, normalizeCareerJob, saveCareerJobs} from '@/lib/career';
+import {pingGoogleSitemap, slugifyCareerTitle} from '@/lib/careerSeo';
 
-const CAREER_JOBS_FILE = path.join(process.cwd(), 'data', 'career-jobs.json');
+function refreshCareerArtifacts(jobs: CareerJob[]) {
+  for (const locale of ['lv', 'en', 'nl-BE']) {
+    revalidatePath(`/${locale}/career`);
+    for (const job of jobs.filter((item) => item.active !== false)) {
+      revalidatePath(`/${locale}/career/${job.slug}`);
+    }
+  }
+
+  revalidatePath('/career-sitemap.xml');
+  revalidatePath('/sitemap_index.xml');
+}
 
 export async function GET() {
   if (!(await isAdminAuthenticated())) {
@@ -42,6 +52,7 @@ export async function POST(request: NextRequest) {
 
     const newJob: CareerJob = normalizeCareerJob({
       id,
+      slug: body.slug ? String(body.slug).trim() : slugifyCareerTitle(title),
       title,
       location,
       type,
@@ -49,10 +60,18 @@ export async function POST(request: NextRequest) {
       description,
       active: body.active !== false,
       order: Number(body.order ?? jobs.length + 1),
+      datePosted: String(body.datePosted || new Date().toISOString().slice(0, 10)),
+      validThrough: String(body.validThrough || '2026-09-01'),
+      addressLocality: String(body.addressLocality || 'Riga'),
+      addressRegion: String(body.addressRegion || 'Pierīga'),
+      addressCountry: String(body.addressCountry || 'LV'),
+      updatedAt: new Date().toISOString(),
     });
 
     const nextJobs = [...jobs, newJob].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     await saveCareerJobs(nextJobs);
+    refreshCareerArtifacts(nextJobs);
+    await pingGoogleSitemap('https://uproof.eu/career-sitemap.xml');
 
     return NextResponse.json({job: newJob}, {status: 201});
   } catch (error) {

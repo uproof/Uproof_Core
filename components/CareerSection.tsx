@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import {useTranslations} from 'next-intl';
 import {
   BriefcaseIcon,
@@ -10,14 +11,16 @@ import {
   SparklesIcon,
 } from '@heroicons/react/24/outline';
 import type {CareerJob} from '@/lib/career';
+import {getCareerJobPath} from '@/lib/careerSeo';
 
 const careerFormUrl = 'https://tally.so/r/zxLx4q?hideTitle=1&alignLeft=1';
 
 type Props = {
   jobs: CareerJob[];
+  locale: string;
 };
 
-export default function CareerSection({jobs}: Props) {
+export default function CareerSection({jobs, locale}: Props) {
   const t = useTranslations('pages.career');
   const activeJobs = jobs.filter((job) => job.active !== false);
 
@@ -69,6 +72,15 @@ export default function CareerSection({jobs}: Props) {
                   <div className="mt-5 space-y-3 border-t border-gray-100 pt-5">
                     <p className="text-sm leading-relaxed text-gray-600">{job.summary}</p>
                     <p className="text-sm leading-relaxed text-gray-500">{job.description}</p>
+                  </div>
+
+                  <div className="mt-6">
+                    <Link
+                      href={getCareerJobPath(locale, job)}
+                      className="inline-flex items-center text-sm font-semibold text-primary-700 hover:text-primary-800"
+                    >
+                      Skatīt vakanci
+                    </Link>
                   </div>
                 </article>
               )) : (
