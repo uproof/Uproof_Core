@@ -8,6 +8,7 @@ import {getCareerJobPath} from '@/lib/careerSeo';
 
 type CareerJob = {
   id: string;
+  slug: string;
   title: string;
   location: string;
   type: string;
