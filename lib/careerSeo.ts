@@ -41,10 +41,17 @@ export function getCareerJobStructuredData(job: CareerJob, locale: string, jobUr
       '@type': 'Place',
       address: {
         '@type': 'PostalAddress',
+        streetAddress: 'Rīga',
         addressLocality: job.addressLocality || 'Riga',
         addressRegion: job.addressRegion || 'Pierīga',
+        postalCode: 'LV-1000',
         addressCountry: job.addressCountry || 'LV',
       },
+    },
+    baseSalary: {
+      '@type': 'MonetaryAmount',
+      currency: 'EUR',
+      value: 'competitive salary',
     },
     url,
   };
