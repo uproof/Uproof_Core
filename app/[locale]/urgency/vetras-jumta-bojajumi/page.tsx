@@ -193,6 +193,11 @@ export default async function VetrasJumtaBojajumiPage({params}: Props) {
 			telephone: '+37125612440',
 			email: 'contact@uproof.eu',
 			url: 'https://uproof.eu',
+			address: {
+				'@type': 'PostalAddress',
+				addressLocality: 'Rīga',
+				addressCountry: 'LV',
+			},
 		},
 		areaServed: ['Rīga', 'Pierīga', 'Jūrmala', 'Mārupe', 'Ādaži', 'Salaspils', 'Ogre', 'Jelgava'],
 		availableChannel: {

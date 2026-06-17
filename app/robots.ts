@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/admin/', '/admin/', '/uploads/'],
       },
     ],
-    sitemap: ['https://uproof.eu/sitemap.xml', 'https://uproof.eu/sitemap_index.xml'],
+    sitemap: ['https://uproof.eu/sitemap_index.xml'],
   };
 }

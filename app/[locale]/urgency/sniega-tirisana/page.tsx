@@ -20,6 +20,42 @@ const descriptions: Record<string, string> = {
 	'nl-BE': 'Professionele sneeuwruiming van daken in Riga 24/7. IJspegels verwijderen, ijs en sneeuw opruimen. Boetes tot €1.400. Bel +371 25612440.',
 };
 
+const keywordsByLocale: Record<string, string[]> = {
+	lv: [
+		'sniega tīrīšana no jumta',
+		'jumta tīrīšana no sniega',
+		'lāsteku tīrīšana',
+		'jumta tīrīšana no ledus un lāstekām',
+		'sniega tīrīšana no jumta Rīgā',
+		'sniega noņemšana no jumta',
+		'lāsteku noņemšana',
+		'ledus tīrīšana no jumta',
+		'sniega tīrīšana daudzdzīvokļu mājai',
+		'sniega izvešana',
+		'sniega tīrīšana ar traktoru',
+		'jumta sniega tīrīšanas pakalpojumi',
+		'avārijas jumta tīrīšana no sniega',
+		'sniega slogs uz jumta',
+		'jumta tīrīšana ziemā',
+	],
+	en: [
+		'roof snow removal Riga',
+		'snow removal from roof',
+		'icicle removal',
+		'roof ice removal',
+		'emergency roof snow cleaning',
+		'24/7 snow removal roof service',
+	],
+	'nl-BE': [
+		'sneeuwruiming dak Riga',
+		'sneeuw van dak verwijderen',
+		'ijspegel verwijderen',
+		'ijs van dak verwijderen',
+		'spoed sneeuwruiming dak',
+		'24/7 dak sneeuwservice',
+	],
+};
+
 const ogLocales: Record<string, string> = {
 	lv: 'lv_LV',
 	en: 'en_US',
@@ -33,25 +69,7 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 	return {
 		title: titles[locale] || titles.lv,
 		description: descriptions[locale] || descriptions.lv,
-		keywords: [
-			'sniega tīrīšana no jumta',
-			'jumta tīrīšana no sniega',
-			'lāsteku tīrīšana',
-			'jumta tīrīšana no ledus un lāstekām',
-			'sniega tīrīšana no jumta Rīgā',
-			'sniega noņemšana no jumta',
-			'lāsteku noņemšana',
-			'ledus tīrīšana no jumta',
-			'sniega tīrīšana daudzdzīvokļu mājai',
-			'sniega izvešana',
-			'sniega tīrīšana ar traktoru',
-			'jumta sniega tīrīšanas pakalpojumi',
-			'avārijas jumta tīrīšana no sniega',
-			'sniega slogs uz jumta',
-			'jumta tīrīšana ziemā',
-			'snow removal roof riga',
-			'roof snow cleaning latvia',
-		].join(', '),
+		keywords: (keywordsByLocale[locale] || keywordsByLocale.lv).join(', '),
 		robots: {
 			index: true,
 			follow: true,
@@ -109,6 +127,85 @@ const FAQ_ITEMS = [
 
 export default async function SniegaTirisanaPage({params}: Props) {
 	const {locale} = await params;
+	const lang = locale === 'en' || locale === 'nl-BE' ? locale : 'lv';
+
+	if (lang !== 'lv') {
+		const translated = {
+			en: {
+				badge: 'Emergency Service 24/7',
+				heroTitle: 'Snow Removal from Roof in Riga',
+				heroBody: 'Professional roof snow and ice removal in Riga and nearby areas. Fast response, safe execution, and full cleanup.',
+				servicesTitle: 'What Is Included',
+				servicesIntro: 'A complete service for private houses, apartment buildings, and commercial properties.',
+				items: [
+					'Roof snow and ice removal',
+					'Icicle removal from eaves and gutters',
+					'Safe snow lowering and site protection',
+					'Post-work area cleanup',
+				],
+				primaryCta: 'Call +371 25612440',
+				secondaryCta: 'Request Free Inspection',
+				faqTitle: 'Frequently Asked Questions',
+			},
+			'nl-BE': {
+				badge: 'Spoedservice 24/7',
+				heroTitle: 'Sneeuwruiming van het dak in Riga',
+				heroBody: 'Professionele verwijdering van sneeuw en ijs op daken in Riga en omgeving. Snelle interventie, veilige uitvoering en volledige opkuis.',
+				servicesTitle: 'Wat is inbegrepen',
+				servicesIntro: 'Een complete dienst voor woningen, appartementsgebouwen en commerciële panden.',
+				items: [
+					'Sneeuw- en ijsverwijdering van het dak',
+					'Verwijderen van ijspegels aan dakrand en goten',
+					'Veilige afvoer van sneeuw en terreinbeveiliging',
+					'Opkuis na de werken',
+				],
+				primaryCta: 'Bel +371 25612440',
+				secondaryCta: 'Vraag gratis inspectie aan',
+				faqTitle: 'Veelgestelde vragen',
+			},
+		}[lang];
+
+		return (
+			<main className="min-h-screen bg-white">
+				<Header />
+				<Breadcrumbs />
+
+				<section className="pt-28 pb-16 bg-gradient-to-b from-gray-900 to-gray-800 text-white">
+					<div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+						<div className="inline-block bg-red-600 text-white text-sm font-bold uppercase px-4 py-1.5 rounded mb-6 tracking-wide">
+							{translated.badge}
+						</div>
+						<h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight tracking-tight">
+							{translated.heroTitle}
+						</h1>
+						<p className="text-lg md:text-xl text-gray-300 max-w-3xl mb-8 leading-relaxed">{translated.heroBody}</p>
+						<div className="flex flex-col sm:flex-row gap-4">
+							<a href="tel:+37125612440" className="inline-flex items-center justify-center gap-2 bg-white text-gray-900 font-bold px-8 py-4 rounded-xl hover:bg-gray-100 transition-colors text-lg">
+								{translated.primaryCta}
+							</a>
+							<Link href="/contact" className="inline-flex items-center justify-center gap-2 border-2 border-white/30 text-white font-semibold px-8 py-4 rounded-xl hover:bg-white/10 transition-colors">
+								{translated.secondaryCta}
+							</Link>
+						</div>
+					</div>
+				</section>
+
+				<section className="py-16 md:py-20">
+					<div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+						<h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 tracking-tight">{translated.servicesTitle}</h2>
+						<p className="text-gray-600 mb-10 max-w-2xl">{translated.servicesIntro}</p>
+						<ul className="grid sm:grid-cols-2 gap-4">
+							{translated.items.map((item, i) => (
+								<li key={i} className="rounded-xl border border-gray-200 bg-white p-5 text-gray-700">{item}</li>
+							))}
+						</ul>
+					</div>
+				</section>
+
+				<Footer />
+			</main>
+		);
+	}
 
 	const faqSchema = {
 		'@context': 'https://schema.org',

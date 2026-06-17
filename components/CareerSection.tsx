@@ -23,6 +23,7 @@ type Props = {
 export default function CareerSection({jobs, locale}: Props) {
   const t = useTranslations('pages.career');
   const activeJobs = jobs.filter((job) => job.active !== false);
+  const viewJobLabel = locale === 'lv' ? 'Skatīt vakanci' : locale === 'nl-BE' ? 'Bekijk vacature' : 'View vacancy';
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-white via-gray-50/60 to-white py-16 md:py-24">
@@ -38,9 +39,9 @@ export default function CareerSection({jobs, locale}: Props) {
             </div>
 
             <div className="max-w-3xl space-y-5">
-              <h1 className="text-4xl font-bold tracking-tight text-gray-900 leading-tight sm:text-5xl md:text-6xl">
+              <h2 className="text-4xl font-bold tracking-tight text-gray-900 leading-tight sm:text-5xl md:text-6xl">
                 {t('title')}
-              </h1>
+              </h2>
               <p className="text-lg leading-relaxed text-gray-600">
                 {t('intro')}
               </p>
@@ -79,7 +80,7 @@ export default function CareerSection({jobs, locale}: Props) {
                       href={getCareerJobPath(locale, job)}
                       className="inline-flex items-center text-sm font-semibold text-primary-700 hover:text-primary-800"
                     >
-                      Skatīt vakanci
+                      {viewJobLabel}
                     </Link>
                   </div>
                 </article>

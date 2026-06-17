@@ -34,6 +34,10 @@ const SANITIZE_OPTIONS: sanitizeHtml.IOptions = {
   },
   allowedSchemes: ['http', 'https', 'mailto', 'tel'],
   transformTags: {
+    h1: () => ({
+      tagName: 'h2',
+      attribs: {}
+    }),
     a: (tagName, attribs) => {
       const href = attribs.href || '';
       
@@ -188,6 +192,9 @@ export default async function BlogPostPage({params}: Props) {
   }
 
   const postSlug = post.slug || String(post.id);
+  const currentIndex = publishedBlogPosts.findIndex((p) => (p.slug || String(p.id)) === postSlug);
+  const previousPost = currentIndex >= 0 ? publishedBlogPosts[currentIndex - 1] : undefined;
+  const nextPost = currentIndex >= 0 ? publishedBlogPosts[currentIndex + 1] : undefined;
   const hasAuthor = Boolean(post.author && post.author.trim());
   const imageSrc = post.image?.trim() ? post.image : placeholderImage;
   const cleanText = (post.content ?? '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
@@ -382,6 +389,34 @@ export default async function BlogPostPage({params}: Props) {
 
           {/* Share & Back */}
           <div className="mt-12 pt-8 border-t border-gray-200">
+            {(previousPost || nextPost) ? (
+              <div className="mb-8 grid gap-4 md:grid-cols-2">
+                {previousPost ? (
+                  <Link
+                    href={`/blog/${previousPost.slug || previousPost.id}`}
+                    className="block rounded-xl border border-gray-200 bg-white p-4 hover:border-primary-300 hover:shadow-sm transition"
+                  >
+                    <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">
+                      {locale === 'lv' ? 'Iepriekšējais raksts' : locale === 'nl-BE' ? 'Vorig artikel' : 'Previous article'}
+                    </p>
+                    <p className="text-sm font-semibold text-gray-900 line-clamp-2">{previousPost.title}</p>
+                  </Link>
+                ) : <div />}
+
+                {nextPost ? (
+                  <Link
+                    href={`/blog/${nextPost.slug || nextPost.id}`}
+                    className="block rounded-xl border border-gray-200 bg-white p-4 hover:border-primary-300 hover:shadow-sm transition"
+                  >
+                    <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1 text-left md:text-right">
+                      {locale === 'lv' ? 'Nākamais raksts' : locale === 'nl-BE' ? 'Volgend artikel' : 'Next article'}
+                    </p>
+                    <p className="text-sm font-semibold text-gray-900 line-clamp-2 text-left md:text-right">{nextPost.title}</p>
+                  </Link>
+                ) : <div />}
+              </div>
+            ) : null}
+
             <Link 
               href="/blog"
               className="inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-bold"

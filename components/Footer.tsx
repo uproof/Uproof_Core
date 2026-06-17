@@ -48,9 +48,21 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/projects" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2 group">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-primary-500 transition-colors"></span>
+                  {t('projectsLink') || 'Projects'}
+                </Link>
+              </li>
+              <li>
                 <Link href="/career" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-primary-500 transition-colors"></span>
                   {t('careers') || 'Careers'}
+                </Link>
+              </li>
+              <li>
+                <Link href="/reviews" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2 group">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-primary-500 transition-colors"></span>
+                  {t('reviewsLink') || 'Reviews'}
                 </Link>
               </li>
               <li>

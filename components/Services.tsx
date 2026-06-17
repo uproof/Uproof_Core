@@ -167,9 +167,9 @@ export default function Services({ limit }: ServicesProps) {
                 {/* Modern button style */}
                 <div className="flex gap-3 flex-wrap">
                   <a
-                    href="https://wa.me/37125612440"
+                    href="https://api.whatsapp.com/send?phone=37125612440"
                     target="_blank"
-                    rel="noopener noreferrer"
+                    rel="noopener noreferrer nofollow"
                     className="inline-flex items-center gap-2 bg-primary-600 text-white px-5 sm:px-6 py-2.5 sm:py-3 text-sm font-semibold hover:bg-primary-700 transition-all duration-300 rounded-lg shadow-lg shadow-primary-600/25 hover:shadow-xl hover:shadow-primary-600/30 hover:-translate-y-0.5"
                   >
                     {tButtons('orderNow')}

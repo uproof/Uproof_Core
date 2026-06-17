@@ -89,6 +89,10 @@ export default async function ProjectDetailPage({params}: PageProps) {
     notFound();
   }
 
+  const projectIndex = projects.findIndex((p) => p.id === project.id);
+  const previousProject = projectIndex > 0 ? projects[projectIndex - 1] : undefined;
+  const nextProject = projectIndex >= 0 && projectIndex < projects.length - 1 ? projects[projectIndex + 1] : undefined;
+
   const t = await getTranslations({locale});
   const title = t(project.titleKey);
   const location = t(project.locationKey);
@@ -96,6 +100,9 @@ export default async function ProjectDetailPage({params}: PageProps) {
   const backLabel = t('projects.backToProjects');
   const detailsLabel = t('projects.projectDetails');
   const servicesLabel = t('projects.servicesProvided');
+  const previousProjectLabel = locale === 'lv' ? 'Iepriekšējais projekts' : locale === 'nl-BE' ? 'Vorig project' : 'Previous project';
+  const nextProjectLabel = locale === 'lv' ? 'Nākamais projekts' : locale === 'nl-BE' ? 'Volgend project' : 'Next project';
+  const moreProjectsLabel = locale === 'lv' ? 'Vairāk projektu' : locale === 'nl-BE' ? 'Meer projecten' : 'More projects';
 
   const linkedServices = project.services
     .map((serviceKey) => ({
@@ -121,7 +128,12 @@ export default async function ProjectDetailPage({params}: PageProps) {
     provider: {
       '@type': 'RoofingContractor',
       name: 'UpRoof',
-      url: 'https://uproof.eu'
+      url: 'https://uproof.eu',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Rīga',
+        addressCountry: 'LV'
+      }
     },
     about: linkedServices.map((s) => ({
       '@type': 'Service',
@@ -200,6 +212,39 @@ export default async function ProjectDetailPage({params}: PageProps) {
                 </li>
               ))}
             </ul>
+
+            {(previousProject || nextProject) ? (
+              <div className="mt-10 pt-8 border-t border-gray-200 grid gap-4 md:grid-cols-2">
+                {previousProject ? (
+                  <Link
+                    href={`/projects/${previousProject.id}`}
+                    className="block rounded-xl border border-gray-200 bg-gray-50 p-4 hover:border-primary-300 hover:bg-white transition"
+                  >
+                    <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">{previousProjectLabel}</p>
+                    <p className="text-sm font-semibold text-gray-900">{t(previousProject.titleKey)}</p>
+                  </Link>
+                ) : <div />}
+
+                {nextProject ? (
+                  <Link
+                    href={`/projects/${nextProject.id}`}
+                    className="block rounded-xl border border-gray-200 bg-gray-50 p-4 hover:border-primary-300 hover:bg-white transition"
+                  >
+                    <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1 text-left md:text-right">{nextProjectLabel}</p>
+                    <p className="text-sm font-semibold text-gray-900 text-left md:text-right">{t(nextProject.titleKey)}</p>
+                  </Link>
+                ) : <div />}
+              </div>
+            ) : null}
+
+            <div className="mt-8">
+              <Link
+                href="/projects"
+                className="inline-flex items-center text-sm font-semibold text-primary-700 hover:text-primary-800"
+              >
+                {moreProjectsLabel} →
+              </Link>
+            </div>
           </article>
         </div>
       </section>

@@ -133,7 +133,7 @@ export const metadata: Metadata = {
     alternateLocale: ['en_US', 'nl_BE'],
     url: 'https://uproof.eu',
     title: 'UpRoof – Profesionālie jumta pakalpojumi Latvijā | Būvniecība, Renovācija, Sniega tīrīšana',
-    description: 'UpRoof jumta pakalpojumi Rīgā un visā Latvijā: jumta remonts Rīgā, būvniecība, renovācija, valcprofila jumta montāža, metāla jumta montāža, sniega un ledus tīrīšana no jumtiem 24/7. 10 gadu garantija. +371 25612440',
+    description: 'Jumta pakalpojumi Latvijā: remonts, būvniecība, valcprofila montāža, sniega tīrīšana 24/7. 10 gadu garantija.',
     siteName: 'UpRoof',
     images: [
       {
@@ -146,8 +146,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'UpRoof – Profesionālie jumta pakalpojumi Latvijā | Sniega tīrīšana 24/7',
-    description: 'UpRoof jumta pakalpojumi Latvijā: jumta remonts, valcprofila jumta montāža, metāla jumta montāža un sniega tīrīšana no jumtiem 24/7. 10 gadu garantija. +371 25612440',
+    title: 'UpRoof – Profesionālie jumta pakalpojumi Latvijā | 24/7',
+    description: 'Jumta remonts, būvniecība, metāla jumta montāža un sniega tīrīšana. 10 gadu garantija. +371 25612440',
     images: ['/images/og-image.jpg'],
   },
   robots: {
@@ -197,6 +197,7 @@ export default async function LocaleLayout({
   params: Promise<{locale: string}>;
 }) {
   const {locale} = await params;
+  const htmlLang = locale === 'nl-BE' ? 'nl' : locale;
   const messages = await getMessages({locale});
   // Build Organization schema dynamically to allow small customizations
   const sameAs: string[] = [
@@ -369,7 +370,7 @@ export default async function LocaleLayout({
   } as const;
 
   return (
-    <html lang={locale} className={inter.variable} suppressHydrationWarning data-scroll-behavior="smooth">
+    <html lang={htmlLang} className={inter.variable} suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />

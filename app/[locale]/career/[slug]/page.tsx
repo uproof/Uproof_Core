@@ -88,6 +88,8 @@ export default async function CareerJobPage({params}: Props) {
   }
 
   const jobUrl = getCareerJobUrl(locale, job);
+  const activeJobs = jobs.filter((entry) => entry.active !== false);
+  const relatedJobs = activeJobs.filter((entry) => entry.slug !== job.slug).slice(0, 3);
   const structuredData = getCareerJobStructuredData(job, locale, jobUrl);
 
   return (
@@ -175,6 +177,26 @@ export default async function CareerJobPage({params}: Props) {
               <li>• {job.type}</li>
               <li>• {job.location}</li>
             </ul>
+
+            {relatedJobs.length > 0 ? (
+              <div className="mt-8 border-t border-gray-200 pt-6">
+                <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
+                  {locale === 'lv' ? 'Citas vakances' : locale === 'nl-BE' ? 'Andere vacatures' : 'Other openings'}
+                </h3>
+                <ul className="mt-4 space-y-3">
+                  {relatedJobs.map((entry) => (
+                    <li key={entry.id}>
+                      <Link
+                        href={`/${locale}/career/${entry.slug}`}
+                        className="text-sm font-medium text-primary-700 hover:text-primary-800"
+                      >
+                        {entry.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
           </aside>
         </div>
       </section>

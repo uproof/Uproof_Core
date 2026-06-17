@@ -7,12 +7,28 @@ const intlMiddleware = createMiddleware(routing);
 const LATVIA_CITY_SET = new Set<string>(latviaCities);
 const BELGIUM_CITY_SET = new Set<string>(belgiumCities);
 
+// Enforce canonical host (redirect www -> non-www)
+const CANONICAL_HOST = 'uproof.eu';
+function enforceCanonicalHost(request: NextRequest) {
+  const hostHeader = request.headers.get('host') || '';
+  const host = hostHeader.split(':')[0];
+  if (host && host.toLowerCase().startsWith('www.')) {
+    const url = new URL(request.nextUrl.toString());
+    url.hostname = CANONICAL_HOST;
+    return NextResponse.redirect(url, 301);
+  }
+  return null;
+}
+
 function isCrawler(request: NextRequest): boolean {
   const ua = (request.headers.get('user-agent') || '').toLowerCase();
   return /(googlebot|bingbot|yandexbot|duckduckbot|baiduspider|slurp|facebookexternalhit|twitterbot|linkedinbot|crawler|spider|bot)/.test(ua);
 }
 
 export default function middleware(request: NextRequest) {
+  // canonical host enforcement
+  const canonicalResponse = enforceCanonicalHost(request);
+  if (canonicalResponse) return canonicalResponse;
   const {nextUrl, cookies} = request;
   const pathname = nextUrl.pathname;
   const setLocale = nextUrl.searchParams.get('setLocale');

@@ -1,0 +1,26 @@
+site: UpRoof
+url: https://uproof.eu
+languages: lv,en,nl-BE
+company: SIA UpLift
+contact_email: contact@uproof.eu
+contact_phone: +37125612440
+
+summary: Professional roofing contractor in Latvia. Services include roof construction, renovation, repair, standing seam installation, tile roofing, gutters, roof painting, skylight installation, emergency repairs, and snow/ice removal.
+
+main_pages:
+- https://uproof.eu/lv
+- https://uproof.eu/en
+- https://uproof.eu/nl-BE
+- https://uproof.eu/lv/services
+- https://uproof.eu/lv/projects
+- https://uproof.eu/lv/blog
+- https://uproof.eu/lv/contact
+- https://uproof.eu/lv/career
+
+crawl_allow:
+- /
+
+crawl_disallow:
+- /admin/
+- /api/admin/
+- /uploads/

@@ -49,49 +49,49 @@
     "career": {
       "title": "Werken bij UpRoof",
       "heroKicker": "Werken bij UpRoof",
-      "heroIntro": "We are looking for roofers and roofing assistants who want to work in a well-organized team with a clear process and quality results.",
+      "heroIntro": "We zoeken dakwerkers en assistenten die willen werken in een goed georganiseerd team met duidelijke processen en kwaliteitsresultaat.",
       "eyebrow": "Werken bij UpRoof",
-      "intro": "Join UpRoof and work on roofing projects across Latvia with a safe workplace, an organized process, and long-term cooperation.",
-      "benefitsLabel": "What we offer",
-      "benefitsTitle": "Stable work with a clear process",
-      "benefitsIntro": "We value precision, safety, and a responsible attitude. The team works with a structured rhythm and reliable quality.",
+      "intro": "Sluit je aan bij UpRoof en werk aan dakprojecten in Letland met een veilige werkplek, een gestructureerde aanpak en langdurige samenwerking.",
+      "benefitsLabel": "Wat wij bieden",
+      "benefitsTitle": "Stabiel werk met een duidelijk proces",
+      "benefitsIntro": "We waarderen precisie, veiligheid en verantwoordelijkheidszin. Het team werkt met een vast ritme en betrouwbare kwaliteit.",
       "benefits": {
         "schedule": {
-          "title": "Clear work rhythm",
-          "description": "Work with a predictable plan and an organized day-to-day flow."
+          "title": "Duidelijk werkritme",
+          "description": "Werk met een voorspelbare planning en een gestructureerde dagelijkse flow."
         },
         "work": {
-          "title": "Quality sites",
-          "description": "Work on carefully organized jobs with visible results."
+          "title": "Kwalitatieve werven",
+          "description": "Werk op zorgvuldig georganiseerde werven met zichtbaar resultaat."
         },
         "latvia": {
-          "title": "Work across Latvia",
-          "description": "Projects in Riga, the surrounding region, and beyond."
+          "title": "Werk in heel Letland",
+          "description": "Projecten in Riga, de regio errond en daarbuiten."
         }
       },
-      "jobsLabel": "Open jobs",
-      "jobsTitle": "Professional roofers and roofing assistants",
-      "jobsIntro": "Here you’ll see the current job positions that can be added or updated from the admin panel without coding.",
-      "jobsEmpty": "There are no published job positions yet. Add them in the admin panel and they will appear here.",
-      "formPanelKicker": "Application",
-      "formPanelTitle": "Complete the application in Tally",
-      "formPanelIntro": "The form is simple, quick, and ready for CV uploads. After review, we will contact candidates whose profile matches the role.",
-      "formTitle": "Apply for a role",
-      "formIntro": "Fill in the application and attach your CV.",
-      "formHint": "Upload a PDF, DOC, or DOCX CV up to 10 MB.",
-      "formBadge": "Tally form",
+      "jobsLabel": "Openstaande vacatures",
+      "jobsTitle": "Professionele dakwerkers en assistenten",
+      "jobsIntro": "Hier vind je de actuele vacatures. Ze kunnen via het beheerpaneel zonder code worden toegevoegd of aangepast.",
+      "jobsEmpty": "Er zijn nog geen gepubliceerde vacatures. Voeg ze toe in het beheerpaneel en ze verschijnen hier.",
+      "formPanelKicker": "Sollicitatie",
+      "formPanelTitle": "Vul de sollicitatie in via Tally",
+      "formPanelIntro": "Het formulier is eenvoudig, snel en klaar voor cv-upload. Na beoordeling nemen we contact op met kandidaten die bij de functie passen.",
+      "formTitle": "Solliciteer op deze functie",
+      "formIntro": "Vul het formulier in en voeg je cv toe.",
+      "formHint": "Upload een cv in PDF, DOC of DOCX tot 10 MB.",
+      "formBadge": "Tally-formulier",
       "formFeatures": {
         "direct": {
-          "title": "Direct to our team",
-          "description": "Your application goes straight to the team, without extra steps."
+          "title": "Rechtstreeks naar ons team",
+          "description": "Je sollicitatie gaat direct naar het team, zonder extra stappen."
         },
         "fast": {
-          "title": "Quick to complete",
-          "description": "The form is easy to use on mobile and takes only a few minutes."
+          "title": "Snel ingevuld",
+          "description": "Het formulier werkt vlot op mobiel en kost maar enkele minuten."
         },
         "review": {
-          "title": "Reviewed promptly",
-          "description": "We review applications and contact suitable candidates."
+          "title": "Snelle beoordeling",
+          "description": "We beoordelen sollicitaties snel en nemen contact op met geschikte kandidaten."
         }
       },
       "fields": {
@@ -481,6 +481,8 @@
       "home": "Home",
       "servicesLink": "Diensten",
       "blogLink": "Blog",
+      "projectsLink": "Projecten",
+      "reviewsLink": "Beoordelingen",
       "careers": "Carrière",
       "contactLink": "Contact",
       "stormDamage": "Stormschade",
