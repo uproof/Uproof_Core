@@ -9,9 +9,9 @@ type Props = {
 };
 
 const titles: Record<string, string> = {
-	lv: 'Sniega tīrīšana no jumta Rīgā | Jumta tīrīšana no sniega un ledus | UpRoof',
-	en: 'Snow Removal from Roof in Riga | Roof Snow & Ice Cleaning 24/7 | UpRoof',
-	'nl-BE': 'Sneeuwruiming van het dak in Riga | 24/7 Daksneeuw & IJsverwijdering | UpRoof',
+	lv: 'Sniega tīrīšana no jumta Rīgā | 24/7 palīdzība',
+	en: 'Snow Removal from Roof in Riga | 24/7 Service',
+	'nl-BE': 'Sneeuwruiming dak Riga | 24/7 service',
 };
 
 const descriptions: Record<string, string> = {

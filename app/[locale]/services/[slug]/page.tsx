@@ -40,12 +40,12 @@ export function generateStaticParams() {
 const META: Record<string, {title: Record<string, string>; description: Record<string, string>; keywords: string}> = {
   'jumta-renovacija': {
     title: {
-      lv: 'Jumta renovācija Rīgā | Jumta renovācija Latvijā ar garantiju | UpRoof',
-      en: 'Roof Renovation in Riga | Professional Roofing Solutions Latvia | UpRoof',
-      'nl-BE': 'Dakrenovatie in België | Professionele Dakoplossingen | UpRoof'
+      lv: 'Jumta renovācija un jumta nomaiņa Rīgā | Jumta renovācija Latvijā ar garantiju',
+      en: 'Roof Renovation in Riga | Professional Roofing Solutions Latvia',
+      'nl-BE': 'Dakrenovatie in België | Professionele Dakoplossingen'
     },
     description: {
-      lv: 'Pilna cikla jumta renovācija Rīgā un Pierīgā: konstrukciju atjaunošana, siltināšana, seguma nomaiņa un jumta logu uzstādīšana. Sertificēti meistari, skaidra tāme, 10 gadu garantija. Bezmaksas novērtējums.',
+      lv: 'Pilna cikla jumta renovācija un jumta nomaiņa Rīgā un Pierīgā: konstrukciju atjaunošana, siltināšana, seguma nomaiņa un jumta logu uzstādīšana. Sertificēti meistari, skaidra tāme, 10 gadu garantija. Bezmaksas novērtējums.',
       en: 'Full-cycle roof renovation in Riga and Pieriga: structure renewal, insulation, roofing replacement, skylight installation. Certified craftsmen, 10-year warranty. Serving Riga, Jurmala, Jelgava.',
       'nl-BE': 'Volledige dakrenovatie in België: structuurvernieuwing, isolatie, dakbedekkingsvervanging, dakraaminstallatie. Gecertificeerde vakmannen, 10 jaar garantie. Actief in Kortrijk, Gent, Brugge, Antwerpen.'
     },
@@ -53,9 +53,9 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
   },
   'valcprofila-montaza': {
     title: {
-      lv: 'Valcprofila jumta montāža Rīgā | Stāvošā šuve ar 10 gadu garantiju | UpRoof',
-      en: 'Standing Seam Metal Roofing in Riga | Hermetic Connections | UpRoof',
-      'nl-BE': 'Staande naad metalen dakbedekking in België | Hermetische verbindingen | UpRoof'
+      lv: 'Valcprofila jumta montāža Rīgā | Stāvošā šuve ar 10 gadu garantiju',
+      en: 'Standing Seam Metal Roofing in Riga | Hermetic Connections',
+      'nl-BE': 'Staande naad metalen dakbedekking in België | Hermetische verbindingen'
     },
     description: {
       lv: 'Stāvošā šuve bez caurumošanas - hermētisks metāla jumts Rīgā un Pierīgā. Valcprofila jumta montāža un valcprofila montāža ar dubultlocījumiem un precīziem mezgliem pie skursteņiem un logiem. 10 gadu garantija darbam, līdz 50 gadiem materiāliem.',
@@ -66,9 +66,9 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
   },
   'dakstinu-montaza': {
     title: {
-      lv: 'Dakstiņu montāža Rīgā | Māla un betona dakstiņi ar garantiju | UpRoof',
-      en: 'Tile Roof Installation in Riga | Clay and Concrete Tiles | UpRoof',
-      'nl-BE': 'Pannendak installatie in België | Klei en betonnen pannen | UpRoof'
+      lv: 'Dakstiņu montāža Rīgā | Māla un betona dakstiņi ar garantiju',
+      en: 'Tile Roof Installation in Riga | Clay and Concrete Tiles',
+      'nl-BE': 'Pannendak installatie in België | Klei en betonnen pannen'
     },
     description: {
       lv: 'Māla vai betona dakstiņu montāža Rīgā un Pierīgā ar pareizu zemseguma ventilāciju un hermētiskiem skārda pieslēgumiem. Ilgmūžīgs, estētisks jumts ar 10 gadu garantiju uz darbu un bezmaksas novērtējumu.',
@@ -79,9 +79,9 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
   },
   'skurstena-piesleguma-montaza-labosana': {
     title: {
-      lv: 'Skursteņa pieslēguma montāža un labošana Rīgā | Hermētiski mezgli | UpRoof',
-      en: 'Chimney Flashing Installation and Repair in Riga | Leak-Proof Joints | UpRoof',
-      'nl-BE': 'Schoorsteenaansluiting montage en herstel | Waterdichte details | UpRoof'
+      lv: 'Skursteņa pieslēguma montāža un labošana Rīgā | Hermētiski mezgli',
+      en: 'Chimney Flashing Installation and Repair in Riga | Leak-Proof Joints',
+      'nl-BE': 'Schoorsteenaansluiting montage en herstel | Waterdichte details'
     },
     description: {
       lv: 'Skursteņa pieslēguma montāža un skursteņa pieslēguma labošana Rīgā un Pierīgā. Hermētiski skārda mezgli pie skursteņa, noplūžu novēršana un droša hidroizolācija ar garantiju.',
@@ -92,9 +92,9 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
   },
   'dakstina-jumta-labosana': {
     title: {
-      lv: 'Dakstiņa jumta labošana Rīgā | Dakstiņu jumtu remonts ar garantiju | UpRoof',
-      en: 'Tile Roof Repair in Riga | Professional Tile Roof Fixing | UpRoof',
-      'nl-BE': 'Pannendak herstelling | Professionele pannendak reparatie | UpRoof'
+      lv: 'Dakstiņa jumta labošana Rīgā | Dakstiņu jumtu remonts ar garantiju',
+      en: 'Tile Roof Repair in Riga | Professional Tile Roof Fixing',
+      'nl-BE': 'Pannendak herstelling | Professionele pannendak reparatie'
     },
     description: {
       lv: 'Dakstiņa jumta labošana Rīgā un Pierīgā: bojāto dakstiņu nomaiņa, kores un pieslēgumu atjaunošana, noplūžu novēršana un profilaktiska apkope ar garantiju.',
@@ -105,9 +105,9 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
   },
   'jumta-logu-montaza': {
     title: {
-      lv: 'Jumta logu montāža Rīgā | Roto un Velux uzstādīšana | UpRoof',
-      en: 'Skylight Installation in Riga | Roto and Velux Roof Windows | UpRoof',
-      'nl-BE': 'Dakraam installatie in België | Roto en Velux dakvensters | UpRoof'
+      lv: 'Jumta logu montāža Rīgā | Roto un Velux uzstādīšana',
+      en: 'Skylight Installation in Riga | Roto and Velux Roof Windows',
+      'nl-BE': 'Dakraam installatie in België | Roto en Velux dakvensters'
     },
     description: {
       lv: 'Roto un Velux jumta logu montāža Rīgā un Pierīgā. Iegūstiet vairāk dabiskās gaismas mansardā ar profesionālu, hermētisku uzstādīšanu un garantiju. Bezmaksas apskate un skaidrs piedāvājums.',
@@ -118,9 +118,9 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
   },
   'jumta-buvnieciba': {
     title: {
-      lv: 'Jumta būvniecība Rīgā | Jumta būvniecība Latvijā ar garantiju | UpRoof',
-      en: 'Roof Construction in Riga | Structure, Insulation, Installation | UpRoof',
-      'nl-BE': 'Dakbouw in België | Structuur, Isolatie, Installatie | UpRoof'
+      lv: 'Jumta būvniecība Rīgā | Jumta būvniecība Latvijā ar garantiju',
+      en: 'Roof Construction in Riga | Structure, Insulation, Installation',
+      'nl-BE': 'Dakbouw in België | Structuur, Isolatie, Installatie'
     },
     description: {
       lv: 'Pilna cikla jumta būvniecība Rīgā un Pierīgā: projektēšana, konstrukcija, izolācija, segums un noteksistēmas. Sertificēta komanda, skaidra tāme un 10 gadu garantija uz darbiem.',
@@ -131,9 +131,9 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
   },
   'jumta-konstrukciju-montaza': {
     title: {
-      lv: 'Jumta konstrukciju montāža Rīgā | Spāres, kopnes, mūrlatas | UpRoof',
-      en: 'Roof Truss Installation in Riga | Load-bearing Timber Structure | UpRoof',
-      'nl-BE': 'Dakconstructie montage in België | Dakspanten & sporen | UpRoof'
+      lv: 'Jumta konstrukciju montāža Rīgā | Spāres, kopnes, mūrlatas',
+      en: 'Roof Truss Installation in Riga | Load-bearing Timber Structure',
+      'nl-BE': 'Dakconstructie montage in België | Dakspanten & sporen'
     },
     description: {
       lv: 'Jumta konstrukciju montāža Rīgā un Pierīgā: gatavās kopnes, spāru montāža, mūrlatas un jumta krēsla izbūve. Precīza ģeometrija, droši mezgli un garantija uz darbiem.',
@@ -144,9 +144,9 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
   },
   'jumta-apkope-remonts': {
     title: {
-      lv: 'Jumta apkope un remonts Rīgā | Ātra palīdzība, bezmaksas apskate | UpRoof',
-      en: 'Roof Maintenance and Repair in Riga | Fast Response + Free Assessment | UpRoof',
-      'nl-BE': 'Dakonderhoud en reparatie in België | Reiniging, Schadevoorkoming | UpRoof'
+      lv: 'Jumta apkope un remonts Rīgā | Ātra palīdzība, bezmaksas apskate',
+      en: 'Roof Maintenance and Repair in Riga | Fast Response + Free Assessment',
+      'nl-BE': 'Dakonderhoud en reparatie in België | Reiniging, Schadevoorkoming'
     },
     description: {
       lv: 'Jumts tek vai vajag apkopi? Ātra palīdzība Rīgā un Pierīgā: drona diagnostika, noteku tīrīšana, jumta tīrīšana un bojājumu remonts. Bezmaksas novērtējums un skaidrs darbu plāns.',
@@ -157,9 +157,9 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
   },
   'noteksistemu-uzstadisana': {
     title: {
-      lv: 'Noteksistēmu uzstādīšana Rīgā | Noteku montāža ar garantiju | UpRoof',
-      en: 'Gutter System Installation in Riga | Effective Water Drainage | UpRoof',
-      'nl-BE': 'Gootsysteem installatie in België | Effectieve waterafvoer | UpRoof'
+      lv: 'Noteksistēmu uzstādīšana Rīgā | Noteku montāža ar garantiju',
+      en: 'Gutter System Installation in Riga | Effective Water Drainage',
+      'nl-BE': 'Gootsysteem installatie in België | Effectieve waterafvoer'
     },
     description: {
       lv: 'Kvalitatīva noteksistēmu montāža Rīgā un Pierīgā: renes, notekcaurules un savienojumi drošai ūdens novadīšanai. Pareiza sistēma pasargā fasādi un pamatus. Garantija un bezmaksas apskate.',
@@ -170,9 +170,9 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
   },
   'jumta-remonts': {
     title: {
-      lv: 'Jumta remonts Rīgā 24/7 | Jumta remonta pakalpojumi ar garantiju | UpRoof',
-      en: 'Emergency Roof Repair in Riga | Fast 24/7 Response | UpRoof',
-      'nl-BE': 'Noodreparatie dak België | Snelle 24/7 reactie | UpRoof'
+      lv: 'Jumta remonts Rīgā 24/7 | Jumta remonta pakalpojumi ar garantiju',
+      en: 'Emergency Roof Repair in Riga | Fast 24/7 Response',
+      'nl-BE': 'Noodreparatie dak België | Snelle 24/7 reactie'
     },
     description: {
       lv: 'Jumts tek vai noplūst? UpRoof nodrošina 24/7 avārijas palīdzību Rīgā un Pierīgā: diagnostiku, lokālu remontu un noplūžu novēršanu. Sertificēti meistari, 2 gadu garantija un bezmaksas novērtējums.',
@@ -183,9 +183,9 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
   },
   'jumta-krasosana': {
     title: {
-      lv: 'Jumta krāsošana Rīgā | Pretkorozijas aizsardzība ar garantiju | UpRoof',
-      en: 'Roof Painting in Riga | Protection Against Corrosion and Weather | UpRoof',
-      'nl-BE': 'Dakschilderen in België | Bescherming tegen corrosie en weer | UpRoof'
+      lv: 'Jumta krāsošana Rīgā | Pretkorozijas aizsardzība ar garantiju',
+      en: 'Roof Painting in Riga | Protection Against Corrosion and Weather',
+      'nl-BE': 'Dakschilderen in België | Bescherming tegen corrosie en weer'
     },
     description: {
       lv: 'Profesionāla jumta krāsošana Rīgā un Pierīgā: tīrīšana, rūsas apstrāde, grunts un vairākas krāsas kārtas. Atjauno jumta izskatu un pagarina kalpošanas laiku ar garantiju uz darbiem.',
@@ -196,9 +196,9 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
   },
   'saules-dakstini': {
     title: {
-      lv: 'Saules jumta dakstiņi Rīgā | Integrēti saules paneļu dakstiņi | UpRoof',
-      en: 'Solar Roof Tiles in Riga | Integrated Solar Roofing | UpRoof',
-      'nl-BE': 'Zonnedakpannen in België | Geïntegreerde zonne-dakoplossing | UpRoof'
+      lv: 'Saules jumta dakstiņi Rīgā | Integrēti saules paneļu dakstiņi',
+      en: 'Solar Roof Tiles in Riga | Integrated Solar Roofing',
+      'nl-BE': 'Zonnedakpannen in België | Geïntegreerde zonne-dakoplossing'
     },
     description: {
       lv: 'Integrētie saules dakstiņi – elegants risinājums, kas apvieno jumta segumu un saules enerģijas ražošanu. Estētiski, hermētiski un droši Latvijas klimatā. Projektēšana, uzstādīšana un garantija.',
@@ -763,7 +763,7 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
   const serviceSlug = getCanonicalServiceSlug(locale, slug);
   if (!SERVICE_SLUGS.includes(serviceSlug as (typeof SERVICE_SLUGS)[number])) {
     return {
-      title: 'Page Not Found | UpRoof',
+      title: 'Page Not Found',
       robots: {
         index: false,
         follow: false,
@@ -780,7 +780,8 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
   // Generate hreflang alternates for this service page across all locales
   const languages = getServiceLanguages(serviceSlug);
   
-  const title = entry?.title[locale] || entry?.title.lv || 'Jumta pakalpojums Rīgā | UpRoof';
+  const titleBase = entry?.title[locale] || entry?.title.lv || 'Jumta pakalpojums Rīgā';
+  const title = titleBase.length > 50 ? `${titleBase.slice(0, 50).replace(/\s+\S*$/, '').trim()}...` : titleBase;
   const descriptionBase = entry?.description[locale] || entry?.description.lv || 'Profesionāli jumta pakalpojumi Rīgā, Pierīgā un visā Latvijā ar garantiju.';
   const coverageLine = locale === 'nl-BE'
     ? 'Serviss Kortrijkā, Gentē, Bruggē, Roeselārē un citās Beļģijas pilsētās.'

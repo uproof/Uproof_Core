@@ -76,7 +76,7 @@ export function getLocalizedServiceSlug(locale: string, canonicalSlug: string) {
 }
 
 export function getServicePath(locale: string, canonicalSlug: string) {
-  return `/${locale}/services/${getLocalizedServiceSlug(locale, canonicalSlug)}`;
+  return `/services/${getLocalizedServiceSlug(locale, canonicalSlug)}`;
 }
 
 export function getCanonicalServiceSlug(locale: string, slug: string) {

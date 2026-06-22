@@ -121,6 +121,13 @@
     animation: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
+  /* Subtle floating bounce for fixed chat actions */
+  .animate-float-bounce {
+    animation: float-bounce 2.2s ease-in-out infinite;
+    transform-origin: center;
+    will-change: transform;
+  }
+
   /* Universal button rounding */
   button, input[type="submit"], input[type="button"], a[class*="bg-"], a[class*="px-"], a[class*="btn-"], .btn {
     border-radius: var(--radius) !important;
@@ -189,6 +196,16 @@
   }
   50% {
     opacity: 0.4;
+  }
+}
+
+@keyframes float-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
   }
 }
 

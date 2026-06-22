@@ -50,7 +50,7 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
     'x-default': `https://uproof.eu/lv/projects/${slug}`
   };
 
-  const title = `${projectTitle} | UpRoof`;
+  const title = projectTitle.length > 50 ? `${projectTitle.slice(0, 50).replace(/\s+\S*$/, '').trim()}...` : projectTitle;
   const description = `${projectDescription} ${projectLocation} (${project.year}).`;
 
   return {

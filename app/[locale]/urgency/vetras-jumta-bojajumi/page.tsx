@@ -9,9 +9,9 @@ type Props = {
 };
 
 const titles: Record<string, string> = {
-	lv: 'Vētras un vēja bojāts jumts | Steidzams jumta remonts 24/7 Rīgā | UpRoof',
-	en: 'Wind & Storm Roof Damage Repair in Riga | Emergency 24/7 | UpRoof',
-	'nl-BE': 'Dakschade door wind en storm in Riga | Spoedherstel 24/7 | UpRoof',
+	lv: 'Vētras bojāts jumts Rīgā | Steidzams remonts 24/7',
+	en: 'Wind & Storm Roof Damage in Riga | Emergency 24/7',
+	'nl-BE': 'Dakschade door wind en storm in Riga | Spoed 24/7',
 };
 
 const descriptions: Record<string, string> = {

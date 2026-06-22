@@ -14,7 +14,7 @@ type Props = {
 };
 
 const titles: Record<string, string> = {
-  lv: 'Vakances: Darbs Jumiķiem un Palīgiem Rīgā | UpRoof',
+  lv: 'Vakances: Darbs Jumiķiem un Palīgiem Rīgā',
   en: 'Careers at UpRoof | Professional Roofers and Assistants',
   'nl-BE': 'Werken bij UpRoof | Dakwerkers en assistenten',
 };

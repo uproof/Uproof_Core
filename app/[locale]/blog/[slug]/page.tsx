@@ -150,8 +150,10 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
     'x-default': `https://uproof.eu/lv/blog/${postSlug}`,
   };
 
+  const seoTitle = post.title.length > 50 ? `${post.title.slice(0, 50).replace(/\s+\S*$/, '').trim()}...` : post.title;
+
   return {
-    title: `${post.title} | UpRoof Blog`,
+    title: seoTitle,
     description: metaDescription,
     robots: {
       index: true,

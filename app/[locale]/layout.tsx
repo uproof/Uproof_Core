@@ -277,7 +277,7 @@ export default async function LocaleLayout({
           addressCountry: 'LV'
         }
       },
-      geoRadius: '100000'
+      geoRadius: 100000
     },
     geo: {
       '@type': 'GeoCoordinates',
