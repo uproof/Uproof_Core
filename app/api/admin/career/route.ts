@@ -4,6 +4,34 @@ import {isAdminAuthenticated} from '@/lib/adminAuth';
 import {CareerJob, getCareerJobs, normalizeCareerJob, saveCareerJobs} from '@/lib/career';
 import {pingGoogleSitemap, slugifyCareerTitle} from '@/lib/careerSeo';
 
+function toSafeJobId(input: string): string {
+  let result = '';
+  let previousWasDash = false;
+
+  for (const char of input.toLowerCase()) {
+    const code = char.charCodeAt(0);
+    const isLowerAlpha = code >= 97 && code <= 122;
+    const isDigit = code >= 48 && code <= 57;
+
+    if (isLowerAlpha || isDigit) {
+      result += char;
+      previousWasDash = false;
+      continue;
+    }
+
+    if (!previousWasDash && result.length > 0) {
+      result += '-';
+      previousWasDash = true;
+    }
+  }
+
+  if (result.endsWith('-')) {
+    result = result.slice(0, -1);
+  }
+
+  return result;
+}
+
 function refreshCareerArtifacts(jobs: CareerJob[]) {
   for (const locale of ['lv', 'en', 'nl-BE']) {
     revalidatePath(`/${locale}/career`);
@@ -48,7 +76,8 @@ export async function POST(request: NextRequest) {
     }
 
     const jobs = await getCareerJobs();
-    const id = String(body.id || title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || `job-${Date.now()}`);
+    const providedId = body.id === undefined || body.id === null ? '' : String(body.id).trim();
+    const id = providedId || toSafeJobId(title) || `job-${Date.now()}`;
 
     const newJob: CareerJob = normalizeCareerJob({
       id,
