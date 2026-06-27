@@ -40,13 +40,13 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
   };
 
   const titles: Record<string, string> = {
-    lv: 'UpRoof | Jumta būvniecība, remonts un renovācija Latvijā',
+    lv: 'UpRoof | Jumta pakalpojumi, remonts un renovācija Latvijā',
     en: 'Professional Roofing Services in Latvia | UpRoof',
     'nl-BE': 'Professionele Dakdiensten in Letland | UpRoof',
   };
 
   const descriptions: Record<string, string> = {
-    lv: 'Profesionāli jumta pakalpojumi Rīgā, Pierīgā un visā Latvijā: būvniecība, renovācija, remonts, valcprofils, dakstiņi, noteksistēmas un apkope ar garantiju.',
+    lv: 'Profesionāli jumta pakalpojumi, jumta darbi un jumta remonts Rīgā, Pierīgā un visā Latvijā: būvniecība, renovācija, valcprofils, dakstiņi, noteksistēmas un apkope ar garantiju.',
     en: 'Professional roofing services in Riga and throughout Latvia: construction, renovation, repair, standing seam roofing, tile roofs, gutters and maintenance with warranty.',
     'nl-BE': 'Professionele dakdiensten in Letland: dakbouw, renovatie, reparatie, staande naad, pannendaken, goten en onderhoud met garantie.',
   };
@@ -65,11 +65,17 @@ export default async function HomePage({params}: Props) {
   const {locale} = await params;
 
   const bannerText: Record<string, {title: string; cta: string}> = {
-    lv: {title: 'Jumta remonts un renovācija — bezmaksas diagnostika', cta: 'Pieteikt apskati'},
+    lv: {title: 'Jumta pakalpojumi, jumta darbi un jumta remonts — bezmaksas diagnostika', cta: 'Pieteikt apskati'},
     en: {title: 'Roof Repair & Renovation — Free Roof Diagnostics', cta: 'Book inspection'},
     'nl-BE': {title: 'Dakreparatie & renovatie — Gratis dakdiagnose', cta: 'Plan inspectie'},
   };
   const banner = bannerText[locale] || bannerText.lv;
+
+  const seoIntro: Record<string, string> = {
+    lv: 'Mūsu galvenie virzieni ir jumta pakalpojumi, jumta darbi, jumta remonts, jumta renovācija un jumta montāža Rīgā, Pierīgā un visā Latvijā.',
+    en: 'Our core focus is roofing services, roof repairs, roof renovation and roof installation in Riga and throughout Latvia.',
+    'nl-BE': 'Onze kernfocus ligt op dakdiensten, dakreparatie, dakrenovatie en dakinstallatie in Letland.',
+  };
 
   const statsData: Record<string, {value: string; label: string}[]> = {
     lv: [
@@ -103,6 +109,13 @@ export default async function HomePage({params}: Props) {
               {banner.cta}
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
             </a>
+          </div>
+        </div>
+        <div className="bg-white border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 text-center">
+            <p className="text-sm sm:text-base text-gray-700 leading-relaxed max-w-4xl mx-auto">
+              {seoIntro[locale] || seoIntro.lv}
+            </p>
           </div>
         </div>
   <Services limit={4} />

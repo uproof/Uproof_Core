@@ -15,6 +15,11 @@ export default function Services({ limit }: ServicesProps) {
   const tButtons = useTranslations('home.services.buttons');
   const locale = useLocale();
   const router = useRouter();
+  const strapline = locale === 'lv'
+    ? 'Jumta pakalpojumi, jumta darbi, jumta remonts un jumta renovācija visā Latvijā.'
+    : locale === 'nl-BE'
+    ? 'Dakdiensten, dakwerken, dakreparatie en dakrenovatie in heel België.'
+    : 'Roofing services, roof work, roof repair and roof renovation across Latvia.';
 
   const isInteractiveTarget = (target: EventTarget | null): boolean => {
     if (!(target instanceof Element)) return false;
@@ -110,6 +115,9 @@ export default function Services({ limit }: ServicesProps) {
           transition={{ duration: 0.6 }}
           className="text-center mb-6 sm:mb-8 px-2"
         >
+          <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-primary-700 mb-3">
+            {strapline}
+          </p>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-3 sm:mb-4">
             {t('title')}
           </h2>
