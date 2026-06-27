@@ -40,12 +40,12 @@ export function generateStaticParams() {
 const META: Record<string, {title: Record<string, string>; description: Record<string, string>; keywords: string}> = {
   'jumta-renovacija': {
     title: {
-      lv: 'Jumta renovācija un jumta nomaiņa Rīgā | Jumta renovācija Latvijā ar garantiju',
+      lv: 'Jumta nomaiņa Rīgā | Renovācija ar garantiju',
       en: 'Roof Renovation in Riga | Professional Roofing Solutions Latvia',
       'nl-BE': 'Dakrenovatie in België | Professionele Dakoplossingen'
     },
     description: {
-      lv: 'Pilna cikla jumta renovācija un jumta nomaiņa Rīgā un Pierīgā: konstrukciju atjaunošana, siltināšana, seguma nomaiņa un jumta logu uzstādīšana. Sertificēti meistari, skaidra tāme, 10 gadu garantija. Bezmaksas novērtējums.',
+      lv: 'Jumta nomaiņa Rīgā un Pierīgā: konstrukciju atjaunošana, siltināšana, seguma maiņa un jumta logu uzstādīšana. Sertificēti meistari, skaidra tāme, 10 gadu garantija. Bezmaksas novērtējums.',
       en: 'Full-cycle roof renovation in Riga and Pieriga: structure renewal, insulation, roofing replacement, skylight installation. Certified craftsmen, 10-year warranty. Serving Riga, Jurmala, Jelgava.',
       'nl-BE': 'Volledige dakrenovatie in België: structuurvernieuwing, isolatie, dakbedekkingsvervanging, dakraaminstallatie. Gecertificeerde vakmannen, 10 jaar garantie. Actief in Kortrijk, Gent, Brugge, Antwerpen.'
     },
@@ -781,7 +781,7 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
   const languages = getServiceLanguages(serviceSlug);
   
   const titleBase = entry?.title[locale] || entry?.title.lv || 'Jumta pakalpojums Rīgā';
-  const title = titleBase.length > 50 ? `${titleBase.slice(0, 50).replace(/\s+\S*$/, '').trim()}...` : titleBase;
+  const title = titleBase;
   const descriptionBase = entry?.description[locale] || entry?.description.lv || 'Profesionāli jumta pakalpojumi Rīgā, Pierīgā un visā Latvijā ar garantiju.';
   const coverageLine = locale === 'nl-BE'
     ? 'Serviss Kortrijkā, Gentē, Bruggē, Roeselārē un citās Beļģijas pilsētās.'
