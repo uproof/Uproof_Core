@@ -228,14 +228,14 @@
   },
   "home": {
     "hero": {
-      "title": "JUMTA RENOVĀCIJA UN BŪVNIECĪBA",
+      "title": "JUMIĶA PAKALPOJUMI, JUMTA DARBI UN JUMTA REMONTS",
       "subtitle": "LIELISKI JUMTI IR MŪSU MISIJA!",
       "cta": "Sazināties",
       "learnMore": "Uzzināt vairāk",
       "orderNow": "Pieteikties"
     },
     "services": {
-      "title": "JUMTU RISINĀJUMI",
+      "title": "JUMTA PAKALPOJUMI UN JUMTA DARBI",
       "buttons": {
         "orderNow": "Pieteikties",
         "learnMore": "Uzzināt vairāk"
@@ -299,7 +299,7 @@
       "cleaning": "Sniega un lapu tīrīšana"
     },
     "faq": {
-      "title": "JAUTĀJUMI UN ATBILDES",
+      "title": "JUMTA JAUTĀJUMI UN ATBILDES",
       "subtitle": "Atrodiet atbildes uz biežāk uzdotajiem jautājumiem par mūsu jumta pakalpojumiem.",
       "q1": {
         "question": "Kādus pakalpojumus mēs piedāvājam?",
