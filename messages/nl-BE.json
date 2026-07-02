@@ -389,6 +389,7 @@
   },
   "contact": {
     "title": "Contacteer ons",
+    "sectionTitle": "Hoe kunnen we helpen?",
     "form": {
       "name": "Naam",
       "namePlaceholder": "Uw naam",

@@ -151,7 +151,7 @@
         }
       }
     },
-    "contact": {"title": "Sazinies ar mums"}
+    "contact": {"title": "Sazinies ar mums", "sectionTitle": "Kā varam palīdzēt?"}
   },
   "projects": {
     "title": "Projekti",

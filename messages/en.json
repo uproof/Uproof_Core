@@ -151,7 +151,7 @@
         }
       }
     },
-    "contact": {"title": "Contact Us"}
+    "contact": {"title": "Contact Us", "sectionTitle": "How can we help?"}
   },
   "projects": {
     "title": "Projects",
