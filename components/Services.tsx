@@ -16,7 +16,7 @@ export default function Services({ limit }: ServicesProps) {
   const locale = useLocale();
   const router = useRouter();
   const strapline = locale === 'lv'
-    ? 'Jumta pakalpojumi, jumta darbi, jumta remonts un jumta renovācija visā Latvijā.'
+    ? 'Jumiķa pakalpojumi, jumta darbi, jumta remonts, jumta renovācija un jumta montāža Rīgā, Mārupē, Jūrmalā, Ādažos un Siguldā.'
     : locale === 'nl-BE'
     ? 'Dakdiensten, dakwerken, dakreparatie en dakrenovatie in heel België.'
     : 'Roofing services, roof work, roof repair and roof renovation across Latvia.';

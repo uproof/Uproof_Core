@@ -24,15 +24,15 @@ export const citiesContent: Record<string, Record<Locale, CityContent>> = {
     lv: {
       hero: {
         heading: 'Jumtu risinājumi Rīgā',
-        subheading: 'Profesionāla būvniecība, renovācija un apkope Rīgā un Pierīgā'
+        subheading: 'Jumiķi Rīgā, Mārupē, Jūrmalā, Ādažos un Siguldā: jumta remonts Rīgā, jumta nomaiņa Rīgā, jumta montāža Rīgā, jumta atjaunošana un jumta darbi ar garantiju.'
       },
       climate: {
         title: 'Klimats',
-        body: 'Rīgā tipiski ir mainīgi laikapstākļi ar intensīvām rudens lietusgāzēm un sniega slodzes ziemā. Ieteicamas hermētiskas savienojumu sistēmas un kvalitatīva hidroizolācija.'
+        body: 'Rīgā tipiski ir mainīgi laikapstākļi ar intensīvām rudens lietusgāzēm un sniega slodzi ziemā. Tāpēc jumiķa pakalpojumi, jumta darbi, jumta renovācija un jumta remonts jāveic ar hermētiskām savienojumu sistēmām un kvalitatīvu hidroizolāciju.'
       },
       regulations: {
         title: 'Regulatīvās prasības',
-        body: 'Būvnormatīvi nosaka drošības elementus uz jumtiem, ūdens novadīšanu un siltumizolācijas U-vērtības. Darbi tiek veikti saskaņā ar Latvijas būvnormatīviem.'
+        body: 'Būvnormatīvi nosaka drošības elementus uz jumtiem, ūdens novadīšanu un siltumizolācijas U-vērtības. Darbi tiek veikti saskaņā ar Latvijas būvnormatīviem, un mēs regulāri nodrošinām jumta montāžu, jumta nomaiņu un jumta atjaunošanu arī Mārupē, Jūrmalā, Ādažos un Siguldā.'
       },
       recommendedSystems: ['Valcprofila metāla jumts', 'Dakstiņu jumts', 'Kvalitatīva noteksistēma'],
       examples: [
@@ -40,7 +40,8 @@ export const citiesContent: Record<string, Record<Locale, CityContent>> = {
       ],
       faqs: [
         { q: 'Vai darbus var veikt ziemā?', a: 'Jā, veicam neatliekamus remontdarbus arī zemā temperatūrā ar atbilstošiem materiāliem.' },
-        { q: 'Kā novērst kondensāciju?', a: 'Pareiza zemseguma ventilācija un hermētiski skārda savienojumi pie sienām un skursteņiem.' }
+        { q: 'Kā novērst kondensāciju?', a: 'Pareiza zemseguma ventilācija un hermētiski skārda savienojumi pie sienām un skursteņiem.' },
+        { q: 'Vai strādājat arī Mārupē, Jūrmalā, Ādažos un Siguldā?', a: 'Jā, papildus Rīgai veicam jumta remontu, jumta nomaiņu, jumta montāžu un jumta darbus arī Mārupē, Jūrmalā, Ādažos un Siguldā.' }
       ]
     },
     en: {

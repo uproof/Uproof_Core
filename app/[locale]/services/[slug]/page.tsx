@@ -220,7 +220,7 @@ function getServiceContent(slug: string, locale: string) {
   }>> = {
     'jumta-renovacija': {
       lv: {
-        overview: 'Pilna cikla jumta renovācija un jumta nomaiņa ir kapitālais remonts, kas atjauno jumta konstrukciju, izolāciju, siltināšanu un segumu. Mēs veicam pilnīgu jumta seguma montāžu un jumta ieklāšanu, nodrošinot, ka jūsu jumts kļūst kā jauns ar moderniem izolācijas materiāliem un ilgmūžīgiem seguma risinājumiem.',
+        overview: 'Jumiķa pakalpojumi pilna cikla jumta renovācijai un jumta nomaiņai ir kapitālais remonts, kas atjauno jumta konstrukciju, izolāciju, siltināšanu un segumu. Mēs veicam jumta atjaunošanu, jumta montāžu, jumta ieklāšanu un pilnīgu jumta seguma maiņu, nodrošinot, ka jūsu jumts kļūst kā jauns ar moderniem izolācijas materiāliem un ilgmūžīgiem seguma risinājumiem.',
         benefits: ['Pilnīga jumta konstrukciju atjaunošana', 'Moderna siltināšanas materiālu izmantošana', 'Garantēta noplūžu novēršana', 'Jumta estētikas uzlabošana', 'Enerģijas taupīšana ar labāku izolāciju'],
         process: ['Jumta stāvokļa diagnostika ar dronu un tehniskā izpēte', 'Veca jumta seguma un bojāto elementu demontāža', 'Jumta konstrukcijas stiprības pārbaude, bojāto spāru un paneļu nomaiņa', 'Skursteņu atjaunošana, renovācija un hermētiskās sistēmas uzstādīšana', 'Jumta siltināšanas darbi ar mūsdienīgiem termoizolācijas materiāliem', 'Difūzijas membrānas/zemseguma uzstādīšana ar ventilācijas sistēmu', 'Latojuma un kontrlatojuma montāža ar precīzu līmeņošanu', 'Jumta noteksistēmas montāža ar teknes āķu iestrādāšanu', 'Jauna jumta seguma montāža ar hermētiskiem savienojumiem un pieslēgumiem', 'Jumta drošības elementu un aksesuāru montāža - sniega barjeras, laipas, ventilācija', 'Vēja kastes, apmalēm un apdares elementu montāža', 'Būvniecības atkritumu utilizācija, darba vietas satīrīšana un jumta funkcionalitātes pārbaude'],
         qualityPoints: ['10 gadu garantija uz montāžas darbu', 'Sertificēti speciālisti ar 15+ gadu pieredzi', 'ISO 9001 sertificēta kvalitātes vadības sistēma', 'Drošības protokoli atbilst Latvijas būvnormatīviem'],
@@ -379,7 +379,7 @@ function getServiceContent(slug: string, locale: string) {
     },
     'jumta-buvnieciba': {
       lv: {
-        overview: 'Jumta būvniecība un jumta darbi ir komplekss process no projektēšanas līdz gatavajam jumtam, kurā ietilpst konstrukcija, izolācija, siltināšana, jumta seguma montāža, jumta ieklāšana un noteku montāža. Mēs piedāvājam pilna cikla risinājumus ar individuālu projektēšanu.',
+        overview: 'Jumiķi veic jumta būvniecību un jumta darbus kā kompleksu procesu no projektēšanas līdz gatavajam jumtam, kurā ietilpst konstrukcija, izolācija, siltināšana, jumta seguma montāža, jumta ieklāšana un noteku montāža. Mēs piedāvājam pilna cikla risinājumus ar individuālu projektēšanu.',
         benefits: ['Pilna cikla būvniecība no A līdz Z', 'Sertificēti būvspeciālisti un jumtu projektētāji', 'Atbilstība visiem Latvijas būvnormatīviem', 'Individuāla projektēšana un tāme', 'Ilgtspējīgi un hermētiski jumta risinājumi'],
         process: ['Objekta apsekošana, mērīšana un tāmēšana', 'Projektēšana un būvniecības atļauju ieguves palīdzība', 'Jumta konstrukcijas izbūve ar gatavām kopņu konstrukcijām vai montējot spāres un jumta krēslu uz vietas', 'Skursteņu atjaunošana un izbūve', 'Jumta siltināšanas darbi un termiskās izolācijas sistēmas uzstādīšana', 'Difūzijas membrānas/zemseguma uzstādīšana paredzot zemseguma ventilāciju', 'Latojuma montāža un līmeņošana', 'Jumta noteksistēmas montāža, teknes āķus iestrādājot uz spārēm', 'Jumta seguma montāža un visu nepieciešamo pieslēgumu hermētiska izbūve', 'Jumta aksesuāru un drošības elementu montāža - sniega barjeras, jumta laipas, ventilācijas izvadi', 'Vēja kastes un fasādes apdares darbi ar kvalitatīviem materiāliem', 'Būvniecības atkritumu utilizācija, darba vietas satīrīšana un jumta funkcionalitātes pārbaude'],
         qualityPoints: ['10 gadu garantija uz visu darbu', 'ISO 9001 sertificēta kvalitātes vadība', 'Būvniecības dokumentācijas sagatavošana', 'Speciālistu sertifikāti un licences'],
@@ -471,7 +471,7 @@ function getServiceContent(slug: string, locale: string) {
     },
     'jumta-remonts': {
       lv: {
-        overview: 'Ātra jumta avārijas reaģēšana 24/7 Rīgā un Pierīgā. Jumts tek vai noplūst? Mēs novērsam noplūdes, veicam lokālus remontus un diagnozes. Sertificēti meistari, 2 gadu garantija uz remontdarbu.',
+        overview: 'Ātra jumta avārijas reaģēšana 24/7 Rīgā un Pierīgā. Jumts tek vai noplūst? Mēs novērsam noplūdes, veicam jumta labošanu, lokālus remontus un diagnozes. Sertificēti meistari, 2 gadu garantija uz remontdarbu.',
         benefits: ['Ātra 24/7 avārijas reaģēšana (1-2 stundas)', 'Diagnoze ar dronu un vizuālo ziņojumu', 'Lokāls remonts bez pilnīgas demontāžas', 'Garantija uz remontdarbu un materiāliem', 'Bezmaksas novērtējums Rīgā un Pierīgā'],
         process: ['Tūlīta jautājumi un pieņemšana', 'Lokācijas apskate un noplūdes diagnostika', 'Novārtējuma sagatavošana un tāmes sniegšana', 'Operatīvs remonts vai noplūdes likvidēšana', 'Hermētiskuma pārbaude ar ūdens testu', 'Dokumentācija un garantijas nodrošināšana'],
         qualityPoints: ['24/7 avārijas reaģēšana pieņemšana', '2 gadu garantija uz remontdarbu', 'Speciālistiem ir darba drošības apdrošināšana', 'Drona diagnostika ar ziņojumiem'],
@@ -787,7 +787,7 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
     ? 'Serviss Kortrijkā, Gentē, Bruggē, Roeselārē un citās Beļģijas pilsētās.'
     : locale === 'en'
     ? 'Service across Riga, Jūrmala, Jelgava, Ogre, Salaspils, Ķekava, Pierīga and other Latvian cities.'
-    : 'Serviss Rīgā, Jūrmalā, Jelgavā, Ogrē, Salaspilī, Ķekavā, Pierīgā un citās Latvijas pilsētās.';
+    : 'Serviss Rīgā, Jūrmalā, Mārupē, Ādažos, Siguldā, Jelgavā, Ogrē, Salaspilī, Ķekavā, Pierīgā un citās Latvijas pilsētās.';
   const description = `${descriptionBase} ${coverageLine}`.trim();
   
   return {
@@ -850,7 +850,7 @@ export default async function ServiceLanding({params}: PageProps) {
   // Locale-specific city lists
   const cities = locale === 'nl-BE' 
     ? ['Kortrijk', 'Gent', 'Brugge', 'Roeselare', 'Deinze', 'Waregem', 'Oudenaarde', 'Izegem', 'Antwerpen', 'Brussel']
-    : ['Rīga', 'Jūrmala', 'Jelgava', 'Ogre', 'Salaspils', 'Ķekava', 'Pierīgas rajons'];
+    : ['Rīga', 'Jūrmala', 'Mārupe', 'Ādaži', 'Sigulda', 'Jelgava', 'Ogre', 'Salaspils', 'Ķekava', 'Pierīgas rajons'];
 
   const cityHeading = locale === 'nl-BE' 
     ? 'Servicegebieden'
@@ -868,7 +868,7 @@ export default async function ServiceLanding({params}: PageProps) {
     ? 'Snelle reactie in Kortrijk, Gent, Brugge, Roeselare en omliggende steden (1-2 werkdagen). Gratis offerte in alle servicegebieden.'
     : locale === 'en'
     ? 'Fast response across Riga, Jūrmala, Jelgava, Ogre, Salaspils, Ķekava and Pierīga (1-2 business days). Free assessment in all service areas.'
-    : 'Ātra reakcija Rīgā, Jūrmalā, Jelgavā, Ogrē, Salaspilī, Ķekavā un Pierīgā (1-2 darba dienas). Bezmaksas novērtējums visās apkalpojamās teritorijās.';
+    : 'Ātra reakcija Rīgā, Jūrmalā, Mārupē, Ādažos, Siguldā, Jelgavā, Ogrē, Salaspilī, Ķekavā un Pierīgā (1-2 darba dienas). Bezmaksas novērtējums visās apkalpojamās teritorijās.';
 
   // Service-specific detailed content
   const serviceContent = getServiceContent(serviceSlug, locale);
@@ -922,6 +922,9 @@ export default async function ServiceLanding({params}: PageProps) {
     ] : [
       { '@type': 'City', name: 'Rīga', '@id': 'https://www.wikidata.org/wiki/Q1773' },
       { '@type': 'City', name: 'Jūrmala' },
+      { '@type': 'City', name: 'Mārupe' },
+      { '@type': 'City', name: 'Ādaži' },
+      { '@type': 'City', name: 'Sigulda' },
       { '@type': 'City', name: 'Jelgava' },
       { '@type': 'City', name: 'Ogre' },
       { '@type': 'City', name: 'Salaspils' },

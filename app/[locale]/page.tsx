@@ -72,7 +72,7 @@ export default async function HomePage({params}: Props) {
   const banner = bannerText[locale] || bannerText.lv;
 
   const seoIntro: Record<string, string> = {
-    lv: 'Mūsu galvenie virzieni ir jumta pakalpojumi, jumta darbi, jumta remonts, jumta renovācija un jumta montāža Rīgā, Pierīgā un visā Latvijā.',
+    lv: 'Jumiķa pakalpojumi, jumiķi, jumta darbi, jumta remonts, jumta labošana, jumta atjaunošana, jumta renovācija, jumta nomaiņa, jumta montāža un jumta būvniecība Rīgā, Mārupē, Jūrmalā, Ādažos, Siguldā, Pierīgā un visā Latvijā.',
     en: 'Our core focus is roofing services, roof repairs, roof renovation and roof installation in Riga and throughout Latvia.',
     'nl-BE': 'Onze kernfocus ligt op dakdiensten, dakreparatie, dakrenovatie en dakinstallatie in Letland.',
   };
@@ -146,7 +146,7 @@ export default async function HomePage({params}: Props) {
               addressCountry: locale === 'nl-BE' ? 'BE' : 'LV',
               addressLocality: locale === 'nl-BE' ? 'Kortrijk' : 'Rīga'
             },
-            areaServed: locale === 'nl-BE' ? ['Kortrijk','Gent','Brugge','Antwerpen','Brussel'] : ['Rīga','Jūrmala','Jelgava','Ogre','Salaspils','Ķekava'],
+            areaServed: locale === 'nl-BE' ? ['Kortrijk','Gent','Brugge','Antwerpen','Brussel'] : ['Rīga','Jūrmala','Jelgava','Ogre','Salaspils','Ķekava','Mārupe','Ādaži','Sigulda'],
             openingHoursSpecification: [
               { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday'], opens: '08:00', closes: '18:00' }
             ],
@@ -171,7 +171,7 @@ export default async function HomePage({params}: Props) {
               ? 'Professionele dakdiensten: renovatie, pannendaken, metaal, onderhoud. Gecertificeerde kwaliteit met garantie.'
               : locale === 'en'
               ? 'Professional roofing services: construction, renovation, metal, tiles, maintenance, snow and ice removal. Certified quality with warranty.'
-              : 'Profesionāli jumta pakalpojumi: būvniecība, renovācija, metāla jumti, valcprofila montāža, valcprofila jumta montāža, metāla jumta montāža, dakstiņi, apkope, sniega un ledus tīrīšana no jumta. Sertificēta kvalitāte ar garantiju.'
+              : 'Profesionāli jumta pakalpojumi: jumiķa pakalpojumi, jumta darbi, jumta remonts, jumta labošana, jumta atjaunošana, jumta renovācija, jumta nomaiņa, jumta montāža, jumta būvniecība, metāla jumti, valcprofila montāža, valcprofila jumta montāža, metāla jumta montāža, dakstiņi, apkope, sniega un ledus tīrīšana no jumta. Sertificēta kvalitāte ar garantiju.'
           })
         }}
       />
