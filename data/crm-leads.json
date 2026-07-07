@@ -1,0 +1,50 @@
+[
+  {
+    "id": "L-1044",
+    "customer": "Northern Logistics SIA",
+    "company": "Northern Logistics SIA",
+    "phone": "+371 26 002 511",
+    "email": "office@northernlogistics.lv",
+    "address": "Skanstes iela 21, Rīga",
+    "status": "NEW",
+    "progress": "in progress",
+    "activityUpdate": "Message",
+    "dealProgress": "Lost",
+    "note": "Commercial roof estimate requested. Need material options before quote.",
+    "owner": "Eva",
+    "value": "€31,200",
+    "updatedAt": "06/07/2026, 19:59:56",
+    "nextAction": "Prepare commercial proposal",
+    "attachments": [
+      "commercial-roof-layout.pdf"
+    ],
+    "problem": "",
+    "projectAddress": "Skanstes iela 21, Rīga",
+    "clientCharacterNote": "",
+    "workLog": [],
+    "estimatorData": []
+  },
+  {
+    "id": "L-1045",
+    "customer": "Old Riga Guest House",
+    "company": "Old Riga Guest House",
+    "phone": "+371 28 203 441",
+    "email": "bookings@oldrigaguesthouse.lv",
+    "address": "Kaļķu iela 14, Rīga",
+    "status": "CONTACTED",
+    "progress": "New",
+    "activityUpdate": "First call planned",
+    "dealProgress": "Won",
+    "note": "Hot lead from website form. Need call back Friday morning.",
+    "owner": "Dana",
+    "value": "€5,300",
+    "updatedAt": "Yesterday",
+    "nextAction": "Call back Friday morning",
+    "attachments": [],
+    "problem": "",
+    "projectAddress": "Kaļķu iela 14, Rīga",
+    "clientCharacterNote": "",
+    "workLog": [],
+    "estimatorData": []
+  }
+]

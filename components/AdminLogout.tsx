@@ -2,14 +2,14 @@
 
 import { ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
 
-export default function AdminLogout({ locale }: { locale: string }) {
+export default function AdminLogout({ locale, redirectPath }: { locale: string; redirectPath?: string }) {
   const handleLogout = async () => {
     try {
       await fetch('/api/admin/logout', { method: 'POST' });
     } catch (e) {
       // ignore network errors; we'll still navigate
     } finally {
-      window.location.href = `/${locale}/admin/login`;
+      window.location.href = redirectPath || `/${locale}/admin/login`;
     }
   };
 

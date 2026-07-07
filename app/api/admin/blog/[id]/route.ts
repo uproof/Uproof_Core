@@ -1,5 +1,5 @@
 import {NextRequest, NextResponse} from 'next/server';
-import {isAdminAuthenticated} from '@/lib/adminAuth';
+import {isSuperadminAuthenticated} from '@/lib/adminAuth';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -15,7 +15,7 @@ async function writePosts(posts: any[]) {
 }
 
 export async function PUT(req: NextRequest, {params}: {params: Promise<{id: string}>}) {
-  if (!(await isAdminAuthenticated())) return NextResponse.json({ok: false}, {status: 401});
+  if (!(await isSuperadminAuthenticated())) return NextResponse.json({ok: false, error: 'Forbidden'}, {status: 403});
   const body = await req.json();
   const {id: idParam} = await params;
   const id = Number(idParam);
@@ -28,7 +28,7 @@ export async function PUT(req: NextRequest, {params}: {params: Promise<{id: stri
 }
 
 export async function DELETE(_: NextRequest, {params}: {params: Promise<{id: string}>}) {
-  if (!(await isAdminAuthenticated())) return NextResponse.json({ok: false}, {status: 401});
+  if (!(await isSuperadminAuthenticated())) return NextResponse.json({ok: false, error: 'Forbidden'}, {status: 403});
   const {id: idParam} = await params;
   const id = Number(idParam);
   const posts = await readPosts();

@@ -1,5 +1,5 @@
 import {NextRequest, NextResponse} from 'next/server';
-import {isAdminAuthenticated} from '@/lib/adminAuth';
+import {isSuperadminAuthenticated} from '@/lib/adminAuth';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -29,7 +29,7 @@ export async function GET(_: NextRequest, {params}: {params: Promise<{locale: st
 }
 
 export async function PUT(req: NextRequest, {params}: {params: Promise<{locale: string}>}) {
-  if (!(await isAdminAuthenticated())) return NextResponse.json({ok: false}, {status: 401});
+  if (!(await isSuperadminAuthenticated())) return NextResponse.json({ok: false, error: 'Forbidden'}, {status: 403});
   const {locale} = await params;
   
   // Validate locale to prevent path traversal

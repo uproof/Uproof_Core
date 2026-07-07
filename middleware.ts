@@ -2,6 +2,8 @@ import createMiddleware from 'next-intl/middleware';
 import {routing} from './i18n/routing';
 import {NextRequest, NextResponse} from 'next/server';
 import {latviaCities, belgiumCities} from '@/lib/cities';
+import {createSupabaseAdminClient} from '@/lib/supabase/server';
+import {SUPABASE_ACCESS_TOKEN_COOKIE} from '@/lib/supabase/session';
 
 const intlMiddleware = createMiddleware(routing);
 const LATVIA_CITY_SET = new Set<string>(latviaCities);
@@ -9,6 +11,7 @@ const BELGIUM_CITY_SET = new Set<string>(belgiumCities);
 
 // Enforce canonical host (redirect www -> non-www)
 const CANONICAL_HOST = 'uproof.eu';
+const MFA_DEV_SECRET_FALLBACK = 'dev-secret-change-me';
 function enforceCanonicalHost(request: NextRequest) {
   const hostHeader = request.headers.get('host') || '';
   const host = hostHeader.split(':')[0];
@@ -25,13 +28,176 @@ function isCrawler(request: NextRequest): boolean {
   return /(googlebot|bingbot|yandexbot|duckduckbot|baiduspider|slurp|facebookexternalhit|twitterbot|linkedinbot|crawler|spider|bot)/.test(ua);
 }
 
-export default function middleware(request: NextRequest) {
+function base64UrlEncode(bytes: Uint8Array) {
+  let binary = '';
+  bytes.forEach((byte) => {
+    binary += String.fromCharCode(byte);
+  });
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+}
+
+function decodePayload(payload: string) {
+  const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
+  const padded = base64 + '='.repeat((4 - (base64.length % 4)) % 4);
+  return atob(padded);
+}
+
+async function getSessionRoleFromCookie(sessionToken: string | undefined, supabaseAccessToken: string | undefined): Promise<'sales' | 'superadmin' | null> {
+  if (supabaseAccessToken) {
+    const supabase = createSupabaseAdminClient();
+    if (supabase) {
+      const {data, error} = await supabase.auth.getUser(supabaseAccessToken);
+      const user = data?.user;
+      if (!error && user?.email) {
+        const profile = await supabase
+          .from('user_profiles')
+          .select('role,is_active')
+          .eq('email', user.email)
+          .maybeSingle();
+        if (!profile.error && profile.data?.is_active) {
+          if (profile.data.role === 'sales' || profile.data.role === 'superadmin') {
+            return profile.data.role;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  if (!sessionToken) return null;
+  const parts = sessionToken.split('.');
+  if (parts.length !== 2) return null;
+
+  const [payload, signature] = parts;
+  if (!payload) return null;
+
+  try {
+    const secret = process.env.ADMIN_TOKEN_SECRET || process.env.NEXTAUTH_SECRET || MFA_DEV_SECRET_FALLBACK;
+    const keyData = new TextEncoder().encode(secret);
+    const messageData = new TextEncoder().encode(payload);
+    const cryptoKey = await crypto.subtle.importKey('raw', keyData, {name: 'HMAC', hash: 'SHA-256'}, false, ['sign']);
+    const digest = await crypto.subtle.sign('HMAC', cryptoKey, messageData);
+    const expectedSignature = base64UrlEncode(new Uint8Array(digest));
+    if (signature !== expectedSignature) {
+      return null;
+    }
+
+    const decoded = decodePayload(payload);
+    const parsed = JSON.parse(decoded) as {role?: unknown};
+    if (typeof (parsed as any).exp !== 'number' || Date.now() >= Number((parsed as any).exp)) {
+      return null;
+    }
+
+    if (parsed.role === 'sales' || parsed.role === 'superadmin') {
+      return parsed.role;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+export default async function middleware(request: NextRequest) {
   // canonical host enforcement
   const canonicalResponse = enforceCanonicalHost(request);
   if (canonicalResponse) return canonicalResponse;
   const {nextUrl, cookies} = request;
   const pathname = nextUrl.pathname;
+  const hostHeader = request.headers.get('host') || '';
+  const host = hostHeader.split(':')[0].toLowerCase();
+  const isLocalDevHost = ['localhost', '127.0.0.1', '::1'].includes(host) || host.endsWith('.localhost');
+  const isCrmHost = host === 'crm.uproof.eu';
   const setLocale = nextUrl.searchParams.get('setLocale');
+  const isCrmPath = /^\/(lv|en|nl-BE)\/crm(\/|$)/.test(pathname);
+  const isCrmLoginPath = /^\/(lv|en|nl-BE)\/crm\/login(\/|$)/.test(pathname);
+  const isAdminCrmPath = /^\/(lv|en|nl-BE)\/admin\/crm(\/|$)/.test(pathname);
+  const isAdminPath = /^\/(lv|en|nl-BE)\/admin(\/|$)/.test(pathname);
+  const isApiAdminPath = /^\/api\/admin(\/|$)/.test(pathname);
+  const isApiCrmPath = /^\/api\/crm(\/|$)/.test(pathname);
+  const isAdminPublicLoginPath = /^\/(lv|en|nl-BE)\/admin\/login(\/|$)/.test(pathname);
+  const isApiAdminPublicPath = /^\/api\/admin\/(login|logout)(\/|$)/.test(pathname);
+  const sessionToken = cookies.get('admin_session')?.value;
+  const supabaseAccessToken = cookies.get(SUPABASE_ACCESS_TOKEN_COOKIE)?.value;
+  const sessionRole = await getSessionRoleFromCookie(sessionToken, supabaseAccessToken);
+
+  if (isCrmLoginPath) {
+    const redirectUrl = new URL(nextUrl.toString());
+    if (sessionRole) {
+      redirectUrl.pathname = pathname.replace(
+        /\/crm\/login(?:\/)?$/,
+        sessionRole === 'sales' ? '/crm' : '/admin'
+      );
+      return NextResponse.redirect(redirectUrl, 308);
+    }
+    redirectUrl.pathname = pathname.replace(/\/crm\/login(?:\/)?$/, '/crm-login');
+    return NextResponse.rewrite(redirectUrl);
+  }
+
+  if (isAdminPath && !isAdminPublicLoginPath) {
+    if (!sessionRole) {
+      const redirectUrl = new URL(nextUrl.toString());
+      redirectUrl.pathname = pathname.replace(/^\/(lv|en|nl-BE)\/admin(?:\/.*)?$/, '/$1/admin/login');
+      return NextResponse.redirect(redirectUrl, 307);
+    }
+    if (sessionRole !== 'superadmin') {
+      const redirectUrl = new URL(nextUrl.toString());
+      redirectUrl.pathname = pathname.replace(/^\/(lv|en|nl-BE)\/admin(?:\/.*)?$/, '/$1/crm');
+      return NextResponse.redirect(redirectUrl, 307);
+    }
+  }
+
+  if (isCrmPath && !isCrmLoginPath) {
+    if (!sessionRole) {
+      const redirectUrl = new URL(nextUrl.toString());
+      redirectUrl.pathname = pathname.replace(/^\/(lv|en|nl-BE)\/crm(?:\/.*)?$/, '/$1/crm/login');
+      return NextResponse.redirect(redirectUrl, 307);
+    }
+    if (sessionRole === 'superadmin') {
+      const redirectUrl = new URL(nextUrl.toString());
+      redirectUrl.pathname = pathname.replace(/^\/(lv|en|nl-BE)\/crm(?:\/.*)?$/, '/$1/admin');
+      return NextResponse.redirect(redirectUrl, 307);
+    }
+  }
+
+  if (isApiAdminPath && !isApiAdminPublicPath) {
+    if (!sessionRole) {
+      return NextResponse.json({ok: false, error: 'Unauthorized'}, {status: 401});
+    }
+    if (sessionRole !== 'superadmin') {
+      return NextResponse.json({ok: false, error: 'Forbidden'}, {status: 403});
+    }
+  }
+
+  if (isApiCrmPath) {
+    if (!sessionRole) {
+      return NextResponse.json({ok: false, error: 'Unauthorized'}, {status: 401});
+    }
+  }
+
+  // API routes are locale-agnostic; never apply locale redirects/rewrite logic to them.
+  if (isApiAdminPath || isApiCrmPath) {
+    return NextResponse.next();
+  }
+
+  if (!isLocalDevHost) {
+    if (isCrmPath && !isCrmHost) {
+      const redirectUrl = new URL(nextUrl.toString());
+      redirectUrl.hostname = 'crm.uproof.eu';
+      return NextResponse.redirect(redirectUrl, 308);
+    }
+
+    if (isCrmHost && !isCrmPath) {
+      const redirectUrl = new URL(nextUrl.toString());
+      redirectUrl.hostname = CANONICAL_HOST;
+      return NextResponse.redirect(redirectUrl, 308);
+    }
+
+    if (isAdminCrmPath && isCrmHost) {
+      const redirectUrl = new URL(nextUrl.toString());
+      redirectUrl.hostname = CANONICAL_HOST;
+      return NextResponse.redirect(redirectUrl, 308);
+    }
+  }
 
   // Allow explicit locale changes to win before any default-locale redirects.
   if (setLocale && ['lv', 'en', 'nl-BE'].includes(setLocale)) {
@@ -234,6 +400,8 @@ export default function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     '/',
+    '/api/admin/:path*',
+    '/api/crm/:path*',
     '/(lv|en|nl-BE)/:path*',
     // Exclude API routes, static files, and well-known paths
     '/((?!api|_next/static|_next/image|favicon.ico|images|uploads|models|videos|.*\\..*|\\.well-known).*)'

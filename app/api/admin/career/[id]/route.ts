@@ -1,6 +1,6 @@
 import {NextRequest, NextResponse} from 'next/server';
 import {revalidatePath} from 'next/cache';
-import {isAdminAuthenticated} from '@/lib/adminAuth';
+import {isSuperadminAuthenticated} from '@/lib/adminAuth';
 import {CareerJob, getCareerJobs, normalizeCareerJob, saveCareerJobs} from '@/lib/career';
 import {pingGoogleSitemap} from '@/lib/careerSeo';
 
@@ -17,8 +17,8 @@ function refreshCareerArtifacts(jobs: CareerJob[]) {
 }
 
 export async function PATCH(request: NextRequest, {params}: {params: Promise<{id: string}>}) {
-  if (!(await isAdminAuthenticated())) {
-    return NextResponse.json({error: 'Unauthorized'}, {status: 401});
+  if (!(await isSuperadminAuthenticated())) {
+    return NextResponse.json({error: 'Forbidden'}, {status: 403});
   }
 
   try {
@@ -67,8 +67,8 @@ export async function PATCH(request: NextRequest, {params}: {params: Promise<{id
 }
 
 export async function DELETE(_: NextRequest, {params}: {params: Promise<{id: string}>}) {
-  if (!(await isAdminAuthenticated())) {
-    return NextResponse.json({error: 'Unauthorized'}, {status: 401});
+  if (!(await isSuperadminAuthenticated())) {
+    return NextResponse.json({error: 'Forbidden'}, {status: 403});
   }
 
   try {

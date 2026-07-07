@@ -1,6 +1,6 @@
 import {NextRequest, NextResponse} from 'next/server';
 import {revalidatePath} from 'next/cache';
-import {isAdminAuthenticated} from '@/lib/adminAuth';
+import {isSuperadminAuthenticated} from '@/lib/adminAuth';
 import {CareerJob, getCareerJobs, normalizeCareerJob, saveCareerJobs} from '@/lib/career';
 import {pingGoogleSitemap, slugifyCareerTitle} from '@/lib/careerSeo';
 
@@ -45,8 +45,8 @@ function refreshCareerArtifacts(jobs: CareerJob[]) {
 }
 
 export async function GET() {
-  if (!(await isAdminAuthenticated())) {
-    return NextResponse.json({error: 'Unauthorized'}, {status: 401});
+  if (!(await isSuperadminAuthenticated())) {
+    return NextResponse.json({error: 'Forbidden'}, {status: 403});
   }
 
   try {
@@ -59,8 +59,8 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  if (!(await isAdminAuthenticated())) {
-    return NextResponse.json({error: 'Unauthorized'}, {status: 401});
+  if (!(await isSuperadminAuthenticated())) {
+    return NextResponse.json({error: 'Forbidden'}, {status: 403});
   }
 
   try {

@@ -1,21 +1,27 @@
 import {redirect} from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   PencilSquareIcon,
   DocumentTextIcon,
   HomeIcon,
-  ChartBarIcon,
   BriefcaseIcon,
+  UserGroupIcon,
+  ClipboardDocumentListIcon,
 } from '@heroicons/react/24/outline';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
-import {isAdminAuthenticated} from '@/lib/adminAuth';
+import {getAdminSession} from '@/lib/adminAuth';
 import AdminLogout from '@/components/AdminLogout';
 
 export default async function AdminDashboard({params}: {params: Promise<{locale: string}>}) {
   const {locale} = await params;
-  const ok = await isAdminAuthenticated();
-  if (!ok) {
+  const session = await getAdminSession();
+  if (!session) {
     redirect(`/${locale}/admin/login`);
+  }
+
+  if (session.role !== 'superadmin') {
+    redirect(`/${locale}/crm`);
   }
 
   return (
@@ -25,8 +31,8 @@ export default async function AdminDashboard({params}: {params: Promise<{locale:
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="bg-primary-600 text-white p-2 rounded-lg">
-                <ChartBarIcon className="w-6 h-6" />
+              <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl border border-sky-100 bg-white shadow-sm">
+                <Image src="/logo.svg" alt="UpRoof" width={44} height={44} className="h-full w-full object-contain p-1" priority />
               </div>
               <div>
                 <h1 className="text-xl sm:text-2xl font-bold text-gray-900">UpRoof Admin</h1>
@@ -60,6 +66,52 @@ export default async function AdminDashboard({params}: {params: Promise<{locale:
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Lead Management */}
+          <Link href={`/${locale}/admin/crm/leads`}>
+            <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow cursor-pointer group border border-sky-100">
+              <div className="flex items-center justify-between mb-4">
+                <div className="bg-sky-100 p-3 rounded-lg group-hover:bg-sky-200 transition-colors">
+                  <ClipboardDocumentListIcon className="w-8 h-8 text-sky-700" />
+                </div>
+                <span className="text-sm font-semibold text-green-600 flex items-center gap-1">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  Active
+                </span>
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Lead Management</h3>
+              <p className="text-gray-600 mb-4">Add, delete, and assign leads</p>
+              <div className="flex items-center text-sky-700 font-semibold">
+                Open Lead Management
+                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+              </div>
+            </div>
+          </Link>
+
+          {/* Sales Admin User Management */}
+          <Link href={`/${locale}/admin/crm/users`}>
+            <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow cursor-pointer group border border-indigo-100">
+              <div className="flex items-center justify-between mb-4">
+                <div className="bg-indigo-100 p-3 rounded-lg group-hover:bg-indigo-200 transition-colors">
+                  <UserGroupIcon className="w-8 h-8 text-indigo-700" />
+                </div>
+                <span className="text-sm font-semibold text-green-600 flex items-center gap-1">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  Active
+                </span>
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Sales Admin User Management</h3>
+              <p className="text-gray-600 mb-4">Create, delete, and manage sales users with individual logs and dashboard access</p>
+              <div className="flex items-center text-indigo-700 font-semibold">
+                Open User Management
+                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+              </div>
+            </div>
+          </Link>
+
           {/* Blog Management */}
           <Link href={`/${locale}/admin/blog`}>
             <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow cursor-pointer group">

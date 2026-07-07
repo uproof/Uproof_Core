@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { isAdminAuthenticated } from '@/lib/adminAuth';
+import { isSuperadminAuthenticated } from '@/lib/adminAuth';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -62,9 +62,9 @@ export async function PATCH(
   { params }: { params: Promise<{ key: string }> }
 ) {
   // Check admin authentication
-  const authenticated = await isAdminAuthenticated();
+  const authenticated = await isSuperadminAuthenticated();
   if (!authenticated) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
   try {

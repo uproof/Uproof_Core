@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { isAdminAuthenticated } from '@/lib/adminAuth';
+import { isSuperadminAuthenticated } from '@/lib/adminAuth';
 import { checkRateLimit, RATE_LIMITS } from '@/lib/rateLimit';
 import fs from 'fs/promises';
 import path from 'path';
@@ -17,9 +17,9 @@ async function ensureFile() {
 
 export async function GET() {
   // Require admin auth for reading contact messages (PII)
-  const authenticated = await isAdminAuthenticated();
+  const authenticated = await isSuperadminAuthenticated();
   if (!authenticated) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
   try {
     await ensureFile();
