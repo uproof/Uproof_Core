@@ -3,6 +3,7 @@ import {getAdminSession} from '@/lib/adminAuth';
 import {createSignedDocQuery} from '@/lib/crmDocs';
 import {getCrmLeads} from '@/lib/crmLeadsStore';
 import {getCrmUserByEmail} from '@/lib/crmUsersStore';
+import {redactLeadForSales} from '@/lib/sensitiveMask';
 import LeadManagementClient from './LeadManagementClient';
 
 type Props = {
@@ -38,7 +39,7 @@ export default async function CrmLeadDetailPage({params}: Props) {
     };
   });
 
-  const salesLead = {...lead, workLog: []};
+  const salesLead = redactLeadForSales({...lead, workLog: [], estimatorData: []});
 
   return <LeadManagementClient locale={locale} lead={salesLead} signedAttachments={signedAttachments} showWorkLog={false} accessScope="sales" />;
 }

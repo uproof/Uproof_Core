@@ -1,9 +1,8 @@
 import {NextRequest, NextResponse} from 'next/server';
 import {getAdminSession} from '@/lib/adminAuth';
-import {unassignLeadFromCrmUser} from '@/lib/crmUsersStore';
-import {logCrmUserActivity} from '@/lib/crmUserActivityStore';
 import {checkRateLimit, RATE_LIMITS} from '@/lib/rateLimit';
 import {canPerform} from '@/lib/permissions';
+import {unassignLead} from '@/lib/crmLeadService';
 
 export async function POST(
   req: NextRequest,
@@ -25,25 +24,17 @@ export async function POST(
   }
 
   const {id} = await params;
-  const result = await unassignLeadFromCrmUser({
+  const serviceResult = await unassignLead({
     leadId: id,
-    unassignedBy: session.email,
+    actorEmail: session.email,
+    actorRole: session.role,
+    sessionId: session.sid,
+    ip,
   });
 
-  if (!result.unassigned) {
-    return NextResponse.json({ok: false, error: 'Lead not found'}, {status: 404});
+  if (!serviceResult.ok) {
+    return NextResponse.json({ok: false, error: serviceResult.error}, {status: serviceResult.status});
   }
 
-  if (!result.duplicate) {
-    await logCrmUserActivity({
-      actorEmail: session.email,
-      actorRole: session.role,
-      action: 'lead_unassign',
-      leadId: id,
-      detail: 'unassigned_from_sales_user',
-      ip,
-    });
-  }
-
-  return NextResponse.json({ok: true, duplicate: result.duplicate});
+  return NextResponse.json({ok: true, duplicate: serviceResult.duplicate, lead: serviceResult.lead});
 }

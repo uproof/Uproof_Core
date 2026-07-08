@@ -3,6 +3,7 @@
 import {useEffect, useRef, useState} from 'react';
 import {motion} from 'framer-motion';
 import {useLocale} from 'next-intl';
+import Image from 'next/image';
 
 type Vendor = {
   name: string;
@@ -68,12 +69,14 @@ function VendorLogo({vendor}: {vendor: Vendor}) {
   }
 
   return (
-    <img
+    <Image
       src={vendor.logo}
       alt={`${vendor.name} logo`}
-      className="h-14 w-14 rounded-xl object-contain bg-white p-2 shadow-sm ring-1 ring-gray-200"
+      width={56}
+      height={56}
+      className="h-14 w-14 rounded-xl bg-white object-contain p-2 shadow-sm ring-1 ring-gray-200"
       loading="lazy"
-      referrerPolicy="no-referrer"
+      unoptimized
       onError={() => setHasError(true)}
     />
   );

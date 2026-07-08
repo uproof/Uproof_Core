@@ -133,6 +133,55 @@ function ensureSchema(db: Database.Database) {
 
     CREATE INDEX IF NOT EXISTS idx_crm_user_activity_created_at
       ON crm_user_activity (created_at DESC);
+
+    CREATE TABLE IF NOT EXISTS notifications (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      recipient_email TEXT NOT NULL,
+      title TEXT NOT NULL,
+      message TEXT NOT NULL,
+      link TEXT NOT NULL DEFAULT '',
+      read_at TEXT NOT NULL DEFAULT '',
+      archived_at TEXT NOT NULL DEFAULT '',
+      created_at TEXT NOT NULL
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_notifications_recipient_email
+      ON notifications (recipient_email, created_at DESC);
+
+    CREATE TABLE IF NOT EXISTS audit_log (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      request_id TEXT NOT NULL,
+      actor_email TEXT NOT NULL,
+      actor_role TEXT NOT NULL,
+      action TEXT NOT NULL,
+      entity_type TEXT NOT NULL,
+      entity_id TEXT NOT NULL,
+      detail TEXT NOT NULL DEFAULT '',
+      success INTEGER NOT NULL DEFAULT 1,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_audit_log_created_at
+      ON audit_log (created_at DESC);
+
+    CREATE TABLE IF NOT EXISTS crm_events (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      event_type TEXT NOT NULL,
+      aggregate_type TEXT NOT NULL,
+      aggregate_id TEXT NOT NULL,
+      payload_json TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_crm_events_created_at
+      ON crm_events (created_at DESC);
+
+    CREATE TABLE IF NOT EXISTS rate_limits (
+      identifier TEXT PRIMARY KEY,
+      count INTEGER NOT NULL,
+      reset_at INTEGER NOT NULL,
+      updated_at_utc TEXT NOT NULL
+    );
   `);
 
   ensureLeadColumns(db);
@@ -153,6 +202,10 @@ function seedIfNeeded(db: Database.Database) {
 export function getDb() {
   if (database) {
     return database;
+  }
+
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('SQLite fallback is not available in production');
   }
 
   fs.mkdirSync(path.dirname(DB_PATH), {recursive: true});

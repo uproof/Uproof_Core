@@ -11,6 +11,7 @@ const BELGIUM_CITY_SET = new Set<string>(belgiumCities);
 
 // Enforce canonical host (redirect www -> non-www)
 const CANONICAL_HOST = 'uproof.eu';
+const ADMIN_HOST = 'admin.uproof.eu';
 const MFA_DEV_SECRET_FALLBACK = 'dev-secret-change-me';
 function enforceCanonicalHost(request: NextRequest) {
   const hostHeader = request.headers.get('host') || '';
@@ -107,6 +108,7 @@ export default async function middleware(request: NextRequest) {
   const host = hostHeader.split(':')[0].toLowerCase();
   const isLocalDevHost = ['localhost', '127.0.0.1', '::1'].includes(host) || host.endsWith('.localhost');
   const isCrmHost = host === 'crm.uproof.eu';
+  const isAdminHost = host === ADMIN_HOST;
   const setLocale = nextUrl.searchParams.get('setLocale');
   const isCrmPath = /^\/(lv|en|nl-BE)\/crm(\/|$)/.test(pathname);
   const isCrmLoginPath = /^\/(lv|en|nl-BE)\/crm\/login(\/|$)/.test(pathname);
@@ -180,6 +182,12 @@ export default async function middleware(request: NextRequest) {
   }
 
   if (!isLocalDevHost) {
+    if (isAdminPath && !isAdminHost) {
+      const redirectUrl = new URL(nextUrl.toString());
+      redirectUrl.hostname = ADMIN_HOST;
+      return NextResponse.redirect(redirectUrl, 308);
+    }
+
     if (isCrmPath && !isCrmHost) {
       const redirectUrl = new URL(nextUrl.toString());
       redirectUrl.hostname = 'crm.uproof.eu';
@@ -188,13 +196,13 @@ export default async function middleware(request: NextRequest) {
 
     if (isCrmHost && !isCrmPath) {
       const redirectUrl = new URL(nextUrl.toString());
-      redirectUrl.hostname = CANONICAL_HOST;
+      redirectUrl.hostname = ADMIN_HOST;
       return NextResponse.redirect(redirectUrl, 308);
     }
 
     if (isAdminCrmPath && isCrmHost) {
       const redirectUrl = new URL(nextUrl.toString());
-      redirectUrl.hostname = CANONICAL_HOST;
+      redirectUrl.hostname = ADMIN_HOST;
       return NextResponse.redirect(redirectUrl, 308);
     }
   }

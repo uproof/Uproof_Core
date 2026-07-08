@@ -16,9 +16,7 @@ export default function CrmLoginPage() {
           emailLabel: 'E-mail',
           emailPlaceholder: 'Voer e-mail in',
           label: 'Wachtwoord',
-          mfaLabel: 'MFA-code',
           placeholder: 'Voer CRM-wachtwoord in',
-          mfaPlaceholder: '6-cijferige code',
           button: 'Inloggen',
           loading: 'Aan het inloggen…',
           back: '← Terug naar website'
@@ -30,9 +28,7 @@ export default function CrmLoginPage() {
           emailLabel: 'Email',
           emailPlaceholder: 'Enter email',
             label: 'Password',
-          mfaLabel: 'MFA code',
             placeholder: 'Enter CRM password',
-          mfaPlaceholder: '6-digit code',
             button: 'Login',
             loading: 'Logging in…',
             back: '← Back to website'
@@ -43,16 +39,13 @@ export default function CrmLoginPage() {
           emailLabel: 'E-pasts',
           emailPlaceholder: 'Ievadi e-pastu',
             label: 'Parole',
-            mfaLabel: 'MFA kods',
             placeholder: 'Ievadi CRM paroli',
-            mfaPlaceholder: '6 ciparu kods',
             button: 'Ieiet',
             loading: 'Ielāde…',
             back: '← Atpakaļ uz vietni'
           };
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -67,7 +60,7 @@ export default function CrmLoginPage() {
       const res = await fetch('/api/admin/login', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({email, password, otp, role: 'sales'})
+        body: JSON.stringify({email, password, role: 'sales'})
       });
       const data = await res.json();
       if (!data.ok) throw new Error(data.error || 'Login failed');
@@ -112,23 +105,6 @@ export default function CrmLoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
               placeholder={copy.placeholder}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="otp" className="block text-sm font-medium text-gray-700 mb-2">
-              {copy.mfaLabel}
-            </label>
-            <input
-              id="otp"
-              type="text"
-              inputMode="numeric"
-              pattern="[0-9]{6}"
-              maxLength={6}
-              value={otp}
-              onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
-              className="w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
-              placeholder={copy.mfaPlaceholder}
               required
             />
           </div>

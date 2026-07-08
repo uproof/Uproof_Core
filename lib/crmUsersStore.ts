@@ -2,6 +2,7 @@ import {randomUUID} from 'crypto';
 import {getDb, nowIso} from '@/lib/crmDb';
 import {createSupabaseAdminClient} from '@/lib/supabase/server';
 import {getCrmLeadById} from '@/lib/crmLeadsStore';
+import {decryptSecret, encryptSecret, hashPassword, normalizeSecretInput, verifyPassword} from '@/lib/secretVault';
 
 export type CrmUserRole = 'sales' | 'superadmin';
 
@@ -28,6 +29,18 @@ type CrmUserRow = {
   created_at: string;
   updated_at_utc: string;
 };
+
+function safeDecryptSecret(value: string) {
+  if (!value) {
+    return '';
+  }
+
+  try {
+    return decryptSecret(value);
+  } catch {
+    return '';
+  }
+}
 
 function rowToCrmUser(row: CrmUserRow): CrmUser {
   return {
@@ -166,15 +179,13 @@ export async function createCrmUser(input: CreateCrmUserInput): Promise<CrmUser>
     throw new Error('Email and name are required');
   }
 
-  const password = (input.password || '').trim();
-  const mfaSecret = (input.mfaSecret || '').trim();
+  const password = normalizeSecretInput(input.password || '');
+  const mfaSecret = normalizeSecretInput(input.mfaSecret || '');
+  const passwordHash = hashPassword(password);
+  const encryptedMfaSecret = mfaSecret ? encryptSecret(mfaSecret) : '';
 
   const supabase = createSupabaseAdminClient();
   if (supabase) {
-    if (!password) {
-      throw new Error('Password is required for Supabase sales user creation');
-    }
-
     const createAuthResult = await supabase.auth.admin.createUser({
       email,
       password,
@@ -198,8 +209,8 @@ export async function createCrmUser(input: CreateCrmUserInput): Promise<CrmUser>
         full_name: name,
         role,
         is_active: true,
-        crm_password: password,
-        crm_mfa_secret: mfaSecret,
+        crm_password: passwordHash,
+        crm_mfa_secret: encryptedMfaSecret,
       })
       .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,created_at,updated_at')
       .single();
@@ -234,8 +245,8 @@ export async function createCrmUser(input: CreateCrmUserInput): Promise<CrmUser>
     name,
     role,
     isActive: 1,
-    password,
-    mfaSecret,
+    password: passwordHash,
+    mfaSecret: encryptedMfaSecret,
     createdAt: now,
     updatedAtUtc: now,
   });
@@ -272,22 +283,24 @@ export async function updateCrmUser(input: UpdateCrmUserInput): Promise<CrmUser 
 
   const nextName = typeof input.name === 'string' && input.name.trim() ? input.name.trim() : current.name;
   const nextActive = typeof input.isActive === 'boolean' ? input.isActive : current.isActive;
-  const nextPassword = typeof input.password === 'string' && input.password.trim() ? input.password.trim() : current.password || '';
-  const nextMfaSecret = typeof input.mfaSecret === 'string' && input.mfaSecret.trim() ? input.mfaSecret.trim() : current.mfaSecret || '';
+  const nextPasswordPlain = typeof input.password === 'string' && input.password.trim() ? input.password.trim() : '';
+  const nextMfaPlain = typeof input.mfaSecret === 'string' && input.mfaSecret.trim() ? input.mfaSecret.trim() : '';
+  const nextPassword = nextPasswordPlain ? hashPassword(nextPasswordPlain) : current.password || '';
+  const nextMfaSecret = nextMfaPlain ? encryptSecret(nextMfaPlain) : current.mfaSecret || '';
 
   if (
     nextName === current.name &&
     nextActive === current.isActive &&
-    nextPassword === (current.password || '') &&
-    nextMfaSecret === (current.mfaSecret || '')
+    (!nextPasswordPlain || verifyPassword(nextPasswordPlain, current.password || '')) &&
+    (!nextMfaPlain || safeDecryptSecret(current.mfaSecret || '') === nextMfaPlain)
   ) {
     return current;
   }
 
   const supabase = createSupabaseAdminClient();
   if (supabase) {
-    if (nextPassword) {
-      const passwordResult = await supabase.auth.admin.updateUserById(userId, {password: nextPassword});
+    if (nextPasswordPlain) {
+      const passwordResult = await supabase.auth.admin.updateUserById(userId, {password: nextPasswordPlain});
       if (passwordResult.error) {
         throw new Error(passwordResult.error.message || 'Failed to update CRM user password');
       }

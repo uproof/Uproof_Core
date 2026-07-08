@@ -51,6 +51,13 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'images.squarespace-cdn.com',
       },
+      { protocol: 'https', hostname: 'avrbaltija.lv' },
+      { protocol: 'https', hostname: 'produs.lv' },
+      { protocol: 'https', hostname: 'lebens.lv' },
+      { protocol: 'https', hostname: 'www.prowood.lv' },
+      { protocol: 'https', hostname: 'www.kursi.lv' },
+      { protocol: 'https', hostname: 'online.depo.lv' },
+      { protocol: 'https', hostname: 'www.inserv.lv' },
     ],
   },
   

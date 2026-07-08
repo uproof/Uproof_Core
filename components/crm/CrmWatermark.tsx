@@ -3,14 +3,12 @@
 import {useEffect, useMemo, useState} from 'react';
 
 type Props = {
-  email: string;
-  role: string;
-  ip: string;
-  sessionId: string;
+  brand: string;
+  userId: string;
   generatedAt: string;
 };
 
-export default function CrmWatermark({email, role, ip, sessionId, generatedAt}: Props) {
+export default function CrmWatermark({brand, userId, generatedAt}: Props) {
   const [now, setNow] = useState(() => new Date(generatedAt));
 
   useEffect(() => {
@@ -19,22 +17,21 @@ export default function CrmWatermark({email, role, ip, sessionId, generatedAt}: 
   }, []);
 
   const stamp = useMemo(() => {
-    const shortSid = sessionId.length > 12 ? `${sessionId.slice(0, 12)}...` : sessionId;
-    return `${email} | ${role} | ${now.toISOString()} | ${ip} | ${shortSid}`;
-  }, [email, role, now, ip, sessionId]);
+    return `${brand} | ${userId} | ${now.toISOString()}`;
+  }, [brand, userId, now]);
 
-  const rows = [22, 58, 86];
+  const rows = [10, 28, 46, 64, 82];
 
   return (
-    <div aria-hidden className="pointer-events-none fixed inset-0 z-20 overflow-hidden select-none">
+    <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden select-none">
       {rows.map((top) => (
         <div
           key={top}
-          className="absolute left-[-16%] right-[-16%] whitespace-nowrap text-[9px] font-normal uppercase tracking-[0.12em] text-slate-400/[0.01]"
+          className="absolute left-[-22%] right-[-22%] whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400/40"
           style={{top: `${top}%`, transform: 'rotate(-18deg)'}}
         >
-          {Array.from({length: 4}).map((_, index) => (
-            <span key={index} className="mx-12">{stamp}</span>
+          {Array.from({length: 7}).map((_, index) => (
+            <span key={index} className="mx-8">{stamp}</span>
           ))}
         </div>
       ))}

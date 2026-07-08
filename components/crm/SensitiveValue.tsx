@@ -2,7 +2,7 @@
 
 import {useMemo} from 'react';
 
-type SensitiveKind = 'phone' | 'email' | 'amount';
+type SensitiveKind = 'phone' | 'email' | 'amount' | 'text';
 
 type Props = {
   value: string;
@@ -14,6 +14,12 @@ type Props = {
 
 function maskValue(value: string, kind: SensitiveKind) {
   if (!value) return '***';
+
+  if (kind === 'text') {
+    const trimmed = value.trim();
+    if (trimmed.length <= 3) return '*'.repeat(Math.max(trimmed.length, 3));
+    return `${trimmed.slice(0, 2)}${'*'.repeat(Math.max(trimmed.length - 4, 3))}${trimmed.slice(-2)}`;
+  }
 
   if (kind === 'email') {
     const [name, domain] = value.split('@');

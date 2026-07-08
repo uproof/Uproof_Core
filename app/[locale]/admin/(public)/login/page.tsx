@@ -16,9 +16,9 @@ export default function AdminLogin() {
           emailLabel: 'E-mail',
           emailPlaceholder: 'Voer e-mail in',
           label: 'Wachtwoord',
-          mfaLabel: 'MFA-code',
           placeholder: 'Voer admin-wachtwoord in',
-          mfaPlaceholder: '6-cijferige code',
+          mfaLabel: 'MFA-code',
+          mfaPlaceholder: 'Voer 6-cijferige code in',
           button: 'Inloggen',
           loading: 'Aan het inloggen…',
           back: '← Terug naar website'
@@ -30,9 +30,9 @@ export default function AdminLogin() {
           emailLabel: 'Email',
           emailPlaceholder: 'Enter email',
             label: 'Password',
-            mfaLabel: 'MFA code',
             placeholder: 'Enter admin password',
-            mfaPlaceholder: '6-digit code',
+            mfaLabel: 'MFA code',
+            mfaPlaceholder: 'Enter 6-digit code',
             button: 'Login',
             loading: 'Logging in…',
             back: '← Back to website'
@@ -43,16 +43,16 @@ export default function AdminLogin() {
           emailLabel: 'E-pasts',
           emailPlaceholder: 'Ievadi e-pastu',
             label: 'Parole',
-            mfaLabel: 'MFA kods',
             placeholder: 'Ievadi admin paroli',
-            mfaPlaceholder: '6 ciparu kods',
+            mfaLabel: 'MFA kods',
+            mfaPlaceholder: 'Ievadi 6 ciparu kodu',
             button: 'Ieiet',
             loading: 'Ielāde…',
             back: '← Atpakaļ uz vietni'
           };
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [otp, setOtp] = useState('');
+  const [mfaCode, setMfaCode] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -67,7 +67,7 @@ export default function AdminLogin() {
       const res = await fetch('/api/admin/login', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({email, password, otp, role: 'superadmin'})
+        body: JSON.stringify({email, password, mfaCode, role: 'superadmin'})
       });
       const data = await res.json();
       if (!data.ok) throw new Error(data.error || 'Login failed');
@@ -116,20 +116,18 @@ export default function AdminLogin() {
             />
           </div>
           <div>
-            <label htmlFor="otp" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="mfaCode" className="block text-sm font-medium text-gray-700 mb-2">
               {copy.mfaLabel}
             </label>
             <input
-              id="otp"
+              id="mfaCode"
               type="text"
               inputMode="numeric"
-              pattern="[0-9]{6}"
-              maxLength={6}
-              value={otp}
-              onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
+              autoComplete="one-time-code"
+              value={mfaCode}
+              onChange={(e) => setMfaCode(e.target.value)}
               className="w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
               placeholder={copy.mfaPlaceholder}
-              required
             />
           </div>
           {error && (

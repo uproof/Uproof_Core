@@ -126,10 +126,28 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ok: false, error: 'CSV file is required'}, {status: 400});
   }
 
+  if (file.size > 5 * 1024 * 1024) {
+    return NextResponse.json({ok: false, error: 'CSV file is too large'}, {status: 413});
+  }
+
+  const fileName = file.name.toLowerCase();
+  const allowedTypes = new Set(['', 'text/csv', 'application/csv', 'text/plain', 'application/vnd.ms-excel']);
+  if (!fileName.endsWith('.csv')) {
+    return NextResponse.json({ok: false, error: 'CSV file extension is required'}, {status: 400});
+  }
+
+  if (file.type && !allowedTypes.has(file.type.toLowerCase())) {
+    return NextResponse.json({ok: false, error: 'Unsupported file type'}, {status: 400});
+  }
+
   const csvText = await file.text();
   const rows = parseCsv(csvText);
   if (rows.length === 0) {
     return NextResponse.json({ok: false, error: 'CSV file is empty'}, {status: 400});
+  }
+
+  if (rows.length > 5000) {
+    return NextResponse.json({ok: false, error: 'CSV file has too many rows'}, {status: 413});
   }
 
   const db = getDb();

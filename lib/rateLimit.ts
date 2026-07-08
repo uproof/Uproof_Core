@@ -1,30 +1,5 @@
-// Simple in-memory rate limiter for development
-// For production, use Redis-based rate limiter
-// This will reset on serverless cold starts (~every hour)
-
-interface RateLimitEntry {
-  count: number;
-  resetTime: number;
-}
-
-const rateLimits = new Map<string, RateLimitEntry>();
-const CLEANUP_INTERVAL = 60 * 1000; // 1 minute
-
-// Cleanup expired entries
-declare global {
-  var _rateLimitCleanup: NodeJS.Timeout | undefined;
-}
-
-if (typeof globalThis !== 'undefined' && !globalThis._rateLimitCleanup) {
-  globalThis._rateLimitCleanup = setInterval(() => {
-    const now = Date.now();
-    for (const [key, entry] of rateLimits.entries()) {
-      if (now > entry.resetTime) {
-        rateLimits.delete(key);
-      }
-    }
-  }, CLEANUP_INTERVAL);
-}
+import {createSupabaseAdminClient} from '@/lib/supabase/server';
+import {getDb, nowIso} from '@/lib/crmDb';
 
 export interface RateLimitConfig {
   maxRequests: number;
@@ -40,30 +15,25 @@ export async function checkRateLimit(
   resetTime: number;
 }> {
   const now = Date.now();
-  const key = identifier;
+  const record = await readRateLimitRecord(identifier);
 
-  let entry = rateLimits.get(key);
+  let count = 0;
+  let resetTime = now + config.windowMs;
 
-  // Check if entry expired
-  if (!entry || now > entry.resetTime) {
-    entry = {
-      count: 0,
-      resetTime: now + config.windowMs,
-    };
-    rateLimits.set(key, entry);
+  if (record && now <= record.resetTime) {
+    count = record.count;
+    resetTime = record.resetTime;
   }
 
-  const remaining = Math.max(0, config.maxRequests - entry.count);
-  const allowed = entry.count < config.maxRequests;
+  const allowed = count < config.maxRequests;
+  const nextCount = allowed ? count + 1 : count;
 
-  if (allowed) {
-    entry.count++;
-  }
+  await writeRateLimitRecord(identifier, nextCount, resetTime);
 
   return {
     allowed,
-    remaining,
-    resetTime: entry.resetTime,
+    remaining: Math.max(0, config.maxRequests - nextCount),
+    resetTime,
   };
 }
 
@@ -72,3 +42,68 @@ export const RATE_LIMITS = {
   CONTACT: { maxRequests: 5, windowMs: 60 * 60 * 1000 }, // 5 per hour
   API_MUTATION: { maxRequests: 100, windowMs: 60 * 1000 }, // 100 per minute
 };
+
+type RateLimitRecord = {
+  count: number;
+  resetTime: number;
+};
+
+async function readRateLimitRecord(identifier: string): Promise<RateLimitRecord | null> {
+  const supabase = createSupabaseAdminClient();
+  if (supabase) {
+    const {data, error} = await supabase
+      .from('rate_limits')
+      .select('count,reset_at')
+      .eq('identifier', identifier)
+      .maybeSingle();
+
+    if (!error && data) {
+      return {
+        count: Number(data.count || 0),
+        resetTime: Number(data.reset_at || 0),
+      };
+    }
+  }
+
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('Shared rate limit storage is required in production');
+  }
+
+  const db = getDb();
+  const row = db
+    .prepare('SELECT count, reset_at FROM rate_limits WHERE identifier = ? LIMIT 1')
+    .get(identifier) as RateLimitRecord | undefined;
+
+  return row || null;
+}
+
+async function writeRateLimitRecord(identifier: string, count: number, resetTime: number): Promise<void> {
+  const payload = {
+    identifier,
+    count,
+    reset_at: resetTime,
+    updated_at_utc: nowIso(),
+  };
+
+  const supabase = createSupabaseAdminClient();
+  if (supabase) {
+    const {error} = await supabase.from('rate_limits').upsert(payload);
+    if (!error) {
+      return;
+    }
+  }
+
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('Shared rate limit storage is required in production');
+  }
+
+  const db = getDb();
+  db.prepare(
+    `INSERT INTO rate_limits (identifier, count, reset_at, updated_at_utc)
+     VALUES (@identifier, @count, @reset_at, @updated_at_utc)
+     ON CONFLICT(identifier) DO UPDATE SET
+       count = excluded.count,
+       reset_at = excluded.reset_at,
+       updated_at_utc = excluded.updated_at_utc`
+  ).run(payload);
+}

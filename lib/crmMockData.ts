@@ -23,6 +23,7 @@ export type CrmLead = {
   owner: string;
   value: string;
   updatedAt: string;
+  updatedAtUtc?: string;
   nextAction: string;
   attachments: string[];
   workLog: CrmLeadWorkLogEntry[];

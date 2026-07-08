@@ -25,6 +25,33 @@ export type CrmAuditEvent = {
 
 const AUDIT_LOG_PATH = path.join(process.cwd(), 'data', 'crm-audit.log');
 
+async function sendToExternalSink(record: CrmAuditEvent) {
+  const sinkUrl = process.env.CRM_AUDIT_WEBHOOK_URL?.trim();
+  if (!sinkUrl) {
+    return;
+  }
+
+  const sinkSecret = process.env.CRM_AUDIT_WEBHOOK_SECRET?.trim();
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 2000);
+
+  try {
+    await fetch(sinkUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(sinkSecret ? {Authorization: `Bearer ${sinkSecret}`} : {}),
+      },
+      body: JSON.stringify(record),
+      signal: controller.signal,
+    });
+  } catch {
+    // External sinks must never break the privileged action path.
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 export async function logCrmAudit(event: Omit<CrmAuditEvent, 'at'>) {
   const record: CrmAuditEvent = {
     ...event,
@@ -33,4 +60,5 @@ export async function logCrmAudit(event: Omit<CrmAuditEvent, 'at'>) {
 
   await fs.mkdir(path.dirname(AUDIT_LOG_PATH), {recursive: true});
   await fs.appendFile(AUDIT_LOG_PATH, `${JSON.stringify(record)}\n`, 'utf8');
+  await sendToExternalSink(record);
 }

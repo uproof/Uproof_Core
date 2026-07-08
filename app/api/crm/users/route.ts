@@ -1,5 +1,4 @@
 import {NextRequest, NextResponse} from 'next/server';
-import crypto from 'crypto';
 import {getAdminSession} from '@/lib/adminAuth';
 import {createCrmUser, getCrmUsers} from '@/lib/crmUsersStore';
 import {checkRateLimit, RATE_LIMITS} from '@/lib/rateLimit';
@@ -67,7 +66,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ok: false, error: 'Missing email or name'}, {status: 400});
   }
 
-  const password = providedPassword || `${crypto.randomBytes(6).toString('base64url')}#A1`;
+  const password = providedPassword;
+
+  if (!password) {
+    return NextResponse.json({ok: false, error: 'Password is required'}, {status: 400});
+  }
 
   if (password.length < 10) {
     return NextResponse.json({ok: false, error: 'Password must be at least 10 characters'}, {status: 400});
@@ -87,6 +90,5 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({
     ok: true,
     user: publicCrmUser(user),
-    temporaryPassword: providedPassword ? undefined : password,
   });
 }

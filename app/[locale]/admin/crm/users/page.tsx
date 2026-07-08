@@ -1,5 +1,8 @@
 import {redirect} from 'next/navigation';
 import {getAdminSession} from '@/lib/adminAuth';
+import {getCrmLeads} from '@/lib/crmLeadsStore';
+import {getCrmUsers} from '@/lib/crmUsersStore';
+import {getRecentCrmUserActivity} from '@/lib/crmUserActivityStore';
 import SalesUserManagementAdminClient from './SalesUserManagementAdminClient';
 
 type Props = {params: Promise<{locale: string}>};
@@ -16,5 +19,11 @@ export default async function AdminCrmUsersPage({params}: Props) {
     redirect(`/${locale}/crm`);
   }
 
-  return <SalesUserManagementAdminClient locale={locale} />;
+  const [crmUsers, leads, activity] = await Promise.all([
+    getCrmUsers(),
+    getCrmLeads(),
+    getRecentCrmUserActivity(100),
+  ]);
+
+  return <SalesUserManagementAdminClient locale={locale} initialCrmUsers={crmUsers} initialLeads={leads} initialActivity={activity} />;
 }

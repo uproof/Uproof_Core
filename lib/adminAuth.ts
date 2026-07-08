@@ -29,11 +29,6 @@ function getSecret() {
   return secret;
 }
 
-function getCookieDomain() {
-  const domain = process.env.SESSION_COOKIE_DOMAIN?.trim();
-  return domain ? domain : undefined;
-}
-
 type SignTokenOptions = {
   ttlMs?: number;
   email?: string;
@@ -88,7 +83,6 @@ export async function setAdminCookie(token: string) {
     httpOnly: true,
     sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production',
-    domain: getCookieDomain(),
     path: '/',
     maxAge: 60 * 60 * 24 // 1 day
   });
@@ -98,7 +92,6 @@ export async function clearAdminCookie() {
   const cookieStore = await cookies();
   cookieStore.set(SESSION_COOKIE, '', {
     httpOnly: true,
-    domain: getCookieDomain(),
     path: '/',
     maxAge: 0,
   });

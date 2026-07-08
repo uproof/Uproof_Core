@@ -63,6 +63,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
         method: 'PATCH',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
+          updatedAtUtc: lead.updatedAtUtc,
           ...(isSalesScope ? {} : {customer: customerName}),
           projectAddress,
           address: projectAddress,
@@ -101,14 +102,16 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
           <Link href={`/${locale}/crm/leads`} className="inline-flex h-11 min-w-[150px] items-center justify-center gap-2 rounded-xl border border-sky-200 bg-white px-4 text-sm font-semibold text-sky-700 transition hover:bg-sky-50 sm:justify-start">
             <ArrowLeftIcon className="h-4 w-4" /> {isLv ? 'Atpakaļ uz līdiem' : 'Back to leads'}
           </Link>
-          <button
-            type="button"
-            onClick={() => setShowClientData((current) => !current)}
-            className="inline-flex h-11 min-w-[150px] items-center justify-center gap-2 rounded-xl border border-sky-200 bg-white px-4 text-sm font-semibold text-sky-700 transition hover:bg-sky-50 sm:justify-start"
-          >
-            <LockClosedIcon className="h-4 w-4" />
-            {showClientData ? (isLv ? 'Paslēpt klienta datus' : 'Hide client data') : (isLv ? 'Skatīt klienta datus' : 'View client data')}
-          </button>
+          {accessScope === 'admin' ? (
+            <button
+              type="button"
+              onClick={() => setShowClientData((current) => !current)}
+              className="inline-flex h-11 min-w-[150px] items-center justify-center gap-2 rounded-xl border border-sky-200 bg-white px-4 text-sm font-semibold text-sky-700 transition hover:bg-sky-50 sm:justify-start"
+            >
+              <LockClosedIcon className="h-4 w-4" />
+              {showClientData ? (isLv ? 'Paslēpt klienta datus' : 'Hide client data') : (isLv ? 'Skatīt klienta datus' : 'View client data')}
+            </button>
+          ) : null}
           <button type="button" onClick={handleSave} className="inline-flex h-11 min-w-[150px] items-center justify-center gap-2 rounded-xl bg-sky-500 px-4 text-sm font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:bg-sky-300 sm:self-end" disabled={saveState === 'saving'}>
             <PencilSquareIcon className="h-4 w-4" /> {isLv ? 'Saglabāt izmaiņas' : 'Save changes'}
           </button>
@@ -144,7 +147,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
           <div className="mt-5 space-y-3 text-sm text-slate-700">
             <div className="flex items-center gap-3 rounded-2xl border border-sky-100 bg-white px-4 py-3 shadow-sm">
               <PhoneIcon className="h-4 w-4 shrink-0 text-sky-500" />
-              {showClientData ? (
+              {showClientData && accessScope === 'admin' ? (
                 <span className="min-w-0 break-words text-slate-900">{lead.phone}</span>
               ) : (
                 <SensitiveValue value={lead.phone} kind="phone" entityId={lead.id} field="phone" className="min-w-0 border-0 p-0 hover:bg-transparent" />
@@ -152,7 +155,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
             </div>
             <div className="flex items-center gap-3 rounded-2xl border border-sky-100 bg-white px-4 py-3 shadow-sm">
               <EnvelopeIcon className="h-4 w-4 shrink-0 text-sky-500" />
-              {showClientData ? (
+              {showClientData && accessScope === 'admin' ? (
                 <span className="min-w-0 break-words text-slate-900">{lead.email}</span>
               ) : (
                 <SensitiveValue value={lead.email} kind="email" entityId={lead.id} field="email" className="min-w-0 border-0 p-0 hover:bg-transparent" />
@@ -166,7 +169,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
             <div className="mt-4 space-y-3 text-sm text-slate-700">
               <div><span className="font-semibold text-slate-900">{isLv ? 'Atbildīgais' : 'Owner'}:</span> {lead.owner}</div>
               <div><span className="font-semibold text-slate-900">{isLv ? 'Uzņēmums' : 'Company'}:</span> {lead.company}</div>
-              <div className="flex items-center gap-2"><span className="font-semibold text-slate-900">{isLv ? 'Vērtība' : 'Value'}:</span> {showClientData ? <span className="text-slate-900">{lead.value}</span> : <SensitiveValue value={lead.value} kind="amount" entityId={lead.id} field="value" className="border-0 p-0 hover:bg-transparent" />}</div>
+              <div className="flex items-center gap-2"><span className="font-semibold text-slate-900">{isLv ? 'Vērtība' : 'Value'}:</span> {showClientData && accessScope === 'admin' ? <span className="text-slate-900">{lead.value}</span> : <SensitiveValue value={lead.value} kind="amount" entityId={lead.id} field="value" className="border-0 p-0 hover:bg-transparent" />}</div>
               <div><span className="font-semibold text-slate-900">{isLv ? 'Atjaunots' : 'Updated'}:</span> {lead.updatedAt}</div>
             </div>
           </div>

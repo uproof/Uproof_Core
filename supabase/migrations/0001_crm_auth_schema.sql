@@ -130,6 +130,102 @@ create index if not exists idx_crm_leads_assigned_sales_user_id on public.crm_le
 create index if not exists idx_crm_user_activity_actor_user_id on public.crm_user_activity(actor_user_id);
 create index if not exists idx_crm_user_activity_created_at on public.crm_user_activity(created_at desc);
 
+create table if not exists public.notifications (
+  id bigint generated always as identity primary key,
+  recipient_email text not null,
+  title text not null,
+  message text not null,
+  link text not null default '',
+  read_at timestamptz,
+  archived_at timestamptz,
+  created_at timestamptz not null default timezone('utc', now())
+);
+
+create index if not exists idx_notifications_recipient_email on public.notifications(recipient_email, created_at desc);
+
+create table if not exists public.audit_log (
+  id bigint generated always as identity primary key,
+  request_id text not null,
+  actor_email text not null,
+  actor_role text not null,
+  action text not null,
+  entity_type text not null,
+  entity_id text not null,
+  detail text not null default '',
+  success boolean not null default true,
+  created_at timestamptz not null default timezone('utc', now())
+);
+
+create index if not exists idx_audit_log_created_at on public.audit_log(created_at desc);
+
+create table if not exists public.crm_events (
+  id bigint generated always as identity primary key,
+  event_type text not null,
+  aggregate_type text not null,
+  aggregate_id text not null,
+  payload_json jsonb not null,
+  created_at timestamptz not null default timezone('utc', now())
+);
+
+create index if not exists idx_crm_events_created_at on public.crm_events(created_at desc);
+
+alter table public.notifications enable row level security;
+alter table public.audit_log enable row level security;
+alter table public.crm_events enable row level security;
+
+drop policy if exists "superadmin_select_notifications" on public.notifications;
+drop policy if exists "superadmin_insert_notifications" on public.notifications;
+drop policy if exists "superadmin_select_audit_log" on public.audit_log;
+drop policy if exists "superadmin_insert_audit_log" on public.audit_log;
+drop policy if exists "superadmin_select_crm_events" on public.crm_events;
+drop policy if exists "superadmin_insert_crm_events" on public.crm_events;
+
+create policy if not exists "superadmin_select_notifications"
+  on public.notifications
+  for select
+  using (public.is_superadmin_active());
+
+create policy if not exists "superadmin_insert_notifications"
+  on public.notifications
+  for insert
+  with check (public.is_superadmin_active());
+
+create policy if not exists "superadmin_select_audit_log"
+  on public.audit_log
+  for select
+  using (public.is_superadmin_active());
+
+create policy if not exists "superadmin_insert_audit_log"
+  on public.audit_log
+  for insert
+  with check (public.is_superadmin_active());
+
+create policy if not exists "superadmin_select_crm_events"
+  on public.crm_events
+  for select
+  using (public.is_superadmin_active());
+
+create policy if not exists "superadmin_insert_crm_events"
+  on public.crm_events
+  for insert
+  with check (public.is_superadmin_active());
+
+create table if not exists public.rate_limits (
+  identifier text primary key,
+  count integer not null,
+  reset_at bigint not null,
+  updated_at_utc timestamptz not null default timezone('utc', now())
+);
+
+alter table public.rate_limits enable row level security;
+
+drop policy if exists "no_public_rate_limit_access" on public.rate_limits;
+create policy if not exists "no_public_rate_limit_access"
+  on public.rate_limits
+  for all
+  using (false)
+  with check (false);
+
 alter table public.user_profiles enable row level security;
 alter table public.crm_leads enable row level security;
 alter table public.crm_user_activity enable row level security;

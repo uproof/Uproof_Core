@@ -1,9 +1,8 @@
 import {NextRequest, NextResponse} from 'next/server';
 import {getAdminSession} from '@/lib/adminAuth';
-import {assignLeadToCrmUser} from '@/lib/crmUsersStore';
-import {logCrmUserActivity} from '@/lib/crmUserActivityStore';
 import {checkRateLimit, RATE_LIMITS} from '@/lib/rateLimit';
 import {canPerform} from '@/lib/permissions';
+import {assignLead} from '@/lib/crmLeadService';
 
 export async function POST(
   req: NextRequest,
@@ -38,20 +37,18 @@ export async function POST(
     assignedBy: session.email,
   });
 
-  if (!result.assigned) {
-    return NextResponse.json({ok: false, error: 'Lead not found'}, {status: 404});
+  const serviceResult = await assignLead({
+    leadId: id,
+    salesUserId,
+    actorEmail: session.email,
+    actorRole: session.role,
+    sessionId: session.sid,
+    ip,
+  });
+
+  if (!serviceResult.ok) {
+    return NextResponse.json({ok: false, error: serviceResult.error}, {status: serviceResult.status});
   }
 
-  if (!result.duplicate) {
-    await logCrmUserActivity({
-      actorEmail: session.email,
-      actorRole: session.role,
-      action: 'lead_assign',
-      leadId: id,
-      detail: `assigned_to:${salesUserId}`,
-      ip,
-    });
-  }
-
-  return NextResponse.json({ok: true, duplicate: result.duplicate});
+  return NextResponse.json({ok: true, duplicate: serviceResult.duplicate, lead: serviceResult.lead});
 }

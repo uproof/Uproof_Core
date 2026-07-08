@@ -69,6 +69,7 @@ type LeadRow = {
   assigned_sales_user_id: string | null;
   assigned_by: string;
   assigned_at: string;
+  updated_at_utc: string;
 };
 
 function rowToLead(row: LeadRow): CrmLead {
@@ -90,6 +91,7 @@ function rowToLead(row: LeadRow): CrmLead {
     owner: row.owner,
     value: row.value,
     updatedAt: row.updated_at,
+    updatedAtUtc: row.updated_at_utc,
     nextAction: row.next_action,
     assignedSalesUserId: row.assigned_sales_user_id,
     attachments: JSON.parse(row.attachments_json || '[]'),
@@ -160,6 +162,7 @@ function nextLeadId(leads: CrmLead[]) {
 export async function addCrmLead(input: NewLeadInput): Promise<CrmLead> {
   const db = getDb();
   const leads = await getCrmLeads();
+  const now = nowIso();
   const lead: CrmLead = normalizeLead({
     id: nextLeadId(leads),
     customer: input.customer.trim(),
@@ -178,6 +181,7 @@ export async function addCrmLead(input: NewLeadInput): Promise<CrmLead> {
     owner: input.owner.trim(),
     value: input.value.trim(),
     updatedAt: 'Just now',
+    updatedAtUtc: now,
     nextAction: input.nextAction.trim(),
     attachments: [],
     workLog: normalizeWorkLog(input.workLog, []),
@@ -185,7 +189,6 @@ export async function addCrmLead(input: NewLeadInput): Promise<CrmLead> {
     assignedSalesUserId: null,
   });
 
-  const now = nowIso();
   db.prepare(`
     INSERT INTO leads (
       id, customer, company, phone, email, address, problem, project_address, client_character_note,
@@ -250,6 +253,7 @@ export async function updateCrmLead(leadId: string, updates: Partial<CrmLead>): 
     estimatorData: updates.estimatorData ? normalizeEstimatorData(updates.estimatorData, existing.estimatorData) : existing.estimatorData,
     attachments: updates.attachments || existing.attachments,
     updatedAt: new Date().toLocaleString('en-GB', {hour12: false}),
+    updatedAtUtc: nowIso(),
     assignedSalesUserId: existing.assignedSalesUserId || null,
   });
 

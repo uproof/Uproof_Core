@@ -1,6 +1,7 @@
 import {NextRequest, NextResponse} from 'next/server';
 import {getAdminSession} from '@/lib/adminAuth';
 import {logCrmAudit} from '@/lib/crmAudit';
+import {canPerform} from '@/lib/permissions';
 import {createStampedPdfBuffer} from '@/lib/simplePdf';
 import {getCrmQuotes} from '@/lib/crmQuotesStore';
 
@@ -11,6 +12,10 @@ export async function GET(
   const session = await getAdminSession();
   if (!session) {
     return NextResponse.json({ok: false, error: 'Unauthorized'}, {status: 401});
+  }
+
+  if (!canPerform(session.role, 'exportCrm')) {
+    return NextResponse.json({ok: false, error: 'Only superadmin can download quote PDFs'}, {status: 403});
   }
 
   const {quoteId} = await params;

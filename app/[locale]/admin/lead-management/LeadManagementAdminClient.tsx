@@ -1,11 +1,17 @@
 "use client";
 
-import {FormEvent, useEffect, useMemo, useState} from 'react';
+import {FormEvent, useMemo, useState} from 'react';
 import Link from 'next/link';
 import Card from '@/components/Card';
 import type {CrmLead} from '@/lib/crmMockData';
 
-type Props = {locale: string; readOnly?: boolean};
+type Props = {
+  locale: string;
+  readOnly?: boolean;
+  initialLeads?: CrmLead[];
+  initialCrmUsers?: CrmUser[];
+  initialActivity?: unknown[];
+};
 type CrmUser = {id: string; email: string; name: string; role: 'sales' | 'superadmin'; isActive: boolean};
 
 type LeadDraft = {
@@ -32,12 +38,12 @@ const initialDraft: LeadDraft = {
   note: '',
 };
 
-export default function LeadManagementAdminClient({locale, readOnly = false}: Props) {
+export default function LeadManagementAdminClient({locale, readOnly = false, initialLeads = [], initialCrmUsers = []}: Props) {
   const isLv = locale === 'lv';
-  const [leads, setLeads] = useState<CrmLead[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [leads, setLeads] = useState<CrmLead[]>(initialLeads);
+  const [loading, setLoading] = useState(initialLeads.length === 0);
   const [draft, setDraft] = useState<LeadDraft>(initialDraft);
-  const [crmUsers, setCrmUsers] = useState<CrmUser[]>([]);
+  const [crmUsers, setCrmUsers] = useState<CrmUser[]>(initialCrmUsers);
   const [assignments, setAssignments] = useState<Record<string, string>>({});
   const [message, setMessage] = useState('');
   const [saving, setSaving] = useState(false);
@@ -108,10 +114,6 @@ export default function LeadManagementAdminClient({locale, readOnly = false}: Pr
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    void Promise.all([loadLeads(), loadCrmUsers()]);
-  }, []);
 
   const onAssignLead = async (leadId: string) => {
     const salesUserId = assignments[leadId];

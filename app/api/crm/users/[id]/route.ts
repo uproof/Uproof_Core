@@ -3,7 +3,7 @@ import {getAdminSession} from '@/lib/adminAuth';
 import {checkRateLimit, RATE_LIMITS} from '@/lib/rateLimit';
 import {canPerform} from '@/lib/permissions';
 import {deleteCrmUser, getCrmUserById, updateCrmUser} from '@/lib/crmUsersStore';
-import {verifyTotp} from '@/lib/mfa';
+import {verifyPassword} from '@/lib/secretVault';
 
 export async function PATCH(req: NextRequest, {params}: {params: Promise<{id: string}>}) {
   const session = await getAdminSession();
@@ -26,24 +26,18 @@ export async function PATCH(req: NextRequest, {params}: {params: Promise<{id: st
   const name = typeof body.name === 'string' ? body.name : undefined;
   const isActive = typeof body.isActive === 'boolean' ? body.isActive : undefined;
   const password = typeof body.password === 'string' ? body.password : undefined;
-  const mfaSecret = typeof body.mfaSecret === 'string' ? body.mfaSecret : undefined;
-  const authCode = typeof body.authCode === 'string' ? body.authCode.trim() : '';
 
   const current = await getCrmUserById(id);
   if (!current) {
     return NextResponse.json({ok: false, error: 'Sales user not found'}, {status: 404});
   }
 
-  const passwordChanged = typeof password === 'string' && password.trim() && password.trim() !== (current.password || '');
-  const mfaChanged = typeof mfaSecret === 'string' && mfaSecret.trim() && mfaSecret.trim() !== (current.mfaSecret || '');
-
-  if ((passwordChanged && current.password) || (mfaChanged && current.mfaSecret)) {
-    if (!verifyTotp('superadmin', authCode)) {
-      return NextResponse.json({ok: false, error: 'MFA code required to update saved credentials'}, {status: 401});
-    }
+  const passwordChanged = typeof password === 'string' && password.trim() && !verifyPassword(password.trim(), current.password || '');
+  if (passwordChanged && current.password) {
+    // MFA is disabled for now, so credential updates only require the manager session.
   }
 
-  const user = await updateCrmUser({id, name, isActive, password, mfaSecret});
+  const user = await updateCrmUser({id, name, isActive, password});
   if (!user) {
     return NextResponse.json({ok: false, error: 'Sales user not found'}, {status: 404});
   }
