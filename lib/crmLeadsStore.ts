@@ -44,6 +44,16 @@ function normalizeLead(lead: CrmLead): CrmLead {
   };
 }
 
+function parseJsonArray<T>(value: string, fallback: T[]): T[] {
+  if (!value) return fallback;
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? (parsed as T[]) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 type LeadRow = {
   id: string;
   customer: string;
@@ -94,9 +104,9 @@ function rowToLead(row: LeadRow): CrmLead {
     updatedAtUtc: row.updated_at_utc,
     nextAction: row.next_action,
     assignedSalesUserId: row.assigned_sales_user_id,
-    attachments: JSON.parse(row.attachments_json || '[]'),
-    workLog: JSON.parse(row.work_log_json || '[]'),
-    estimatorData: JSON.parse(row.estimator_data_json || '[]'),
+    attachments: parseJsonArray<string>(row.attachments_json, []),
+    workLog: parseJsonArray(row.work_log_json, []),
+    estimatorData: parseJsonArray(row.estimator_data_json, []),
   });
 }
 

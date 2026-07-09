@@ -4,6 +4,8 @@ import {getAdminSession} from '@/lib/adminAuth';
 import {getCrmLeads} from '@/lib/crmLeadsStore';
 import {getCrmUserById} from '@/lib/crmUsersStore';
 import {getRecentCrmUserActivity} from '@/lib/crmUserActivityStore';
+import CrmUserSecurityActions from '../CrmUserSecurityActions';
+import CrmUserDataActions from '../CrmUserDataActions';
 
 type Props = {params: Promise<{locale: string; id: string}>};
 
@@ -40,6 +42,20 @@ export default async function AdminCrmUserDashboardPage({params}: Props) {
         <Link href={`/${locale}/admin/crm/users`} className="inline-flex items-center rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-semibold text-sky-700 transition hover:bg-sky-50">
           Back to User Management
         </Link>
+      </div>
+
+      <div className="mb-6 rounded-2xl border border-sky-100 bg-white p-5 shadow-sm">
+        <div className="mb-3">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-600">Access controls</p>
+          <p className="mt-1 text-sm text-slate-600">Revoke access here. Download data and delete the account in the section below.</p>
+        </div>
+        <CrmUserSecurityActions locale={locale} userId={user.id} userName={user.name} />
+      </div>
+
+      <div className="mb-6 rounded-2xl border border-sky-100 bg-white p-5 shadow-sm">
+        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-600">Data export</p>
+        <p className="mt-1 text-sm text-slate-600">Download a snapshot of this sales user&apos;s profile, activity, and assigned lead status before deletion.</p>
+        <CrmUserDataActions locale={locale} userId={user.id} userName={user.name} userEmail={user.email} />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">

@@ -1,5 +1,7 @@
 import type Database from 'better-sqlite3';
+import {getApprovedSuperadminCredentials} from '@/lib/adminAuth';
 import {getDb, nowIso} from '@/lib/crmDb';
+import {createSupabaseAdminClient} from '@/lib/supabase/server';
 import type {CrmLead} from '@/lib/crmMockData';
 
 type LeadRow = {
@@ -116,6 +118,7 @@ export function insertUserActivity(db: Database.Database, input: {
   detail: string;
   ip: string;
 }) {
+  const createdAt = nowIso();
   db.prepare(`
     INSERT INTO crm_user_activity (
       actor_email, actor_role, action, lead_id, detail, ip, created_at
@@ -124,8 +127,82 @@ export function insertUserActivity(db: Database.Database, input: {
     )
   `).run({
     ...input,
-    createdAt: nowIso(),
+    createdAt,
   });
+
+  if (input.action.startsWith('lead_')) {
+    const notification = buildActivityNotification(input.action, input.leadId, input.actorEmail, input.detail);
+    if (notification) {
+      const recipients = getApprovedSuperadminCredentials().map((entry) => entry.email).filter(Boolean);
+      const supabase = createSupabaseAdminClient();
+      if (recipients.length > 0) {
+        for (const recipientEmail of recipients) {
+          if (supabase) {
+            void supabase.from('notifications').insert({
+              recipient_email: recipientEmail,
+              title: notification.title,
+              message: notification.message,
+              link: notification.link,
+              read_at: '',
+              archived_at: '',
+              created_at: createdAt,
+            });
+          }
+
+          insertNotification(db, {
+            recipientEmail,
+            ...notification,
+          });
+        }
+      }
+    }
+  }
+}
+
+function buildActivityNotification(action: string, leadId: string, actorEmail: string, detail: string) {
+  const normalizedLeadId = leadId.trim();
+  const actor = actorEmail.trim();
+
+  switch (action) {
+    case 'lead_assign':
+      return {
+        title: 'Lead assigned',
+        message: normalizedLeadId ? `Lead ${normalizedLeadId} was assigned by ${actor}.` : `A lead was assigned by ${actor}.`,
+        link: normalizedLeadId ? `/admin/crm/leads/${normalizedLeadId.toLowerCase()}` : '/admin/crm/leads',
+      };
+    case 'lead_unassign':
+      return {
+        title: 'Lead unassigned',
+        message: normalizedLeadId ? `Lead ${normalizedLeadId} was unassigned by ${actor}.` : `A lead was unassigned by ${actor}.`,
+        link: normalizedLeadId ? `/admin/crm/leads/${normalizedLeadId.toLowerCase()}` : '/admin/crm/leads',
+      };
+    case 'lead_delete':
+      return {
+        title: 'Lead deleted',
+        message: normalizedLeadId ? `Lead ${normalizedLeadId} was deleted by ${actor}.` : `A lead was deleted by ${actor}.`,
+        link: '/admin/crm/leads',
+      };
+    case 'lead_update':
+      return {
+        title: 'Lead saved',
+        message: normalizedLeadId ? `Lead ${normalizedLeadId} was saved by ${actor}.` : `A lead was saved by ${actor}.`,
+        link: normalizedLeadId ? `/admin/crm/leads/${normalizedLeadId.toLowerCase()}` : '/admin/crm/leads',
+      };
+    case 'lead_create':
+      return {
+        title: 'New lead created',
+        message: normalizedLeadId ? `Lead ${normalizedLeadId} was created by ${actor}.` : `A new lead was created by ${actor}.`,
+        link: normalizedLeadId ? `/admin/crm/leads/${normalizedLeadId.toLowerCase()}` : '/admin/crm/leads',
+      };
+    default:
+      return detail
+        ? {
+            title: 'CRM activity',
+            message: detail,
+            link: normalizedLeadId ? `/admin/crm/leads/${normalizedLeadId.toLowerCase()}` : '/admin/crm/leads',
+          }
+        : null;
+  }
 }
 
 export function insertAuditLog(db: Database.Database, input: AuditLogInput) {

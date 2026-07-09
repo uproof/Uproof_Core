@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import Database from 'better-sqlite3';
+import {hashPassword} from '@/lib/secretVault';
 
 const DB_PATH = path.join(process.cwd(), 'data', 'crm.sqlite');
 let database: Database.Database | null = null;
@@ -32,6 +33,12 @@ function ensureCrmUserColumns(db: Database.Database) {
   }
   if (!hasColumn(db, 'crm_users', 'mfa_secret')) {
     db.exec("ALTER TABLE crm_users ADD COLUMN mfa_secret TEXT NOT NULL DEFAULT ''");
+  }
+  if (!hasColumn(db, 'crm_users', 'session_valid_after')) {
+    db.exec("ALTER TABLE crm_users ADD COLUMN session_valid_after TEXT NOT NULL DEFAULT ''");
+  }
+  if (!hasColumn(db, 'crm_users', 'archived_at')) {
+    db.exec("ALTER TABLE crm_users ADD COLUMN archived_at TEXT NOT NULL DEFAULT ''");
   }
 }
 
@@ -116,9 +123,39 @@ function ensureSchema(db: Database.Database) {
       is_active INTEGER NOT NULL DEFAULT 1,
       password TEXT NOT NULL DEFAULT '',
       mfa_secret TEXT NOT NULL DEFAULT '',
+      session_valid_after TEXT NOT NULL DEFAULT '',
+      archived_at TEXT NOT NULL DEFAULT '',
       created_at TEXT NOT NULL,
       updated_at_utc TEXT NOT NULL
     );
+
+    CREATE TABLE IF NOT EXISTS crm_recovery_codes (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id TEXT NOT NULL,
+      code_hash TEXT NOT NULL,
+      used_at TEXT NOT NULL DEFAULT '',
+      created_at TEXT NOT NULL,
+      FOREIGN KEY (user_id) REFERENCES crm_users(id) ON DELETE CASCADE
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_crm_recovery_codes_user_id
+      ON crm_recovery_codes (user_id);
+
+    CREATE TABLE IF NOT EXISTS crm_password_reset_tokens (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id TEXT NOT NULL,
+      token_hash TEXT NOT NULL,
+      requested_by TEXT NOT NULL DEFAULT '',
+      expires_at TEXT NOT NULL,
+      used_at TEXT NOT NULL DEFAULT '',
+      created_at TEXT NOT NULL,
+      FOREIGN KEY (user_id) REFERENCES crm_users(id) ON DELETE CASCADE
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_crm_password_reset_tokens_user_id
+      ON crm_password_reset_tokens (user_id);
+    CREATE INDEX IF NOT EXISTS idx_crm_password_reset_tokens_token_hash
+      ON crm_password_reset_tokens (token_hash);
 
     CREATE TABLE IF NOT EXISTS crm_user_activity (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -196,7 +233,57 @@ function ensureSchema(db: Database.Database) {
 }
 
 function seedIfNeeded(db: Database.Database) {
-  void db;
+  const now = isoNow();
+  const approvedSuperadmins = [
+    {
+      id: 'superadmin-karlis-nikis',
+      email: process.env.SUPERADMIN_EMAIL_1 || '',
+      name: 'Karlis Nikis',
+      password: process.env.SUPERADMIN_PASSWORD_1 || '',
+    },
+    {
+      id: 'superadmin-mohsinmaqboolmir',
+      email: process.env.SUPERADMIN_EMAIL_2 || '',
+      name: 'Mohsin Maqbool Mir',
+      password: process.env.SUPERADMIN_PASSWORD_2 || '',
+    },
+  ]
+    .map((entry) => ({
+      id: entry.id,
+      email: entry.email.trim().toLowerCase(),
+      name: entry.name,
+      password: entry.password.trim(),
+    }))
+    .filter((entry) => entry.email && entry.password);
+
+  const upsertSuperadmin = db.prepare(`
+    INSERT INTO crm_users (
+      id, email, name, role, is_active, password, mfa_secret, session_valid_after, archived_at, created_at, updated_at_utc
+    ) VALUES (
+      @id, @email, @name, 'superadmin', 1, @password, '', @sessionValidAfter, '', @createdAt, @updatedAtUtc
+    )
+    ON CONFLICT(email) DO UPDATE SET
+      id = excluded.id,
+      name = excluded.name,
+      role = 'superadmin',
+      is_active = 1,
+      password = excluded.password,
+      session_valid_after = excluded.session_valid_after,
+      archived_at = '',
+      updated_at_utc = excluded.updated_at_utc
+  `);
+
+  for (const account of approvedSuperadmins) {
+    upsertSuperadmin.run({
+      id: account.id,
+      email: account.email,
+      name: account.name,
+      password: account.password ? hashPassword(account.password) : '',
+      sessionValidAfter: now,
+      createdAt: now,
+      updatedAtUtc: now,
+    });
+  }
 }
 
 export function getDb() {

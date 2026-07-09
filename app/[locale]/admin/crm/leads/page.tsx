@@ -25,5 +25,7 @@ export default async function AdminCrmLeadManagementPage({params}: Props) {
     getRecentCrmUserActivity(100),
   ]);
 
-  return <LeadManagementAdminClient locale={locale} readOnly={false} initialLeads={leads} initialCrmUsers={crmUsers} initialActivity={activity} />;
+  const salesUsers = crmUsers.filter((user) => user.role === 'sales' && user.isActive);
+
+  return <LeadManagementAdminClient locale={locale} readOnly={false} initialLeads={leads} initialCrmUsers={salesUsers} initialActivity={activity} />;
 }

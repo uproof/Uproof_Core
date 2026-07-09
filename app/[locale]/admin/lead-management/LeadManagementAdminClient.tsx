@@ -1,8 +1,9 @@
 "use client";
 
-import {FormEvent, useMemo, useState} from 'react';
+import {FormEvent, useEffect, useMemo, useState} from 'react';
 import Link from 'next/link';
 import Card from '@/components/Card';
+import ToastBanner from '@/components/ToastBanner';
 import type {CrmLead} from '@/lib/crmMockData';
 
 type Props = {
@@ -43,12 +44,19 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
   const [leads, setLeads] = useState<CrmLead[]>(initialLeads);
   const [loading, setLoading] = useState(initialLeads.length === 0);
   const [draft, setDraft] = useState<LeadDraft>(initialDraft);
-  const [crmUsers, setCrmUsers] = useState<CrmUser[]>(initialCrmUsers);
+  const [crmUsers, setCrmUsers] = useState<CrmUser[]>(initialCrmUsers.filter((user) => user.role === 'sales' && user.isActive));
   const [assignments, setAssignments] = useState<Record<string, string>>({});
   const [message, setMessage] = useState('');
   const [saving, setSaving] = useState(false);
   const [importing, setImporting] = useState(false);
   const [importFile, setImportFile] = useState<File | null>(null);
+  const [toast, setToast] = useState<{title: string; message?: string; tone?: 'success' | 'error' | 'info'} | null>(null);
+
+  useEffect(() => {
+    if (!toast) return;
+    const timer = window.setTimeout(() => setToast(null), 3200);
+    return () => window.clearTimeout(timer);
+  }, [toast]);
 
   const labels = useMemo(
     () => ({
@@ -118,7 +126,7 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
   const onAssignLead = async (leadId: string) => {
     const salesUserId = assignments[leadId];
     if (!salesUserId) {
-      setMessage('Please select a CRM user first');
+      setToast({title: isLv ? 'Izvēlies CRM lietotāju.' : 'Please select a CRM user first', tone: 'info'});
       return;
     }
 
@@ -134,12 +142,14 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
         throw new Error(data.error || 'Failed to assign lead');
       }
 
-      setMessage(data.duplicate
-        ? (isLv ? 'Lids jau bija pieskirts šim pardevejam.' : 'Lead was already assigned to this sales user.')
-        : (isLv ? 'Lids pieskirts pardevejam.' : 'Lead assigned to sales user.'));
+      setToast({
+        title: data.duplicate ? (isLv ? 'Līds jau bija pieskirts.' : 'Lead already assigned') : (isLv ? 'Līds pieskirts.' : 'Lead assigned'),
+        message: data.duplicate ? (isLv ? 'Nav veiktas izmaiņas.' : 'No changes were made.') : (isLv ? 'Saglabāts un pievienots paziņojumu sarakstam.' : 'Saved and added to notifications.'),
+        tone: 'success',
+      });
       await loadLeads();
     } catch (error: any) {
-      setMessage(error?.message || 'Failed to assign lead');
+      setToast({title: isLv ? 'Neizdevās pieskirt līdu.' : 'Failed to assign lead', message: error?.message || '', tone: 'error'});
     }
   };
 
@@ -154,12 +164,14 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
         throw new Error(data.error || 'Failed to unassign lead');
       }
 
-      setMessage(data.duplicate
-        ? (isLv ? 'Lids jau bija noņemts no pardeveja.' : 'Lead was already unassigned.')
-        : (isLv ? 'Lids noņemts no pardeveja.' : 'Lead unassigned from sales user.'));
+      setToast({
+        title: data.duplicate ? (isLv ? 'Līds jau bija noņemts.' : 'Lead already unassigned') : (isLv ? 'Līds noņemts.' : 'Lead unassigned'),
+        message: isLv ? 'Paziņojums saglabāts.' : 'Notification saved.',
+        tone: 'success',
+      });
       await loadLeads();
     } catch (error: any) {
-      setMessage(error?.message || 'Failed to unassign lead');
+      setToast({title: isLv ? 'Neizdevās noņemt līdu.' : 'Failed to unassign lead', message: error?.message || '', tone: 'error'});
     }
   };
 
@@ -179,10 +191,10 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
         throw new Error(data.error || 'Failed to save lead');
       }
       setDraft(initialDraft);
-      setMessage(labels.created);
+      setToast({title: labels.created, message: isLv ? 'Līds saglabāts un pievienots zvaniņam.' : 'Lead saved and added to the bell.', tone: 'success'});
       await loadLeads();
     } catch (error: any) {
-      setMessage(error?.message || 'Failed to save lead');
+      setToast({title: isLv ? 'Neizdevās saglabāt līdu.' : 'Failed to save lead', message: error?.message || '', tone: 'error'});
     } finally {
       setSaving(false);
     }
@@ -191,12 +203,12 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
   const onImportCsv = async (event: FormEvent) => {
     event.preventDefault();
     if (!importFile) {
-      setMessage(isLv ? 'Izvelies CSV failu.' : 'Choose a CSV file.');
+      setToast({title: isLv ? 'Izvēlies CSV failu.' : 'Choose a CSV file.', tone: 'info'});
       return;
     }
 
     setImporting(true);
-    setMessage('');
+    setToast(null);
 
     try {
       const formData = new FormData();
@@ -213,26 +225,28 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
 
       setImportFile(null);
       await loadLeads();
-      setMessage(
-        `${isLv ? 'Importets' : 'Imported'} ${data.processedCount || 0} ${isLv ? 'rindas' : 'rows'} (${data.insertedCount || 0} ${isLv ? 'jauni' : 'inserted'}, ${data.updatedCount || 0} ${isLv ? 'atjaunināti' : 'updated'}, ${data.skippedCount || 0} ${isLv ? 'izlaisti' : 'skipped'})`
-      );
+      setToast({
+        title: isLv ? 'CSV imports pabeigts.' : 'CSV import complete.',
+        message: `${isLv ? 'Importets' : 'Imported'} ${data.processedCount || 0} ${isLv ? 'rindas' : 'rows'} (${data.insertedCount || 0} ${isLv ? 'jauni' : 'inserted'}, ${data.updatedCount || 0} ${isLv ? 'atjaunināti' : 'updated'}, ${data.skippedCount || 0} ${isLv ? 'izlaisti' : 'skipped'})`,
+        tone: 'success',
+      });
     } catch (error: any) {
-      setMessage(error?.message || 'Failed to import leads');
+      setToast({title: isLv ? 'CSV importa kļūda.' : 'CSV import failed', message: error?.message || '', tone: 'error'});
     } finally {
       setImporting(false);
     }
   };
 
   const onDeleteLead = async (id: string) => {
-    setMessage('');
+    setToast(null);
     try {
       const response = await fetch(`/api/crm/leads/${encodeURIComponent(id)}`, {method: 'DELETE'});
       const data = await response.json();
       if (!data.ok) throw new Error(data.error || 'Failed to delete lead');
-      setMessage(labels.deleted);
+      setToast({title: labels.deleted, message: isLv ? 'Līds noņemts un paziņojums saglabāts.' : 'Lead removed and notification saved.', tone: 'success'});
       await loadLeads();
     } catch (error: any) {
-      setMessage(error?.message || 'Failed to delete lead');
+      setToast({title: isLv ? 'Neizdevās dzēst līdu.' : 'Failed to delete lead', message: error?.message || '', tone: 'error'});
     }
   };
 
@@ -241,6 +255,12 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-sky-500">{labels.title}</p>
+          
+          {toast ? (
+            <div className="fixed right-4 top-4 z-50 w-[min(24rem,calc(100vw-2rem))]">
+              <ToastBanner title={toast.title} message={toast.message} tone={toast.tone || 'info'} onClose={() => setToast(null)} />
+            </div>
+          ) : null}
           <h2 className="mt-2 text-3xl font-bold text-slate-900">{labels.subtitle}</h2>
         </div>
         <div className="flex gap-2">

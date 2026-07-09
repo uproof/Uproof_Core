@@ -102,3 +102,20 @@ export function decryptSecret(payload: string) {
 export function normalizeSecretInput(value: string) {
   return String(value || '').trim();
 }
+
+export function validatePasswordPolicy(password: string) {
+  const value = String(password || '').trim();
+  if (value.length < 8) {
+    return 'Password must be at least 8 characters';
+  }
+  if (!/[A-Z]/.test(value)) {
+    return 'Password must include at least one uppercase letter';
+  }
+  if (!/[0-9]/.test(value)) {
+    return 'Password must include at least one number';
+  }
+  if (!/[^A-Za-z0-9]/.test(value)) {
+    return 'Password must include at least one special symbol';
+  }
+  return null;
+}

@@ -3,7 +3,7 @@ import {getAdminSession} from '@/lib/adminAuth';
 import {createCrmUser, getCrmUsers} from '@/lib/crmUsersStore';
 import {checkRateLimit, RATE_LIMITS} from '@/lib/rateLimit';
 import {canPerform} from '@/lib/permissions';
-import {isSupabaseConfigured} from '@/lib/supabase/config';
+import {validatePasswordPolicy} from '@/lib/secretVault';
 
 function publicCrmUser(user: Awaited<ReturnType<typeof getCrmUsers>>[number]) {
   return {
@@ -30,7 +30,8 @@ export async function GET() {
   }
 
   const users = await getCrmUsers();
-  return NextResponse.json({ok: true, users: users.map(publicCrmUser)});
+  const salesUsers = users.filter((user) => user.role === 'sales');
+  return NextResponse.json({ok: true, users: salesUsers.map(publicCrmUser)});
 }
 
 export async function POST(req: NextRequest) {
@@ -72,12 +73,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ok: false, error: 'Password is required'}, {status: 400});
   }
 
-  if (password.length < 10) {
-    return NextResponse.json({ok: false, error: 'Password must be at least 10 characters'}, {status: 400});
-  }
-
-  if (isSupabaseConfigured() && !/[A-Z]/.test(password)) {
-    return NextResponse.json({ok: false, error: 'Password must include an uppercase letter'}, {status: 400});
+  const passwordPolicyError = validatePasswordPolicy(password);
+  if (passwordPolicyError) {
+    return NextResponse.json({ok: false, error: passwordPolicyError}, {status: 400});
   }
 
   const user = await createCrmUser({

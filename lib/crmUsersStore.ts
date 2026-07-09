@@ -1,8 +1,8 @@
-import {randomUUID} from 'crypto';
+import {createHash, randomBytes, randomUUID} from 'crypto';
 import {getDb, nowIso} from '@/lib/crmDb';
 import {createSupabaseAdminClient} from '@/lib/supabase/server';
 import {getCrmLeadById} from '@/lib/crmLeadsStore';
-import {decryptSecret, encryptSecret, hashPassword, normalizeSecretInput, verifyPassword} from '@/lib/secretVault';
+import {decryptSecret, encryptSecret, hashPassword, normalizeSecretInput, validatePasswordPolicy, verifyPassword} from '@/lib/secretVault';
 
 export type CrmUserRole = 'sales' | 'superadmin';
 
@@ -14,6 +14,8 @@ export type CrmUser = {
   isActive: boolean;
   password?: string;
   mfaSecret?: string;
+  sessionValidAfter?: string;
+  archivedAt?: string;
   createdAt: string;
   updatedAtUtc: string;
 };
@@ -26,6 +28,8 @@ type CrmUserRow = {
   is_active: number;
   password: string;
   mfa_secret: string;
+  session_valid_after: string;
+  archived_at: string;
   created_at: string;
   updated_at_utc: string;
 };
@@ -42,6 +46,10 @@ function safeDecryptSecret(value: string) {
   }
 }
 
+export function getPlainMfaSecret(user: Pick<CrmUser, 'mfaSecret'> | null | undefined) {
+  return safeDecryptSecret(user?.mfaSecret || '');
+}
+
 function rowToCrmUser(row: CrmUserRow): CrmUser {
   return {
     id: row.id,
@@ -51,6 +59,8 @@ function rowToCrmUser(row: CrmUserRow): CrmUser {
     isActive: row.is_active === 1,
     password: row.password || '',
     mfaSecret: row.mfa_secret || '',
+    sessionValidAfter: row.session_valid_after || '',
+    archivedAt: row.archived_at || '',
     createdAt: row.created_at,
     updatedAtUtc: row.updated_at_utc,
   };
@@ -61,7 +71,7 @@ export async function getCrmUsers(): Promise<CrmUser[]> {
   if (supabase) {
     const {data, error} = await supabase
       .from('user_profiles')
-      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,created_at,updated_at')
+      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
       .in('role', ['sales', 'superadmin'])
       .order('created_at', {ascending: true});
 
@@ -74,6 +84,8 @@ export async function getCrmUsers(): Promise<CrmUser[]> {
         isActive: !!entry.is_active,
         password: entry.crm_password || '',
         mfaSecret: entry.crm_mfa_secret || '',
+        sessionValidAfter: entry.session_valid_after || '',
+        archivedAt: entry.archived_at || '',
         createdAt: entry.created_at,
         updatedAtUtc: entry.updated_at,
       }));
@@ -98,7 +110,7 @@ export async function getCrmUserByEmail(email: string): Promise<CrmUser | null> 
   if (supabase) {
     const {data, error} = await supabase
       .from('user_profiles')
-      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,created_at,updated_at')
+      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
       .eq('email', normalizedEmail)
       .maybeSingle();
 
@@ -111,6 +123,8 @@ export async function getCrmUserByEmail(email: string): Promise<CrmUser | null> 
         isActive: !!data.is_active,
         password: data.crm_password || '',
         mfaSecret: data.crm_mfa_secret || '',
+        sessionValidAfter: data.session_valid_after || '',
+        archivedAt: data.archived_at || '',
         createdAt: data.created_at,
         updatedAtUtc: data.updated_at,
       };
@@ -135,7 +149,7 @@ export async function getCrmUserById(id: string): Promise<CrmUser | null> {
   if (supabase) {
     const {data, error} = await supabase
       .from('user_profiles')
-      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,created_at,updated_at')
+      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
       .eq('id', userId)
       .maybeSingle();
 
@@ -148,6 +162,8 @@ export async function getCrmUserById(id: string): Promise<CrmUser | null> {
         isActive: !!data.is_active,
         password: data.crm_password || '',
         mfaSecret: data.crm_mfa_secret || '',
+        sessionValidAfter: data.session_valid_after || '',
+        archivedAt: data.archived_at || '',
         createdAt: data.created_at,
         updatedAtUtc: data.updated_at,
       };
@@ -181,8 +197,13 @@ export async function createCrmUser(input: CreateCrmUserInput): Promise<CrmUser>
 
   const password = normalizeSecretInput(input.password || '');
   const mfaSecret = normalizeSecretInput(input.mfaSecret || '');
+  const passwordPolicyError = validatePasswordPolicy(password);
+  if (passwordPolicyError) {
+    throw new Error(passwordPolicyError);
+  }
   const passwordHash = hashPassword(password);
   const encryptedMfaSecret = mfaSecret ? encryptSecret(mfaSecret) : '';
+  const createdAt = nowIso();
 
   const supabase = createSupabaseAdminClient();
   if (supabase) {
@@ -211,8 +232,10 @@ export async function createCrmUser(input: CreateCrmUserInput): Promise<CrmUser>
         is_active: true,
         crm_password: passwordHash,
         crm_mfa_secret: encryptedMfaSecret,
+        session_valid_after: createdAt,
+        archived_at: '',
       })
-      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,created_at,updated_at')
+      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
       .single();
 
     if (error) {
@@ -227,18 +250,19 @@ export async function createCrmUser(input: CreateCrmUserInput): Promise<CrmUser>
       isActive: !!data.is_active,
       password: data.crm_password || '',
       mfaSecret: data.crm_mfa_secret || '',
+      sessionValidAfter: data.session_valid_after || '',
+      archivedAt: data.archived_at || '',
       createdAt: data.created_at,
       updatedAtUtc: data.updated_at,
     };
   }
 
   const db = getDb();
-  const now = nowIso();
   const id = `crm-user-${randomUUID()}`;
 
   db.prepare(
-    `INSERT INTO crm_users (id, email, name, role, is_active, password, mfa_secret, created_at, updated_at_utc)
-     VALUES (@id, @email, @name, @role, @isActive, @password, @mfaSecret, @createdAt, @updatedAtUtc)`
+    `INSERT INTO crm_users (id, email, name, role, is_active, password, mfa_secret, session_valid_after, archived_at, created_at, updated_at_utc)
+     VALUES (@id, @email, @name, @role, @isActive, @password, @mfaSecret, @sessionValidAfter, @archivedAt, @createdAt, @updatedAtUtc)`
   ).run({
     id,
     email,
@@ -247,8 +271,10 @@ export async function createCrmUser(input: CreateCrmUserInput): Promise<CrmUser>
     isActive: 1,
     password: passwordHash,
     mfaSecret: encryptedMfaSecret,
-    createdAt: now,
-    updatedAtUtc: now,
+    sessionValidAfter: createdAt,
+    archivedAt: '',
+    createdAt,
+    updatedAtUtc: createdAt,
   });
 
   return {
@@ -257,8 +283,10 @@ export async function createCrmUser(input: CreateCrmUserInput): Promise<CrmUser>
     name,
     role,
     isActive: true,
-    createdAt: now,
-    updatedAtUtc: now,
+    sessionValidAfter: createdAt,
+    archivedAt: '',
+    createdAt,
+    updatedAtUtc: createdAt,
   };
 }
 
@@ -315,7 +343,7 @@ export async function updateCrmUser(input: UpdateCrmUserInput): Promise<CrmUser 
         crm_mfa_secret: nextMfaSecret,
       })
       .eq('id', userId)
-      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,created_at,updated_at')
+      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
       .single();
 
     if (error) {
@@ -330,6 +358,8 @@ export async function updateCrmUser(input: UpdateCrmUserInput): Promise<CrmUser 
       isActive: !!data.is_active,
       password: data.crm_password || '',
       mfaSecret: data.crm_mfa_secret || '',
+      sessionValidAfter: data.session_valid_after || '',
+      archivedAt: data.archived_at || '',
       createdAt: data.created_at,
       updatedAtUtc: data.updated_at,
     };
@@ -352,6 +382,516 @@ export async function updateCrmUser(input: UpdateCrmUserInput): Promise<CrmUser 
     mfaSecret: nextMfaSecret,
     updatedAtUtc: nowIso(),
   });
+
+  return await getCrmUserById(userId);
+}
+
+function normalizeSecurityCode(input: string) {
+  return input.trim().replace(/\s+/g, '').toUpperCase();
+}
+
+function hashSecurityValue(value: string) {
+  return createHash('sha256').update(value).digest('hex');
+}
+
+function generateRecoveryCode() {
+  const segments = randomBytes(8).toString('hex').toUpperCase().match(/.{1,4}/g);
+  return segments ? segments.join('-') : randomBytes(8).toString('hex').toUpperCase();
+}
+
+function generatePasswordResetToken() {
+  return randomBytes(32).toString('base64url');
+}
+
+export async function revokeCrmUserSessions(userId: string): Promise<CrmUser | null> {
+  const current = await getCrmUserById(userId);
+  if (!current) {
+    return null;
+  }
+
+  const now = nowIso();
+  const supabase = createSupabaseAdminClient();
+  if (supabase) {
+    const {data, error} = await supabase
+      .from('user_profiles')
+      .update({session_valid_after: now})
+      .eq('id', userId)
+      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
+      .single();
+
+    if (error) {
+      throw new Error(error.message || 'Failed to revoke CRM user sessions');
+    }
+
+    return {
+      id: data.id,
+      email: data.email,
+      name: data.full_name || data.email,
+      role: data.role,
+      isActive: !!data.is_active,
+      password: data.crm_password || '',
+      mfaSecret: data.crm_mfa_secret || '',
+      sessionValidAfter: data.session_valid_after || now,
+      archivedAt: data.archived_at || '',
+      createdAt: data.created_at,
+      updatedAtUtc: data.updated_at,
+    };
+  }
+
+  const db = getDb();
+  db.prepare(
+    `UPDATE crm_users
+     SET session_valid_after = @sessionValidAfter,
+         updated_at_utc = @updatedAtUtc
+     WHERE id = @id`
+  ).run({id: userId, sessionValidAfter: now, updatedAtUtc: now});
+
+  return await getCrmUserById(userId);
+}
+
+export async function resetCrmUserMfa(userId: string): Promise<CrmUser | null> {
+  const current = await getCrmUserById(userId);
+  if (!current) {
+    return null;
+  }
+
+  const now = nowIso();
+  const supabase = createSupabaseAdminClient();
+  if (supabase) {
+    const {data, error} = await supabase
+      .from('user_profiles')
+      .update({mfa_secret: '', session_valid_after: now})
+      .eq('id', userId)
+      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
+      .single();
+
+    if (error) {
+      throw new Error(error.message || 'Failed to reset CRM user MFA');
+    }
+
+    await supabase.from('crm_recovery_codes').delete().eq('user_id', userId);
+
+    return {
+      id: data.id,
+      email: data.email,
+      name: data.full_name || data.email,
+      role: data.role,
+      isActive: !!data.is_active,
+      password: data.crm_password || '',
+      mfaSecret: data.crm_mfa_secret || '',
+      sessionValidAfter: data.session_valid_after || now,
+      archivedAt: data.archived_at || '',
+      createdAt: data.created_at,
+      updatedAtUtc: data.updated_at,
+    };
+  }
+
+  const db = getDb();
+  db.prepare(
+    `UPDATE crm_users
+     SET mfa_secret = '',
+         session_valid_after = @sessionValidAfter,
+         updated_at_utc = @updatedAtUtc
+     WHERE id = @id`
+  ).run({id: userId, sessionValidAfter: now, updatedAtUtc: now});
+  db.prepare('DELETE FROM crm_recovery_codes WHERE user_id = ?').run(userId);
+
+  return await getCrmUserById(userId);
+}
+
+export async function disableCrmUser(userId: string): Promise<CrmUser | null> {
+  const current = await getCrmUserById(userId);
+  if (!current) {
+    return null;
+  }
+
+  const now = nowIso();
+  const supabase = createSupabaseAdminClient();
+  if (supabase) {
+    const {data, error} = await supabase
+      .from('user_profiles')
+      .update({is_active: false})
+      .eq('id', userId)
+      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
+      .single();
+
+    if (error) {
+      throw new Error(error.message || 'Failed to disable CRM user');
+    }
+
+    return {
+      id: data.id,
+      email: data.email,
+      name: data.full_name || data.email,
+      role: data.role,
+      isActive: !!data.is_active,
+      password: data.crm_password || '',
+      mfaSecret: data.crm_mfa_secret || '',
+      sessionValidAfter: data.session_valid_after || '',
+      archivedAt: data.archived_at || '',
+      createdAt: data.created_at,
+      updatedAtUtc: data.updated_at,
+    };
+  }
+
+  const db = getDb();
+  db.prepare(
+    `UPDATE crm_users
+     SET is_active = 0,
+         updated_at_utc = @updatedAtUtc
+     WHERE id = @id`
+  ).run({id: userId, updatedAtUtc: now});
+
+  return await getCrmUserById(userId);
+}
+
+export async function archiveCrmUser(userId: string): Promise<CrmUser | null> {
+  const current = await getCrmUserById(userId);
+  if (!current) {
+    return null;
+  }
+
+  const now = nowIso();
+  const supabase = createSupabaseAdminClient();
+  if (supabase) {
+    const {data, error} = await supabase
+      .from('user_profiles')
+      .update({is_active: false, archived_at: now, session_valid_after: now})
+      .eq('id', userId)
+      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
+      .single();
+
+    if (error) {
+      throw new Error(error.message || 'Failed to archive CRM user');
+    }
+
+    return {
+      id: data.id,
+      email: data.email,
+      name: data.full_name || data.email,
+      role: data.role,
+      isActive: !!data.is_active,
+      password: data.crm_password || '',
+      mfaSecret: data.crm_mfa_secret || '',
+      sessionValidAfter: data.session_valid_after || now,
+      archivedAt: data.archived_at || now,
+      createdAt: data.created_at,
+      updatedAtUtc: data.updated_at,
+    };
+  }
+
+  const db = getDb();
+  db.prepare(
+    `UPDATE crm_users
+     SET is_active = 0,
+         archived_at = @archivedAt,
+         session_valid_after = @sessionValidAfter,
+         updated_at_utc = @updatedAtUtc
+     WHERE id = @id`
+  ).run({id: userId, archivedAt: now, sessionValidAfter: now, updatedAtUtc: now});
+
+  return await getCrmUserById(userId);
+}
+
+export async function replaceRecoveryCodes(userId: string, count = 10): Promise<string[]> {
+  const current = await getCrmUserById(userId);
+  if (!current) {
+    throw new Error('User not found');
+  }
+
+  const recoveryCodes = Array.from({length: count}, () => generateRecoveryCode());
+  const now = nowIso();
+  const codeRows = recoveryCodes.map((code) => ({userId, codeHash: hashSecurityValue(normalizeSecurityCode(code)), createdAt: now}));
+
+  const supabase = createSupabaseAdminClient();
+  if (supabase) {
+    const {error: deleteError} = await supabase.from('crm_recovery_codes').delete().eq('user_id', userId);
+    if (deleteError) {
+      throw new Error(deleteError.message || 'Failed to replace recovery codes');
+    }
+
+    const {error: insertError} = await supabase.from('crm_recovery_codes').insert(
+      codeRows.map((row) => ({user_id: row.userId, code_hash: row.codeHash, used_at: '', created_at: row.createdAt}))
+    );
+
+    if (insertError) {
+      throw new Error(insertError.message || 'Failed to store recovery codes');
+    }
+
+    return recoveryCodes;
+  }
+
+  const db = getDb();
+  db.prepare('DELETE FROM crm_recovery_codes WHERE user_id = ?').run(userId);
+  const statement = db.prepare(
+    `INSERT INTO crm_recovery_codes (user_id, code_hash, used_at, created_at)
+     VALUES (@userId, @codeHash, '', @createdAt)`
+  );
+  for (const row of codeRows) {
+    statement.run(row);
+  }
+
+  return recoveryCodes;
+}
+
+export async function consumeRecoveryCode(userId: string, code: string): Promise<boolean> {
+  const current = await getCrmUserById(userId);
+  if (!current) {
+    return false;
+  }
+
+  const normalizedCode = normalizeSecurityCode(code);
+  if (!normalizedCode) {
+    return false;
+  }
+
+  const codeHash = hashSecurityValue(normalizedCode);
+  const now = nowIso();
+  const supabase = createSupabaseAdminClient();
+  if (supabase) {
+    const {data, error} = await supabase
+      .from('crm_recovery_codes')
+      .select('id')
+      .eq('user_id', userId)
+      .eq('code_hash', codeHash)
+      .eq('used_at', '')
+      .maybeSingle();
+
+    if (error || !data) {
+      return false;
+    }
+
+    const {error: updateError} = await supabase.from('crm_recovery_codes').update({used_at: now}).eq('id', data.id);
+    return !updateError;
+  }
+
+  const db = getDb();
+  const row = db
+    .prepare("SELECT id FROM crm_recovery_codes WHERE user_id = ? AND code_hash = ? AND used_at = '' LIMIT 1")
+    .get(userId, codeHash) as {id: number} | undefined;
+
+  if (!row) {
+    return false;
+  }
+
+  db.prepare('UPDATE crm_recovery_codes SET used_at = ? WHERE id = ?').run(now, row.id);
+  return true;
+}
+
+type PasswordResetTokenRecord = {
+  token: string;
+  expiresAt: string;
+};
+
+export async function issuePasswordResetToken(userId: string, requestedBy = ''): Promise<PasswordResetTokenRecord> {
+  const current = await getCrmUserById(userId);
+  if (!current) {
+    throw new Error('User not found');
+  }
+
+  const token = generatePasswordResetToken();
+  const tokenHash = hashSecurityValue(token);
+  const now = nowIso();
+  const expiresAt = new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString();
+
+  const supabase = createSupabaseAdminClient();
+  if (supabase) {
+    await supabase.from('crm_password_reset_tokens').delete().eq('user_id', userId).eq('used_at', '');
+    const {error} = await supabase.from('crm_password_reset_tokens').insert({
+      user_id: userId,
+      token_hash: tokenHash,
+      requested_by: requestedBy,
+      expires_at: expiresAt,
+      used_at: '',
+      created_at: now,
+    });
+
+    if (error) {
+      throw new Error(error.message || 'Failed to create password reset token');
+    }
+
+    return {token, expiresAt};
+  }
+
+  const db = getDb();
+  db.prepare("DELETE FROM crm_password_reset_tokens WHERE user_id = ? AND used_at = ''").run(userId);
+  db.prepare(
+    `INSERT INTO crm_password_reset_tokens (user_id, token_hash, requested_by, expires_at, used_at, created_at)
+     VALUES (@userId, @tokenHash, @requestedBy, @expiresAt, '', @createdAt)`
+  ).run({userId, tokenHash, requestedBy, expiresAt, createdAt: now});
+
+  return {token, expiresAt};
+}
+
+export async function consumePasswordResetToken(token: string, nextPassword: string): Promise<CrmUser | null> {
+  const normalizedToken = String(token || '').trim();
+  const password = normalizeSecretInput(nextPassword);
+  if (!normalizedToken || !password) {
+    return null;
+  }
+
+  const tokenHash = hashSecurityValue(normalizedToken);
+  const passwordHash = hashPassword(password);
+  const now = nowIso();
+
+  const supabase = createSupabaseAdminClient();
+  if (supabase) {
+    const {data, error} = await supabase
+      .from('crm_password_reset_tokens')
+      .select('id,user_id,expires_at,used_at')
+      .eq('token_hash', tokenHash)
+      .eq('used_at', '')
+      .maybeSingle();
+
+    if (error || !data || new Date(data.expires_at).getTime() <= Date.now()) {
+      return null;
+    }
+
+    const {error: updateTokenError} = await supabase.from('crm_password_reset_tokens').update({used_at: now}).eq('id', data.id);
+    if (updateTokenError) {
+      return null;
+    }
+
+    const {data: userData, error: updateUserError} = await supabase
+      .from('user_profiles')
+      .update({crm_password: passwordHash, session_valid_after: now})
+      .eq('id', data.user_id)
+      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
+      .single();
+
+    if (updateUserError) {
+      throw new Error(updateUserError.message || 'Failed to update password');
+    }
+
+    return {
+      id: userData.id,
+      email: userData.email,
+      name: userData.full_name || userData.email,
+      role: userData.role,
+      isActive: !!userData.is_active,
+      password: userData.crm_password || '',
+      mfaSecret: userData.crm_mfa_secret || '',
+      sessionValidAfter: userData.session_valid_after || now,
+      archivedAt: userData.archived_at || '',
+      createdAt: userData.created_at,
+      updatedAtUtc: userData.updated_at,
+    };
+  }
+
+  const db = getDb();
+  const tokenRow = db
+    .prepare("SELECT id, user_id, expires_at FROM crm_password_reset_tokens WHERE token_hash = ? AND used_at = ''")
+    .get(tokenHash) as {id: number; user_id: string; expires_at: string} | undefined;
+
+  if (!tokenRow || new Date(tokenRow.expires_at).getTime() <= Date.now()) {
+    return null;
+  }
+
+  db.prepare('UPDATE crm_password_reset_tokens SET used_at = ? WHERE id = ?').run(now, tokenRow.id);
+  db.prepare(
+    `UPDATE crm_users
+     SET password = @password,
+         session_valid_after = @sessionValidAfter,
+         updated_at_utc = @updatedAtUtc
+     WHERE id = @id`
+  ).run({id: tokenRow.user_id, password: passwordHash, sessionValidAfter: now, updatedAtUtc: now});
+
+  return await getCrmUserById(tokenRow.user_id);
+}
+
+export async function changeCrmUserPassword(userId: string, nextPassword: string): Promise<CrmUser | null> {
+  const password = normalizeSecretInput(nextPassword);
+  if (!password) {
+    return null;
+  }
+
+  const passwordPolicyError = validatePasswordPolicy(password);
+  if (passwordPolicyError) {
+    throw new Error(passwordPolicyError);
+  }
+
+  const passwordHash = hashPassword(password);
+  const now = nowIso();
+  const supabase = createSupabaseAdminClient();
+  if (supabase) {
+    const {data, error} = await supabase
+      .from('user_profiles')
+      .update({crm_password: passwordHash})
+      .eq('id', userId)
+      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
+      .single();
+
+    if (error) {
+      throw new Error(error.message || 'Failed to update CRM user password');
+    }
+
+    return {
+      id: data.id,
+      email: data.email,
+      name: data.full_name || data.email,
+      role: data.role,
+      isActive: !!data.is_active,
+      password: data.crm_password || '',
+      mfaSecret: data.crm_mfa_secret || '',
+      sessionValidAfter: data.session_valid_after || '',
+      archivedAt: data.archived_at || '',
+      createdAt: data.created_at,
+      updatedAtUtc: data.updated_at,
+    };
+  }
+
+  const db = getDb();
+  db.prepare(
+    `UPDATE crm_users
+     SET password = @password,
+         updated_at_utc = @updatedAtUtc
+     WHERE id = @id`
+  ).run({id: userId, password: passwordHash, updatedAtUtc: now});
+
+  return await getCrmUserById(userId);
+}
+
+export async function setCrmUserMfaSecret(userId: string, nextMfaSecret: string): Promise<CrmUser | null> {
+  const mfaSecret = normalizeSecretInput(nextMfaSecret);
+  if (!mfaSecret) {
+    return null;
+  }
+
+  const supabase = createSupabaseAdminClient();
+  if (supabase) {
+    const {data, error} = await supabase
+      .from('user_profiles')
+      .update({crm_mfa_secret: encryptSecret(mfaSecret)})
+      .eq('id', userId)
+      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
+      .single();
+
+    if (error) {
+      throw new Error(error.message || 'Failed to update CRM user MFA secret');
+    }
+
+    return {
+      id: data.id,
+      email: data.email,
+      name: data.full_name || data.email,
+      role: data.role,
+      isActive: !!data.is_active,
+      password: data.crm_password || '',
+      mfaSecret: data.crm_mfa_secret || '',
+      sessionValidAfter: data.session_valid_after || '',
+      archivedAt: data.archived_at || '',
+      createdAt: data.created_at,
+      updatedAtUtc: data.updated_at,
+    };
+  }
+
+  const db = getDb();
+  db.prepare(
+    `UPDATE crm_users
+     SET mfa_secret = @mfaSecret,
+         updated_at_utc = @updatedAtUtc
+     WHERE id = @id`
+  ).run({id: userId, mfaSecret: encryptSecret(mfaSecret), updatedAtUtc: nowIso()});
 
   return await getCrmUserById(userId);
 }
@@ -380,13 +920,14 @@ export async function deleteCrmUser(id: string): Promise<boolean> {
       })
       .eq('assigned_sales_user_id', userId);
 
-    const profileResult = await supabase
-      .from('user_profiles')
-      .update({is_active: false})
-      .eq('id', userId);
+    await supabase.from('crm_user_activity').update({actor_user_id: null}).eq('actor_user_id', userId);
+    await supabase.from('crm_password_reset_tokens').delete().eq('user_id', userId);
+    await supabase.from('crm_recovery_codes').delete().eq('user_id', userId);
+
+    const profileResult = await supabase.from('user_profiles').delete().eq('id', userId);
 
     if (profileResult.error) {
-      throw new Error(profileResult.error.message || 'Failed to deactivate CRM user');
+      throw new Error(profileResult.error.message || 'Failed to delete CRM user');
     }
 
     await supabase.auth.admin.deleteUser(userId).catch(() => undefined);
@@ -403,8 +944,55 @@ export async function deleteCrmUser(id: string): Promise<boolean> {
      WHERE assigned_sales_user_id = @userId`
   ).run({userId, updatedAtUtc: nowIso()});
 
+  db.prepare('DELETE FROM crm_recovery_codes WHERE user_id = ?').run(userId);
+  db.prepare('DELETE FROM crm_password_reset_tokens WHERE user_id = ?').run(userId);
+
   const result = db.prepare('DELETE FROM crm_users WHERE id = ? AND role = ?').run(userId, 'sales');
   return result.changes > 0;
+}
+
+export async function getCrmUserActivitySnapshot(email: string) {
+  const normalizedEmail = email.trim().toLowerCase();
+  if (!normalizedEmail) return [];
+
+  const supabase = createSupabaseAdminClient();
+  if (supabase) {
+    const {data, error} = await supabase
+      .from('crm_user_activity')
+      .select('id,actor_email,actor_role,action,lead_id,detail,ip,created_at')
+      .eq('actor_email', normalizedEmail)
+      .order('created_at', {ascending: false});
+
+    if (!error && Array.isArray(data)) {
+      return data;
+    }
+  }
+
+  const db = getDb();
+  return db.prepare('SELECT * FROM crm_user_activity WHERE lower(actor_email) = lower(?) ORDER BY created_at DESC').all(normalizedEmail);
+}
+
+export async function getCrmLeadStatusSnapshot(userId: string) {
+  const targetUserId = userId.trim();
+  if (!targetUserId) return [];
+
+  const supabase = createSupabaseAdminClient();
+  if (supabase) {
+    const {data, error} = await supabase
+      .from('crm_leads')
+      .select('id,external_id,status,progress,activity_update,deal_progress,owner,assigned_sales_user_id,updated_at')
+      .eq('assigned_sales_user_id', targetUserId)
+      .order('updated_at', {ascending: false});
+
+    if (!error && Array.isArray(data)) {
+      return data;
+    }
+  }
+
+  const db = getDb();
+  return db
+    .prepare('SELECT id, status, progress, activity_update, deal_progress, owner, assigned_sales_user_id, updated_at FROM leads WHERE assigned_sales_user_id = ? ORDER BY updated_at_utc DESC')
+    .all(targetUserId);
 }
 
 type AssignLeadInput = {

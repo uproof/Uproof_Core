@@ -3,7 +3,7 @@ import {getAdminSession} from '@/lib/adminAuth';
 import {checkRateLimit, RATE_LIMITS} from '@/lib/rateLimit';
 import {canPerform} from '@/lib/permissions';
 import {deleteCrmUser, getCrmUserById, updateCrmUser} from '@/lib/crmUsersStore';
-import {verifyPassword} from '@/lib/secretVault';
+import {validatePasswordPolicy, verifyPassword} from '@/lib/secretVault';
 
 export async function PATCH(req: NextRequest, {params}: {params: Promise<{id: string}>}) {
   const session = await getAdminSession();
@@ -35,6 +35,13 @@ export async function PATCH(req: NextRequest, {params}: {params: Promise<{id: st
   const passwordChanged = typeof password === 'string' && password.trim() && !verifyPassword(password.trim(), current.password || '');
   if (passwordChanged && current.password) {
     // MFA is disabled for now, so credential updates only require the manager session.
+  }
+
+  if (typeof password === 'string' && password.trim()) {
+    const passwordPolicyError = validatePasswordPolicy(password.trim());
+    if (passwordPolicyError) {
+      return NextResponse.json({ok: false, error: passwordPolicyError}, {status: 400});
+    }
   }
 
   const user = await updateCrmUser({id, name, isActive, password});

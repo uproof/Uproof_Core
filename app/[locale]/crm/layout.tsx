@@ -7,13 +7,19 @@ import {ChartBarIcon, ClipboardDocumentListIcon, FolderOpenIcon, HomeIcon, UserG
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import AdminLogout from '@/components/AdminLogout';
 import {getAdminSession, isAdminAuthenticated} from '@/lib/adminAuth';
+import {getCrmUserByEmail, getPlainMfaSecret} from '@/lib/crmUsersStore';
 
 export default async function CrmLayout({children, params}: {children: ReactNode; params: Promise<{locale: string}>}) {
   const {locale} = await params;
   const isLv = locale === 'lv';
   const session = await getAdminSession();
   if (!session || session.role !== 'sales') {
-    redirect(`/${locale}/crm/login?redirect=/${locale}/crm`);
+    redirect(`/${locale}/crm-login?redirect=/${locale}/crm`);
+  }
+
+  const user = await getCrmUserByEmail(session.email);
+  if (!getPlainMfaSecret(user)) {
+    redirect(`/${locale}/crm-login?redirect=/${locale}/crm&setup=1`);
   }
 
   const headerStore = await headers();

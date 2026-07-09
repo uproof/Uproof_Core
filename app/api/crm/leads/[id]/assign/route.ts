@@ -31,12 +31,6 @@ export async function POST(
     return NextResponse.json({ok: false, error: 'Missing salesUserId'}, {status: 400});
   }
 
-  const result = await assignLeadToCrmUser({
-    leadId: id,
-    salesUserId,
-    assignedBy: session.email,
-  });
-
   const serviceResult = await assignLead({
     leadId: id,
     salesUserId,

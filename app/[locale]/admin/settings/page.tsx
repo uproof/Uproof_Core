@@ -269,6 +269,12 @@ export default function SiteSettings() {
             >
               Cancel
             </Link>
+            <Link
+              href={`/${locale}/admin/settings/security`}
+              className="px-4 py-2 text-primary-700 bg-primary-100 rounded-lg hover:bg-primary-200 transition"
+            >
+              Authenticator Setup
+            </Link>
             <button
               type="button"
               onClick={handleSave}

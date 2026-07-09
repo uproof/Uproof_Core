@@ -54,6 +54,17 @@ export function parseCsv(text: string): Array<Record<string, string>> {
   return rows;
 }
 
+export function stringifyCsv(rows: Array<Array<string | number | null | undefined>>) {
+  return rows.map((row) => row.map((value) => escapeCsvField(value)).join(','));
+}
+
+function escapeCsvField(value: string | number | null | undefined) {
+  const text = String(value ?? '');
+  const normalized = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const safeText = /^[=+\-@\t]/.test(normalized) ? `'${normalized}` : normalized;
+  return `"${safeText.replace(/"/g, '""').replace(/\n/g, '\r\n')}"`;
+}
+
 function splitCsvLine(line: string) {
   const values: string[] = [];
   let current = '';

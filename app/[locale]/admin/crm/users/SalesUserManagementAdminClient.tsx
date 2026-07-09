@@ -41,6 +41,7 @@ export default function SalesUserManagementAdminClient({
   const [passwordDrafts, setPasswordDrafts] = useState<Record<string, string>>({});
   const [passwordEditing, setPasswordEditing] = useState<Record<string, boolean>>({});
   const [message, setMessage] = useState('');
+  const [securityMessages, setSecurityMessages] = useState<Record<string, string>>({});
   const [creatingUser, setCreatingUser] = useState(false);
   const isFirstActivityRender = useRef(true);
 
@@ -56,7 +57,7 @@ export default function SalesUserManagementAdminClient({
       userName: isLv ? 'Vārds' : 'Name',
       userEmail: isLv ? 'E-pasts' : 'Email',
       userPassword: isLv ? 'Parole' : 'Password',
-      userPasswordHint: isLv ? 'Parole ir obligāta un tiek glabāta tikai aizsargātā veidā.' : 'Password is required and stored only in protected form.',
+      userPasswordHint: isLv ? 'Parolei jābūt vismaz 8 rakstzīmēm ar lielo burtu, ciparu un speciālu simbolu.' : 'Password must be at least 8 characters with one uppercase letter, one number, and one special symbol.',
       passwordSaved: isLv ? 'Saglabāta parole' : 'Saved password',
       passwordUnset: isLv ? 'Nav iestatīta' : 'Not set',
       edit: isLv ? 'Rediģēt' : 'Edit',
@@ -71,9 +72,16 @@ export default function SalesUserManagementAdminClient({
       deactivate: isLv ? 'Deaktivēt' : 'Deactivate',
       activate: isLv ? 'Aktivēt' : 'Activate',
       remove: isLv ? 'Dzēst' : 'Delete',
+      archive: isLv ? 'Arhivēt' : 'Archive',
       rename: isLv ? 'Mainīt vārdu' : 'Rename',
       dashboard: isLv ? 'Dashboard' : 'Dashboard',
       viewLeads: isLv ? 'Līdu pārvaldība' : 'Lead management',
+      resetPasswordLink: isLv ? 'Atiestatīt paroli' : 'Reset password link',
+      resetMfa: isLv ? 'Atiestatīt MFA' : 'Reset MFA',
+      revokeSessions: isLv ? 'Atsaukt piekļuvi' : 'Revoke access',
+      disableAccount: isLv ? 'Atspējot piekļuvi' : 'Disable access',
+      recoveryCodes: isLv ? 'Atjaunošanas kodi' : 'Recovery codes',
+      deleteUser: isLv ? 'Dzēst lietotāju' : 'Delete user',
     }),
     [isLv]
   );
@@ -190,17 +198,87 @@ export default function SalesUserManagementAdminClient({
   };
 
   const onDeleteUser = async (user: CrmUserPublic) => {
+    if (!window.confirm(isLv ? `Dzēst lietotāju ${user.name}? Pēc tam kontu vairs nevar atjaunot.` : `Delete ${user.name}? This cannot be undone.`)) {
+      return;
+    }
+
     setMessage('');
     try {
-      const response = await fetch(`/api/crm/users/${encodeURIComponent(user.id)}`, {method: 'DELETE'});
+      const response = await fetch(`/api/crm/users/${encodeURIComponent(user.id)}/security`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({action: 'delete-user'}),
+      });
       const data = await response.json();
       if (!data.ok) {
         throw new Error(data.error || 'Failed to delete user');
       }
-      setMessage(isLv ? 'Lietotājs dzēsts/deaktivēts.' : 'User deleted/deactivated.');
+      setMessage(isLv ? 'Lietotājs dzēsts un dati saglabāti vēsturē.' : 'User deleted and data preserved in history.');
       await Promise.all([loadCrmUsers(), loadLeads(), loadActivity(selectedUserEmail || undefined)]);
     } catch (error: any) {
       setMessage(error?.message || 'Failed to delete user');
+    }
+  };
+
+  const onExportUserData = async (user: CrmUserPublic) => {
+    setMessage('');
+    try {
+      const response = await fetch(`/api/crm/users/${encodeURIComponent(user.id)}/security`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({action: 'export-user-data'}),
+      });
+      const data = await response.json();
+      if (!data.ok || !data.payload) {
+        throw new Error(data.error || 'Failed to export user data');
+      }
+
+      const blob = new Blob([JSON.stringify(data.payload, null, 2)], {type: 'application/json;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${user.email.replace(/[^a-z0-9._-]+/gi, '_')}-export.json`;
+      link.click();
+      URL.revokeObjectURL(url);
+      setMessage(isLv ? 'Dati lejupielādēti.' : 'Data exported.');
+    } catch (error: any) {
+      setMessage(error?.message || 'Failed to export user data');
+    }
+  };
+
+  const onSecurityAction = async (user: CrmUserPublic, action: string, payload: Record<string, unknown> = {}) => {
+    setMessage('');
+    try {
+      const response = await fetch(`/api/crm/users/${encodeURIComponent(user.id)}/security`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({action, ...payload}),
+      });
+      const data = await response.json();
+      if (!data.ok) {
+        throw new Error(data.error || 'Security action failed');
+      }
+
+      if (Array.isArray(data.codes)) {
+        setSecurityMessages((current) => ({
+          ...current,
+          [user.id]: `${labels.recoveryCodes}: ${data.codes.join(' · ')}`,
+        }));
+      } else if (typeof data.resetUrl === 'string') {
+        setSecurityMessages((current) => ({
+          ...current,
+          [user.id]: `${labels.resetPasswordLink}: ${data.resetUrl}`,
+        }));
+      } else {
+        setSecurityMessages((current) => ({
+          ...current,
+          [user.id]: isLv ? 'Drošības darbība pabeigta.' : 'Security action completed.',
+        }));
+      }
+
+      await Promise.all([loadCrmUsers(), loadLeads(), loadActivity(selectedUserEmail || undefined)]);
+    } catch (error: any) {
+      setMessage(error?.message || 'Security action failed');
     }
   };
 
@@ -297,8 +375,15 @@ export default function SalesUserManagementAdminClient({
                       }
                     }} className="rounded-lg border border-sky-200 bg-white px-2 py-1 text-xs text-sky-700">{labels.rename}</button>
                     <button type="button" onClick={() => void onUpdateUser(user, {isActive: !user.isActive})} className="rounded-lg border border-sky-200 bg-white px-2 py-1 text-xs text-sky-700">{user.isActive ? labels.deactivate : labels.activate}</button>
-                    <button type="button" onClick={() => void onDeleteUser(user)} className="rounded-lg border border-rose-200 bg-white px-2 py-1 text-xs text-rose-700">{labels.remove}</button>
+                    <button type="button" onClick={() => void onSecurityAction(user, 'reset-password')} className="rounded-lg border border-amber-200 bg-white px-2 py-1 text-xs text-amber-700">{labels.resetPasswordLink}</button>
+                    <button type="button" onClick={() => void onSecurityAction(user, 'reset-mfa')} className="rounded-lg border border-amber-200 bg-white px-2 py-1 text-xs text-amber-700">{labels.resetMfa}</button>
+                    <button type="button" onClick={() => void onSecurityAction(user, 'revoke-sessions')} className="rounded-lg border border-amber-200 bg-white px-2 py-1 text-xs text-amber-700">{labels.revokeSessions}</button>
+                    <button type="button" onClick={() => void onSecurityAction(user, 'generate-recovery-codes')} className="rounded-lg border border-emerald-200 bg-white px-2 py-1 text-xs text-emerald-700">{labels.recoveryCodes}</button>
+                    <button type="button" onClick={() => void onExportUserData(user)} className="rounded-lg border border-sky-200 bg-white px-2 py-1 text-xs text-sky-700">{isLv ? 'Lejupielādēt datus' : 'Download data'}</button>
+                    <button type="button" onClick={() => void onSecurityAction(user, 'disable-account')} className="rounded-lg border border-rose-200 bg-white px-2 py-1 text-xs text-rose-700">{labels.disableAccount}</button>
+                    <button type="button" onClick={() => void onDeleteUser(user)} className="rounded-lg border border-rose-300 bg-white px-2 py-1 text-xs text-rose-800">{labels.deleteUser}</button>
                   </div>
+                  {securityMessages[user.id] ? <p className="mt-2 text-xs text-slate-500">{securityMessages[user.id]}</p> : null}
                 </div>
               ))
             )}

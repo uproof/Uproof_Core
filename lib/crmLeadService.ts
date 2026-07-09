@@ -5,7 +5,6 @@ import {
   getLeadById,
   insertAuditLog,
   insertEvent,
-  insertNotification,
   insertUserActivity,
   unassignLeadRow,
   updateLeadRow,
@@ -70,12 +69,6 @@ export async function assignLead(input: AssignInput) {
       entityId: input.leadId,
       detail: `assigned_to:${input.salesUserId}`,
       success: true,
-    });
-    insertNotification(db, {
-      recipientEmail: salesUser.email,
-      title: 'New lead assigned',
-      message: `Lead ${input.leadId} has been assigned to you.`,
-      link: `/crm/leads/${input.leadId.toLowerCase()}`,
     });
     insertEvent(db, {
       eventType: 'LeadAssigned',

@@ -12,6 +12,18 @@ import {
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import {getAdminSession} from '@/lib/adminAuth';
 import AdminLogout from '@/components/AdminLogout';
+import NotificationBell from '@/components/NotificationBell';
+
+type DashboardTile = {
+  href: string;
+  title: string;
+  description: string;
+  action: string;
+  accent: string;
+  iconBg: string;
+  iconText: string;
+  icon: typeof ClipboardDocumentListIcon;
+};
 
 export default async function AdminDashboard({params}: {params: Promise<{locale: string}>}) {
   const {locale} = await params;
@@ -23,6 +35,109 @@ export default async function AdminDashboard({params}: {params: Promise<{locale:
   if (session.role !== 'superadmin') {
     redirect(`/${locale}/crm`);
   }
+
+  const tiles: DashboardTile[] = [
+    {
+      href: `/${locale}/admin/crm/leads`,
+      title: 'Lead Management',
+      description: 'Add, delete, and assign leads',
+      action: 'Open Lead Management',
+      accent: 'border-sky-100',
+      iconBg: 'bg-sky-100 group-hover:bg-sky-200',
+      iconText: 'text-sky-700',
+      icon: ClipboardDocumentListIcon,
+    },
+    {
+      href: `/${locale}/admin/crm/users`,
+      title: 'Sales Admin User Management',
+      description: 'Create, delete, and manage sales users with individual logs and dashboard access',
+      action: 'Open User Management',
+      accent: 'border-indigo-100',
+      iconBg: 'bg-indigo-100 group-hover:bg-indigo-200',
+      iconText: 'text-indigo-700',
+      icon: UserGroupIcon,
+    },
+    {
+      href: `/${locale}/admin/blog`,
+      title: 'Blog Posts',
+      description: 'Create, edit, and manage blog articles',
+      action: 'Manage Blog',
+      accent: '',
+      iconBg: 'bg-primary-100 group-hover:bg-primary-200',
+      iconText: 'text-primary-600',
+      icon: DocumentTextIcon,
+    },
+    {
+      href: `/${locale}/admin/homepage`,
+      title: 'Homepage',
+      description: 'Edit hero, services, stats, and FAQ content',
+      action: 'Edit Homepage',
+      accent: '',
+      iconBg: 'bg-green-100 group-hover:bg-green-200',
+      iconText: 'text-green-600',
+      icon: HomeIcon,
+    },
+    {
+      href: `/${locale}/admin/projects`,
+      title: 'Projects Manager',
+      description: 'Manage portfolio projects and gallery',
+      action: 'Manage Projects',
+      accent: '',
+      iconBg: 'bg-orange-100 group-hover:bg-orange-200',
+      iconText: 'text-orange-600',
+      icon: PencilSquareIcon,
+    },
+    {
+      href: `/${locale}/admin/career`,
+      title: 'Career Positions',
+      description: 'Add, edit, or hide job positions without code changes',
+      action: 'Manage Careers',
+      accent: '',
+      iconBg: 'bg-emerald-100 group-hover:bg-emerald-200',
+      iconText: 'text-emerald-600',
+      icon: BriefcaseIcon,
+    },
+    {
+      href: `/${locale}/admin/services`,
+      title: 'Services Editor',
+      description: 'Edit service descriptions and offerings',
+      action: 'Edit Services',
+      accent: '',
+      iconBg: 'bg-blue-100 group-hover:bg-blue-200',
+      iconText: 'text-blue-600',
+      icon: PencilSquareIcon,
+    },
+    {
+      href: `/${locale}/admin/pages`,
+      title: 'Pages Editor',
+      description: 'Edit About, Contact, and other pages',
+      action: 'Edit Pages',
+      accent: '',
+      iconBg: 'bg-purple-100 group-hover:bg-purple-200',
+      iconText: 'text-purple-600',
+      icon: PencilSquareIcon,
+    },
+    {
+      href: `/${locale}/admin/settings`,
+      title: 'Site Settings',
+      description: 'Configure company info and SEO',
+      action: 'Configure Settings',
+      accent: '',
+      iconBg: 'bg-red-100 group-hover:bg-red-200',
+      iconText: 'text-red-600',
+      icon: PencilSquareIcon,
+    },
+    {
+      href: `/${locale}/admin/messages`,
+      title: 'Messages',
+      description: 'View contact form submissions',
+      action: 'View Messages',
+      accent: '',
+      iconBg: 'bg-indigo-100 group-hover:bg-indigo-200',
+      iconText: 'text-indigo-600',
+      icon: PencilSquareIcon,
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -43,14 +158,17 @@ export default async function AdminDashboard({params}: {params: Promise<{locale:
               <div className="order-1">
                 <LanguageSwitcher />
               </div>
+              <div className="order-2">
+                <NotificationBell locale={locale} />
+              </div>
               <Link
                 href={`/${locale}`}
-                className="order-2 text-sm text-gray-600 hover:text-gray-900 flex items-center gap-2"
+                className="order-3 text-sm text-gray-600 hover:text-gray-900 flex items-center gap-2"
               >
                 <HomeIcon className="w-5 h-5" />
                 <span className="hidden sm:inline">View Website</span>
               </Link>
-              <div className="order-3">
+              <div className="order-4">
                 <AdminLogout locale={locale} />
               </div>
             </div>
@@ -65,236 +183,36 @@ export default async function AdminDashboard({params}: {params: Promise<{locale:
           <p className="text-gray-600">Manage your website content</p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Lead Management */}
-          <Link href={`/${locale}/admin/crm/leads`}>
-            <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow cursor-pointer group border border-sky-100">
-              <div className="flex items-center justify-between mb-4">
-                <div className="bg-sky-100 p-3 rounded-lg group-hover:bg-sky-200 transition-colors">
-                  <ClipboardDocumentListIcon className="w-8 h-8 text-sky-700" />
-                </div>
-                <span className="text-sm font-semibold text-green-600 flex items-center gap-1">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  Active
-                </span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Lead Management</h3>
-              <p className="text-gray-600 mb-4">Add, delete, and assign leads</p>
-              <div className="flex items-center text-sky-700 font-semibold">
-                Open Lead Management
-                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
-              </div>
-            </div>
-          </Link>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 auto-rows-fr items-stretch">
+          {tiles.map((tile) => {
+            const Icon = tile.icon;
+            return (
+              <Link key={tile.href} href={tile.href} className="h-full">
+                <div className={`group flex h-full min-h-[16rem] flex-col rounded-2xl border bg-white p-6 shadow-md transition-all hover:-translate-y-0.5 hover:shadow-xl ${tile.accent}`}>
+                  <div className="mb-4 flex items-start justify-between gap-4">
+                    <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-colors ${tile.iconBg}`}>
+                      <Icon className={`h-7 w-7 ${tile.iconText}`} />
+                    </div>
+                    <span className="flex items-center gap-1 text-sm font-semibold text-green-600">
+                      <svg className="h-4 w-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      Active
+                    </span>
+                  </div>
 
-          {/* Sales Admin User Management */}
-          <Link href={`/${locale}/admin/crm/users`}>
-            <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow cursor-pointer group border border-indigo-100">
-              <div className="flex items-center justify-between mb-4">
-                <div className="bg-indigo-100 p-3 rounded-lg group-hover:bg-indigo-200 transition-colors">
-                  <UserGroupIcon className="w-8 h-8 text-indigo-700" />
+                  <div className="flex flex-1 flex-col">
+                    <h3 className="text-xl font-bold tracking-tight text-gray-900">{tile.title}</h3>
+                    <p className="mt-2 flex-1 text-gray-600">{tile.description}</p>
+                    <div className={`mt-6 flex items-center font-semibold ${tile.iconText}`}>
+                      {tile.action}
+                      <span className="ml-2 transition-transform group-hover:translate-x-1">→</span>
+                    </div>
+                  </div>
                 </div>
-                <span className="text-sm font-semibold text-green-600 flex items-center gap-1">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  Active
-                </span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Sales Admin User Management</h3>
-              <p className="text-gray-600 mb-4">Create, delete, and manage sales users with individual logs and dashboard access</p>
-              <div className="flex items-center text-indigo-700 font-semibold">
-                Open User Management
-                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
-              </div>
-            </div>
-          </Link>
-
-          {/* Blog Management */}
-          <Link href={`/${locale}/admin/blog`}>
-            <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow cursor-pointer group">
-              <div className="flex items-center justify-between mb-4">
-                <div className="bg-primary-100 p-3 rounded-lg group-hover:bg-primary-200 transition-colors">
-                  <DocumentTextIcon className="w-8 h-8 text-primary-600" />
-                </div>
-                <span className="text-sm font-semibold text-green-600 flex items-center gap-1">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  Active
-                </span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Blog Posts</h3>
-              <p className="text-gray-600 mb-4">Create, edit, and manage blog articles</p>
-              <div className="flex items-center text-primary-600 font-semibold">
-                Manage Blog
-                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
-              </div>
-            </div>
-          </Link>
-
-          {/* Homepage Editor */}
-          <Link href={`/${locale}/admin/homepage`}>
-            <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow cursor-pointer group">
-              <div className="flex items-center justify-between mb-4">
-                <div className="bg-green-100 p-3 rounded-lg group-hover:bg-green-200 transition-colors">
-                  <HomeIcon className="w-8 h-8 text-green-600" />
-                </div>
-                <span className="text-sm font-semibold text-green-600 flex items-center gap-1">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  Active
-                </span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Homepage</h3>
-              <p className="text-gray-600 mb-4">Edit hero, services, stats, and FAQ content</p>
-              <div className="flex items-center text-green-600 font-semibold">
-                Edit Homepage
-                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
-              </div>
-            </div>
-          </Link>
-
-          {/* Projects Manager */}
-          <Link href={`/${locale}/admin/projects`}>
-            <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow cursor-pointer group">
-              <div className="flex items-center justify-between mb-4">
-                <div className="bg-orange-100 p-3 rounded-lg group-hover:bg-orange-200 transition-colors">
-                  <PencilSquareIcon className="w-8 h-8 text-orange-600" />
-                </div>
-                <span className="text-sm font-semibold text-green-600 flex items-center gap-1">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  Active
-                </span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Projects Manager</h3>
-              <p className="text-gray-600 mb-4">Manage portfolio projects and gallery</p>
-              <div className="flex items-center text-orange-600 font-semibold">
-                Manage Projects
-                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
-              </div>
-            </div>
-          </Link>
-
-          {/* Career Positions Manager */}
-          <Link href={`/${locale}/admin/career`}>
-            <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow cursor-pointer group">
-              <div className="flex items-center justify-between mb-4">
-                <div className="bg-emerald-100 p-3 rounded-lg group-hover:bg-emerald-200 transition-colors">
-                  <BriefcaseIcon className="w-8 h-8 text-emerald-600" />
-                </div>
-                <span className="text-sm font-semibold text-green-600 flex items-center gap-1">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  Active
-                </span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Career Positions</h3>
-              <p className="text-gray-600 mb-4">Add, edit, or hide job positions without code changes</p>
-              <div className="flex items-center text-emerald-600 font-semibold">
-                Manage Careers
-                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
-              </div>
-            </div>
-          </Link>
-
-          {/* Services Editor */}
-          <Link href={`/${locale}/admin/services`}>
-            <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow cursor-pointer group">
-              <div className="flex items-center justify-between mb-4">
-                <div className="bg-blue-100 p-3 rounded-lg group-hover:bg-blue-200 transition-colors">
-                  <PencilSquareIcon className="w-8 h-8 text-blue-600" />
-                </div>
-                <span className="text-sm font-semibold text-green-600 flex items-center gap-1">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  Active
-                </span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Services Editor</h3>
-              <p className="text-gray-600 mb-4">Edit service descriptions and offerings</p>
-              <div className="flex items-center text-blue-600 font-semibold">
-                Edit Services
-                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
-              </div>
-            </div>
-          </Link>
-
-          {/* Pages Editor */}
-          <Link href={`/${locale}/admin/pages`}>
-            <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow cursor-pointer group">
-              <div className="flex items-center justify-between mb-4">
-                <div className="bg-purple-100 p-3 rounded-lg group-hover:bg-purple-200 transition-colors">
-                  <PencilSquareIcon className="w-8 h-8 text-purple-600" />
-                </div>
-                <span className="text-sm font-semibold text-green-600 flex items-center gap-1">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  Active
-                </span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Pages Editor</h3>
-              <p className="text-gray-600 mb-4">Edit About, Contact, and other pages</p>
-              <div className="flex items-center text-purple-600 font-semibold">
-                Edit Pages
-                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
-              </div>
-            </div>
-          </Link>
-
-          {/* Site Settings */}
-          <Link href={`/${locale}/admin/settings`}>
-            <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow cursor-pointer group">
-              <div className="flex items-center justify-between mb-4">
-                <div className="bg-red-100 p-3 rounded-lg group-hover:bg-red-200 transition-colors">
-                  <PencilSquareIcon className="w-8 h-8 text-red-600" />
-                </div>
-                <span className="text-sm font-semibold text-green-600 flex items-center gap-1">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  Active
-                </span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Site Settings</h3>
-              <p className="text-gray-600 mb-4">Configure company info and SEO</p>
-              <div className="flex items-center text-red-600 font-semibold">
-                Configure Settings
-                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
-              </div>
-            </div>
-          </Link>
-
-          {/* Messages */}
-          <Link href={`/${locale}/admin/messages`}>
-            <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow cursor-pointer group">
-              <div className="flex items-center justify-between mb-4">
-                <div className="bg-indigo-100 p-3 rounded-lg group-hover:bg-indigo-200 transition-colors">
-                  <PencilSquareIcon className="w-8 h-8 text-indigo-600" />
-                </div>
-                <span className="text-sm font-semibold text-green-600 flex items-center gap-1">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  Active
-                </span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Messages</h3>
-              <p className="text-gray-600 mb-4">View contact form submissions</p>
-              <div className="flex items-center text-indigo-600 font-semibold">
-                View Messages
-                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
-              </div>
-            </div>
-          </Link>
+              </Link>
+            );
+          })}
         </div>
 
 

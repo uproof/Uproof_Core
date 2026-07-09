@@ -2,6 +2,87 @@ import crypto from 'crypto';
 
 export type MfaRole = 'superadmin' | 'sales';
 
+const BASE32_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+
+export type PendingMfaEnrollment = {
+  email: string;
+  role: MfaRole;
+  secret: string;
+  iat: number;
+  exp: number;
+};
+
+function getEnrollmentSecret() {
+  return (process.env.CRM_DATA_SECRET || process.env.ADMIN_TOKEN_SECRET || process.env.NEXTAUTH_SECRET || 'dev-secret-change-me').trim();
+}
+
+function hmacPayload(payloadB64: string) {
+  return crypto.createHmac('sha256', getEnrollmentSecret()).update(payloadB64).digest('base64url');
+}
+
+export function generateMfaSecret(bytes = 20) {
+  const raw = crypto.randomBytes(bytes);
+  let bits = '';
+  for (const byte of raw) {
+    bits += byte.toString(2).padStart(8, '0');
+  }
+
+  let output = '';
+  for (let index = 0; index < bits.length; index += 5) {
+    const chunk = bits.slice(index, index + 5).padEnd(5, '0');
+    output += BASE32_ALPHABET[Number.parseInt(chunk, 2)];
+  }
+
+  return output;
+}
+
+export function buildOtpAuthUri(params: {issuer: string; accountName: string; secret: string}) {
+  const label = `${params.issuer}:${params.accountName}`;
+  const query = new URLSearchParams({
+    secret: params.secret,
+    issuer: params.issuer,
+    algorithm: 'SHA1',
+    digits: '6',
+    period: '30',
+  });
+  return `otpauth://totp/${encodeURIComponent(label)}?${query.toString()}`;
+}
+
+export function signPendingMfaEnrollment(input: {email: string; role: MfaRole; secret: string; ttlMs?: number}) {
+  const payload: PendingMfaEnrollment = {
+    email: input.email.trim().toLowerCase(),
+    role: input.role,
+    secret: input.secret.trim(),
+    iat: Date.now(),
+    exp: Date.now() + (input.ttlMs ?? 15 * 60 * 1000),
+  };
+  const payloadB64 = Buffer.from(JSON.stringify(payload)).toString('base64url');
+  return `${payloadB64}.${hmacPayload(payloadB64)}`;
+}
+
+export function verifyPendingMfaEnrollment(token: string | undefined): PendingMfaEnrollment | null {
+  if (!token) return null;
+  const parts = token.split('.');
+  if (parts.length !== 2) return null;
+  const [payloadB64, signature] = parts;
+  const expected = hmacPayload(payloadB64);
+  if (signature.length !== expected.length) return null;
+  if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected))) return null;
+
+  try {
+    const payload = JSON.parse(Buffer.from(payloadB64, 'base64url').toString()) as PendingMfaEnrollment;
+    if (!payload.email || !payload.secret || payload.role !== 'superadmin' && payload.role !== 'sales') {
+      return null;
+    }
+    if (Date.now() >= payload.exp) {
+      return null;
+    }
+    return payload;
+  } catch {
+    return null;
+  }
+}
+
 function getRoleSecret(role: MfaRole) {
   const isProduction = process.env.NODE_ENV === 'production';
   if (role === 'superadmin') {

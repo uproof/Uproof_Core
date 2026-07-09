@@ -2,6 +2,7 @@ import {NextRequest, NextResponse} from 'next/server';
 import {getAdminSession} from '@/lib/adminAuth';
 import {logCrmAudit} from '@/lib/crmAudit';
 import {getCrmQuotes} from '@/lib/crmQuotesStore';
+import {stringifyCsv} from '@/lib/csv';
 
 export async function GET(req: NextRequest) {
   const session = await getAdminSession();
@@ -35,10 +36,10 @@ export async function GET(req: NextRequest) {
 
   const quotes = await getCrmQuotes();
 
-  const csvRows = [
-    ['Quote ID', 'Customer', 'Status', 'Amount', 'Sent At', 'Owner'].join(','),
-    ...quotes.map((quote) => [quote.id, quote.customer, quote.status, quote.amount, quote.sentAt, quote.owner].join(',')),
-  ];
+  const csvRows = stringifyCsv([
+    ['Quote ID', 'Customer', 'Status', 'Amount', 'Sent At', 'Owner'],
+    ...quotes.map((quote) => [quote.id, quote.customer, quote.status, quote.amount, quote.sentAt, quote.owner]),
+  ]);
 
   return new NextResponse(csvRows.join('\n'), {
     status: 200,

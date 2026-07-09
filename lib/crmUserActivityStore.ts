@@ -55,17 +55,43 @@ export async function logCrmUserActivity(input: LogCrmUserActivityInput) {
     });
   }
 
-  const db = getDb();
-  db.prepare(
-    `INSERT INTO crm_user_activity (
-      actor_email, actor_role, action, lead_id, detail, ip, created_at
-    ) VALUES (
-      @actorEmail, @actorRole, @action, @leadId, @detail, @ip, @createdAt
-    )`
-  ).run(record);
+  try {
+    const db = getDb();
+    db.prepare(
+      `INSERT INTO crm_user_activity (
+        actor_email, actor_role, action, lead_id, detail, ip, created_at
+      ) VALUES (
+        @actorEmail, @actorRole, @action, @leadId, @detail, @ip, @createdAt
+      )`
+    ).run(record);
+  } catch {
+    // Ignore local fallback failures when Supabase is available.
+  }
 }
 
 export async function getRecentCrmUserActivity(limit = 100): Promise<CrmUserActivity[]> {
+  const supabase = createSupabaseAdminClient();
+  if (supabase) {
+    const {data, error} = await supabase
+      .from('crm_user_activity')
+      .select('id,actor_email,actor_role,action,lead_id,detail,ip,created_at')
+      .order('created_at', {ascending: false})
+      .limit(limit);
+
+    if (!error && Array.isArray(data)) {
+      return data.map((row: CrmUserActivityRow) => ({
+        id: row.id,
+        actorEmail: row.actor_email,
+        actorRole: row.actor_role,
+        action: row.action,
+        leadId: row.lead_id,
+        detail: row.detail,
+        ip: row.ip,
+        createdAt: row.created_at,
+      }));
+    }
+  }
+
   const db = getDb();
   const rows = db
     .prepare('SELECT * FROM crm_user_activity ORDER BY created_at DESC LIMIT ?')
