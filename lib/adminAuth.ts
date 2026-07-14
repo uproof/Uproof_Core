@@ -1,4 +1,5 @@
 import {cookies} from 'next/headers';
+import {headers} from 'next/headers';
 import crypto from 'crypto';
 import {createSupabaseAdminClient} from '@/lib/supabase/server';
 import {getSupabaseAccessToken, resolveSupabaseAdminSession} from '@/lib/supabase/session';
@@ -16,6 +17,7 @@ export type AdminSession = {
   sid: string;
   iat: number;
   exp: number;
+  ip?: string;
 };
 
 type SignTokenOptions = {
@@ -23,6 +25,7 @@ type SignTokenOptions = {
   email?: string;
   role?: AdminRole;
   sid?: string;
+  ip?: string;
 };
 
 export type ApprovedSuperadminCredential = {
@@ -108,6 +111,7 @@ export function signToken(options: SignTokenOptions = {}) {
     sid: options.sid || crypto.randomUUID(),
     iat: Date.now(),
     exp: Date.now() + ttlMs,
+    ip: options.ip,
   };
   const payloadB64 = Buffer.from(JSON.stringify(payload)).toString('base64url');
   const sig = crypto.createHmac('sha256', getSecret()).update(payloadB64).digest('base64url');
@@ -184,6 +188,8 @@ export async function isSuperadminAuthenticated(): Promise<boolean> {
 
 export async function getAdminSession(): Promise<AdminSession | null> {
   const cookieStore = await cookies();
+  const headerStore = await headers();
+  const currentIp = headerStore.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
   const supabaseAccessToken = getSupabaseAccessToken(cookieStore);
   if (supabaseAccessToken) {
     return await resolveSupabaseAdminSession(supabaseAccessToken);
@@ -192,6 +198,10 @@ export async function getAdminSession(): Promise<AdminSession | null> {
   const token = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
   const session = decodeToken(token);
   if (!session) {
+    return null;
+  }
+
+  if (session.ip && session.ip !== currentIp) {
     return null;
   }
 

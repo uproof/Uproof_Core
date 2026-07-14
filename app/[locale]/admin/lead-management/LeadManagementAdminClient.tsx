@@ -1,6 +1,6 @@
 "use client";
 
-import {FormEvent, useEffect, useMemo, useState} from 'react';
+import {FormEvent, useEffect, useMemo, useRef, useState} from 'react';
 import Link from 'next/link';
 import Card from '@/components/Card';
 import ToastBanner from '@/components/ToastBanner';
@@ -56,6 +56,8 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
   const isLv = locale === 'lv';
   const [leads, setLeads] = useState<CrmLead[]>(initialLeads);
   const [loading, setLoading] = useState(initialLeads.length === 0);
+  const [refreshing, setRefreshing] = useState(false);
+  const [lastRefreshedAt, setLastRefreshedAt] = useState<string | null>(null);
   const [draft, setDraft] = useState<LeadDraft>(initialDraft);
   const [crmUsers, setCrmUsers] = useState<CrmUser[]>(initialCrmUsers.filter((user) => user.role === 'sales' && user.isActive));
   const [assignments, setAssignments] = useState<Record<string, string>>({});
@@ -70,6 +72,43 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
     const timer = window.setTimeout(() => setToast(null), 3200);
     return () => window.clearTimeout(timer);
   }, [toast]);
+
+  const refreshInFlightRef = useRef(false);
+
+  const loadLeads = async (options?: {silent?: boolean}) => {
+    if (refreshInFlightRef.current) {
+      return;
+    }
+
+    refreshInFlightRef.current = true;
+    if (options?.silent) {
+      setRefreshing(true);
+    } else {
+      setLoading(true);
+    }
+
+    try {
+      const response = await fetch('/api/crm/leads', {cache: 'no-store'});
+      const data = await readResponseJson(response);
+      if (data?.ok) {
+        setLeads(data.leads);
+        setAssignments((current) => {
+          const next = {...current};
+          for (const lead of data.leads as CrmLead[]) {
+            next[lead.id] = lead.assignedSalesUserId || '';
+          }
+          return next;
+        });
+        setLastRefreshedAt(new Date().toLocaleTimeString());
+      }
+    } catch {
+      // Keep the current list visible if a refresh fails.
+    } finally {
+      refreshInFlightRef.current = false;
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
 
   const labels = useMemo(
     () => ({
@@ -99,6 +138,8 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
       back: isLv ? 'Atpakal uz CMS' : 'Back to CMS',
       usersPanel: isLv ? 'Pardeveju parvaldiba' : 'Sales user management',
       assign: isLv ? 'Pieskirt' : 'Assign',
+      refresh: isLv ? 'Atsvaidzinat' : 'Refresh',
+      refreshing: isLv ? 'Atsvaidzina...' : 'Refreshing...',
     }),
     [isLv, readOnly]
   );
@@ -116,25 +157,19 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
     }
   };
 
-  const loadLeads = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch('/api/crm/leads', {cache: 'no-store'});
-      const data = await readResponseJson(response);
-      if (data?.ok) {
-        setLeads(data.leads);
-        setAssignments((current) => {
-          const next = {...current};
-          for (const lead of data.leads as CrmLead[]) {
-            next[lead.id] = lead.assignedSalesUserId || '';
-          }
-          return next;
-        });
+  useEffect(() => {
+    void loadLeads();
+    void loadCrmUsers();
+
+    const interval = window.setInterval(() => {
+      if (document.visibilityState !== 'visible') {
+        return;
       }
-    } finally {
-      setLoading(false);
-    }
-  };
+      void loadLeads({silent: true});
+    }, 60000);
+
+    return () => window.clearInterval(interval);
+  }, []);
 
   const onAssignLead = async (leadId: string) => {
     const salesUserId = assignments[leadId];
@@ -277,6 +312,14 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
           <h2 className="mt-2 text-3xl font-bold text-slate-900">{labels.subtitle}</h2>
         </div>
         <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => void loadLeads()}
+            disabled={loading || refreshing}
+            className="inline-flex items-center rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-semibold text-sky-700 transition hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {loading ? labels.refreshing : (refreshing ? labels.refreshing : labels.refresh)}
+          </button>
           <Link href={`/${locale}/admin/crm/users`} className="inline-flex items-center rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-semibold text-sky-700 transition hover:bg-sky-50">
             {labels.usersPanel}
           </Link>
@@ -329,7 +372,14 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
 
         <Card variant="outlined" hover={false} className="border-sky-100 bg-white">
           <div className="flex items-center justify-between gap-3">
-            <p className="text-sm font-semibold text-sky-600">{isLv ? 'Esosie lidi' : 'Existing leads'}</p>
+            <div>
+              <p className="text-sm font-semibold text-sky-600">{isLv ? 'Esosie lidi' : 'Existing leads'}</p>
+              <p className="mt-1 text-xs text-slate-500">
+                {lastRefreshedAt
+                  ? (isLv ? `Pēdējais atsvaidzinājums: ${lastRefreshedAt}` : `Last refreshed: ${lastRefreshedAt}`)
+                  : (isLv ? 'Atjauninās automātiski ik pēc 60 sekundēm.' : 'Auto-refreshes every 60 seconds.')}
+              </p>
+            </div>
             {loading && <span className="text-xs text-slate-500">Loading...</span>}
           </div>
 

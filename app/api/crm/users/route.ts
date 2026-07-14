@@ -91,7 +91,7 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     const message = error?.message || 'Failed to create CRM user';
     if (/already been registered|already exists|duplicate/i.test(message)) {
-      return NextResponse.json({ok: false, error: 'A user with this email already exists'}, {status: 409});
+      return NextResponse.json({ok: false, error: 'A user with this email already exists. Use password update instead.'}, {status: 409});
     }
     return NextResponse.json({ok: false, error: message}, {status: 500});
   }

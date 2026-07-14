@@ -829,6 +829,15 @@ export async function changeCrmUserPassword(userId: string, nextPassword: string
       throw new Error(error.message || 'Failed to update CRM user password');
     }
 
+    const {error: profileError} = await supabase
+      .from('user_profiles')
+      .update({session_valid_after: now})
+      .eq('id', userId);
+
+    if (profileError) {
+      throw new Error(profileError.message || 'Failed to revoke CRM user sessions after password change');
+    }
+
     return await getCrmUserById(userId);
   }
 

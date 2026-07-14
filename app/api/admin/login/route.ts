@@ -10,6 +10,7 @@ import {RATE_LIMITS, checkRateLimit} from '@/lib/rateLimit';
 import {logCrmUserActivity} from '@/lib/crmUserActivityStore';
 import {parseEmail, parsePassword} from '@/lib/authValidation';
 import {createCrmSupabaseClient} from '@/lib/crmStorage';
+import {createSupabaseServerClient} from '@/lib/supabase/server';
 import {SUPABASE_ACCESS_TOKEN_COOKIE, SUPABASE_REFRESH_TOKEN_COOKIE} from '@/lib/supabase/session';
 
 function setSupabaseAuthCookies(response: NextResponse, session: {access_token: string; refresh_token: string; expires_at?: number | null}) {
@@ -64,8 +65,54 @@ export async function POST(req: NextRequest) {
   }
 
   const approvedSuperadmin = getApprovedSuperadminCredentials().find((entry) => entry.email === email);
-  if (role === 'superadmin' && (!approvedSuperadmin || approvedSuperadmin.password !== parsedPassword)) {
-    return NextResponse.json({ok: false, error: 'Invalid credentials'}, {status: 401});
+  if (role === 'superadmin') {
+    if (!approvedSuperadmin || approvedSuperadmin.password !== parsedPassword) {
+      return NextResponse.json({ok: false, error: 'Invalid credentials'}, {status: 401});
+    }
+  }
+
+  const supabase = createSupabaseServerClient();
+  if (role === 'sales') {
+    if (!supabase) {
+      return NextResponse.json({ok: false, error: 'CRM authentication is unavailable'}, {status: 503});
+    }
+
+    const {data, error} = await supabase.auth.signInWithPassword({email, password: parsedPassword});
+    if (error || !data.session) {
+      return NextResponse.json({ok: false, error: 'Invalid credentials'}, {status: 401});
+    }
+
+    const profileResult = await supabase
+      .from('user_profiles')
+      .select('id,role,is_active,session_valid_after')
+      .eq('email', email)
+      .maybeSingle();
+
+    if (profileResult.error || !profileResult.data || !profileResult.data.is_active) {
+      return NextResponse.json({ok: false, error: 'CRM user is inactive or missing'}, {status: 403});
+    }
+
+    const sessionRotationAt = new Date(Date.now() - 5000).toISOString();
+    await supabase.from('user_profiles').update({session_valid_after: sessionRotationAt}).eq('id', profileResult.data.id);
+
+    await logCrmUserActivity({
+      actorEmail: email,
+      actorRole: role,
+      action: 'login_success',
+      detail: 'Password verified',
+      ip,
+    });
+
+    const res = NextResponse.json({ok: true, nextStep: 'dashboard'});
+    setSupabaseAuthCookies(res, data.session);
+    res.cookies.set(ADMIN_SESSION_COOKIE, signToken({role, email, ip}), {
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
+      maxAge: 60 * 60 * 24,
+    });
+    return res;
   }
 
   await logCrmUserActivity({
@@ -77,7 +124,7 @@ export async function POST(req: NextRequest) {
   });
 
   const res = NextResponse.json({ok: true, nextStep: 'dashboard'});
-  res.cookies.set(ADMIN_SESSION_COOKIE, signToken({role, email}), {
+  res.cookies.set(ADMIN_SESSION_COOKIE, signToken({role, email, ip}), {
     httpOnly: true,
     sameSite: 'strict',
     secure: process.env.NODE_ENV === 'production',

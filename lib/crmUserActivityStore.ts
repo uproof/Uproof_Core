@@ -32,6 +32,52 @@ type LogCrmUserActivityInput = {
   ip?: string;
 };
 
+function buildNotification(action: string, actorEmail: string, detail: string, leadId: string) {
+  const normalizedLeadId = leadId.trim();
+  const actor = actorEmail.trim();
+
+  switch (action) {
+    case 'lead_create':
+      return {
+        title: 'New lead created',
+        message: normalizedLeadId ? `Lead ${normalizedLeadId} was created by ${actor}.` : `A new lead was created by ${actor}.`,
+        link: normalizedLeadId ? `/admin/crm/leads/${normalizedLeadId.toLowerCase()}` : '/admin/crm/leads',
+      };
+    case 'lead_update':
+      return {
+        title: 'Lead saved',
+        message: normalizedLeadId ? `Lead ${normalizedLeadId} was saved by ${actor}.` : `A lead was saved by ${actor}.`,
+        link: normalizedLeadId ? `/admin/crm/leads/${normalizedLeadId.toLowerCase()}` : '/admin/crm/leads',
+      };
+    case 'lead_delete':
+      return {
+        title: 'Lead deleted',
+        message: normalizedLeadId ? `Lead ${normalizedLeadId} was deleted by ${actor}.` : `A lead was deleted by ${actor}.`,
+        link: '/admin/crm/leads',
+      };
+    case 'lead_assign':
+      return {
+        title: 'Lead assigned',
+        message: normalizedLeadId ? `Lead ${normalizedLeadId} was assigned by ${actor}.` : `A lead was assigned by ${actor}.`,
+        link: normalizedLeadId ? `/admin/crm/leads/${normalizedLeadId.toLowerCase()}` : '/admin/crm/leads',
+      };
+    case 'lead_unassign':
+      return {
+        title: 'Lead unassigned',
+        message: normalizedLeadId ? `Lead ${normalizedLeadId} was unassigned by ${actor}.` : `A lead was unassigned by ${actor}.`,
+        link: normalizedLeadId ? `/admin/crm/leads/${normalizedLeadId.toLowerCase()}` : '/admin/crm/leads',
+      };
+    default:
+      return detail
+        ? {
+            title: 'CRM activity',
+            message: detail,
+            link: normalizedLeadId ? `/admin/crm/leads/${normalizedLeadId.toLowerCase()}` : '/admin/crm/leads',
+          }
+        : null;
+  }
+}
+
 export async function logCrmUserActivity(input: LogCrmUserActivityInput) {
   const record = {
     actorEmail: input.actorEmail,
@@ -45,7 +91,7 @@ export async function logCrmUserActivity(input: LogCrmUserActivityInput) {
 
   const supabase = createSupabaseAdminClient();
   if (supabase) {
-    await supabase.from('crm_user_activity').insert({
+    const activityResult = await supabase.from('crm_user_activity').insert({
       actor_email: record.actorEmail,
       actor_role: record.actorRole,
       action: record.action,
@@ -53,10 +99,28 @@ export async function logCrmUserActivity(input: LogCrmUserActivityInput) {
       ip: record.ip,
       created_at: record.createdAt,
     });
+
+    if (!activityResult.error) {
+      const notification = record.action.startsWith('lead_')
+        ? buildNotification(record.action, record.actorEmail, record.detail, record.leadId)
+        : null;
+
+      if (notification) {
+        await supabase.from('notifications').insert({
+          recipient_email: record.actorEmail,
+          title: notification.title,
+          message: notification.message,
+          link: notification.link,
+          read_at: '',
+          archived_at: '',
+          created_at: record.createdAt,
+        });
+      }
+    }
     return;
   }
 
-  throw new Error('Supabase is required for CRM user activity storage');
+  return;
 }
 
 export async function getRecentCrmUserActivity(limit = 100): Promise<CrmUserActivity[]> {
