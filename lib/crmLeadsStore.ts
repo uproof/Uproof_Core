@@ -279,12 +279,17 @@ export async function deleteCrmLead(leadId: string): Promise<boolean> {
     return false;
   }
 
-  const {error} = await supabase.from('crm_leads').delete().or(`external_id.eq.${leadId},id.eq.${leadId}`);
+  const leadRow = await findCrmLeadRowById(leadId);
+  if (!leadRow) {
+    return false;
+  }
+
+  const {error} = await supabase.from('crm_leads').delete().eq('id', leadRow.id);
   if (error) {
     throw new Error(error.message || 'Failed to delete CRM lead');
   }
 
-  const current = await getCrmLeadById(leadId);
+  const current = await findCrmLeadRowById(leadId);
   if (current) {
     return false;
   }
@@ -293,11 +298,12 @@ export async function deleteCrmLead(leadId: string): Promise<boolean> {
 }
 
 export async function updateCrmLead(leadId: string, updates: Partial<CrmLead>): Promise<CrmLead | null> {
-  const current = await getCrmLeads();
-  const existing = current.find((lead) => lead.id.toLowerCase() === leadId.toLowerCase());
-  if (!existing) {
+  const existingRow = await findCrmLeadRowById(leadId);
+  if (!existingRow) {
     return null;
   }
+
+  const existing = rowToLead(existingRow);
 
   const nextLead: CrmLead = normalizeLead({
     ...existing,
@@ -350,7 +356,7 @@ export async function updateCrmLead(leadId: string, updates: Partial<CrmLead>): 
       attachments_json: JSON.stringify(nextLead.attachments),
       estimator_data_json: stringifyEstimatorData(nextLead.estimatorData),
     })
-    .or(`external_id.eq.${leadId},id.eq.${leadId}`)
+    .eq('id', existingRow.id)
     .select('id,external_id,customer,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
     .maybeSingle();
 
