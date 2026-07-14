@@ -1,25 +1,22 @@
 import {createSupabaseAdminClient} from '@/lib/supabase/server';
 import {isSupabaseConfigured} from '@/lib/supabase/config';
 
-export type CrmStorageMode = 'sqlite' | 'supabase';
+export type CrmStorageMode = 'supabase';
 
 export function getCrmStorageMode(): CrmStorageMode {
-  const configuredMode = process.env.CRM_STORAGE_BACKEND?.trim().toLowerCase();
-  if (configuredMode === 'supabase' || configuredMode === 'sqlite') {
-    return configuredMode;
+  if (!isSupabaseConfigured()) {
+    throw new Error('Supabase credentials are required for CRM storage');
   }
 
-  return isSupabaseConfigured() ? 'supabase' : 'sqlite';
+  return 'supabase';
 }
 
 export function createCrmSupabaseClient() {
-  if (getCrmStorageMode() !== 'supabase') {
-    return null;
-  }
+  getCrmStorageMode();
 
   const client = createSupabaseAdminClient();
   if (!client) {
-    throw new Error('CRM_STORAGE_BACKEND is set to supabase, but Supabase credentials are missing');
+    throw new Error('Supabase credentials are missing');
   }
 
   return client;

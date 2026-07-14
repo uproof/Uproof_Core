@@ -73,10 +73,6 @@ export async function PATCH(
     return NextResponse.json({ok: false, error: 'Missing updatedAtUtc version'}, {status: 400});
   }
 
-  if (currentLeadRow.updated_at !== String(body.updatedAtUtc)) {
-    return NextResponse.json({ok: false, error: 'Lead was updated by someone else'}, {status: 409});
-  }
-
   const supabase = createSupabaseAdminClient();
   if (!supabase) {
     return NextResponse.json({ok: false, error: 'Supabase is required'}, {status: 503});

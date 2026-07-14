@@ -1,15 +1,8 @@
-import {getDb} from '@/lib/crmDb';
-import {getCrmUserById} from '@/lib/crmUsersStore';
-import {
-  assignLeadRow,
-  getLeadById,
-  insertAuditLog,
-  insertEvent,
-  insertUserActivity,
-  unassignLeadRow,
-  updateLeadRow,
-} from '@/lib/crmLeadRepository';
+import {assignLeadToCrmUser, unassignLeadFromCrmUser, getCrmUserById} from '@/lib/crmUsersStore';
+import {logCrmUserActivity} from '@/lib/crmUserActivityStore';
 import {deleteProjectByLeadId} from '@/lib/crmProjectsStore';
+import {deleteCrmLead, getCrmLeadById, updateCrmLead} from '@/lib/crmLeadsStore';
+import type {CrmLead} from '@/lib/crmMockData';
 
 type ServiceContext = {
   actorEmail: string;
@@ -20,7 +13,7 @@ type ServiceContext = {
 
 type UpdateInput = ServiceContext & {
   leadId: string;
-  updates: Parameters<typeof updateLeadRow>[2];
+  updates: Partial<CrmLead>;
   expectedUpdatedAtUtc?: string;
 };
 
@@ -39,197 +32,118 @@ export async function assignLead(input: AssignInput) {
     return {ok: false as const, status: 404, error: 'Sales user not found'};
   }
 
-  const db = getDb();
-  const run = db.transaction(() => {
-    const result = assignLeadRow(db, input.leadId, input.salesUserId, input.actorEmail);
-    if (!result.found) {
-      return {ok: false as const, status: 404, error: 'Lead not found'};
-    }
-    if (result.conflict) {
-      return {ok: false as const, status: 409, error: 'Lead was updated by someone else'};
-    }
-    if (result.duplicate) {
-      return {ok: true as const, duplicate: true as const, lead: result.lead};
-    }
+  const currentLead = await getCrmLeadById(input.leadId);
+  if (!currentLead) {
+    return {ok: false as const, status: 404, error: 'Lead not found'};
+  }
 
-    insertUserActivity(db, {
-      actorEmail: input.actorEmail,
-      actorRole: input.actorRole,
-      action: 'lead_assign',
-      leadId: input.leadId,
-      detail: `assigned_to:${input.salesUserId}`,
-      ip: input.ip,
-    });
-    insertAuditLog(db, {
-      requestId: input.sessionId,
-      actorEmail: input.actorEmail,
-      actorRole: input.actorRole,
-      action: 'lead_assign',
-      entityType: 'lead',
-      entityId: input.leadId,
-      detail: `assigned_to:${input.salesUserId}`,
-      success: true,
-    });
-    insertEvent(db, {
-      eventType: 'LeadAssigned',
-      aggregateType: 'lead',
-      aggregateId: input.leadId,
-      payload: {
-        leadId: input.leadId,
-        salesUserId: input.salesUserId,
-        assignedBy: input.actorEmail,
-      },
-    });
+  if (currentLead.assignedSalesUserId === input.salesUserId) {
+    return {ok: true as const, duplicate: true as const, lead: currentLead};
+  }
 
-    return {ok: true as const, duplicate: false as const, lead: result.lead};
+  const result = await assignLeadToCrmUser({
+    leadId: input.leadId,
+    salesUserId: input.salesUserId,
+    assignedBy: input.actorEmail,
   });
 
-  return run();
+  if (!result.assigned) {
+    return {ok: false as const, status: 404, error: 'Lead not found'};
+  }
+
+  await logCrmUserActivity({
+    actorEmail: input.actorEmail,
+    actorRole: input.actorRole,
+    action: 'lead_assign',
+    leadId: input.leadId,
+    detail: `assigned_to:${input.salesUserId}`,
+    ip: input.ip,
+  });
+
+  const lead = await getCrmLeadById(input.leadId);
+  return {ok: true as const, duplicate: false as const, lead};
 }
 
 export async function unassignLead(input: UnassignInput) {
-  const db = getDb();
-  const run = db.transaction(() => {
-    const currentLead = getLeadById(input.leadId);
-    if (!currentLead) {
-      return {ok: false as const, status: 404, error: 'Lead not found'};
-    }
+  const currentLead = await getCrmLeadById(input.leadId);
+  if (!currentLead) {
+    return {ok: false as const, status: 404, error: 'Lead not found'};
+  }
 
-    const result = unassignLeadRow(db, input.leadId, input.actorEmail);
-    if (!result.found) {
-      return {ok: false as const, status: 404, error: 'Lead not found'};
-    }
-    if (result.conflict) {
-      return {ok: false as const, status: 409, error: 'Lead was updated by someone else'};
-    }
-    if (result.duplicate) {
-      return {ok: true as const, duplicate: true as const, lead: result.lead};
-    }
+  if (!currentLead.assignedSalesUserId) {
+    return {ok: true as const, duplicate: true as const, lead: currentLead};
+  }
 
-    insertUserActivity(db, {
-      actorEmail: input.actorEmail,
-      actorRole: input.actorRole,
-      action: 'lead_unassign',
-      leadId: input.leadId,
-      detail: 'unassigned_from_sales_user',
-      ip: input.ip,
-    });
-    insertAuditLog(db, {
-      requestId: input.sessionId,
-      actorEmail: input.actorEmail,
-      actorRole: input.actorRole,
-      action: 'lead_unassign',
-      entityType: 'lead',
-      entityId: input.leadId,
-      detail: 'unassigned_from_sales_user',
-      success: true,
-    });
-    insertEvent(db, {
-      eventType: 'LeadUnassigned',
-      aggregateType: 'lead',
-      aggregateId: input.leadId,
-      payload: {
-        leadId: input.leadId,
-        previousSalesUserId: currentLead.assignedSalesUserId || '',
-        unassignedBy: input.actorEmail,
-      },
-    });
-
-    return {ok: true as const, duplicate: false as const, lead: result.lead};
+  const result = await unassignLeadFromCrmUser({
+    leadId: input.leadId,
+    unassignedBy: input.actorEmail,
   });
 
-  return run();
+  if (!result.unassigned) {
+    return {ok: false as const, status: 404, error: 'Lead not found'};
+  }
+
+  await logCrmUserActivity({
+    actorEmail: input.actorEmail,
+    actorRole: input.actorRole,
+    action: 'lead_unassign',
+    leadId: input.leadId,
+    detail: 'unassigned_from_sales_user',
+    ip: input.ip,
+  });
+
+  const lead = await getCrmLeadById(input.leadId);
+  return {ok: true as const, duplicate: false as const, lead};
 }
 
 export async function updateLead(input: UpdateInput) {
-  const db = getDb();
-  const run = db.transaction(() => {
-    const result = updateLeadRow(db, input.leadId, input.updates, {
-      expectedUpdatedAtUtc: input.expectedUpdatedAtUtc,
-    });
+  const currentLead = await getCrmLeadById(input.leadId);
+  if (!currentLead) {
+    return {ok: false as const, status: 404, error: 'Lead not found'};
+  }
 
-    if (!result.found) {
-      return {ok: false as const, status: 404, error: 'Lead not found'};
-    }
-    if (result.conflict) {
-      return {ok: false as const, status: 409, error: 'Lead was updated by someone else'};
-    }
+  if (input.expectedUpdatedAtUtc && currentLead.updatedAtUtc !== input.expectedUpdatedAtUtc) {
+    return {ok: false as const, status: 409, error: 'Lead was updated by someone else'};
+  }
 
-    insertUserActivity(db, {
-      actorEmail: input.actorEmail,
-      actorRole: input.actorRole,
-      action: 'lead_update',
-      leadId: input.leadId,
-      detail: 'lead_updated_manual',
-      ip: input.ip,
-    });
-    insertAuditLog(db, {
-      requestId: input.sessionId,
-      actorEmail: input.actorEmail,
-      actorRole: input.actorRole,
-      action: 'lead_update',
-      entityType: 'lead',
-      entityId: input.leadId,
-      detail: 'lead_updated_manual',
-      success: true,
-    });
-    insertEvent(db, {
-      eventType: 'LeadUpdated',
-      aggregateType: 'lead',
-      aggregateId: input.leadId,
-      payload: {
-        leadId: input.leadId,
-        updatedBy: input.actorEmail,
-      },
-    });
+  const updatedLead = await updateCrmLead(input.leadId, input.updates);
+  if (!updatedLead) {
+    return {ok: false as const, status: 404, error: 'Lead not found'};
+  }
 
-    return {ok: true as const, lead: result.lead};
+  await logCrmUserActivity({
+    actorEmail: input.actorEmail,
+    actorRole: input.actorRole,
+    action: 'lead_update',
+    leadId: input.leadId,
+    detail: 'lead_updated_manual',
+    ip: input.ip,
   });
 
-  return run();
+  return {ok: true as const, lead: updatedLead};
 }
 
 export async function deleteLead(input: ServiceContext & {leadId: string}) {
-  const db = getDb();
-  const run = db.transaction(() => {
-    const lead = getLeadById(input.leadId);
-    if (!lead) {
-      return {ok: false as const, status: 404, error: 'Lead not found'};
-    }
+  const lead = await getCrmLeadById(input.leadId);
+  if (!lead) {
+    return {ok: false as const, status: 404, error: 'Lead not found'};
+  }
 
-    db.prepare('DELETE FROM leads WHERE id = ?').run(input.leadId);
-    void deleteProjectByLeadId(input.leadId);
+  const deleted = await deleteCrmLead(input.leadId);
+  if (!deleted) {
+    return {ok: false as const, status: 404, error: 'Lead not found'};
+  }
 
-    insertUserActivity(db, {
-      actorEmail: input.actorEmail,
-      actorRole: input.actorRole,
-      action: 'lead_delete',
-      leadId: input.leadId,
-      detail: 'lead_deleted_manual',
-      ip: input.ip,
-    });
-    insertAuditLog(db, {
-      requestId: input.sessionId,
-      actorEmail: input.actorEmail,
-      actorRole: input.actorRole,
-      action: 'lead_delete',
-      entityType: 'lead',
-      entityId: input.leadId,
-      detail: 'lead_deleted_manual',
-      success: true,
-    });
-    insertEvent(db, {
-      eventType: 'LeadDeleted',
-      aggregateType: 'lead',
-      aggregateId: input.leadId,
-      payload: {
-        leadId: input.leadId,
-        deletedBy: input.actorEmail,
-      },
-    });
+  void deleteProjectByLeadId(input.leadId);
 
-    return {ok: true as const};
+  await logCrmUserActivity({
+    actorEmail: input.actorEmail,
+    actorRole: input.actorRole,
+    action: 'lead_delete',
+    leadId: input.leadId,
+    detail: 'lead_deleted_manual',
+    ip: input.ip,
   });
 
-  return run();
+  return {ok: true as const};
 }

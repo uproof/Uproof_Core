@@ -1,6 +1,6 @@
 'use client';
 
-import {useMemo, useState} from 'react';
+import {useEffect, useMemo, useRef, useState} from 'react';
 import {ArrowLeftIcon, PencilSquareIcon, PhoneIcon, EnvelopeIcon, MapPinIcon, CheckCircleIcon, LockClosedIcon} from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
@@ -27,6 +27,8 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
   const isLv = locale === 'lv';
   const isSalesScope = accessScope === 'sales';
   const router = useRouter();
+  const tabIdRef = useRef(typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`);
+  const liveChannelRef = useRef<BroadcastChannel | null>(null);
   const [version, setVersion] = useState(lead.updatedAtUtc);
   const [status, setStatus] = useState(lead.status);
   const [progress, setProgress] = useState(lead.progress);
@@ -45,8 +47,112 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
 
   const estimatorSections = useMemo(() => CRM_ESTIMATOR_FIELD_SECTIONS, []);
 
+  useEffect(() => {
+    setVersion(lead.updatedAtUtc);
+    setStatus(lead.status);
+    setProgress(lead.progress);
+    setActivityUpdate(lead.activityUpdate);
+    setDealProgress(lead.dealProgress);
+    setCustomerName(lead.customer);
+    setProjectAddress(lead.projectAddress || lead.address);
+    setProblem(lead.problem || '');
+    setClientCharacterNote(lead.clientCharacterNote || '');
+    setNote(lead.note);
+    setEstimatorData(lead.estimatorData || createEmptyCrmEstimatorData());
+  }, [
+    lead.address,
+    lead.activityUpdate,
+    lead.clientCharacterNote,
+    lead.customer,
+    lead.dealProgress,
+    lead.estimatorData,
+    lead.note,
+    lead.problem,
+    lead.progress,
+    lead.projectAddress,
+    lead.status,
+    lead.updatedAtUtc,
+  ]);
+
   const updateEstimatorField = <K extends keyof typeof estimatorData>(key: K, value: (typeof estimatorData)[K]) => {
     setEstimatorData((current) => ({...current, [key]: value}));
+  };
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const channelName = `crm-lead-live:${lead.id}`;
+    const messageType = 'crm-lead-updated';
+
+    const handleIncomingUpdate = (event: MessageEvent<unknown>) => {
+      const payload = event.data as {type?: string; leadId?: string; sourceTabId?: string} | null;
+      if (!payload || payload.type !== messageType || payload.leadId !== lead.id || payload.sourceTabId === tabIdRef.current) {
+        return;
+      }
+
+      router.refresh();
+    };
+
+    const channel = 'BroadcastChannel' in window ? new BroadcastChannel(channelName) : null;
+    liveChannelRef.current = channel;
+    channel?.addEventListener('message', handleIncomingUpdate);
+
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key !== channelName || !event.newValue) {
+        return;
+      }
+
+      try {
+        const payload = JSON.parse(event.newValue) as {type?: string; leadId?: string; sourceTabId?: string};
+        if (payload.type === messageType && payload.leadId === lead.id && payload.sourceTabId !== tabIdRef.current) {
+          router.refresh();
+        }
+      } catch {
+        // Ignore malformed broadcast payloads.
+      }
+    };
+
+    window.addEventListener('storage', handleStorage);
+
+    return () => {
+      channel?.removeEventListener('message', handleIncomingUpdate);
+      channel?.close();
+      liveChannelRef.current = null;
+      window.removeEventListener('storage', handleStorage);
+    };
+  }, [lead.id, router]);
+
+  const broadcastLeadUpdate = (updatedLead: CrmLead) => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const payload = {
+      type: 'crm-lead-updated',
+      leadId: updatedLead.id,
+      sourceTabId: tabIdRef.current,
+      updatedAtUtc: updatedLead.updatedAtUtc,
+    };
+
+    liveChannelRef.current?.postMessage(payload);
+    window.localStorage.setItem(`crm-lead-live:${updatedLead.id}`, JSON.stringify(payload));
+    window.localStorage.removeItem(`crm-lead-live:${updatedLead.id}`);
+  };
+
+  const applySavedLead = (savedLead: CrmLead) => {
+    setVersion(savedLead.updatedAtUtc);
+    setStatus(savedLead.status);
+    setProgress(savedLead.progress);
+    setActivityUpdate(savedLead.activityUpdate);
+    setDealProgress(savedLead.dealProgress);
+    setCustomerName(savedLead.customer);
+    setProjectAddress(savedLead.projectAddress || savedLead.address);
+    setProblem(savedLead.problem || '');
+    setClientCharacterNote(savedLead.clientCharacterNote || '');
+    setNote(savedLead.note);
+    setEstimatorData(savedLead.estimatorData || createEmptyCrmEstimatorData());
   };
 
   const handleSave = async () => {
@@ -77,6 +183,10 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
       }
       if (data.lead?.updatedAtUtc) {
         setVersion(data.lead.updatedAtUtc);
+      }
+      if (data.lead) {
+        applySavedLead(data.lead);
+        broadcastLeadUpdate(data.lead);
       }
       setSaveState('saved');
       router.refresh();

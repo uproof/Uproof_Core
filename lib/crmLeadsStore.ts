@@ -31,14 +31,18 @@ function normalizeLead(lead: CrmLead): CrmLead {
   };
 }
 
-function parseJsonArray<T>(value: unknown, fallback: T[]): T[] {
+function parseJsonValue<T>(value: unknown, fallback: T): T {
   if (value == null || value === '') return fallback;
   try {
-    const parsed = typeof value === 'string' ? JSON.parse(value) : value;
-    return Array.isArray(parsed) ? (parsed as T[]) : fallback;
+    return (typeof value === 'string' ? JSON.parse(value) : value) as T;
   } catch {
     return fallback;
   }
+}
+
+function parseJsonArray<T>(value: unknown, fallback: T[]): T[] {
+  const parsed = parseJsonValue<unknown>(value, fallback);
+  return Array.isArray(parsed) ? (parsed as T[]) : fallback;
 }
 
 export type CrmLeadRow = {
@@ -92,7 +96,7 @@ function rowToLead(row: CrmLeadRow): CrmLead {
     assignedSalesUserId: row.assigned_sales_user_id,
     attachments: parseJsonArray<string>(row.attachments_json, []),
     workLog: [],
-    estimatorData: normalizeCrmEstimatorData(parseJsonArray(row.estimator_data_json, []), createEmptyCrmEstimatorData()),
+    estimatorData: normalizeCrmEstimatorData(parseJsonValue(row.estimator_data_json, createEmptyCrmEstimatorData()), createEmptyCrmEstimatorData()),
   });
 }
 
