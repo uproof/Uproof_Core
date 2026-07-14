@@ -57,11 +57,11 @@ function rowToLead(row: Record<string, string>, fallbackId: string): CrmLead {
   return {
     id: getRowValue(row, 'id', 'lead id', 'lead_id') || fallbackId,
     assignedSalesUserId: getRowValue(row, 'assignedSalesUserId', 'assigned sales user id', 'assigned_sales_user_id') || null,
-    customer: getRowValue(row, 'customer', 'customer name', 'client', 'lead') ,
-    company: getRowValue(row, 'company', 'company name', 'business', 'organization'),
-    phone: getRowValue(row, 'phone', 'phone number', 'mobile'),
-    email: getRowValue(row, 'email', 'e-mail', 'mail'),
-    address: getRowValue(row, 'address', 'project address', 'project_address'),
+    customer: getRowValue(row, 'customer', 'customer name', 'client', 'lead', 'name', 'full name'),
+    company: getRowValue(row, 'company', 'company name', 'business', 'organization', 'organization name'),
+    phone: getRowValue(row, 'phone', 'phone number', 'mobile', 'telephone', 'tel'),
+    email: getRowValue(row, 'email', 'e-mail', 'mail', 'email address'),
+    address: getRowValue(row, 'address', 'project address', 'project_address', 'street', 'site address'),
     problem: getRowValue(row, 'problem', 'issue', 'description'),
     projectAddress: getRowValue(row, 'projectAddress', 'project address', 'project_address', 'address'),
     clientCharacterNote: getRowValue(row, 'clientCharacterNote', 'client character note', 'client_character_note'),
@@ -70,10 +70,10 @@ function rowToLead(row: Record<string, string>, fallbackId: string): CrmLead {
     activityUpdate: getRowValue(row, 'activityUpdate', 'activity update', 'activity_update'),
     dealProgress: getRowValue(row, 'dealProgress', 'deal progress', 'deal_progress') || 'Negotiation',
     note: getRowValue(row, 'note', 'notes'),
-    owner: getRowValue(row, 'owner', 'sales owner', 'assigned to'),
-    value: getRowValue(row, 'value', 'deal value', 'amount', 'price'),
+    owner: getRowValue(row, 'owner', 'sales owner', 'assigned to', 'responsible', 'sales rep'),
+    value: getRowValue(row, 'value', 'deal value', 'amount', 'price', 'lead value'),
     updatedAt: getRowValue(row, 'updatedAt', 'updated at', 'updated_at') || 'Imported',
-    nextAction: getRowValue(row, 'nextAction', 'next action', 'next_action'),
+    nextAction: getRowValue(row, 'nextAction', 'next action', 'next_action', 'next step', 'follow up', 'follow-up'),
     attachments: parseJsonArray<string>(getRowValue(row, 'attachments'), []),
     workLog: parseJsonArray<CrmLead['workLog'][number]>(getRowValue(row, 'workLog', 'work log', 'work_log'), []),
     estimatorData: normalizeCrmEstimatorData(parseJsonArray(getRowValue(row, 'estimatorData', 'estimator data', 'estimator_data'), []), createEmptyCrmEstimatorData()),
@@ -138,8 +138,13 @@ export async function POST(req: NextRequest) {
     for (const [index, row] of rows.entries()) {
       const fallbackId = `L-${100000 + index}`;
       const lead = rowToLead(row, fallbackId);
+      const updatedAt = lead.updatedAt && lead.updatedAt !== 'Imported' ? lead.updatedAt : nowIso();
 
-      if (!lead.customer || !lead.company || !lead.phone || !lead.email || !lead.address || !lead.owner || !lead.value || !lead.nextAction) {
+      const normalizedOwner = lead.owner || session.email || 'Unassigned';
+      const normalizedValue = lead.value || '0';
+      const normalizedNextAction = lead.nextAction || 'Follow up';
+
+      if (!lead.customer || !lead.company || !lead.phone || !lead.email || !lead.address) {
         skipped.push(lead.id || fallbackId);
         continue;
       }
@@ -159,12 +164,11 @@ export async function POST(req: NextRequest) {
         activity_update: lead.activityUpdate,
         deal_progress: lead.dealProgress,
         note: lead.note,
-        owner: lead.owner,
-        value: parseMoneyValue(lead.value),
-        updated_at: lead.updatedAt,
-        next_action: lead.nextAction,
+        owner: normalizedOwner,
+        value: parseMoneyValue(normalizedValue),
+        updated_at: updatedAt,
+        next_action: normalizedNextAction,
         attachments_json: JSON.stringify(lead.attachments),
-        work_log_json: JSON.stringify(lead.workLog),
         estimator_data_json: stringifyEstimatorData(lead.estimatorData),
         assigned_sales_user_id: null,
         assigned_by_user_id: null,
@@ -183,8 +187,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       ok: true,
       importedCount: imported.length,
+      updatedCount: 0,
       skippedCount: skipped.length,
-      processedCount: imported.length,
+      processedCount: rows.length,
       imported,
       skipped,
     });
