@@ -14,6 +14,19 @@ type NewSalesUserDraft = {
   password: string;
 };
 
+async function readResponseJson(response: Response) {
+  const text = await response.text().catch(() => '');
+  if (!text.trim()) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    return {ok: false, error: text};
+  }
+}
+
 const initialUserDraft: NewSalesUserDraft = {
   name: '',
   email: '',
@@ -86,7 +99,7 @@ export default function SalesUserManagementAdminClient({
   const loadCrmUsers = useCallback(async () => {
     try {
       const response = await fetch('/api/crm/users', {cache: 'no-store'});
-      const data = await response.json();
+      const data = await readResponseJson(response);
       if (data?.ok && Array.isArray(data.users)) {
         const users = data.users.filter((entry: CrmUserPublic) => entry.role === 'sales');
         setCrmUsers(users);
@@ -104,7 +117,7 @@ export default function SalesUserManagementAdminClient({
   const loadLeads = useCallback(async () => {
     try {
       const response = await fetch('/api/crm/leads', {cache: 'no-store'});
-      const data = await response.json();
+      const data = await readResponseJson(response);
       if (data?.ok && Array.isArray(data.leads)) {
         setLeads(data.leads as CrmLead[]);
       }
@@ -117,7 +130,7 @@ export default function SalesUserManagementAdminClient({
     try {
       const query = email ? `?email=${encodeURIComponent(email)}` : '';
       const response = await fetch(`/api/crm/users/activity${query}`, {cache: 'no-store'});
-      const data = await response.json();
+      const data = await readResponseJson(response);
       if (data?.ok && Array.isArray(data.activity)) {
         setActivity(data.activity);
       }
@@ -156,8 +169,8 @@ export default function SalesUserManagementAdminClient({
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(newUser),
       });
-      const data = await response.json();
-      if (!data.ok) {
+      const data = await readResponseJson(response);
+      if (!data?.ok) {
         throw new Error(data.error || 'Failed to create sales user');
       }
 
@@ -179,8 +192,8 @@ export default function SalesUserManagementAdminClient({
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(patch),
       });
-      const data = await response.json();
-      if (!data.ok) {
+      const data = await readResponseJson(response);
+      if (!data?.ok) {
         throw new Error(data.error || 'Failed to update user');
       }
       setMessage(isLv ? 'Lietotājs atjaunināts.' : 'User updated.');
@@ -206,8 +219,8 @@ export default function SalesUserManagementAdminClient({
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({action: 'delete-user'}),
       });
-      const data = await response.json();
-      if (!data.ok) {
+      const data = await readResponseJson(response);
+      if (!data?.ok) {
         throw new Error(data.error || 'Failed to delete user');
       }
       setMessage(isLv ? 'Lietotājs dzēsts un dati saglabāti vēsturē.' : 'User deleted and data preserved in history.');
@@ -225,7 +238,7 @@ export default function SalesUserManagementAdminClient({
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({action: 'export-user-data'}),
       });
-      const data = await response.json();
+      const data = await readResponseJson(response);
       if (!data.ok || !data.payload) {
         throw new Error(data.error || 'Failed to export user data');
       }
@@ -251,8 +264,8 @@ export default function SalesUserManagementAdminClient({
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({action, ...payload}),
       });
-      const data = await response.json();
-      if (!data.ok) {
+      const data = await readResponseJson(response);
+      if (!data?.ok) {
         throw new Error(data.error || 'Security action failed');
       }
 

@@ -76,67 +76,68 @@ function rowToLead(row: Record<string, string>, fallbackId: string): CrmLead {
 }
 
 export async function POST(req: NextRequest) {
-  const session = await getAdminSession();
-  if (!session) {
-    return NextResponse.json({ok: false, error: 'Unauthorized'}, {status: 401});
-  }
+  try {
+    const session = await getAdminSession();
+    if (!session) {
+      return NextResponse.json({ok: false, error: 'Unauthorized'}, {status: 401});
+    }
 
-  if (!canPerform(session.role, 'createLeads')) {
-    return NextResponse.json({ok: false, error: 'Only superadmin can import leads'}, {status: 403});
-  }
+    if (!canPerform(session.role, 'createLeads')) {
+      return NextResponse.json({ok: false, error: 'Only superadmin can import leads'}, {status: 403});
+    }
 
-  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
-  const limiter = await checkRateLimit(`crm-lead-import:${session.sid}:${ip}`, RATE_LIMITS.API_MUTATION);
-  if (!limiter.allowed) {
-    return NextResponse.json({ok: false, error: 'Too many requests'}, {status: 429});
-  }
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+    const limiter = await checkRateLimit(`crm-lead-import:${session.sid}:${ip}`, RATE_LIMITS.API_MUTATION);
+    if (!limiter.allowed) {
+      return NextResponse.json({ok: false, error: 'Too many requests'}, {status: 429});
+    }
 
-  const formData = await req.formData().catch(() => null);
-  const file = formData?.get('file');
-  if (!(file instanceof File)) {
-    return NextResponse.json({ok: false, error: 'CSV file is required'}, {status: 400});
-  }
+    const formData = await req.formData().catch(() => null);
+    const file = formData?.get('file');
+    if (!(file instanceof File)) {
+      return NextResponse.json({ok: false, error: 'CSV file is required'}, {status: 400});
+    }
 
-  if (file.size > 5 * 1024 * 1024) {
-    return NextResponse.json({ok: false, error: 'CSV file is too large'}, {status: 413});
-  }
+    if (file.size > 5 * 1024 * 1024) {
+      return NextResponse.json({ok: false, error: 'CSV file is too large'}, {status: 413});
+    }
 
-  const fileName = file.name.toLowerCase();
-  const allowedTypes = new Set(['', 'text/csv', 'application/csv', 'text/plain', 'application/vnd.ms-excel']);
-  if (!fileName.endsWith('.csv')) {
-    return NextResponse.json({ok: false, error: 'CSV file extension is required'}, {status: 400});
-  }
+    const fileName = file.name.toLowerCase();
+    const allowedTypes = new Set(['', 'text/csv', 'application/csv', 'text/plain', 'application/vnd.ms-excel']);
+    if (!fileName.endsWith('.csv')) {
+      return NextResponse.json({ok: false, error: 'CSV file extension is required'}, {status: 400});
+    }
 
-  if (file.type && !allowedTypes.has(file.type.toLowerCase())) {
-    return NextResponse.json({ok: false, error: 'Unsupported file type'}, {status: 400});
-  }
+    if (file.type && !allowedTypes.has(file.type.toLowerCase())) {
+      return NextResponse.json({ok: false, error: 'Unsupported file type'}, {status: 400});
+    }
 
-  const csvText = await file.text();
-  const rows = parseCsv(csvText);
-  if (rows.length === 0) {
-    return NextResponse.json({ok: false, error: 'CSV file is empty'}, {status: 400});
-  }
+    const csvText = await file.text();
+    const rows = parseCsv(csvText);
+    if (rows.length === 0) {
+      return NextResponse.json({ok: false, error: 'CSV file is empty'}, {status: 400});
+    }
 
-  if (rows.length > 5000) {
-    return NextResponse.json({ok: false, error: 'CSV file has too many rows'}, {status: 413});
-  }
+    if (rows.length > 5000) {
+      return NextResponse.json({ok: false, error: 'CSV file has too many rows'}, {status: 413});
+    }
 
-  const supabase = createSupabaseAdminClient();
-  if (!supabase) {
-    return NextResponse.json({ok: false, error: 'Supabase is required for lead import'}, {status: 503});
-  }
+    const supabase = createSupabaseAdminClient();
+    if (!supabase) {
+      return NextResponse.json({ok: false, error: 'Supabase is required for lead import'}, {status: 503});
+    }
 
-  const imported: string[] = [];
-  const skipped: string[] = [];
+    const imported: string[] = [];
+    const skipped: string[] = [];
 
-  for (const [index, row] of rows.entries()) {
+    for (const [index, row] of rows.entries()) {
     const fallbackId = `L-${100000 + index}`;
     const lead = rowToLead(row, fallbackId);
 
-    if (!lead.customer || !lead.company || !lead.phone || !lead.email || !lead.address || !lead.owner || !lead.value || !lead.nextAction) {
-      skipped.push(lead.id || fallbackId);
-      continue;
-    }
+      if (!lead.customer || !lead.company || !lead.phone || !lead.email || !lead.address || !lead.owner || !lead.value || !lead.nextAction) {
+        skipped.push(lead.id || fallbackId);
+        continue;
+      }
 
     const {error} = await supabase.from('crm_leads').upsert({
       external_id: lead.id,
@@ -167,21 +168,24 @@ export async function POST(req: NextRequest) {
       updated_at_utc: nowIso(),
     }, {onConflict: 'external_id'});
 
-    if (error) {
-      skipped.push(lead.id);
-      continue;
+      if (error) {
+        skipped.push(lead.id);
+        continue;
+      }
+
+      await upsertProjectFromLead(lead);
+      imported.push(lead.id);
     }
 
-    await upsertProjectFromLead(lead);
-    imported.push(lead.id);
+    return NextResponse.json({
+      ok: true,
+      importedCount: imported.length,
+      skippedCount: skipped.length,
+      processedCount: imported.length,
+      imported,
+      skipped,
+    });
+  } catch (error: any) {
+    return NextResponse.json({ok: false, error: error?.message || 'Failed to import leads'}, {status: 500});
   }
-
-  return NextResponse.json({
-    ok: true,
-    importedCount: imported.length,
-    skippedCount: skipped.length,
-    processedCount: imported.length,
-    imported,
-    skipped,
-  });
 }

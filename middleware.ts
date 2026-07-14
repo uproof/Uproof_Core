@@ -176,10 +176,10 @@ export default async function middleware(request: NextRequest) {
 
   if (isCrmLoginPath) {
     const redirectUrl = new URL(nextUrl.toString());
-    if (sessionRole) {
+    if (sessionRole === 'sales') {
       redirectUrl.pathname = pathname.replace(
         /\/crm\/login(?:\/)?$/,
-        sessionRole === 'sales' ? '/crm' : '/admin'
+        '/crm'
       );
       return redirectWithCookies(redirectUrl, 308);
     }

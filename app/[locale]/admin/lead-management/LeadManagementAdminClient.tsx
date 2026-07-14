@@ -151,7 +151,7 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
       });
 
       const data = await readResponseJson(response);
-      if (!data.ok) {
+      if (!data?.ok) {
         throw new Error(data.error || 'Failed to assign lead');
       }
 
@@ -173,7 +173,7 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
         headers: {'Content-Type': 'application/json'},
       });
       const data = await readResponseJson(response);
-      if (!data.ok) {
+      if (!data?.ok) {
         throw new Error(data.error || 'Failed to unassign lead');
       }
 
@@ -200,7 +200,7 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
         body: JSON.stringify(draft),
       });
       const data = await readResponseJson(response);
-      if (!data.ok) {
+      if (!data?.ok) {
         throw new Error(data.error || 'Failed to save lead');
       }
       setDraft(initialDraft);
@@ -232,7 +232,7 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
         body: formData,
       });
       const data = await readResponseJson(response);
-      if (!data.ok) {
+      if (!data?.ok) {
         throw new Error(data.error || 'Failed to import leads');
       }
 
@@ -255,7 +255,7 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
     try {
       const response = await fetch(`/api/crm/leads/${encodeURIComponent(id)}`, {method: 'DELETE'});
       const data = await readResponseJson(response);
-      if (!data.ok) throw new Error(data.error || 'Failed to delete lead');
+      if (!data?.ok) throw new Error(data?.error || 'Failed to delete lead');
       setToast({title: labels.deleted, message: isLv ? 'Līds noņemts un paziņojums saglabāts.' : 'Lead removed and notification saved.', tone: 'success'});
       await loadLeads();
     } catch (error: any) {
