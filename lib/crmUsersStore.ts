@@ -146,6 +146,39 @@ export async function getCrmUserById(id: string): Promise<CrmUser | null> {
   return null;
 }
 
+export async function getCrmUserByEmail(email: string): Promise<CrmUser | null> {
+  const normalizedEmail = email.trim().toLowerCase();
+  if (!normalizedEmail) {
+    return null;
+  }
+
+  const supabase = createSupabaseAdminClient();
+  if (supabase) {
+    const {data, error} = await supabase
+      .from('user_profiles')
+      .select('id,email,full_name,role,is_active,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
+      .eq('email', normalizedEmail)
+      .maybeSingle();
+
+    if (!error && data) {
+      return {
+        id: data.id,
+        email: data.email,
+        name: data.full_name || data.email,
+        role: data.role,
+        isActive: !!data.is_active,
+        mfaSecret: data.crm_mfa_secret || '',
+        sessionValidAfter: data.session_valid_after || '',
+        archivedAt: data.archived_at || '',
+        createdAt: data.created_at,
+        updatedAtUtc: data.updated_at,
+      };
+    }
+  }
+
+  return null;
+}
+
 type CreateCrmUserInput = {
   email: string;
   name: string;

@@ -27,6 +27,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
   const isLv = locale === 'lv';
   const isSalesScope = accessScope === 'sales';
   const router = useRouter();
+  const [version, setVersion] = useState(lead.updatedAtUtc);
   const [status, setStatus] = useState(lead.status);
   const [progress, setProgress] = useState(lead.progress);
   const [activityUpdate, setActivityUpdate] = useState(lead.activityUpdate);
@@ -56,7 +57,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
         method: 'PATCH',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
-          updatedAtUtc: lead.updatedAtUtc,
+          updatedAtUtc: version,
           ...(isSalesScope ? {} : {customer: customerName}),
           projectAddress,
           address: projectAddress,
@@ -73,6 +74,9 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
       const data = await response.json();
       if (!data.ok) {
         throw new Error(data.error || 'Save failed');
+      }
+      if (data.lead?.updatedAtUtc) {
+        setVersion(data.lead.updatedAtUtc);
       }
       setSaveState('saved');
       router.refresh();
