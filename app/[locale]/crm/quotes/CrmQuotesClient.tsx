@@ -138,7 +138,7 @@ export default function CrmQuotesClient({locale, quotes, canExportAllQuotes, can
                 </div>
               </div>
               <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-gray-600">
-                <span className="flex items-center gap-2">{isLv ? 'Summa' : 'Amount'}: <SensitiveValue value={quote.amount} kind="amount" entityId={quote.id} field="amount" className="border-0 p-0 hover:bg-transparent" /></span>
+                <span className="flex items-center gap-2">{isLv ? 'Summa' : 'Amount'}: <SensitiveValue value={quote.amount} kind="amount" className="border-0 p-0 hover:bg-transparent" /></span>
                 <span>{isLv ? 'Nosūtīts' : 'Sent'}: {quote.sentAt}</span>
                 {canDownloadQuotePdf ? (
                   <a

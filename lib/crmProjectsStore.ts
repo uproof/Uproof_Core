@@ -1,6 +1,7 @@
 import {getDb, nowIso} from '@/lib/crmDb';
 import {getCrmLeads} from '@/lib/crmLeadsStore';
-import type {CrmEstimatorRow, CrmLead} from '@/lib/crmMockData';
+import type {CrmLead} from '@/lib/crmMockData';
+import {createEmptyCrmEstimatorData, normalizeCrmEstimatorData, stringifyEstimatorData, summarizeEstimatorData} from '@/lib/crmEstimator';
 
 export type CrmProjectRecord = {
   id: string;
@@ -11,7 +12,7 @@ export type CrmProjectRecord = {
   phase: string;
   budget: string;
   dueDate: string;
-  estimatorData: CrmEstimatorRow[];
+  estimatorData: CrmLead['estimatorData'];
 };
 
 type ProjectRow = {
@@ -28,20 +29,17 @@ type ProjectRow = {
 
 type CrmProjectsOptions = {
   assignedSalesUserId?: string;
+  limit?: number;
 };
 
-function parseEstimatorData(value: string | null | undefined): CrmEstimatorRow[] {
-  if (!value) return [];
-  try {
-    const parsed = JSON.parse(value) as CrmEstimatorRow[];
-    if (!Array.isArray(parsed)) return [];
-    return parsed.filter((row) => row && typeof row === 'object');
-  } catch {
-    return [];
-  }
-}
-
 function mapRow(row: ProjectRow): CrmProjectRecord {
+  let estimatorData = createEmptyCrmEstimatorData();
+  try {
+    estimatorData = normalizeCrmEstimatorData(JSON.parse(row.estimator_data_json || 'null'), estimatorData);
+  } catch {
+    estimatorData = createEmptyCrmEstimatorData();
+  }
+
   return {
     id: row.id,
     leadId: row.lead_id,
@@ -51,12 +49,15 @@ function mapRow(row: ProjectRow): CrmProjectRecord {
     phase: row.phase,
     budget: row.budget,
     dueDate: row.due_date,
-    estimatorData: parseEstimatorData(row.estimator_data_json),
+    estimatorData,
   };
 }
 
 export async function getCrmProjects(options: CrmProjectsOptions = {}): Promise<CrmProjectRecord[]> {
-  const leads = await getCrmLeads(options.assignedSalesUserId ? {assignedSalesUserId: options.assignedSalesUserId} : {});
+  const leads = await getCrmLeads({
+    ...(options.assignedSalesUserId ? {assignedSalesUserId: options.assignedSalesUserId} : {}),
+    ...(typeof options.limit === 'number' ? {limit: options.limit} : {}),
+  });
   return leads.map((lead) => ({
     id: lead.id,
     leadId: lead.id,
@@ -66,7 +67,7 @@ export async function getCrmProjects(options: CrmProjectsOptions = {}): Promise<
     phase: lead.status.replaceAll('_', ' '),
     budget: lead.value,
     dueDate: lead.nextAction,
-    estimatorData: lead.estimatorData,
+    estimatorData: normalizeCrmEstimatorData(lead.estimatorData, createEmptyCrmEstimatorData()),
   }));
 }
 
@@ -98,7 +99,7 @@ export async function upsertProjectFromLead(lead: CrmLead): Promise<void> {
     phase: lead.status.replaceAll('_', ' '),
     budget: lead.value,
     dueDate: lead.nextAction,
-    estimatorDataJson: JSON.stringify(lead.estimatorData),
+    estimatorDataJson: stringifyEstimatorData(normalizeCrmEstimatorData(lead.estimatorData, createEmptyCrmEstimatorData())),
     createdAt: now,
     updatedAtUtc: now,
   });

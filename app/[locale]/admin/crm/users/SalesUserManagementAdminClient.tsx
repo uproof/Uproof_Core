@@ -4,7 +4,7 @@ import {FormEvent, useCallback, useEffect, useMemo, useRef, useState} from 'reac
 import Link from 'next/link';
 import Card from '@/components/Card';
 
-type CrmUser = {id: string; email: string; name: string; role: 'sales' | 'superadmin'; isActive: boolean; password?: string; mfaSecret?: string};
+type CrmUser = {id: string; email: string; name: string; role: 'sales' | 'superadmin'; isActive: boolean; mfaSecret?: string};
 type CrmUserPublic = {id: string; email: string; name: string; role: 'sales' | 'superadmin'; isActive: boolean; hasPassword?: boolean; hasMfaSecret?: boolean};
 type CrmUserActivity = {id: number; actorEmail: string; actorRole: string; action: string; leadId: string; detail: string; createdAt: string};
 type CrmLead = {id: string; assignedSalesUserId?: string | null};
@@ -264,10 +264,10 @@ export default function SalesUserManagementAdminClient({
           ...current,
           [user.id]: `${labels.recoveryCodes}: ${data.codes.join(' · ')}`,
         }));
-      } else if (typeof data.resetUrl === 'string') {
+      } else if (action === 'reset-password') {
         setSecurityMessages((current) => ({
           ...current,
-          [user.id]: `${labels.resetPasswordLink}: ${data.resetUrl}`,
+          [user.id]: isLv ? 'Paroles atiestatīšanas saite ir sagatavota un jānogādā drošā kanālā.' : 'Password reset link prepared and must be delivered through a secure channel.',
         }));
       } else {
         setSecurityMessages((current) => ({

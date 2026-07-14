@@ -63,6 +63,22 @@ const nextConfig = {
   
   // Security headers
   async headers() {
+    const contentSecurityPolicy = [
+      "default-src 'self'",
+      "base-uri 'self'",
+      "object-src 'none'",
+      "frame-ancestors 'self'",
+      "form-action 'self'",
+      "img-src 'self' data: blob: https:",
+      "font-src 'self' data: https:",
+      "style-src 'self' 'unsafe-inline' https:",
+      "script-src 'self' 'unsafe-inline' https:",
+      "connect-src 'self' https://*.supabase.co https://vitals.vercel-insights.com https://www.googletagmanager.com",
+      "frame-src 'self' https://www.google.com https://www.youtube.com",
+      'upgrade-insecure-requests',
+      'block-all-mixed-content',
+    ].join('; ');
+
     return [
       {
         source: '/:path*',
@@ -74,6 +90,18 @@ const nextConfig = {
           {
             key: 'Strict-Transport-Security',
             value: 'max-age=63072000; includeSubDomains; preload'
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: contentSecurityPolicy,
+          },
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin',
+          },
+          {
+            key: 'Cross-Origin-Resource-Policy',
+            value: 'same-site',
           },
           {
             key: 'X-Frame-Options',

@@ -9,7 +9,6 @@ export default function ForgotPasswordPage() {
   const locale = typeof params?.locale === 'string' ? params.locale : 'lv';
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
-  const [resetUrl, setResetUrl] = useState('');
   const [loading, setLoading] = useState(false);
 
   const copy =
@@ -47,7 +46,6 @@ export default function ForgotPasswordPage() {
     event.preventDefault();
     setLoading(true);
     setMessage('');
-    setResetUrl('');
 
     try {
       const response = await fetch('/api/crm/security/password-reset/request', {
@@ -60,9 +58,6 @@ export default function ForgotPasswordPage() {
         throw new Error(data.error || 'Unable to request reset link');
       }
       setMessage(copy.success);
-      if (typeof data.resetUrl === 'string') {
-        setResetUrl(data.resetUrl);
-      }
     } catch (error: any) {
       setMessage(error?.message || 'Unable to request reset link');
     } finally {
@@ -90,9 +85,6 @@ export default function ForgotPasswordPage() {
           </div>
 
           {message ? <div className="rounded-2xl border border-sky-300/20 bg-sky-500/10 px-4 py-3 text-sm text-sky-100">{message}</div> : null}
-          {resetUrl ? (
-            <div className="rounded-2xl border border-emerald-300/20 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-100 break-all">{resetUrl}</div>
-          ) : null}
 
           <button
             type="submit"

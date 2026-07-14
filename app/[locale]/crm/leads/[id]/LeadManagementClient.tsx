@@ -1,13 +1,14 @@
 'use client';
 
-import {useState} from 'react';
-import {ArrowLeftIcon, PencilSquareIcon, PhoneIcon, EnvelopeIcon, MapPinIcon, CheckCircleIcon, LockClosedIcon, PlusIcon, TrashIcon} from '@heroicons/react/24/outline';
+import {useMemo, useState} from 'react';
+import {ArrowLeftIcon, PencilSquareIcon, PhoneIcon, EnvelopeIcon, MapPinIcon, CheckCircleIcon, LockClosedIcon} from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
 import Card from '@/components/Card';
 import Section from '@/components/Section';
 import SensitiveValue from '@/components/crm/SensitiveValue';
-import {CrmLead, CrmEstimatorRow, CrmLeadWorkLogEntry} from '@/lib/crmMockData';
+import {CrmLead, CrmLeadWorkLogEntry} from '@/lib/crmMockData';
+import {CRM_ESTIMATOR_BOOLEAN_OPTIONS, CRM_ESTIMATOR_FIELD_DEFINITIONS, CRM_ESTIMATOR_FIELD_SECTIONS, createEmptyCrmEstimatorData, formatEstimatorValue} from '@/lib/crmEstimator';
 
 const statusOptions = ['NEW', 'CONTACTED', 'INSPECTION_SCHEDULED', 'INSPECTION_COMPLETED', 'ESTIMATING', 'QUOTE_SENT', 'WON', 'LOST', 'PROJECT_STARTED', 'COMPLETED', 'CANCELLED'];
 const progressOptions = ['new', 'reached', 'in progress', 'cancelled', 'won'];
@@ -35,24 +36,16 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
   const [problem, setProblem] = useState(lead.problem || '');
   const [clientCharacterNote, setClientCharacterNote] = useState(lead.clientCharacterNote || '');
   const [note, setNote] = useState(lead.note);
-  const [estimatorData, setEstimatorData] = useState<CrmEstimatorRow[]>(
-    lead.estimatorData.length > 0 ? lead.estimatorData : [{label: '', measurement: '', notes: ''}]
-  );
+  const [estimatorData, setEstimatorData] = useState(lead.estimatorData || createEmptyCrmEstimatorData());
   const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [saveError, setSaveError] = useState('');
   const [showClientData, setShowClientData] = useState(false);
   const workLog: CrmLeadWorkLogEntry[] = showWorkLog ? (lead.workLog || []) : [];
 
-  const updateEstimatorRow = (index: number, key: keyof CrmEstimatorRow, value: string) => {
-    setEstimatorData((current) => current.map((row, rowIndex) => (rowIndex === index ? {...row, [key]: value} : row)));
-  };
+  const estimatorSections = useMemo(() => CRM_ESTIMATOR_FIELD_SECTIONS, []);
 
-  const addEstimatorRow = () => {
-    setEstimatorData((current) => [...current, {label: '', measurement: '', notes: ''}]);
-  };
-
-  const removeEstimatorRow = (index: number) => {
-    setEstimatorData((current) => (current.length > 1 ? current.filter((_, rowIndex) => rowIndex !== index) : current));
+  const updateEstimatorField = <K extends keyof typeof estimatorData>(key: K, value: (typeof estimatorData)[K]) => {
+    setEstimatorData((current) => ({...current, [key]: value}));
   };
 
   const handleSave = async () => {
@@ -150,7 +143,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
               {showClientData && accessScope === 'admin' ? (
                 <span className="min-w-0 break-words text-slate-900">{lead.phone}</span>
               ) : (
-                <SensitiveValue value={lead.phone} kind="phone" entityId={lead.id} field="phone" className="min-w-0 border-0 p-0 hover:bg-transparent" />
+                <SensitiveValue value={lead.phone} kind="phone" className="min-w-0 border-0 p-0 hover:bg-transparent" />
               )}
             </div>
             <div className="flex items-center gap-3 rounded-2xl border border-sky-100 bg-white px-4 py-3 shadow-sm">
@@ -158,7 +151,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
               {showClientData && accessScope === 'admin' ? (
                 <span className="min-w-0 break-words text-slate-900">{lead.email}</span>
               ) : (
-                <SensitiveValue value={lead.email} kind="email" entityId={lead.id} field="email" className="min-w-0 border-0 p-0 hover:bg-transparent" />
+                <SensitiveValue value={lead.email} kind="email" className="min-w-0 border-0 p-0 hover:bg-transparent" />
               )}
             </div>
             <div className="flex items-center gap-3 rounded-2xl border border-sky-100 bg-white px-4 py-3 shadow-sm"><MapPinIcon className="h-4 w-4 shrink-0 text-sky-500" /> <span className="min-w-0 break-words">{lead.address}</span></div>
@@ -169,7 +162,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
             <div className="mt-4 space-y-3 text-sm text-slate-700">
               <div><span className="font-semibold text-slate-900">{isLv ? 'Atbildīgais' : 'Owner'}:</span> {lead.owner}</div>
               <div><span className="font-semibold text-slate-900">{isLv ? 'Uzņēmums' : 'Company'}:</span> {lead.company}</div>
-              <div className="flex items-center gap-2"><span className="font-semibold text-slate-900">{isLv ? 'Vērtība' : 'Value'}:</span> {showClientData && accessScope === 'admin' ? <span className="text-slate-900">{lead.value}</span> : <SensitiveValue value={lead.value} kind="amount" entityId={lead.id} field="value" className="border-0 p-0 hover:bg-transparent" />}</div>
+              <div className="flex items-center gap-2"><span className="font-semibold text-slate-900">{isLv ? 'Vērtība' : 'Value'}:</span> {showClientData && accessScope === 'admin' ? <span className="text-slate-900">{lead.value}</span> : <SensitiveValue value={lead.value} kind="amount" className="border-0 p-0 hover:bg-transparent" />}</div>
               <div><span className="font-semibold text-slate-900">{isLv ? 'Atjaunots' : 'Updated'}:</span> {lead.updatedAt}</div>
             </div>
           </div>
@@ -267,41 +260,47 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
           </Card>
 
           <Card variant="outlined" hover={false} className="border-sky-100 bg-white">
-            <div className="mb-4 flex items-center justify-between gap-3">
-              <div>
-                <div className="text-sm font-semibold text-sky-500">{isLv ? 'Estimator DATA' : 'Estimator data'}</div>
-                <p className="mt-1 text-sm text-slate-600">{isLv ? 'Tabula klienta mērījumiem un aprēķinu piezīmēm.' : 'Table for client measurements and estimate notes.'}</p>
-              </div>
-              <button type="button" onClick={addEstimatorRow} className="inline-flex items-center gap-2 rounded-xl border border-sky-200 bg-white px-3 py-2 text-sm font-semibold text-sky-700 transition hover:bg-sky-50">
-                <PlusIcon className="h-4 w-4" /> {isLv ? 'Pievienot rindu' : 'Add row'}
-              </button>
+            <div className="mb-4">
+              <div className="text-sm font-semibold text-sky-500">{isLv ? 'Estimator forma' : 'Estimator form'}</div>
+              <p className="mt-1 text-sm text-slate-600">{isLv ? 'Fiksēti lauki ar izvēlnēm un skaitliskiem ievadlaukiem.' : 'Fixed fields with select and numeric inputs.'}</p>
             </div>
 
-            <div className="overflow-x-auto rounded-2xl border border-sky-100">
-              <table className="min-w-full divide-y divide-sky-100 text-left text-sm">
-                <thead className="bg-sky-50 text-slate-700">
-                  <tr>
-                    <th className="px-4 py-3 font-semibold">{isLv ? 'Nosaukums' : 'Item'}</th>
-                    <th className="px-4 py-3 font-semibold">{isLv ? 'Mērījums' : 'Measurement'}</th>
-                    <th className="px-4 py-3 font-semibold">{isLv ? 'Piezīmes' : 'Notes'}</th>
-                    <th className="px-4 py-3 font-semibold">{isLv ? 'Darbība' : 'Action'}</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-sky-100 bg-white">
-                  {estimatorData.map((row, index) => (
-                    <tr key={`${row.label}-${index}`}>
-                      <td className="px-4 py-3 align-top"><input value={row.label} onChange={(e) => updateEstimatorRow(index, 'label', e.target.value)} className="w-full rounded-xl border border-sky-200 px-3 py-2 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100" placeholder={isLv ? 'Jumta garums' : 'Roof length'} /></td>
-                      <td className="px-4 py-3 align-top"><input value={row.measurement} onChange={(e) => updateEstimatorRow(index, 'measurement', e.target.value)} className="w-full rounded-xl border border-sky-200 px-3 py-2 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100" placeholder={isLv ? '18.4 m' : '18.4 m'} /></td>
-                      <td className="px-4 py-3 align-top"><input value={row.notes} onChange={(e) => updateEstimatorRow(index, 'notes', e.target.value)} className="w-full rounded-xl border border-sky-200 px-3 py-2 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100" placeholder={isLv ? 'Piemēram: no klienta foto' : 'Example: from client photos'} /></td>
-                      <td className="px-4 py-3 align-top">
-                        <button type="button" onClick={() => removeEstimatorRow(index)} className="inline-flex items-center gap-2 rounded-xl border border-red-200 bg-white px-3 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50">
-                          <TrashIcon className="h-4 w-4" /> {isLv ? 'Dzēst' : 'Remove'}
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="space-y-6">
+              {estimatorSections.map((section) => (
+                <div key={section} className="rounded-2xl border border-sky-100 bg-sky-50/40 p-4">
+                  <div className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-sky-500">{section}</div>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    {CRM_ESTIMATOR_FIELD_DEFINITIONS.filter((definition) => definition.section === section).map((definition) => {
+                      const value = estimatorData[definition.key];
+                      const inputId = `estimator-${String(definition.key)}`;
+
+                      return (
+                        <label key={definition.key} htmlFor={inputId} className="flex min-w-0 flex-col gap-2 text-sm font-medium text-slate-700 sm:col-span-1">
+                          <span>{definition.label}</span>
+                          {definition.helper ? <span className="text-xs font-normal text-slate-500">{definition.helper}</span> : null}
+                          {definition.type === 'select' ? (
+                            <select id={inputId} value={formatEstimatorValue(value)} onChange={(event) => updateEstimatorField(definition.key, event.target.value)} className="h-12 w-full min-w-0 rounded-xl border border-sky-200 bg-white px-4 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100">
+                              <option value="">{isLv ? 'Izvēlies' : 'Select'}</option>
+                              {definition.options?.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+                            </select>
+                          ) : definition.type === 'boolean' ? (
+                            <select id={inputId} value={value === null ? '' : value ? 'true' : 'false'} onChange={(event) => updateEstimatorField(definition.key, event.target.value === 'true' ? true : event.target.value === 'false' ? false : null)} className="h-12 w-full min-w-0 rounded-xl border border-sky-200 bg-white px-4 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100">
+                              <option value="">{isLv ? 'Izvēlies' : 'Select'}</option>
+                              {CRM_ESTIMATOR_BOOLEAN_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+                            </select>
+                          ) : definition.type === 'number' ? (
+                            <input id={inputId} type="number" min="0" value={value === null ? '' : String(value)} onChange={(event) => updateEstimatorField(definition.key, event.target.value ? Number(event.target.value) : null)} placeholder={definition.placeholder} className="h-12 w-full rounded-xl border border-sky-200 bg-white px-4 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100" />
+                          ) : definition.type === 'derived' ? (
+                            <input id={inputId} value={formatEstimatorValue(value)} readOnly className="h-12 w-full rounded-xl border border-sky-200 bg-white px-4 text-slate-900 outline-none" />
+                          ) : (
+                            <input id={inputId} value={formatEstimatorValue(value)} onChange={(event) => updateEstimatorField(definition.key, event.target.value)} placeholder={definition.placeholder} className="h-12 w-full rounded-xl border border-sky-200 bg-white px-4 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100" />
+                          )}
+                        </label>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
           </Card>
 

@@ -91,7 +91,7 @@ export async function PATCH(
       value: canEditProfileFields && typeof body.value === 'string' ? body.value : undefined,
       nextAction: typeof body.nextAction === 'string' ? body.nextAction : undefined,
       workLog: canEditProfileFields && Array.isArray(body.workLog) ? body.workLog as never : undefined,
-      estimatorData: canEditProfileFields && Array.isArray(body.estimatorData) ? body.estimatorData as never : undefined,
+      estimatorData: canEditProfileFields && body.estimatorData && typeof body.estimatorData === 'object' ? body.estimatorData as never : undefined,
     },
   });
 

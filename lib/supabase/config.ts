@@ -1,7 +1,7 @@
 export function isSupabaseConfigured() {
   return Boolean(
     process.env.NEXT_PUBLIC_SUPABASE_URL &&
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY &&
+    (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) &&
     process.env.SUPABASE_SERVICE_ROLE_KEY
   );
 }
@@ -15,11 +15,15 @@ export function getSupabaseUrl() {
 }
 
 export function getSupabaseAnonKey() {
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!key) {
-    throw new Error('NEXT_PUBLIC_SUPABASE_ANON_KEY is not configured');
+    throw new Error('NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY is not configured');
   }
   return key;
+}
+
+export function getSupabasePublishableKey() {
+  return getSupabaseAnonKey();
 }
 
 export function getSupabaseServiceRoleKey() {

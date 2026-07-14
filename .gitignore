@@ -18,3 +18,5 @@ public/videos/README.md
 *.md
 scripts/
 create_blog_images.js
+
+/lib/generated/prisma

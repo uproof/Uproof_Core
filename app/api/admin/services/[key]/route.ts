@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isSuperadminAuthenticated } from '@/lib/adminAuth';
-import fs from 'fs/promises';
 import path from 'path';
+import {readJsonFile, writeJsonFile} from '@/lib/jsonFileStore';
 
 const SERVICES_CONFIG_FILE = path.join(process.cwd(), 'data', 'services.json');
 
 // Ensure file exists
 async function ensureServicesFile() {
   try {
-    await fs.access(SERVICES_CONFIG_FILE);
+    await import('fs/promises').then((fs) => fs.access(SERVICES_CONFIG_FILE));
   } catch {
     // Create default services file if it doesn't exist
     const defaultServices = {
@@ -53,7 +53,7 @@ async function ensureServicesFile() {
         description: 'Professional leaf and debris removal from gutters and roof.',
       },
     };
-    await fs.writeFile(SERVICES_CONFIG_FILE, JSON.stringify(defaultServices, null, 2));
+    await writeJsonFile(SERVICES_CONFIG_FILE, defaultServices);
   }
 }
 
@@ -80,8 +80,7 @@ export async function PATCH(
     }
 
     // Read current services
-    const content = await fs.readFile(SERVICES_CONFIG_FILE, 'utf-8');
-    const services = JSON.parse(content);
+    const services = await readJsonFile<Record<string, {title: string; description: string}>>(SERVICES_CONFIG_FILE, {});
 
     const { key } = await params;
 
@@ -99,7 +98,7 @@ export async function PATCH(
     };
 
     // Write back to file
-    await fs.writeFile(SERVICES_CONFIG_FILE, JSON.stringify(services, null, 2));
+    await writeJsonFile(SERVICES_CONFIG_FILE, services);
 
     return NextResponse.json({
       success: true,

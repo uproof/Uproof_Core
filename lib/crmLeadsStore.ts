@@ -1,21 +1,7 @@
 import {getDb, nowIso} from '@/lib/crmDb';
 import {upsertProjectFromLead, deleteProjectByLeadId} from '@/lib/crmProjectsStore';
 import {CrmLead} from '@/lib/crmMockData';
-
-function normalizeEstimatorData(estimatorData: unknown, fallback: CrmLead['estimatorData']) {
-  if (!Array.isArray(estimatorData)) return fallback;
-  return estimatorData
-    .map((row) => {
-      if (!row || typeof row !== 'object') return null;
-      const candidate = row as Partial<{label: string; measurement: string; notes: string}>;
-      return {
-        label: String(candidate.label || '').trim(),
-        measurement: String(candidate.measurement || '').trim(),
-        notes: String(candidate.notes || '').trim(),
-      };
-    })
-    .filter((row): row is CrmLead['estimatorData'][number] => Boolean(row && (row.label || row.measurement || row.notes)));
-}
+import {createEmptyCrmEstimatorData, normalizeCrmEstimatorData, stringifyEstimatorData} from '@/lib/crmEstimator';
 
 function normalizeWorkLog(workLog: unknown, fallback: CrmLead['workLog']) {
   if (!Array.isArray(workLog)) return fallback;
@@ -40,7 +26,7 @@ function normalizeLead(lead: CrmLead): CrmLead {
     projectAddress: lead.projectAddress || lead.address || '',
     clientCharacterNote: lead.clientCharacterNote || '',
     workLog: normalizeWorkLog(lead.workLog, []),
-    estimatorData: normalizeEstimatorData(lead.estimatorData, []),
+    estimatorData: normalizeCrmEstimatorData(lead.estimatorData, createEmptyCrmEstimatorData()),
   };
 }
 
@@ -106,22 +92,30 @@ function rowToLead(row: LeadRow): CrmLead {
     assignedSalesUserId: row.assigned_sales_user_id,
     attachments: parseJsonArray<string>(row.attachments_json, []),
     workLog: parseJsonArray(row.work_log_json, []),
-    estimatorData: parseJsonArray(row.estimator_data_json, []),
+    estimatorData: normalizeCrmEstimatorData(parseJsonArray(row.estimator_data_json, []), createEmptyCrmEstimatorData()),
   });
 }
 
 type GetCrmLeadsOptions = {
   assignedSalesUserId?: string;
+  limit?: number;
 };
 
 export async function getCrmLeads(options: GetCrmLeadsOptions = {}): Promise<CrmLead[]> {
   const db = getDb();
   const assignedSalesUserId = options.assignedSalesUserId?.trim();
+  const limit = typeof options.limit === 'number' && Number.isFinite(options.limit) && options.limit > 0 ? Math.floor(options.limit) : 0;
   const rows = assignedSalesUserId
-    ? db
-        .prepare('SELECT * FROM leads WHERE assigned_sales_user_id = ? ORDER BY updated_at_utc DESC, created_at DESC')
-        .all(assignedSalesUserId) as LeadRow[]
-    : db.prepare('SELECT * FROM leads ORDER BY updated_at_utc DESC, created_at DESC').all() as LeadRow[];
+    ? limit > 0
+      ? (db
+          .prepare('SELECT * FROM leads WHERE assigned_sales_user_id = ? ORDER BY updated_at_utc DESC, created_at DESC LIMIT ?')
+          .all(assignedSalesUserId, limit) as LeadRow[])
+      : (db
+          .prepare('SELECT * FROM leads WHERE assigned_sales_user_id = ? ORDER BY updated_at_utc DESC, created_at DESC')
+          .all(assignedSalesUserId) as LeadRow[])
+    : limit > 0
+      ? (db.prepare('SELECT * FROM leads ORDER BY updated_at_utc DESC, created_at DESC LIMIT ?').all(limit) as LeadRow[])
+      : (db.prepare('SELECT * FROM leads ORDER BY updated_at_utc DESC, created_at DESC').all() as LeadRow[]);
 
   return rows.map(rowToLead);
 }
@@ -195,7 +189,7 @@ export async function addCrmLead(input: NewLeadInput): Promise<CrmLead> {
     nextAction: input.nextAction.trim(),
     attachments: [],
     workLog: normalizeWorkLog(input.workLog, []),
-    estimatorData: normalizeEstimatorData(input.estimatorData, []),
+    estimatorData: normalizeCrmEstimatorData(input.estimatorData, createEmptyCrmEstimatorData()),
     assignedSalesUserId: null,
   });
 
@@ -217,7 +211,7 @@ export async function addCrmLead(input: NewLeadInput): Promise<CrmLead> {
     dealProgress: lead.dealProgress,
     attachmentsJson: JSON.stringify(lead.attachments),
     workLogJson: JSON.stringify(lead.workLog),
-    estimatorDataJson: JSON.stringify(lead.estimatorData),
+    estimatorDataJson: stringifyEstimatorData(lead.estimatorData),
     createdAt: now,
     updatedAtUtc: now,
   });
@@ -260,7 +254,7 @@ export async function updateCrmLead(leadId: string, updates: Partial<CrmLead>): 
     value: updates.value?.trim() || existing.value,
     nextAction: updates.nextAction?.trim() || existing.nextAction,
     workLog: updates.workLog ? normalizeWorkLog(updates.workLog, existing.workLog) : existing.workLog,
-    estimatorData: updates.estimatorData ? normalizeEstimatorData(updates.estimatorData, existing.estimatorData) : existing.estimatorData,
+    estimatorData: updates.estimatorData ? normalizeCrmEstimatorData(updates.estimatorData, existing.estimatorData) : existing.estimatorData,
     attachments: updates.attachments || existing.attachments,
     updatedAt: new Date().toLocaleString('en-GB', {hour12: false}),
     updatedAtUtc: nowIso(),
@@ -299,7 +293,7 @@ export async function updateCrmLead(leadId: string, updates: Partial<CrmLead>): 
     dealProgress: nextLead.dealProgress,
     attachmentsJson: JSON.stringify(nextLead.attachments),
     workLogJson: JSON.stringify(nextLead.workLog),
-    estimatorDataJson: JSON.stringify(nextLead.estimatorData),
+    estimatorDataJson: stringifyEstimatorData(nextLead.estimatorData),
     updatedAtUtc: nowIso(),
   });
 

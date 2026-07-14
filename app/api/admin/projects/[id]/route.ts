@@ -3,6 +3,7 @@ import { isSuperadminAuthenticated } from '@/lib/adminAuth';
 import { validateCsrfToken } from '@/lib/csrf';
 import fs from 'fs/promises';
 import path from 'path';
+import {readJsonFile, writeJsonFile} from '@/lib/jsonFileStore';
 
 const PROJECTS_FILE = path.join(process.cwd(), 'data', 'projects-admin.json');
 const PUBLIC_UPLOADS = path.join(process.cwd(), 'public', 'uploads', 'projects');
@@ -40,8 +41,7 @@ export async function PATCH(
     }
 
     // Read existing projects
-    const content = await fs.readFile(PROJECTS_FILE, 'utf-8');
-    const projects = JSON.parse(content);
+    const projects = await readJsonFile<any[]>(PROJECTS_FILE, []);
     const projectIndex = projects.findIndex((p: any) => p.id === id);
 
     if (projectIndex === -1) {
@@ -114,7 +114,7 @@ export async function PATCH(
     };
 
     projects[projectIndex] = updated;
-    await fs.writeFile(PROJECTS_FILE, JSON.stringify(projects, null, 2));
+    await writeJsonFile(PROJECTS_FILE, projects);
 
     return NextResponse.json({ project: updated });
   } catch (error) {
@@ -153,8 +153,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
     }
     
-    const content = await fs.readFile(PROJECTS_FILE, 'utf-8');
-    const projects = JSON.parse(content);
+    const projects = await readJsonFile<any[]>(PROJECTS_FILE, []);
     const projectIndex = projects.findIndex((p: any) => p.id === id);
 
     if (projectIndex === -1) {
@@ -188,7 +187,7 @@ export async function DELETE(
 
     // Remove project from list
     projects.splice(projectIndex, 1);
-    await fs.writeFile(PROJECTS_FILE, JSON.stringify(projects, null, 2));
+    await writeJsonFile(PROJECTS_FILE, projects);
 
     return NextResponse.json({ success: true });
   } catch (error) {

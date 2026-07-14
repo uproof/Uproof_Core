@@ -4,14 +4,15 @@ import {getCrmUserByEmail} from '@/lib/crmUsersStore';
 import CrmLeadsClient from './CrmLeadsClient';
 
 type Props = {params: Promise<{locale: string}>};
+const CRM_LIST_LIMIT = 250;
 
 export default async function CrmLeadsPage({params}: Props) {
   const {locale} = await params;
   const session = await getAdminSession();
-  let leads = await getCrmLeads();
+  let leads = await getCrmLeads({limit: CRM_LIST_LIMIT});
   if (session?.role === 'sales') {
     const salesUser = await getCrmUserByEmail(session.email);
-    leads = salesUser ? await getCrmLeads({assignedSalesUserId: salesUser.id}) : [];
+    leads = salesUser ? await getCrmLeads({assignedSalesUserId: salesUser.id, limit: CRM_LIST_LIMIT}) : [];
   }
   return <CrmLeadsClient locale={locale} leads={leads} isSalesView={session?.role === 'sales'} />;
 }

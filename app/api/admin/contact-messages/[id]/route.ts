@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isSuperadminAuthenticated } from '@/lib/adminAuth';
-import fs from 'fs/promises';
 import path from 'path';
+import {readJsonFile, writeJsonFile} from '@/lib/jsonFileStore';
 
 const CONTACT_MESSAGES_FILE = path.join(process.cwd(), 'data', 'contact-messages.json');
 
@@ -19,8 +19,7 @@ export async function PATCH(
     const { read } = body;
 
     // Read existing messages
-    const content = await fs.readFile(CONTACT_MESSAGES_FILE, 'utf-8');
-    const messages = JSON.parse(content);
+    const messages = await readJsonFile<any[]>(CONTACT_MESSAGES_FILE, []);
     const { id } = await params;
     const messageIndex = messages.findIndex((m: any) => m.id === id);
 
@@ -32,7 +31,7 @@ export async function PATCH(
     }
 
     messages[messageIndex].read = read;
-    await fs.writeFile(CONTACT_MESSAGES_FILE, JSON.stringify(messages, null, 2));
+    await writeJsonFile(CONTACT_MESSAGES_FILE, messages);
 
     return NextResponse.json({ message: messages[messageIndex] });
   } catch (error) {
@@ -55,8 +54,7 @@ export async function DELETE(
 
   try {
     // Read existing messages
-    const content = await fs.readFile(CONTACT_MESSAGES_FILE, 'utf-8');
-    const messages = JSON.parse(content);
+    const messages = await readJsonFile<any[]>(CONTACT_MESSAGES_FILE, []);
     const { id } = await params;
     const messageIndex = messages.findIndex((m: any) => m.id === id);
 
@@ -69,7 +67,7 @@ export async function DELETE(
 
     // Remove message
     messages.splice(messageIndex, 1);
-    await fs.writeFile(CONTACT_MESSAGES_FILE, JSON.stringify(messages, null, 2));
+    await writeJsonFile(CONTACT_MESSAGES_FILE, messages);
 
     return NextResponse.json({ success: true });
   } catch (error) {

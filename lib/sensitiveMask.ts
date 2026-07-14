@@ -16,7 +16,7 @@ export function maskEmail(value: string) {
   return `${name.slice(0, 2)}${'*'.repeat(Math.max(name.length - 2, 2))}@${domain}`;
 }
 
-export function redactLeadForSales<T extends {customer: string; company: string; phone: string; email: string; address: string; projectAddress: string; value: string}>(lead: T): T {
+export function redactLeadForSales<T extends {customer: string; company: string; phone: string; email: string; address: string; projectAddress: string; value: string; estimatorData?: unknown}>(lead: T): T {
   return {
     ...lead,
     customer: maskText(lead.customer),

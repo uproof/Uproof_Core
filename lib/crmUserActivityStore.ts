@@ -1,5 +1,5 @@
 import {getDb, nowIso} from '@/lib/crmDb';
-import {createSupabaseAdminClient} from '@/lib/supabase/server';
+import {createCrmSupabaseClient as createSupabaseAdminClient} from '@/lib/crmStorage';
 
 export type CrmUserActivity = {
   id: number;
@@ -53,20 +53,17 @@ export async function logCrmUserActivity(input: LogCrmUserActivityInput) {
       ip: record.ip,
       created_at: record.createdAt,
     });
+    return;
   }
 
-  try {
-    const db = getDb();
-    db.prepare(
-      `INSERT INTO crm_user_activity (
-        actor_email, actor_role, action, lead_id, detail, ip, created_at
-      ) VALUES (
-        @actorEmail, @actorRole, @action, @leadId, @detail, @ip, @createdAt
-      )`
-    ).run(record);
-  } catch {
-    // Ignore local fallback failures when Supabase is available.
-  }
+  const db = getDb();
+  db.prepare(
+    `INSERT INTO crm_user_activity (
+      actor_email, actor_role, action, lead_id, detail, ip, created_at
+    ) VALUES (
+      @actorEmail, @actorRole, @action, @leadId, @detail, @ip, @createdAt
+    )`
+  ).run(record);
 }
 
 export async function getRecentCrmUserActivity(limit = 100): Promise<CrmUserActivity[]> {

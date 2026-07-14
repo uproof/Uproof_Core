@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isSuperadminAuthenticated } from '@/lib/adminAuth';
 import { validateCsrfToken } from '@/lib/csrf';
-import fs from 'fs/promises';
 import path from 'path';
+import {readJsonFile, writeJsonFile} from '@/lib/jsonFileStore';
 
 const SETTINGS_FILE = path.join(process.cwd(), 'data', 'settings.json');
 
 async function ensureSettingsFile() {
   try {
-    await fs.access(SETTINGS_FILE);
+    await import('fs/promises').then((fs) => fs.access(SETTINGS_FILE));
   } catch {
     const defaultSettings = {
       companyName: 'UpRoof Roofing Services',
@@ -24,7 +24,7 @@ async function ensureSettingsFile() {
       socialLinkedIn: '',
       socialTiktok: 'https://www.tiktok.com/@uproof',
     };
-    await fs.writeFile(SETTINGS_FILE, JSON.stringify(defaultSettings, null, 2));
+    await writeJsonFile(SETTINGS_FILE, defaultSettings);
   }
 }
 
@@ -32,8 +32,7 @@ export async function GET() {
   // Settings are public (needed to display contact info on portfolio site)
   try {
     await ensureSettingsFile();
-    const content = await fs.readFile(SETTINGS_FILE, 'utf-8');
-    const settings = JSON.parse(content);
+    const settings = await readJsonFile(SETTINGS_FILE, {});
     return NextResponse.json({ settings });
   } catch (error) {
     console.error('Error reading settings:', error);
@@ -68,7 +67,7 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Write settings
-    await fs.writeFile(SETTINGS_FILE, JSON.stringify(body, null, 2));
+    await writeJsonFile(SETTINGS_FILE, body);
 
     return NextResponse.json({ settings: body });
   } catch (error) {

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isSuperadminAuthenticated } from '@/lib/adminAuth';
-import fs from 'fs/promises';
 import path from 'path';
+import {readJsonFile, writeJsonFile} from '@/lib/jsonFileStore';
 
 const PAGES_FILE = path.join(process.cwd(), 'data', 'pages.json');
 
@@ -26,8 +26,7 @@ export async function PATCH(
     }
 
     // Read existing pages
-    const fileContent = await fs.readFile(PAGES_FILE, 'utf-8');
-    const pages = JSON.parse(fileContent);
+    const pages = await readJsonFile<any[]>(PAGES_FILE, []);
     const { slug } = await params;
     const pageIndex = pages.findIndex((p: any) => p.slug === slug);
 
@@ -46,7 +45,7 @@ export async function PATCH(
     };
 
     pages[pageIndex] = updated;
-    await fs.writeFile(PAGES_FILE, JSON.stringify(pages, null, 2));
+    await writeJsonFile(PAGES_FILE, pages);
 
     return NextResponse.json({ page: updated });
   } catch (error) {

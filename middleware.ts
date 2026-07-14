@@ -4,15 +4,17 @@ import {NextRequest, NextResponse} from 'next/server';
 import {latviaCities, belgiumCities} from '@/lib/cities';
 import {createSupabaseAdminClient} from '@/lib/supabase/server';
 import {SUPABASE_ACCESS_TOKEN_COOKIE} from '@/lib/supabase/session';
+import {getCrmRedirectHost, isCrmHost, isInternalAuthPath, isLegacyInternalHost} from '@/lib/internalRouting';
+import {createClient as createSupabaseMiddlewareClient, applySupabaseCookies} from '@/utils/supabase/middleware';
 
 const intlMiddleware = createMiddleware(routing);
 const LATVIA_CITY_SET = new Set<string>(latviaCities);
 const BELGIUM_CITY_SET = new Set<string>(belgiumCities);
 
-// Enforce canonical host (redirect www -> non-www)
+// Enforce canonical hosts (redirect www/admin aliases -> the intended host)
 const CANONICAL_HOST = 'uproof.eu';
-const ADMIN_HOST = 'admin.uproof.eu';
 const MFA_DEV_SECRET_FALLBACK = 'dev-secret-change-me';
+
 function enforceCanonicalHost(request: NextRequest) {
   const hostHeader = request.headers.get('host') || '';
   const host = hostHeader.split(':')[0];
@@ -22,6 +24,20 @@ function enforceCanonicalHost(request: NextRequest) {
     return NextResponse.redirect(url, 301);
   }
   return null;
+}
+
+function getLocaleFromPath(pathname: string) {
+  const match = pathname.match(/^\/(lv|en|nl-BE)(\/|$)/);
+  return match?.[1] || 'lv';
+}
+
+function redirectToHost(request: NextRequest, hostname: string, pathname?: string, supabaseResponse?: NextResponse | null) {
+  const url = new URL(request.nextUrl.toString());
+  url.hostname = hostname;
+  if (pathname) {
+    url.pathname = pathname;
+  }
+  return supabaseResponse ? applySupabaseCookies(NextResponse.redirect(url, 308), supabaseResponse) : NextResponse.redirect(url, 308);
 }
 
 function isCrawler(request: NextRequest): boolean {
@@ -41,6 +57,14 @@ function decodePayload(payload: string) {
   const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
   const padded = base64 + '='.repeat((4 - (base64.length % 4)) % 4);
   return atob(padded);
+}
+
+function normalizeJsonInit(init?: number | ResponseInit): ResponseInit | undefined {
+  if (typeof init === 'number') {
+    return {status: init};
+  }
+
+  return init;
 }
 
 async function getSessionRoleFromCookie(sessionToken: string | undefined, supabaseAccessToken: string | undefined): Promise<'sales' | 'superadmin' | null> {
@@ -102,13 +126,21 @@ export default async function middleware(request: NextRequest) {
   // canonical host enforcement
   const canonicalResponse = enforceCanonicalHost(request);
   if (canonicalResponse) return canonicalResponse;
+
+  const {supabase, supabaseResponse} = createSupabaseMiddlewareClient(request);
+  await supabase.auth.getUser().catch(() => null);
+
+  const wrapResponse = (response: NextResponse) => applySupabaseCookies(response, supabaseResponse);
+  const redirectWithCookies = (url: URL, status?: number) => wrapResponse(NextResponse.redirect(url, status));
+  const nextWithCookies = () => wrapResponse(NextResponse.next());
+  const jsonWithCookies = (body: unknown, init?: number | ResponseInit) => wrapResponse(NextResponse.json(body, normalizeJsonInit(init)));
+
   const {nextUrl, cookies} = request;
   const pathname = nextUrl.pathname;
   const hostHeader = request.headers.get('host') || '';
   const host = hostHeader.split(':')[0].toLowerCase();
-  const isLocalDevHost = ['localhost', '127.0.0.1', '::1'].includes(host) || host.endsWith('.localhost');
-  const isCrmHost = host === 'crm.uproof.eu';
-  const isAdminHost = host === ADMIN_HOST;
+  const crmHost = isCrmHost(host);
+  const legacyInternalHost = isLegacyInternalHost(host);
   const setLocale = nextUrl.searchParams.get('setLocale');
   const isCrmPath = /^\/(lv|en|nl-BE)\/crm(\/|$)/.test(pathname);
   const isCrmLoginPath = /^\/(lv|en|nl-BE)\/crm\/login(\/|$)/.test(pathname);
@@ -116,11 +148,31 @@ export default async function middleware(request: NextRequest) {
   const isAdminPath = /^\/(lv|en|nl-BE)\/admin(\/|$)/.test(pathname);
   const isApiAdminPath = /^\/api\/admin(\/|$)/.test(pathname);
   const isApiCrmPath = /^\/api\/crm(\/|$)/.test(pathname);
+  const isApiSecurityPath = /^\/api\/security(\/|$)/.test(pathname);
   const isAdminPublicLoginPath = /^\/(lv|en|nl-BE)\/admin\/login(\/|$)/.test(pathname);
   const isApiAdminPublicPath = /^\/api\/admin\/(login|logout)(\/|$)/.test(pathname);
+  const isInternalPath = isInternalAuthPath(pathname);
   const sessionToken = cookies.get('admin_session')?.value;
   const supabaseAccessToken = cookies.get(SUPABASE_ACCESS_TOKEN_COOKIE)?.value;
   const sessionRole = await getSessionRoleFromCookie(sessionToken, supabaseAccessToken);
+
+  if (legacyInternalHost) {
+    return redirectToHost(request, getCrmRedirectHost(host), undefined, supabaseResponse);
+  }
+
+  if (!crmHost && isInternalPath) {
+    return redirectToHost(request, getCrmRedirectHost(host), undefined, supabaseResponse);
+  }
+
+  if (crmHost && !isInternalPath) {
+    const locale = getLocaleFromPath(pathname);
+    const landingPath = sessionRole === 'superadmin'
+      ? `/${locale}/admin`
+      : sessionRole === 'sales'
+        ? `/${locale}/crm`
+        : `/${locale}/login`;
+    return redirectToHost(request, host, landingPath, supabaseResponse);
+  }
 
   if (isCrmLoginPath) {
     const redirectUrl = new URL(nextUrl.toString());
@@ -129,22 +181,22 @@ export default async function middleware(request: NextRequest) {
         /\/crm\/login(?:\/)?$/,
         sessionRole === 'sales' ? '/crm' : '/admin'
       );
-      return NextResponse.redirect(redirectUrl, 308);
+      return redirectWithCookies(redirectUrl, 308);
     }
     redirectUrl.pathname = pathname.replace(/\/crm\/login(?:\/)?$/, '/crm-login');
-    return NextResponse.rewrite(redirectUrl);
+    return wrapResponse(NextResponse.rewrite(redirectUrl));
   }
 
   if (isAdminPath && !isAdminPublicLoginPath) {
     if (!sessionRole) {
       const redirectUrl = new URL(nextUrl.toString());
       redirectUrl.pathname = pathname.replace(/^\/(lv|en|nl-BE)\/admin(?:\/.*)?$/, '/$1/admin/login');
-      return NextResponse.redirect(redirectUrl, 307);
+      return redirectWithCookies(redirectUrl, 307);
     }
     if (sessionRole !== 'superadmin') {
       const redirectUrl = new URL(nextUrl.toString());
       redirectUrl.pathname = pathname.replace(/^\/(lv|en|nl-BE)\/admin(?:\/.*)?$/, '/$1/crm');
-      return NextResponse.redirect(redirectUrl, 307);
+      return redirectWithCookies(redirectUrl, 307);
     }
   }
 
@@ -152,58 +204,38 @@ export default async function middleware(request: NextRequest) {
     if (!sessionRole) {
       const redirectUrl = new URL(nextUrl.toString());
       redirectUrl.pathname = pathname.replace(/^\/(lv|en|nl-BE)\/crm(?:\/.*)?$/, '/$1/crm/login');
-      return NextResponse.redirect(redirectUrl, 307);
+      return redirectWithCookies(redirectUrl, 307);
     }
     if (sessionRole === 'superadmin') {
       const redirectUrl = new URL(nextUrl.toString());
       redirectUrl.pathname = pathname.replace(/^\/(lv|en|nl-BE)\/crm(?:\/.*)?$/, '/$1/admin');
-      return NextResponse.redirect(redirectUrl, 307);
+      return redirectWithCookies(redirectUrl, 307);
     }
   }
 
   if (isApiAdminPath && !isApiAdminPublicPath) {
     if (!sessionRole) {
-      return NextResponse.json({ok: false, error: 'Unauthorized'}, {status: 401});
+      return jsonWithCookies({ok: false, error: 'Unauthorized'}, {status: 401});
     }
     if (sessionRole !== 'superadmin') {
-      return NextResponse.json({ok: false, error: 'Forbidden'}, {status: 403});
+      return jsonWithCookies({ok: false, error: 'Forbidden'}, {status: 403});
     }
   }
 
-  if (isApiCrmPath) {
+  if (isApiCrmPath || isApiSecurityPath) {
     if (!sessionRole) {
-      return NextResponse.json({ok: false, error: 'Unauthorized'}, {status: 401});
+      return jsonWithCookies({ok: false, error: 'Unauthorized'}, {status: 401});
     }
   }
 
   // API routes are locale-agnostic; never apply locale redirects/rewrite logic to them.
-  if (isApiAdminPath || isApiCrmPath) {
-    return NextResponse.next();
+  if (isApiAdminPath || isApiCrmPath || isApiSecurityPath) {
+    return nextWithCookies();
   }
 
-  if (!isLocalDevHost) {
-    if (isAdminPath && !isAdminHost) {
-      const redirectUrl = new URL(nextUrl.toString());
-      redirectUrl.hostname = ADMIN_HOST;
-      return NextResponse.redirect(redirectUrl, 308);
-    }
-
-    if (isCrmPath && !isCrmHost) {
-      const redirectUrl = new URL(nextUrl.toString());
-      redirectUrl.hostname = 'crm.uproof.eu';
-      return NextResponse.redirect(redirectUrl, 308);
-    }
-
-    if (isCrmHost && !isCrmPath) {
-      const redirectUrl = new URL(nextUrl.toString());
-      redirectUrl.hostname = ADMIN_HOST;
-      return NextResponse.redirect(redirectUrl, 308);
-    }
-
-    if (isAdminCrmPath && isCrmHost) {
-      const redirectUrl = new URL(nextUrl.toString());
-      redirectUrl.hostname = ADMIN_HOST;
-      return NextResponse.redirect(redirectUrl, 308);
+  if (isAdminPath || isCrmPath || isAdminCrmPath || isCrmLoginPath || isAdminPublicLoginPath) {
+    if (!crmHost) {
+      return redirectToHost(request, getCrmRedirectHost(host), undefined, supabaseResponse);
     }
   }
 
@@ -213,7 +245,7 @@ export default async function middleware(request: NextRequest) {
     const basePath = prefixMatch ? pathname.replace(/^\/(lv|en|nl-BE)/, '') || '' : pathname;
     const targetPath = basePath === '/' ? '' : basePath;
     const redirectUrl = new URL(`/${setLocale}${targetPath}`, nextUrl);
-    const response = NextResponse.redirect(redirectUrl);
+    const response = redirectWithCookies(redirectUrl);
     response.cookies.set('preferred_locale', setLocale, {
       path: '/',
       maxAge: 60 * 60 * 24 * 180
@@ -226,7 +258,7 @@ export default async function middleware(request: NextRequest) {
   if (urgencyDirectoryMatch) {
     const locale = urgencyDirectoryMatch[1];
     const redirectUrl = new URL(`/${locale}/urgency/caurs-jumts`, nextUrl);
-    return NextResponse.redirect(redirectUrl, 301);
+    return redirectWithCookies(redirectUrl, 301);
   }
 
   // Normalize stacked/doubled locale paths like /lv/en/... or /en/lv/... to single locale.
@@ -236,20 +268,20 @@ export default async function middleware(request: NextRequest) {
     const primaryLocale = stackedLocaleMatch[1];
     const remainder = stackedLocaleMatch[3] || '';
     const redirectUrl = new URL(`/${primaryLocale}${remainder}`, nextUrl);
-    return NextResponse.redirect(redirectUrl, 301);
+    return redirectWithCookies(redirectUrl, 301);
   }
 
   // Normalize malformed sitemap index paths such as /lv/sitemap-index.xml/urgency.
   const localizedSitemapIndexMatch = pathname.match(/^\/(lv|en|nl-BE)\/sitemap[-_]index\.xml(?:\/.+)?$/);
   if (localizedSitemapIndexMatch) {
     const redirectUrl = new URL('/sitemap_index.xml', nextUrl);
-    return NextResponse.redirect(redirectUrl, 301);
+    return redirectWithCookies(redirectUrl, 301);
   }
 
   const sitemapIndexMatch = pathname.match(/^\/sitemap[-_]index\.xml\/.+$/);
   if (sitemapIndexMatch) {
     const redirectUrl = new URL('/sitemap_index.xml', nextUrl);
-    return NextResponse.redirect(redirectUrl, 301);
+    return redirectWithCookies(redirectUrl, 301);
   }
 
   // Normalize malformed sitemap crawler paths such as /lv/sitemap.txt/services.
@@ -257,19 +289,19 @@ export default async function middleware(request: NextRequest) {
   if (localizedSitemapTxtMatch) {
     const sitemapName = localizedSitemapTxtMatch[2];
     const redirectUrl = new URL(`/sitemaps/${sitemapName}`, nextUrl);
-    return NextResponse.redirect(redirectUrl, 301);
+    return redirectWithCookies(redirectUrl, 301);
   }
 
   const sitemapTxtMatch = pathname.match(/^\/sitemap\.txt\/([a-z-]+)$/);
   if (sitemapTxtMatch) {
     const sitemapName = sitemapTxtMatch[1];
     const redirectUrl = new URL(`/sitemaps/${sitemapName}`, nextUrl);
-    return NextResponse.redirect(redirectUrl, 301);
+    return redirectWithCookies(redirectUrl, 301);
   }
 
   // Keep sitemap utility paths locale-agnostic to avoid crawler inconsistency.
   if (pathname.startsWith('/sitemaps/')) {
-    return NextResponse.next();
+    return nextWithCookies();
   }
 
   // Handle malformed or crawler-generated 'news-sitemap.xml' requests.
@@ -284,11 +316,11 @@ export default async function middleware(request: NextRequest) {
     if (!remainder) {
       // /lv/news-sitemap.xml -> blog sitemap
       const redirectUrl = new URL('/blog-sitemap.xml', nextUrl);
-      return NextResponse.redirect(redirectUrl, 301);
+      return redirectWithCookies(redirectUrl, 301);
     }
     // /lv/news-sitemap.xml/services/... -> /lv/services/...
     const redirectUrl = new URL(`/${locale}/${remainder}`, nextUrl);
-    return NextResponse.redirect(redirectUrl, 301);
+    return redirectWithCookies(redirectUrl, 301);
   }
 
   const newsSitemapMatch = pathname.match(/^\/news-sitemap\.xml(?:\/(.*))?$/);
@@ -297,12 +329,12 @@ export default async function middleware(request: NextRequest) {
     if (!remainder) {
       // /news-sitemap.xml -> blog sitemap
       const redirectUrl = new URL('/blog-sitemap.xml', nextUrl);
-      return NextResponse.redirect(redirectUrl, 301);
+      return redirectWithCookies(redirectUrl, 301);
     }
     // /news-sitemap.xml/services/... -> strip prefix and let normal routing apply
     // Prefer redirect to the stripped path so middleware logic and locale detection runs consistently.
     const redirectUrl = new URL(`/${remainder}`, nextUrl);
-    return NextResponse.redirect(redirectUrl, 301);
+    return redirectWithCookies(redirectUrl, 301);
   }
 
   // Handle malformed sitemap.html patterns (e.g., /sitemap.html/privacy-policy).
@@ -310,7 +342,7 @@ export default async function middleware(request: NextRequest) {
   const sitemapHtmlMatch = pathname.match(/^\/sitemap\.html(?:\/(.*))?$/);
   if (sitemapHtmlMatch) {
     const redirectUrl = new URL('/sitemap_index.xml', nextUrl);
-    return NextResponse.redirect(redirectUrl, 301);
+    return redirectWithCookies(redirectUrl, 301);
   }
 
   // Redirect well-known files requested under locale prefix to root.
@@ -322,14 +354,14 @@ export default async function middleware(request: NextRequest) {
     const redirectUrl = wellKnownPath.startsWith('apple-app-site-association')
       ? new URL('/.well-known/apple-app-site-association', nextUrl)
       : new URL(`/.well-known/${wellKnownPath.replace('well-known/', '')}`, nextUrl);
-    return NextResponse.redirect(redirectUrl, 301);
+    return redirectWithCookies(redirectUrl, 301);
   }
 
   // Handle old paths without locale - redirect to lv
   const oldPathsToRedirect = ['/ieteikumi', '/services', '/materials', '/reviews', '/projects', '/about', '/contact', '/blog'];
   if (oldPathsToRedirect.some(p => pathname === p || pathname.startsWith(p + '/'))) {
     const redirectUrl = new URL(`/lv${pathname}`, nextUrl);
-    return NextResponse.redirect(redirectUrl, 301);
+    return redirectWithCookies(redirectUrl, 301);
   }
 
   // Normalize mismatched locale/city combinations to canonical locale URLs.
@@ -340,12 +372,12 @@ export default async function middleware(request: NextRequest) {
 
     if (localePrefix === 'nl-BE' && LATVIA_CITY_SET.has(city)) {
       const redirectUrl = new URL(`/en/cities/${city}`, nextUrl);
-      return NextResponse.redirect(redirectUrl, 301);
+      return redirectWithCookies(redirectUrl, 301);
     }
 
     if ((localePrefix === 'lv' || localePrefix === 'en') && BELGIUM_CITY_SET.has(city)) {
       const redirectUrl = new URL(`/nl-BE/cities/${city}`, nextUrl);
-      return NextResponse.redirect(redirectUrl, 301);
+      return redirectWithCookies(redirectUrl, 301);
     }
   }
 
@@ -374,13 +406,13 @@ export default async function middleware(request: NextRequest) {
     const legacyMapped = legacySlugRedirects[subpath];
     if (legacyMapped) {
       const redirectUrl = new URL(`/${localePrefix}${legacyMapped}`, nextUrl);
-      return NextResponse.redirect(redirectUrl, 301);
+      return redirectWithCookies(redirectUrl, 301);
     }
 
     const mapped = latvianToEnglishPaths[subpath];
     if (mapped) {
       const redirectUrl = new URL(`/${localePrefix}${mapped}`, nextUrl);
-      return NextResponse.redirect(redirectUrl, 301);
+      return redirectWithCookies(redirectUrl, 301);
     }
   }
 
@@ -391,7 +423,7 @@ export default async function middleware(request: NextRequest) {
 
   if (!hasLocalePrefix) {
     const redirectUrl = new URL(`/lv${pathname === '/' ? '' : pathname}`, nextUrl);
-    const response = NextResponse.redirect(redirectUrl, 308);
+    const response = redirectWithCookies(redirectUrl, 308);
     if (!crawler) {
       response.cookies.set('preferred_locale', 'lv', {
         path: '/',
@@ -402,7 +434,7 @@ export default async function middleware(request: NextRequest) {
   }
 
   // Delegate to next-intl middleware for locale routing
-  return intlMiddleware(request);
+  return wrapResponse(intlMiddleware(request));
 }
 
 export const config = {

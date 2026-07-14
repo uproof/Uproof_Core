@@ -1,3 +1,5 @@
+import type {CrmEstimatorFormData} from '@/lib/crmEstimator';
+
 export type CrmLeadWorkLogEntry = {
   time: string;
   title: string;
@@ -27,13 +29,7 @@ export type CrmLead = {
   nextAction: string;
   attachments: string[];
   workLog: CrmLeadWorkLogEntry[];
-  estimatorData: CrmEstimatorRow[];
-};
-
-export type CrmEstimatorRow = {
-  label: string;
-  measurement: string;
-  notes: string;
+  estimatorData: CrmEstimatorFormData;
 };
 
 export type CrmCustomer = {

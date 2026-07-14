@@ -1,26 +1,16 @@
 import {ReactNode} from 'react';
-import {redirect} from 'next/navigation';
 import {headers} from 'next/headers';
 import Link from 'next/link';
 import Image from 'next/image';
 import {ChartBarIcon, ClipboardDocumentListIcon, FolderOpenIcon, HomeIcon, UserGroupIcon, DocumentTextIcon} from '@heroicons/react/24/outline';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import AdminLogout from '@/components/AdminLogout';
-import {getAdminSession, isAdminAuthenticated} from '@/lib/adminAuth';
-import {getCrmUserByEmail, getPlainMfaSecret} from '@/lib/crmUsersStore';
+import {requireSalesWorkspace} from '@/lib/internalAccess';
 
 export default async function CrmLayout({children, params}: {children: ReactNode; params: Promise<{locale: string}>}) {
   const {locale} = await params;
   const isLv = locale === 'lv';
-  const session = await getAdminSession();
-  if (!session || session.role !== 'sales') {
-    redirect(`/${locale}/crm-login?redirect=/${locale}/crm`);
-  }
-
-  const user = await getCrmUserByEmail(session.email);
-  if (!getPlainMfaSecret(user)) {
-    redirect(`/${locale}/crm-login?redirect=/${locale}/crm&setup=1`);
-  }
+  await requireSalesWorkspace(locale);
 
   const headerStore = await headers();
   const ip = headerStore.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
@@ -56,7 +46,7 @@ export default async function CrmLayout({children, params}: {children: ReactNode
                 <HomeIcon className="h-4 w-4" />
                 {isLv ? 'Mājaslapa' : 'Website'}
               </Link>
-              <AdminLogout locale={locale} redirectPath={`/${locale}/crm/login`} />
+              <AdminLogout locale={locale} redirectPath={`/${locale}/login`} />
             </div>
           </div>
         </div>

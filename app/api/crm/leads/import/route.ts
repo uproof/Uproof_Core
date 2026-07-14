@@ -6,6 +6,7 @@ import {parseCsv} from '@/lib/csv';
 import {getDb, nowIso} from '@/lib/crmDb';
 import {upsertProjectFromLead} from '@/lib/crmProjectsStore';
 import {CrmLead} from '@/lib/crmMockData';
+import {createEmptyCrmEstimatorData, normalizeCrmEstimatorData, stringifyEstimatorData} from '@/lib/crmEstimator';
 
 function normalizeText(value: unknown) {
   return String(value || '').trim();
@@ -69,7 +70,7 @@ function rowToLead(row: Record<string, string>, fallbackId: string): CrmLead {
     nextAction: getRowValue(row, 'nextAction', 'next action', 'next_action'),
     attachments: parseJsonArray<string>(getRowValue(row, 'attachments'), []),
     workLog: parseJsonArray<CrmLead['workLog'][number]>(getRowValue(row, 'workLog', 'work log', 'work_log'), []),
-    estimatorData: parseJsonArray<CrmLead['estimatorData'][number]>(getRowValue(row, 'estimatorData', 'estimator data', 'estimator_data'), []),
+    estimatorData: normalizeCrmEstimatorData(parseJsonArray(getRowValue(row, 'estimatorData', 'estimator data', 'estimator_data'), []), createEmptyCrmEstimatorData()),
   };
 }
 
@@ -95,7 +96,7 @@ function leadToSqlParams(lead: CrmLead, now: string) {
     nextAction: lead.nextAction,
     attachmentsJson: JSON.stringify(lead.attachments),
     workLogJson: JSON.stringify(lead.workLog),
-    estimatorDataJson: JSON.stringify(lead.estimatorData),
+    estimatorDataJson: stringifyEstimatorData(lead.estimatorData),
     assignedSalesUserId: lead.assignedSalesUserId || null,
     assignedBy: '',
     assignedAt: '',

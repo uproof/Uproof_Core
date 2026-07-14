@@ -4,6 +4,7 @@ import type {CrmCustomer} from '@/lib/crmMockData';
 
 type CrmCustomersOptions = {
   assignedSalesUserId?: string;
+  limit?: number;
 };
 
 function normalizeKey(value: string) {
@@ -19,7 +20,10 @@ function customerId(customer: string, company: string, phone: string, email: str
 }
 
 export async function getCrmCustomers(options: CrmCustomersOptions = {}): Promise<CrmCustomer[]> {
-  const leads = await getCrmLeads(options.assignedSalesUserId ? {assignedSalesUserId: options.assignedSalesUserId} : {});
+  const leads = await getCrmLeads({
+    ...(options.assignedSalesUserId ? {assignedSalesUserId: options.assignedSalesUserId} : {}),
+    ...(typeof options.limit === 'number' ? {limit: options.limit} : {}),
+  });
   const customers = new Map<string, CrmCustomer>();
 
   for (const lead of leads) {

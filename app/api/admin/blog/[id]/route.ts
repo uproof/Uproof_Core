@@ -1,17 +1,16 @@
 import {NextRequest, NextResponse} from 'next/server';
 import {isSuperadminAuthenticated} from '@/lib/adminAuth';
-import fs from 'fs/promises';
 import path from 'path';
+import {readJsonFile, writeJsonFile} from '@/lib/jsonFileStore';
 
 const dataPath = path.join(process.cwd(), 'data', 'blog.json');
 
 async function readPosts() {
-  const txt = await fs.readFile(dataPath, 'utf8');
-  return JSON.parse(txt) as any[];
+  return readJsonFile<any[]>(dataPath, []);
 }
 
 async function writePosts(posts: any[]) {
-  await fs.writeFile(dataPath, JSON.stringify(posts, null, 2), 'utf8');
+  await writeJsonFile(dataPath, posts);
 }
 
 export async function PUT(req: NextRequest, {params}: {params: Promise<{id: string}>}) {

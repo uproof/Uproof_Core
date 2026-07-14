@@ -1,7 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import Database from 'better-sqlite3';
-import {hashPassword} from '@/lib/secretVault';
 
 const DB_PATH = path.join(process.cwd(), 'data', 'crm.sqlite');
 let database: Database.Database | null = null;
@@ -28,9 +27,6 @@ function ensureLeadColumns(db: Database.Database) {
 }
 
 function ensureCrmUserColumns(db: Database.Database) {
-  if (!hasColumn(db, 'crm_users', 'password')) {
-    db.exec("ALTER TABLE crm_users ADD COLUMN password TEXT NOT NULL DEFAULT ''");
-  }
   if (!hasColumn(db, 'crm_users', 'mfa_secret')) {
     db.exec("ALTER TABLE crm_users ADD COLUMN mfa_secret TEXT NOT NULL DEFAULT ''");
   }
@@ -121,7 +117,6 @@ function ensureSchema(db: Database.Database) {
       name TEXT NOT NULL,
       role TEXT NOT NULL,
       is_active INTEGER NOT NULL DEFAULT 1,
-      password TEXT NOT NULL DEFAULT '',
       mfa_secret TEXT NOT NULL DEFAULT '',
       session_valid_after TEXT NOT NULL DEFAULT '',
       archived_at TEXT NOT NULL DEFAULT '',
@@ -207,7 +202,6 @@ function ensureSchema(db: Database.Database) {
       aggregate_type TEXT NOT NULL,
       aggregate_id TEXT NOT NULL,
       payload_json TEXT NOT NULL,
-      created_at TEXT NOT NULL
     );
 
     CREATE INDEX IF NOT EXISTS idx_crm_events_created_at
@@ -239,35 +233,31 @@ function seedIfNeeded(db: Database.Database) {
       id: 'superadmin-karlis-nikis',
       email: process.env.SUPERADMIN_EMAIL_1 || '',
       name: 'Karlis Nikis',
-      password: process.env.SUPERADMIN_PASSWORD_1 || '',
     },
     {
       id: 'superadmin-mohsinmaqboolmir',
       email: process.env.SUPERADMIN_EMAIL_2 || '',
       name: 'Mohsin Maqbool Mir',
-      password: process.env.SUPERADMIN_PASSWORD_2 || '',
     },
   ]
     .map((entry) => ({
       id: entry.id,
       email: entry.email.trim().toLowerCase(),
       name: entry.name,
-      password: entry.password.trim(),
     }))
-    .filter((entry) => entry.email && entry.password);
+    .filter((entry) => entry.email);
 
   const upsertSuperadmin = db.prepare(`
     INSERT INTO crm_users (
-      id, email, name, role, is_active, password, mfa_secret, session_valid_after, archived_at, created_at, updated_at_utc
+      id, email, name, role, is_active, mfa_secret, session_valid_after, archived_at, created_at, updated_at_utc
     ) VALUES (
-      @id, @email, @name, 'superadmin', 1, @password, '', @sessionValidAfter, '', @createdAt, @updatedAtUtc
+      @id, @email, @name, 'superadmin', 1, '', @sessionValidAfter, '', @createdAt, @updatedAtUtc
     )
     ON CONFLICT(email) DO UPDATE SET
       id = excluded.id,
       name = excluded.name,
       role = 'superadmin',
       is_active = 1,
-      password = excluded.password,
       session_valid_after = excluded.session_valid_after,
       archived_at = '',
       updated_at_utc = excluded.updated_at_utc
@@ -278,7 +268,6 @@ function seedIfNeeded(db: Database.Database) {
       id: account.id,
       email: account.email,
       name: account.name,
-      password: account.password ? hashPassword(account.password) : '',
       sessionValidAfter: now,
       createdAt: now,
       updatedAtUtc: now,

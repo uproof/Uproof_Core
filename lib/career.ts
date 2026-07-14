@@ -67,6 +67,56 @@ function toIsoDate(date: Date) {
   return date.toISOString().slice(0, 10);
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return !!value && typeof value === 'object' && !Array.isArray(value);
+}
+
+function readCareerText(value: unknown) {
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+function parseCareerJobsFile(content: string): CareerJob[] {
+  try {
+    const parsed = JSON.parse(content);
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+
+    return parsed
+      .filter(isRecord)
+      .filter((job) => {
+        return (
+          readCareerText(job.title) &&
+          readCareerText(job.location) &&
+          readCareerText(job.type) &&
+          readCareerText(job.summary) &&
+          readCareerText(job.description)
+        );
+      })
+      .map((job, index) =>
+        normalizeCareerJob({
+          id: readCareerText(job.id) || `career-job-${index + 1}`,
+          slug: readCareerText(job.slug),
+          title: readCareerText(job.title),
+          location: readCareerText(job.location),
+          addressLocality: readCareerText(job.addressLocality) || undefined,
+          addressRegion: readCareerText(job.addressRegion) || undefined,
+          addressCountry: readCareerText(job.addressCountry) || undefined,
+          type: readCareerText(job.type),
+          summary: readCareerText(job.summary),
+          description: readCareerText(job.description),
+          datePosted: readCareerText(job.datePosted) || undefined,
+          validThrough: readCareerText(job.validThrough) || undefined,
+          updatedAt: readCareerText(job.updatedAt) || undefined,
+          active: typeof job.active === 'boolean' ? job.active : undefined,
+          order: typeof job.order === 'number' && Number.isFinite(job.order) ? job.order : undefined,
+        }),
+      );
+  } catch {
+    return [];
+  }
+}
+
 async function ensureCareerJobsFile() {
   try {
     await fs.access(CAREER_JOBS_FILE);
@@ -78,7 +128,7 @@ async function ensureCareerJobsFile() {
 export async function getCareerJobs(): Promise<CareerJob[]> {
   await ensureCareerJobsFile();
   const txt = await fs.readFile(CAREER_JOBS_FILE, 'utf-8');
-  const jobs = JSON.parse(txt) as CareerJob[];
+  const jobs = parseCareerJobsFile(txt);
   return [...jobs]
     .map((job) => normalizeCareerJob(job))
     .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));

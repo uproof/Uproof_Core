@@ -4,6 +4,7 @@ import {useMemo, useState} from 'react';
 import Card from '@/components/Card';
 import Section from '@/components/Section';
 import type {CrmProjectRecord} from '@/lib/crmProjectsStore';
+import {formatEstimatorValue, summarizeEstimatorData} from '@/lib/crmEstimator';
 
 type Props = {
   locale: string;
@@ -28,7 +29,7 @@ function parseDateValue(value: string) {
 }
 
 function getProjectSearchText(project: CrmProjectRecord) {
-  return [project.id, project.leadId, project.title, project.location, project.owner, project.phase, project.budget, project.dueDate, project.estimatorData.map((row) => [row.label, row.measurement, row.notes].join(' ')).join(' ')].join(' ');
+  return [project.id, project.leadId, project.title, project.location, project.owner, project.phase, project.budget, project.dueDate, ...Object.values(project.estimatorData).map((value) => formatEstimatorValue(value))].join(' ');
 }
 
 export default function CrmProjectsClient({locale, projects}: Props) {
@@ -149,11 +150,10 @@ export default function CrmProjectsClient({locale, projects}: Props) {
               <div className="mt-5 space-y-2">
                 <div className="text-xs font-semibold uppercase tracking-[0.2em] text-sky-500">{isLv ? 'Estimator dati' : 'Estimator data'}</div>
                 <div className="space-y-2">
-                  {project.estimatorData.map((row) => (
-                    <div key={`${project.id}-${row.label}-${row.measurement}-${row.notes}`} className="rounded-xl border border-sky-100 bg-sky-50 px-3 py-2 text-xs text-slate-700">
-                      <div className="font-semibold text-slate-900">{row.label || '—'}</div>
-                      <div>{row.measurement || '—'}</div>
-                      <div className="text-slate-500">{row.notes || '—'}</div>
+                  {summarizeEstimatorData(project.estimatorData).map((row) => (
+                    <div key={`${project.id}-${row.label}`} className="rounded-xl border border-sky-100 bg-sky-50 px-3 py-2 text-xs text-slate-700">
+                      <div className="font-semibold text-slate-900">{row.label}</div>
+                      <div>{row.value || '—'}</div>
                     </div>
                   ))}
                 </div>

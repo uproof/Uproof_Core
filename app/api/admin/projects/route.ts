@@ -4,6 +4,7 @@ import { validateCsrfToken } from '@/lib/csrf';
 import fs from 'fs/promises';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+import {readJsonFile, writeJsonFile} from '@/lib/jsonFileStore';
 
 const PROJECTS_FILE = path.join(process.cwd(), 'data', 'projects-admin.json');
 const PUBLIC_UPLOADS = path.join(process.cwd(), 'public', 'uploads', 'projects');
@@ -11,15 +12,15 @@ const PUBLIC_UPLOADS = path.join(process.cwd(), 'public', 'uploads', 'projects')
 // Ensure directories exist
 async function ensureDirectories() {
   try {
-    await fs.access(PUBLIC_UPLOADS);
+    await import('fs/promises').then((fs) => fs.access(PUBLIC_UPLOADS));
   } catch {
-    await fs.mkdir(PUBLIC_UPLOADS, { recursive: true });
+    await import('fs/promises').then((fs) => fs.mkdir(PUBLIC_UPLOADS, { recursive: true }));
   }
 
   try {
-    await fs.access(PROJECTS_FILE);
+    await import('fs/promises').then((fs) => fs.access(PROJECTS_FILE));
   } catch {
-    await fs.writeFile(PROJECTS_FILE, JSON.stringify([], null, 2));
+    await writeJsonFile(PROJECTS_FILE, []);
   }
 }
 
@@ -31,8 +32,7 @@ export async function GET() {
   }
   try {
     await ensureDirectories();
-    const content = await fs.readFile(PROJECTS_FILE, 'utf-8');
-    const projects = JSON.parse(content);
+    const projects = await readJsonFile(PROJECTS_FILE, []);
     return NextResponse.json({ projects });
   } catch (error) {
     console.error('Error reading projects:', error);
@@ -101,8 +101,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Read existing projects
-    const content = await fs.readFile(PROJECTS_FILE, 'utf-8');
-    const projects = JSON.parse(content);
+    const projects = await readJsonFile(PROJECTS_FILE, []);
 
     const newProject = {
       id,
@@ -114,7 +113,7 @@ export async function POST(request: NextRequest) {
     };
 
     projects.push(newProject);
-    await fs.writeFile(PROJECTS_FILE, JSON.stringify(projects, null, 2));
+    await writeJsonFile(PROJECTS_FILE, projects);
 
     return NextResponse.json({ project: newProject }, { status: 201 });
   } catch (error) {

@@ -1,7 +1,7 @@
 import {NextRequest, NextResponse} from 'next/server';
 import {isSuperadminAuthenticated} from '@/lib/adminAuth';
-import fs from 'fs/promises';
 import path from 'path';
+import {readJsonFile, writeJsonFile} from '@/lib/jsonFileStore';
 
 function filePath(locale: string) {
   return path.join(process.cwd(), 'messages', `${locale}.json`);
@@ -21,8 +21,8 @@ export async function GET(_: NextRequest, {params}: {params: Promise<{locale: st
   }
   
   try {
-    const txt = await fs.readFile(filePath(locale), 'utf8');
-    return NextResponse.json({ok: true, messages: JSON.parse(txt)});
+    const messages = await readJsonFile(filePath(locale), {});
+    return NextResponse.json({ok: true, messages});
   } catch (e) {
     return NextResponse.json({ok: false, error: 'Locale not found'}, {status: 404});
   }
@@ -42,6 +42,6 @@ export async function PUT(req: NextRequest, {params}: {params: Promise<{locale: 
   if (typeof body !== 'object' || body === null) {
     return NextResponse.json({ok: false, error: 'Invalid payload'}, {status: 400});
   }
-  await fs.writeFile(filePath(locale), JSON.stringify(body, null, 2), 'utf8');
+  await writeJsonFile(filePath(locale), body);
   return NextResponse.json({ok: true});
 }

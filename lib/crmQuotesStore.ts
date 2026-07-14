@@ -10,9 +10,11 @@ type QuoteRow = {
   owner: string;
 };
 
-export async function getCrmQuotes(): Promise<CrmQuote[]> {
+export async function getCrmQuotes(limit = 0): Promise<CrmQuote[]> {
   const db = getDb();
-  const rows = db.prepare('SELECT * FROM quotes ORDER BY created_at DESC').all() as QuoteRow[];
+  const rows = limit > 0
+    ? (db.prepare('SELECT * FROM quotes ORDER BY created_at DESC LIMIT ?').all(limit) as QuoteRow[])
+    : (db.prepare('SELECT * FROM quotes ORDER BY created_at DESC').all() as QuoteRow[]);
   return rows.map((row) => ({
     id: row.id,
     customer: row.customer,

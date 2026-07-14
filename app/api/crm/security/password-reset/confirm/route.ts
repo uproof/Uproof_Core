@@ -4,6 +4,7 @@ import {getDb} from '@/lib/crmDb';
 import {createSupabaseAdminClient} from '@/lib/supabase/server';
 import {consumePasswordResetToken} from '@/lib/crmUsersStore';
 import {validatePasswordPolicy} from '@/lib/secretVault';
+import {parsePassword, parseResetToken} from '@/lib/authValidation';
 
 async function recordAuditLog(entry: {
   requestId: string;
@@ -50,8 +51,8 @@ async function recordAuditLog(entry: {
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({} as Record<string, unknown>));
-  const token = String(body.token || '').trim();
-  const newPassword = String(body.newPassword || '').trim();
+  const token = parseResetToken(body.token);
+  const newPassword = parsePassword(body.newPassword);
 
   if (!token || !newPassword) {
     return NextResponse.json({ok: false, error: 'Token and new password are required'}, {status: 400});
@@ -64,7 +65,7 @@ export async function POST(req: NextRequest) {
 
   const user = await consumePasswordResetToken(token, newPassword);
   if (!user) {
-    return NextResponse.json({ok: false, error: 'Reset token is invalid or expired'}, {status: 400});
+    return NextResponse.json({ok: false, error: 'Unable to reset password'}, {status: 400});
   }
 
   await recordAuditLog({

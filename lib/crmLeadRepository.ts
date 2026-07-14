@@ -1,8 +1,9 @@
 import type Database from 'better-sqlite3';
 import {getApprovedSuperadminCredentials} from '@/lib/adminAuth';
 import {getDb, nowIso} from '@/lib/crmDb';
-import {createSupabaseAdminClient} from '@/lib/supabase/server';
+import {createCrmSupabaseClient as createSupabaseAdminClient} from '@/lib/crmStorage';
 import type {CrmLead} from '@/lib/crmMockData';
+import {createEmptyCrmEstimatorData, normalizeCrmEstimatorData, stringifyEstimatorData} from '@/lib/crmEstimator';
 
 type LeadRow = {
   id: string;
@@ -72,6 +73,13 @@ function parseJsonArray<T>(value: string, fallback: T[]): T[] {
 }
 
 function mapLead(row: LeadRow): CrmLead {
+  let estimatorData = createEmptyCrmEstimatorData();
+  try {
+    estimatorData = normalizeCrmEstimatorData(JSON.parse(row.estimator_data_json || 'null'), estimatorData);
+  } catch {
+    estimatorData = createEmptyCrmEstimatorData();
+  }
+
   return {
     id: row.id,
     assignedSalesUserId: row.assigned_sales_user_id,
@@ -95,7 +103,7 @@ function mapLead(row: LeadRow): CrmLead {
     nextAction: row.next_action,
     attachments: parseJsonArray<string>(row.attachments_json, []),
     workLog: parseJsonArray(row.work_log_json, []),
-    estimatorData: parseJsonArray(row.estimator_data_json, []),
+    estimatorData,
   };
 }
 
@@ -147,12 +155,12 @@ export function insertUserActivity(db: Database.Database, input: {
               archived_at: '',
               created_at: createdAt,
             });
-          }
-
-          insertNotification(db, {
-            recipientEmail,
-            ...notification,
-          });
+            } else {
+              insertNotification(db, {
+                recipientEmail,
+                ...notification,
+              });
+            }
         }
       }
     }
@@ -280,7 +288,7 @@ export function updateLeadRow(
     value: updates.value?.trim() || next.value,
     nextAction: updates.nextAction?.trim() || next.nextAction,
     workLog: updates.workLog || next.workLog,
-    estimatorData: updates.estimatorData || next.estimatorData,
+    estimatorData: updates.estimatorData ? normalizeCrmEstimatorData(updates.estimatorData, next.estimatorData) : next.estimatorData,
     attachments: updates.attachments || next.attachments,
     assignedSalesUserId: next.assignedSalesUserId || null,
     updatedAt: new Date().toLocaleString('en-GB', {hour12: false}),
@@ -332,7 +340,7 @@ export function updateLeadRow(
     nextAction: merged.nextAction,
     attachmentsJson: JSON.stringify(merged.attachments),
     workLogJson: JSON.stringify(merged.workLog),
-    estimatorDataJson: JSON.stringify(merged.estimatorData),
+    estimatorDataJson: stringifyEstimatorData(merged.estimatorData),
     updatedAtUtc: merged.updatedAtUtc,
   });
 

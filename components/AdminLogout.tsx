@@ -9,7 +9,7 @@ export default function AdminLogout({ locale, redirectPath }: { locale: string; 
     } catch (e) {
       // ignore network errors; we'll still navigate
     } finally {
-      window.location.href = redirectPath || `/${locale}/admin/login`;
+      window.location.href = redirectPath || `/${locale}/login`;
     }
   };
 

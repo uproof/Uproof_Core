@@ -190,6 +190,10 @@ export default function Footer() {
               © {currentYear} UpRoof. {t('rights')}.
             </p>
             <span className="hidden sm:inline text-gray-700">•</span>
+            <Link href="/terms" className="hover:text-gray-300 transition-colors">
+              Terms
+            </Link>
+            <span className="hidden sm:inline text-gray-700">•</span>
             <Link href="/privacy-policy" className="hover:text-gray-300 transition-colors">
               Privacy Policy
             </Link>

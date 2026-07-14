@@ -17,7 +17,7 @@ import {
   resetCrmUserMfa,
   revokeCrmUserSessions,
 } from '@/lib/crmUsersStore';
-import {validatePasswordPolicy, verifyPassword} from '@/lib/secretVault';
+import {validatePasswordPolicy} from '@/lib/secretVault';
 
 async function recordAuditLog(entry: {
   requestId: string;
@@ -62,11 +62,6 @@ async function recordAuditLog(entry: {
   }
 }
 
-function buildResetUrl(req: NextRequest, token: string) {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || new URL(req.url).origin;
-  return `${baseUrl.replace(/\/$/, '')}/crm/reset-password/${token}`;
-}
-
 export async function POST(req: NextRequest, {params}: {params: Promise<{id: string}>}) {
   const session = await getAdminSession();
   if (!session) {
@@ -89,8 +84,9 @@ export async function POST(req: NextRequest, {params}: {params: Promise<{id: str
   const adminPassword = String(body.adminPassword || '').trim();
 
   if (adminPassword) {
-    const adminUser = await getCrmUserByEmail(session.email);
-    if (!adminUser || !verifyPassword(adminPassword, adminUser.password || '')) {
+    const supabase = createSupabaseAdminClient();
+    const {error} = await supabase?.auth.signInWithPassword({email: session.email, password: adminPassword}) || {error: new Error('Supabase unavailable')};
+    if (error) {
       return NextResponse.json({ok: false, error: 'Super admin re-authentication failed'}, {status: 401});
     }
   }
@@ -112,7 +108,7 @@ export async function POST(req: NextRequest, {params}: {params: Promise<{id: str
           name: target.name,
           role: target.role,
           isActive: target.isActive,
-          hasPassword: !!target.password,
+          hasPassword: false,
           hasMfaSecret: !!target.mfaSecret,
           sessionValidAfter: target.sessionValidAfter || '',
           archivedAt: target.archivedAt || '',
@@ -178,7 +174,6 @@ export async function POST(req: NextRequest, {params}: {params: Promise<{id: str
     }
     case 'reset-password': {
       const reset = await issuePasswordResetToken(target.id, session.email);
-      const resetUrl = buildResetUrl(req, reset.token);
       await recordAuditLog({
         requestId,
         actorEmail: session.email,
@@ -186,10 +181,10 @@ export async function POST(req: NextRequest, {params}: {params: Promise<{id: str
         action: 'crm_user_reset_password',
         entityType: 'crm_user',
         entityId: target.id,
-        detail: [reason, resetUrl].filter(Boolean).join(' | ') || 'Password reset link issued',
+        detail: reason || 'Password reset link issued',
         success: true,
       });
-      return NextResponse.json({ok: true, resetUrl, expiresAt: reset.expiresAt});
+      return NextResponse.json({ok: true, expiresAt: reset.expiresAt});
     }
     case 'reset-mfa': {
       const user = await resetCrmUserMfa(target.id);

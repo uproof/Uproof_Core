@@ -12,6 +12,7 @@ export default function AdminLoginPage({locale, redirectTarget}: Props) {
   const [password, setPassword] = useState('');
   const [mfaCode, setMfaCode] = useState('');
   const [recoveryCode, setRecoveryCode] = useState('');
+  const [showRecoveryCode, setShowRecoveryCode] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -39,13 +40,13 @@ export default function AdminLoginPage({locale, redirectTarget}: Props) {
         }
       : {
           heading: 'CMS sign in',
-          title: 'Sign in as superadmin',
+        title: 'Sign in',
           email: 'Email',
           password: 'Password',
           code: 'CODE',
           recovery: 'Recovery code',
           button: 'Continue',
-          setup: 'Set up authenticator',
+        setup: 'Authenticator setup',
         };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -84,12 +85,7 @@ export default function AdminLoginPage({locale, redirectTarget}: Props) {
           <div className="rounded-[2rem] border border-sky-100 bg-white p-8 shadow-[0_24px_80px_rgba(14,165,233,0.12)]">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-500">{labels.heading}</p>
             <h1 className="mt-3 text-4xl font-bold tracking-tight text-slate-900">{labels.title}</h1>
-            <p className="mt-4 max-w-xl text-sm leading-6 text-slate-600">
-              Admin access starts with password verification and finishes with the authenticator setup flow.
-            </p>
-            <div className="mt-6 rounded-3xl border border-sky-100 bg-sky-50 p-5 text-sm text-sky-900">
-              Approved superadmin accounts are fixed in the database and must complete MFA before entering the CMS.
-            </div>
+            <p className="mt-4 max-w-xl text-sm leading-6 text-slate-600">Use your approved CMS account to continue.</p>
           </div>
 
           <div className="rounded-[2rem] border border-sky-100 bg-white p-6 shadow-[0_24px_80px_rgba(14,165,233,0.12)] sm:p-8">
@@ -107,11 +103,23 @@ export default function AdminLoginPage({locale, redirectTarget}: Props) {
                   <label className="block text-sm font-semibold text-slate-700">{labels.code}</label>
                   <input value={mfaCode} onChange={(event) => setMfaCode(event.target.value)} inputMode="numeric" autoComplete="one-time-code" className="mt-2 w-full rounded-2xl border border-sky-200 bg-white px-4 py-3 text-slate-900 outline-none focus:border-sky-400" />
                 </div>
+                <div className="flex items-end">
+                  <button
+                    type="button"
+                    onClick={() => setShowRecoveryCode((current) => !current)}
+                    className="w-full rounded-2xl border border-sky-200 px-4 py-3 text-sm font-semibold text-sky-700 transition hover:bg-sky-50"
+                  >
+                    {showRecoveryCode ? 'Hide recovery code' : 'Use recovery code'}
+                  </button>
+                </div>
+              </div>
+
+              {showRecoveryCode ? (
                 <div>
                   <label className="block text-sm font-semibold text-slate-700">{labels.recovery}</label>
                   <input value={recoveryCode} onChange={(event) => setRecoveryCode(event.target.value)} autoComplete="off" className="mt-2 w-full rounded-2xl border border-sky-200 bg-white px-4 py-3 text-slate-900 outline-none focus:border-sky-400" />
                 </div>
-              </div>
+              ) : null}
 
               {message ? <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">{message}</div> : null}
 

@@ -4,6 +4,7 @@ import {getCrmQuotes} from '@/lib/crmQuotesStore';
 import CrmQuotesClient from './CrmQuotesClient';
 
 type Props = {params: Promise<{locale: string}>};
+const CRM_LIST_LIMIT = 250;
 
 export default async function CrmQuotesPage({params}: Props) {
   const {locale} = await params;
@@ -11,7 +12,7 @@ export default async function CrmQuotesPage({params}: Props) {
   if (!session) {
     redirect(`/${locale}/crm/login`);
   }
-  const quotes = await getCrmQuotes();
+  const quotes = await getCrmQuotes(CRM_LIST_LIMIT);
   return (
     <CrmQuotesClient
       locale={locale}

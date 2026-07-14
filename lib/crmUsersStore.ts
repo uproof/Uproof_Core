@@ -1,8 +1,8 @@
 import {createHash, randomBytes, randomUUID} from 'crypto';
 import {getDb, nowIso} from '@/lib/crmDb';
-import {createSupabaseAdminClient} from '@/lib/supabase/server';
+import {createCrmSupabaseClient as createSupabaseAdminClient} from '@/lib/crmStorage';
 import {getCrmLeadById} from '@/lib/crmLeadsStore';
-import {decryptSecret, encryptSecret, hashPassword, normalizeSecretInput, validatePasswordPolicy, verifyPassword} from '@/lib/secretVault';
+import {decryptSecret, encryptSecret, normalizeSecretInput, validatePasswordPolicy} from '@/lib/secretVault';
 
 export type CrmUserRole = 'sales' | 'superadmin';
 
@@ -12,7 +12,6 @@ export type CrmUser = {
   name: string;
   role: CrmUserRole;
   isActive: boolean;
-  password?: string;
   mfaSecret?: string;
   sessionValidAfter?: string;
   archivedAt?: string;
@@ -26,7 +25,6 @@ type CrmUserRow = {
   name: string;
   role: CrmUserRole;
   is_active: number;
-  password: string;
   mfa_secret: string;
   session_valid_after: string;
   archived_at: string;
@@ -57,7 +55,6 @@ function rowToCrmUser(row: CrmUserRow): CrmUser {
     name: row.name,
     role: row.role,
     isActive: row.is_active === 1,
-    password: row.password || '',
     mfaSecret: row.mfa_secret || '',
     sessionValidAfter: row.session_valid_after || '',
     archivedAt: row.archived_at || '',
@@ -71,7 +68,7 @@ export async function getCrmUsers(): Promise<CrmUser[]> {
   if (supabase) {
     const {data, error} = await supabase
       .from('user_profiles')
-      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
+      .select('id,email,full_name,role,is_active,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
       .in('role', ['sales', 'superadmin'])
       .order('created_at', {ascending: true});
 
@@ -82,7 +79,6 @@ export async function getCrmUsers(): Promise<CrmUser[]> {
         name: entry.full_name || entry.email,
         role: entry.role,
         isActive: !!entry.is_active,
-        password: entry.crm_password || '',
         mfaSecret: entry.crm_mfa_secret || '',
         sessionValidAfter: entry.session_valid_after || '',
         archivedAt: entry.archived_at || '',
@@ -110,7 +106,7 @@ export async function getCrmUserByEmail(email: string): Promise<CrmUser | null> 
   if (supabase) {
     const {data, error} = await supabase
       .from('user_profiles')
-      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
+      .select('id,email,full_name,role,is_active,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
       .eq('email', normalizedEmail)
       .maybeSingle();
 
@@ -121,7 +117,6 @@ export async function getCrmUserByEmail(email: string): Promise<CrmUser | null> 
         name: data.full_name || data.email,
         role: data.role,
         isActive: !!data.is_active,
-        password: data.crm_password || '',
         mfaSecret: data.crm_mfa_secret || '',
         sessionValidAfter: data.session_valid_after || '',
         archivedAt: data.archived_at || '',
@@ -149,7 +144,7 @@ export async function getCrmUserById(id: string): Promise<CrmUser | null> {
   if (supabase) {
     const {data, error} = await supabase
       .from('user_profiles')
-      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
+      .select('id,email,full_name,role,is_active,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
       .eq('id', userId)
       .maybeSingle();
 
@@ -160,7 +155,6 @@ export async function getCrmUserById(id: string): Promise<CrmUser | null> {
         name: data.full_name || data.email,
         role: data.role,
         isActive: !!data.is_active,
-        password: data.crm_password || '',
         mfaSecret: data.crm_mfa_secret || '',
         sessionValidAfter: data.session_valid_after || '',
         archivedAt: data.archived_at || '',
@@ -197,19 +191,13 @@ export async function createCrmUser(input: CreateCrmUserInput): Promise<CrmUser>
 
   const password = normalizeSecretInput(input.password || '');
   const mfaSecret = normalizeSecretInput(input.mfaSecret || '');
-  const passwordPolicyError = validatePasswordPolicy(password);
-  if (passwordPolicyError) {
-    throw new Error(passwordPolicyError);
-  }
-  const passwordHash = hashPassword(password);
   const encryptedMfaSecret = mfaSecret ? encryptSecret(mfaSecret) : '';
   const createdAt = nowIso();
 
   const supabase = createSupabaseAdminClient();
   if (supabase) {
     const createAuthResult = await supabase.auth.admin.createUser({
-      email,
-      password,
+          // password: '', // Commenting out to eliminate local password-hash paths
       email_confirm: true,
       user_metadata: {
         role,
@@ -230,12 +218,11 @@ export async function createCrmUser(input: CreateCrmUserInput): Promise<CrmUser>
         full_name: name,
         role,
         is_active: true,
-        crm_password: passwordHash,
         crm_mfa_secret: encryptedMfaSecret,
         session_valid_after: createdAt,
         archived_at: '',
       })
-      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
+      .select('id,email,full_name,role,is_active,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
       .single();
 
     if (error) {
@@ -248,7 +235,6 @@ export async function createCrmUser(input: CreateCrmUserInput): Promise<CrmUser>
       name: data.full_name || data.email,
       role: data.role,
       isActive: !!data.is_active,
-      password: data.crm_password || '',
       mfaSecret: data.crm_mfa_secret || '',
       sessionValidAfter: data.session_valid_after || '',
       archivedAt: data.archived_at || '',
@@ -261,15 +247,14 @@ export async function createCrmUser(input: CreateCrmUserInput): Promise<CrmUser>
   const id = `crm-user-${randomUUID()}`;
 
   db.prepare(
-    `INSERT INTO crm_users (id, email, name, role, is_active, password, mfa_secret, session_valid_after, archived_at, created_at, updated_at_utc)
-     VALUES (@id, @email, @name, @role, @isActive, @password, @mfaSecret, @sessionValidAfter, @archivedAt, @createdAt, @updatedAtUtc)`
+    `INSERT INTO crm_users (id, email, name, role, is_active, mfa_secret, session_valid_after, archived_at, created_at, updated_at_utc)
+     VALUES (@id, @email, @name, @role, @isActive, @mfaSecret, @sessionValidAfter, @archivedAt, @createdAt, @updatedAtUtc)`
   ).run({
     id,
     email,
     name,
     role,
     isActive: 1,
-    password: passwordHash,
     mfaSecret: encryptedMfaSecret,
     sessionValidAfter: createdAt,
     archivedAt: '',
@@ -313,13 +298,11 @@ export async function updateCrmUser(input: UpdateCrmUserInput): Promise<CrmUser 
   const nextActive = typeof input.isActive === 'boolean' ? input.isActive : current.isActive;
   const nextPasswordPlain = typeof input.password === 'string' && input.password.trim() ? input.password.trim() : '';
   const nextMfaPlain = typeof input.mfaSecret === 'string' && input.mfaSecret.trim() ? input.mfaSecret.trim() : '';
-  const nextPassword = nextPasswordPlain ? hashPassword(nextPasswordPlain) : current.password || '';
   const nextMfaSecret = nextMfaPlain ? encryptSecret(nextMfaPlain) : current.mfaSecret || '';
 
   if (
     nextName === current.name &&
     nextActive === current.isActive &&
-    (!nextPasswordPlain || verifyPassword(nextPasswordPlain, current.password || '')) &&
     (!nextMfaPlain || safeDecryptSecret(current.mfaSecret || '') === nextMfaPlain)
   ) {
     return current;
@@ -339,11 +322,10 @@ export async function updateCrmUser(input: UpdateCrmUserInput): Promise<CrmUser 
       .update({
         full_name: nextName,
         is_active: nextActive,
-        crm_password: nextPassword,
         crm_mfa_secret: nextMfaSecret,
       })
       .eq('id', userId)
-      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
+      .select('id,email,full_name,role,is_active,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
       .single();
 
     if (error) {
@@ -356,7 +338,6 @@ export async function updateCrmUser(input: UpdateCrmUserInput): Promise<CrmUser 
       name: data.full_name || data.email,
       role: data.role,
       isActive: !!data.is_active,
-      password: data.crm_password || '',
       mfaSecret: data.crm_mfa_secret || '',
       sessionValidAfter: data.session_valid_after || '',
       archivedAt: data.archived_at || '',
@@ -369,16 +350,14 @@ export async function updateCrmUser(input: UpdateCrmUserInput): Promise<CrmUser 
   db.prepare(
     `UPDATE crm_users
      SET name = @name,
-         is_active = @isActive,
-         password = @password,
-         mfa_secret = @mfaSecret,
-         updated_at_utc = @updatedAtUtc
+       is_active = @isActive,
+       mfa_secret = @mfaSecret,
+       updated_at_utc = @updatedAtUtc
      WHERE id = @id`
   ).run({
     id: userId,
     name: nextName,
     isActive: nextActive ? 1 : 0,
-    password: nextPassword,
     mfaSecret: nextMfaSecret,
     updatedAtUtc: nowIso(),
   });
@@ -416,7 +395,7 @@ export async function revokeCrmUserSessions(userId: string): Promise<CrmUser | n
       .from('user_profiles')
       .update({session_valid_after: now})
       .eq('id', userId)
-      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
+      .select('id,email,full_name,role,is_active,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
       .single();
 
     if (error) {
@@ -429,7 +408,6 @@ export async function revokeCrmUserSessions(userId: string): Promise<CrmUser | n
       name: data.full_name || data.email,
       role: data.role,
       isActive: !!data.is_active,
-      password: data.crm_password || '',
       mfaSecret: data.crm_mfa_secret || '',
       sessionValidAfter: data.session_valid_after || now,
       archivedAt: data.archived_at || '',
@@ -462,7 +440,7 @@ export async function resetCrmUserMfa(userId: string): Promise<CrmUser | null> {
       .from('user_profiles')
       .update({mfa_secret: '', session_valid_after: now})
       .eq('id', userId)
-      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
+      .select('id,email,full_name,role,is_active,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
       .single();
 
     if (error) {
@@ -477,7 +455,6 @@ export async function resetCrmUserMfa(userId: string): Promise<CrmUser | null> {
       name: data.full_name || data.email,
       role: data.role,
       isActive: !!data.is_active,
-      password: data.crm_password || '',
       mfaSecret: data.crm_mfa_secret || '',
       sessionValidAfter: data.session_valid_after || now,
       archivedAt: data.archived_at || '',
@@ -512,7 +489,7 @@ export async function disableCrmUser(userId: string): Promise<CrmUser | null> {
       .from('user_profiles')
       .update({is_active: false})
       .eq('id', userId)
-      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
+      .select('id,email,full_name,role,is_active,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
       .single();
 
     if (error) {
@@ -525,7 +502,6 @@ export async function disableCrmUser(userId: string): Promise<CrmUser | null> {
       name: data.full_name || data.email,
       role: data.role,
       isActive: !!data.is_active,
-      password: data.crm_password || '',
       mfaSecret: data.crm_mfa_secret || '',
       sessionValidAfter: data.session_valid_after || '',
       archivedAt: data.archived_at || '',
@@ -558,7 +534,7 @@ export async function archiveCrmUser(userId: string): Promise<CrmUser | null> {
       .from('user_profiles')
       .update({is_active: false, archived_at: now, session_valid_after: now})
       .eq('id', userId)
-      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
+        .select('id,email,full_name,role,is_active,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
       .single();
 
     if (error) {
@@ -571,7 +547,6 @@ export async function archiveCrmUser(userId: string): Promise<CrmUser | null> {
       name: data.full_name || data.email,
       role: data.role,
       isActive: !!data.is_active,
-      password: data.crm_password || '',
       mfaSecret: data.crm_mfa_secret || '',
       sessionValidAfter: data.session_valid_after || now,
       archivedAt: data.archived_at || now,
@@ -731,7 +706,6 @@ export async function consumePasswordResetToken(token: string, nextPassword: str
   }
 
   const tokenHash = hashSecurityValue(normalizedToken);
-  const passwordHash = hashPassword(password);
   const now = nowIso();
 
   const supabase = createSupabaseAdminClient();
@@ -752,11 +726,16 @@ export async function consumePasswordResetToken(token: string, nextPassword: str
       return null;
     }
 
+    const {error: authError} = await supabase.auth.admin.updateUserById(data.user_id, {password});
+    if (authError) {
+      return null;
+    }
+
     const {data: userData, error: updateUserError} = await supabase
       .from('user_profiles')
-      .update({crm_password: passwordHash, session_valid_after: now})
+      .update({session_valid_after: now})
       .eq('id', data.user_id)
-      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
+      .select('id,email,full_name,role,is_active,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
       .single();
 
     if (updateUserError) {
@@ -769,7 +748,6 @@ export async function consumePasswordResetToken(token: string, nextPassword: str
       name: userData.full_name || userData.email,
       role: userData.role,
       isActive: !!userData.is_active,
-      password: userData.crm_password || '',
       mfaSecret: userData.crm_mfa_secret || '',
       sessionValidAfter: userData.session_valid_after || now,
       archivedAt: userData.archived_at || '',
@@ -778,25 +756,7 @@ export async function consumePasswordResetToken(token: string, nextPassword: str
     };
   }
 
-  const db = getDb();
-  const tokenRow = db
-    .prepare("SELECT id, user_id, expires_at FROM crm_password_reset_tokens WHERE token_hash = ? AND used_at = ''")
-    .get(tokenHash) as {id: number; user_id: string; expires_at: string} | undefined;
-
-  if (!tokenRow || new Date(tokenRow.expires_at).getTime() <= Date.now()) {
-    return null;
-  }
-
-  db.prepare('UPDATE crm_password_reset_tokens SET used_at = ? WHERE id = ?').run(now, tokenRow.id);
-  db.prepare(
-    `UPDATE crm_users
-     SET password = @password,
-         session_valid_after = @sessionValidAfter,
-         updated_at_utc = @updatedAtUtc
-     WHERE id = @id`
-  ).run({id: tokenRow.user_id, password: passwordHash, sessionValidAfter: now, updatedAtUtc: now});
-
-  return await getCrmUserById(tokenRow.user_id);
+  return null;
 }
 
 export async function changeCrmUserPassword(userId: string, nextPassword: string): Promise<CrmUser | null> {
@@ -810,45 +770,19 @@ export async function changeCrmUserPassword(userId: string, nextPassword: string
     throw new Error(passwordPolicyError);
   }
 
-  const passwordHash = hashPassword(password);
   const now = nowIso();
   const supabase = createSupabaseAdminClient();
   if (supabase) {
-    const {data, error} = await supabase
-      .from('user_profiles')
-      .update({crm_password: passwordHash})
-      .eq('id', userId)
-      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
-      .single();
+    const {error} = await supabase.auth.admin.updateUserById(userId, {password});
 
     if (error) {
       throw new Error(error.message || 'Failed to update CRM user password');
     }
 
-    return {
-      id: data.id,
-      email: data.email,
-      name: data.full_name || data.email,
-      role: data.role,
-      isActive: !!data.is_active,
-      password: data.crm_password || '',
-      mfaSecret: data.crm_mfa_secret || '',
-      sessionValidAfter: data.session_valid_after || '',
-      archivedAt: data.archived_at || '',
-      createdAt: data.created_at,
-      updatedAtUtc: data.updated_at,
-    };
+    return await getCrmUserById(userId);
   }
 
-  const db = getDb();
-  db.prepare(
-    `UPDATE crm_users
-     SET password = @password,
-         updated_at_utc = @updatedAtUtc
-     WHERE id = @id`
-  ).run({id: userId, password: passwordHash, updatedAtUtc: now});
-
-  return await getCrmUserById(userId);
+  throw new Error('Supabase Auth is required to change CRM user passwords');
 }
 
 export async function setCrmUserMfaSecret(userId: string, nextMfaSecret: string): Promise<CrmUser | null> {
@@ -863,7 +797,7 @@ export async function setCrmUserMfaSecret(userId: string, nextMfaSecret: string)
       .from('user_profiles')
       .update({crm_mfa_secret: encryptSecret(mfaSecret)})
       .eq('id', userId)
-      .select('id,email,full_name,role,is_active,crm_password,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
+      .select('id,email,full_name,role,is_active,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
       .single();
 
     if (error) {
@@ -876,7 +810,6 @@ export async function setCrmUserMfaSecret(userId: string, nextMfaSecret: string)
       name: data.full_name || data.email,
       role: data.role,
       isActive: !!data.is_active,
-      password: data.crm_password || '',
       mfaSecret: data.crm_mfa_secret || '',
       sessionValidAfter: data.session_valid_after || '',
       archivedAt: data.archived_at || '',

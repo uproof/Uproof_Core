@@ -14,7 +14,7 @@ function SignedOutCard({locale}: {locale: string}) {
           <p className="mt-3 text-sm leading-6 text-slate-600">
             You need to sign in to start authenticator setup for your account.
           </p>
-          <Link href={`/${locale}/crm-login`} className="mt-6 inline-flex rounded-2xl border border-sky-200 bg-sky-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-sky-600">
+          <Link href={`/${locale}/login`} className="mt-6 inline-flex rounded-2xl border border-sky-200 bg-sky-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-sky-600">
             Go to login
           </Link>
         </div>

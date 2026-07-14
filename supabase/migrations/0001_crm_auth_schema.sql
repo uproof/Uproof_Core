@@ -63,7 +63,6 @@ create table if not exists public.user_profiles (
   full_name text,
   role text not null check (role in ('superadmin', 'sales')),
   is_active boolean not null default true,
-  crm_password text not null default '',
   created_at timestamptz not null default timezone('utc', now()),
   updated_at timestamptz not null default timezone('utc', now())
 );

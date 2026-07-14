@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isSuperadminAuthenticated } from '@/lib/adminAuth';
-import fs from 'fs/promises';
 import path from 'path';
+import {readJsonFile, writeJsonFile} from '@/lib/jsonFileStore';
 
 const PAGES_FILE = path.join(process.cwd(), 'data', 'pages.json');
 
 async function ensurePagesFile() {
   try {
-    await fs.access(PAGES_FILE);
+    await import('fs/promises').then((fs) => fs.access(PAGES_FILE));
   } catch {
     const defaultPages = [
       {
@@ -21,7 +21,7 @@ async function ensurePagesFile() {
         content: 'Get in touch with us for a free quote. Call us or fill out the contact form on our website.',
       },
     ];
-    await fs.writeFile(PAGES_FILE, JSON.stringify(defaultPages, null, 2));
+    await writeJsonFile(PAGES_FILE, defaultPages);
   }
 }
 
@@ -33,8 +33,7 @@ export async function GET() {
   }
   try {
     await ensurePagesFile();
-    const content = await fs.readFile(PAGES_FILE, 'utf-8');
-    const pages = JSON.parse(content);
+    const pages = await readJsonFile(PAGES_FILE, []);
     return NextResponse.json({ pages });
   } catch (error) {
     console.error('Error reading pages:', error);

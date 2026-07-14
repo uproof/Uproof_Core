@@ -1,14 +1,10 @@
 "use client";
 
-import {useMemo} from 'react';
-
 type SensitiveKind = 'phone' | 'email' | 'amount' | 'text';
 
 type Props = {
   value: string;
   kind: SensitiveKind;
-  entityId: string;
-  field: string;
   className?: string;
 };
 
@@ -37,8 +33,8 @@ function maskValue(value: string, kind: SensitiveKind) {
   return `${trimmed.slice(0, 2)}${'*'.repeat(Math.max(trimmed.length - 4, 3))}${trimmed.slice(-2)}`;
 }
 
-export default function SensitiveValue({value, kind, entityId, field, className}: Props) {
-  const masked = useMemo(() => maskValue(value, kind), [value, kind]);
+export default function SensitiveValue({value, kind, className}: Props) {
+  const masked = maskValue(value, kind);
 
   return (
     <span className={className || 'inline-flex items-center rounded-lg border border-sky-200 px-2 py-1 text-left text-sm text-slate-700'} title={masked}>
