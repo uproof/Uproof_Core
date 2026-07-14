@@ -33,6 +33,28 @@ type CrmProjectsOptions = {
   limit?: number;
 };
 
+let projectsTableAvailable: boolean | null = null;
+
+async function isProjectsTableAvailable(supabase: NonNullable<ReturnType<typeof createSupabaseAdminClient>>): Promise<boolean> {
+  if (projectsTableAvailable !== null) {
+    return projectsTableAvailable;
+  }
+
+  const {error} = await supabase.from('projects').select('lead_id').limit(1);
+  if (error) {
+    const message = error.message || '';
+    if (/public\.projects|schema cache|does not exist/i.test(message)) {
+      projectsTableAvailable = false;
+      return false;
+    }
+
+    throw new Error(message || 'Failed to check project storage availability');
+  }
+
+  projectsTableAvailable = true;
+  return true;
+}
+
 function mapRow(row: ProjectRow): CrmProjectRecord {
   let estimatorData = createEmptyCrmEstimatorData();
   try {
@@ -78,6 +100,10 @@ export async function upsertProjectFromLead(lead: CrmLead): Promise<void> {
     throw new Error('Supabase is required for project storage');
   }
 
+  if (!(await isProjectsTableAvailable(supabase))) {
+    return;
+  }
+
   const now = nowIso();
   const payload = {
     id: lead.id,
@@ -97,7 +123,7 @@ export async function upsertProjectFromLead(lead: CrmLead): Promise<void> {
   if (error) {
     const message = error.message || 'Failed to upsert project';
     if (/public\.projects|schema cache|does not exist/i.test(message)) {
-      console.warn('Skipping project sync because the projects table is unavailable:', message);
+      projectsTableAvailable = false;
       return;
     }
     throw new Error(message);
@@ -110,11 +136,15 @@ export async function deleteProjectByLeadId(leadId: string): Promise<void> {
     throw new Error('Supabase is required for project storage');
   }
 
+  if (!(await isProjectsTableAvailable(supabase))) {
+    return;
+  }
+
   const {error} = await supabase.from('projects').delete().eq('lead_id', leadId);
   if (error) {
     const message = error.message || 'Failed to delete project';
     if (/public\.projects|schema cache|does not exist/i.test(message)) {
-      console.warn('Skipping project delete because the projects table is unavailable:', message);
+      projectsTableAvailable = false;
       return;
     }
     throw new Error(message);

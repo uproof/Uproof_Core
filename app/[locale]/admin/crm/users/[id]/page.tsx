@@ -6,6 +6,7 @@ import {getCrmUserById} from '@/lib/crmUsersStore';
 import {getRecentCrmUserActivity} from '@/lib/crmUserActivityStore';
 import CrmUserSecurityActions from '../CrmUserSecurityActions';
 import CrmUserDataActions from '../CrmUserDataActions';
+import CrmUserWorkLogActions from '../CrmUserWorkLogActions';
 
 type Props = {params: Promise<{locale: string; id: string}>};
 
@@ -76,7 +77,10 @@ export default async function AdminCrmUserDashboardPage({params}: Props) {
         </div>
 
         <div className="rounded-2xl border border-sky-100 bg-white p-5">
-          <h3 className="text-lg font-semibold text-slate-900">Work Logs ({activity.length})</h3>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h3 className="text-lg font-semibold text-slate-900">Work Logs ({activity.length})</h3>
+            <CrmUserWorkLogActions locale={locale} userId={user.id} userName={user.name} />
+          </div>
           <div className="mt-3 space-y-2 max-h-[560px] overflow-auto pr-1">
             {activity.length === 0 ? (
               <div className="rounded-xl border border-dashed border-sky-200 bg-sky-50 px-4 py-3 text-sm text-slate-500">No activity found.</div>

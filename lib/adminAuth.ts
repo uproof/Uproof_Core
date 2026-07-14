@@ -50,10 +50,6 @@ export function getApprovedSuperadminCredentials(): ApprovedSuperadminCredential
       email: (process.env.SUPERADMIN_EMAIL_1 || '').trim().toLowerCase(),
       password: (process.env.SUPERADMIN_PASSWORD_1 || '').trim(),
     },
-    {
-      email: (process.env.SUPERADMIN_EMAIL_2 || '').trim().toLowerCase(),
-      password: (process.env.SUPERADMIN_PASSWORD_2 || '').trim(),
-    },
   ].filter((entry) => entry.email && entry.password);
 }
 

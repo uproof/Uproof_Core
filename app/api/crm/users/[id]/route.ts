@@ -4,6 +4,24 @@ import {checkRateLimit, RATE_LIMITS} from '@/lib/rateLimit';
 import {canPerform} from '@/lib/permissions';
 import {deleteCrmUser, getCrmUserById, updateCrmUser} from '@/lib/crmUsersStore';
 import {validatePasswordPolicy} from '@/lib/secretVault';
+import {SUPABASE_ACCESS_TOKEN_COOKIE, SUPABASE_REFRESH_TOKEN_COOKIE} from '@/lib/supabase/session';
+
+function clearCurrentBrowserSession(response: NextResponse) {
+  response.cookies.set(SUPABASE_ACCESS_TOKEN_COOKIE, '', {
+    httpOnly: true,
+    sameSite: 'strict',
+    secure: process.env.NODE_ENV === 'production',
+    path: '/',
+    maxAge: 0,
+  });
+  response.cookies.set(SUPABASE_REFRESH_TOKEN_COOKIE, '', {
+    httpOnly: true,
+    sameSite: 'strict',
+    secure: process.env.NODE_ENV === 'production',
+    path: '/',
+    maxAge: 0,
+  });
+}
 
 export async function PATCH(req: NextRequest, {params}: {params: Promise<{id: string}>}) {
   const session = await getAdminSession();
@@ -32,6 +50,8 @@ export async function PATCH(req: NextRequest, {params}: {params: Promise<{id: st
     return NextResponse.json({ok: false, error: 'Sales user not found'}, {status: 404});
   }
 
+  const isSelfPasswordChange = !!password && session.email.toLowerCase() === current.email.toLowerCase();
+
   if (typeof password === 'string' && password.trim()) {
     const passwordPolicyError = validatePasswordPolicy(password.trim());
     if (passwordPolicyError) {
@@ -44,8 +64,9 @@ export async function PATCH(req: NextRequest, {params}: {params: Promise<{id: st
     return NextResponse.json({ok: false, error: 'Sales user not found'}, {status: 404});
   }
 
-  return NextResponse.json({
+  const response = NextResponse.json({
     ok: true,
+    logoutRequired: isSelfPasswordChange,
     user: {
       id: user.id,
       email: user.email,
@@ -57,6 +78,12 @@ export async function PATCH(req: NextRequest, {params}: {params: Promise<{id: st
       updatedAtUtc: user.updatedAtUtc,
     },
   });
+
+  if (isSelfPasswordChange) {
+    clearCurrentBrowserSession(response);
+  }
+
+  return response;
 }
 
 export async function DELETE(req: NextRequest, {params}: {params: Promise<{id: string}>}) {

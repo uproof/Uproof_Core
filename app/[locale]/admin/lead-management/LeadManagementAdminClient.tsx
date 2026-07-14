@@ -55,7 +55,7 @@ async function readResponseJson(response: Response) {
 export default function LeadManagementAdminClient({locale, readOnly = false, initialLeads = [], initialCrmUsers = []}: Props) {
   const isLv = locale === 'lv';
   const [leads, setLeads] = useState<CrmLead[]>(initialLeads);
-  const [loading, setLoading] = useState(initialLeads.length === 0);
+  const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [lastRefreshedAt, setLastRefreshedAt] = useState<string | null>(null);
   const [draft, setDraft] = useState<LeadDraft>(initialDraft);
@@ -144,32 +144,11 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
     [isLv, readOnly]
   );
 
-  const loadCrmUsers = async () => {
-    try {
-      const response = await fetch('/api/crm/users', {cache: 'no-store'});
-      const data = await readResponseJson(response);
-      if (data?.ok && Array.isArray(data.users)) {
-        const users = data.users.filter((entry: CrmUser) => entry.role === 'sales' && entry.isActive);
-        setCrmUsers(users);
-      }
-    } catch {
-      setCrmUsers([]);
-    }
-  };
-
   useEffect(() => {
-    void loadLeads();
-    void loadCrmUsers();
-
-    const interval = window.setInterval(() => {
-      if (document.visibilityState !== 'visible') {
-        return;
-      }
-      void loadLeads({silent: true});
-    }, 60000);
-
-    return () => window.clearInterval(interval);
-  }, []);
+    if (initialLeads.length > 0) {
+      setLastRefreshedAt(new Date().toLocaleTimeString());
+    }
+  }, [initialLeads.length]);
 
   const onAssignLead = async (leadId: string) => {
     const salesUserId = assignments[leadId];
@@ -318,7 +297,7 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
             disabled={loading || refreshing}
             className="inline-flex items-center rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-semibold text-sky-700 transition hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {loading ? labels.refreshing : (refreshing ? labels.refreshing : labels.refresh)}
+            {loading || refreshing ? labels.refreshing : labels.refresh}
           </button>
           <Link href={`/${locale}/admin/crm/users`} className="inline-flex items-center rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-semibold text-sky-700 transition hover:bg-sky-50">
             {labels.usersPanel}
@@ -377,7 +356,7 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
               <p className="mt-1 text-xs text-slate-500">
                 {lastRefreshedAt
                   ? (isLv ? `Pēdējais atsvaidzinājums: ${lastRefreshedAt}` : `Last refreshed: ${lastRefreshedAt}`)
-                  : (isLv ? 'Atjauninās automātiski ik pēc 60 sekundēm.' : 'Auto-refreshes every 60 seconds.')}
+                  : (isLv ? 'Atsvaidzini manuāli pēc izmaiņām.' : 'Use Refresh after making changes.')}
               </p>
             </div>
             {loading && <span className="text-xs text-slate-500">Loading...</span>}

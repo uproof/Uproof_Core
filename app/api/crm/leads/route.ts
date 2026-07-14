@@ -56,24 +56,32 @@ export async function POST(req: NextRequest) {
     });
 
     const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
-    await logCrmAudit({
-      action: 'lead_create',
-      userEmail: session.email,
-      role: session.role,
-      sessionId: session.sid,
-      ip,
-      resource: `lead:${lead.id}`,
-      detail: 'lead_created_manual',
-    });
+    try {
+      await logCrmAudit({
+        action: 'lead_create',
+        userEmail: session.email,
+        role: session.role,
+        sessionId: session.sid,
+        ip,
+        resource: `lead:${lead.id}`,
+        detail: 'lead_created_manual',
+      });
+    } catch (auditError) {
+      console.warn('Lead audit logging failed:', auditError);
+    }
 
-    await logCrmUserActivity({
-      actorEmail: session.email,
-      actorRole: session.role,
-      action: 'lead_create',
-      leadId: lead.id,
-      detail: 'lead_created_manual',
-      ip,
-    });
+    try {
+      await logCrmUserActivity({
+        actorEmail: session.email,
+        actorRole: session.role,
+        action: 'lead_create',
+        leadId: lead.id,
+        detail: 'lead_created_manual',
+        ip,
+      });
+    } catch (activityError) {
+      console.warn('Lead activity logging failed:', activityError);
+    }
 
     return NextResponse.json({ok: true, lead});
   } catch (error: any) {

@@ -246,11 +246,6 @@ function seedIfNeeded(db: Database.Database) {
       email: process.env.SUPERADMIN_EMAIL_1 || '',
       name: 'Karlis Nikis',
     },
-    {
-      id: 'superadmin-mohsinmaqboolmir',
-      email: process.env.SUPERADMIN_EMAIL_2 || '',
-      name: 'Mohsin Maqbool Mir',
-    },
   ]
     .map((entry) => ({
       id: entry.id,

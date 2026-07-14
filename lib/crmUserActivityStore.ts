@@ -1,4 +1,5 @@
 import {nowIso} from '@/lib/crmDb';
+import {getApprovedSuperadminCredentials} from '@/lib/adminAuth';
 import {createCrmSupabaseClient as createSupabaseAdminClient} from '@/lib/crmStorage';
 
 export type CrmUserActivity = {
@@ -78,6 +79,16 @@ function buildNotification(action: string, actorEmail: string, detail: string, l
   }
 }
 
+function getNotificationRecipients(actorEmail: string) {
+  const approvedRecipients = getApprovedSuperadminCredentials().map((entry) => entry.email.trim().toLowerCase()).filter(Boolean);
+  if (approvedRecipients.length > 0) {
+    return approvedRecipients;
+  }
+
+  const normalizedActor = actorEmail.trim().toLowerCase();
+  return normalizedActor ? [normalizedActor] : [];
+}
+
 export async function logCrmUserActivity(input: LogCrmUserActivityInput) {
   const record = {
     actorEmail: input.actorEmail,
@@ -100,22 +111,26 @@ export async function logCrmUserActivity(input: LogCrmUserActivityInput) {
       created_at: record.createdAt,
     });
 
-    if (!activityResult.error) {
-      const notification = record.action.startsWith('lead_')
-        ? buildNotification(record.action, record.actorEmail, record.detail, record.leadId)
-        : null;
+    const notification = record.action.startsWith('lead_')
+      ? buildNotification(record.action, record.actorEmail, record.detail, record.leadId)
+      : null;
 
-      if (notification) {
+    if (notification) {
+      for (const recipientEmail of getNotificationRecipients(record.actorEmail)) {
         await supabase.from('notifications').insert({
-          recipient_email: record.actorEmail,
+          recipient_email: recipientEmail,
           title: notification.title,
           message: notification.message,
           link: notification.link,
-          read_at: '',
-          archived_at: '',
+          read_at: null,
+          archived_at: null,
           created_at: record.createdAt,
         });
       }
+    }
+
+    if (activityResult.error) {
+      console.warn('CRM activity insert failed:', activityResult.error);
     }
     return;
   }
@@ -147,4 +162,23 @@ export async function getRecentCrmUserActivity(limit = 100): Promise<CrmUserActi
   }
 
   return [];
+}
+
+export async function clearCrmUserActivityByEmail(email: string) {
+  const normalizedEmail = email.trim().toLowerCase();
+  if (!normalizedEmail) {
+    return false;
+  }
+
+  const supabase = createSupabaseAdminClient();
+  if (supabase) {
+    const {error} = await supabase
+      .from('crm_user_activity')
+      .delete()
+      .eq('actor_email', normalizedEmail);
+
+    return !error;
+  }
+
+  return false;
 }

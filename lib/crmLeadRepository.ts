@@ -158,12 +158,12 @@ export function insertUserActivity(db: Database.Database, input: {
         for (const recipientEmail of recipients) {
           if (supabase) {
             void supabase.from('notifications').insert({
-              recipient_email: recipientEmail,
+              recipient_email: recipientEmail.trim().toLowerCase(),
               title: notification.title,
               message: notification.message,
               link: notification.link,
-              read_at: '',
-              archived_at: '',
+              read_at: null,
+              archived_at: null,
               created_at: createdAt,
             });
             } else {
@@ -243,10 +243,13 @@ export function insertNotification(db: Database.Database, input: NotificationInp
     INSERT INTO notifications (
       recipient_email, title, message, link, read_at, archived_at, created_at
     ) VALUES (
-      @recipientEmail, @title, @message, @link, '', '', @createdAt
+      @recipientEmail, @title, @message, @link, NULL, NULL, @createdAt
     )
   `).run({
-    ...input,
+    recipientEmail: input.recipientEmail.trim().toLowerCase(),
+    title: input.title,
+    message: input.message,
+    link: input.link,
     createdAt: nowIso(),
   });
 }
