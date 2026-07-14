@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "node scripts/run-next-with-env.mjs dev",
-    "build": "node scripts/run-next-with-env.mjs build",
-    "start": "node scripts/run-next-with-env.mjs start",
+    "dev": "node scripts/run-next-with-env.mjs dev || next dev",
+    "build": "node scripts/run-next-with-env.mjs build || next build",
+    "start": "node scripts/run-next-with-env.mjs start || next start",
     "lint": "next lint",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
