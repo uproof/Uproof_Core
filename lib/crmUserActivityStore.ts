@@ -1,4 +1,4 @@
-import {getDb, nowIso} from '@/lib/crmDb';
+import {nowIso} from '@/lib/crmDb';
 import {createCrmSupabaseClient as createSupabaseAdminClient} from '@/lib/crmStorage';
 
 export type CrmUserActivity = {
@@ -56,14 +56,7 @@ export async function logCrmUserActivity(input: LogCrmUserActivityInput) {
     return;
   }
 
-  const db = getDb();
-  db.prepare(
-    `INSERT INTO crm_user_activity (
-      actor_email, actor_role, action, lead_id, detail, ip, created_at
-    ) VALUES (
-      @actorEmail, @actorRole, @action, @leadId, @detail, @ip, @createdAt
-    )`
-  ).run(record);
+  throw new Error('Supabase is required for CRM user activity storage');
 }
 
 export async function getRecentCrmUserActivity(limit = 100): Promise<CrmUserActivity[]> {
@@ -89,19 +82,5 @@ export async function getRecentCrmUserActivity(limit = 100): Promise<CrmUserActi
     }
   }
 
-  const db = getDb();
-  const rows = db
-    .prepare('SELECT * FROM crm_user_activity ORDER BY created_at DESC LIMIT ?')
-    .all(limit) as CrmUserActivityRow[];
-
-  return rows.map((row) => ({
-    id: row.id,
-    actorEmail: row.actor_email,
-    actorRole: row.actor_role,
-    action: row.action,
-    leadId: row.lead_id,
-    detail: row.detail,
-    ip: row.ip,
-    createdAt: row.created_at,
-  }));
+  return [];
 }

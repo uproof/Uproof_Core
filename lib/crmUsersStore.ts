@@ -197,7 +197,8 @@ export async function createCrmUser(input: CreateCrmUserInput): Promise<CrmUser>
   const supabase = createSupabaseAdminClient();
   if (supabase) {
     const createAuthResult = await supabase.auth.admin.createUser({
-          // password: '', // Commenting out to eliminate local password-hash paths
+      email,
+      password: password || undefined,
       email_confirm: true,
       user_metadata: {
         role,
@@ -220,7 +221,7 @@ export async function createCrmUser(input: CreateCrmUserInput): Promise<CrmUser>
         is_active: true,
         crm_mfa_secret: encryptedMfaSecret,
         session_valid_after: createdAt,
-        archived_at: '',
+        archived_at: null,
       })
       .select('id,email,full_name,role,is_active,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
       .single();
@@ -438,7 +439,7 @@ export async function resetCrmUserMfa(userId: string): Promise<CrmUser | null> {
   if (supabase) {
     const {data, error} = await supabase
       .from('user_profiles')
-      .update({mfa_secret: '', session_valid_after: now})
+      .update({crm_mfa_secret: '', session_valid_after: now})
       .eq('id', userId)
       .select('id,email,full_name,role,is_active,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
       .single();

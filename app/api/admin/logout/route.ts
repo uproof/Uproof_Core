@@ -1,9 +1,11 @@
 import {NextResponse} from 'next/server';
 import {
   ADMIN_PENDING_SESSION_COOKIE,
+  ADMIN_SESSION_COOKIE,
+} from '@/lib/adminAuth';
+import {
   SUPABASE_ACCESS_TOKEN_COOKIE,
   SUPABASE_REFRESH_TOKEN_COOKIE,
-  ADMIN_SESSION_COOKIE,
 } from '@/lib/supabase/session';
 
 export async function POST() {

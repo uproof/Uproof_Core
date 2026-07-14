@@ -1,7 +1,17 @@
 import {config as loadEnv} from 'dotenv';
 import { defineConfig } from "prisma/config";
 
-loadEnv({path: '.env.local'});
+loadEnv({path: '.env.website.local'});
+loadEnv({path: '.env.crm.local'});
+
+function requireEnv(name: string) {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(`Missing required environment variable: ${name}`);
+  }
+
+  return value;
+}
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
@@ -9,7 +19,7 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
-    directUrl: process.env["DIRECT_URL"],
+    url: requireEnv('DATABASE_URL'),
+    directUrl: requireEnv('DIRECT_URL'),
   },
 });

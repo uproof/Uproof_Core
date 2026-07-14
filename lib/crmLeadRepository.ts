@@ -1,9 +1,20 @@
-import type Database from 'better-sqlite3';
 import {getApprovedSuperadminCredentials} from '@/lib/adminAuth';
 import {getDb, nowIso} from '@/lib/crmDb';
 import {createCrmSupabaseClient as createSupabaseAdminClient} from '@/lib/crmStorage';
 import type {CrmLead} from '@/lib/crmMockData';
 import {createEmptyCrmEstimatorData, normalizeCrmEstimatorData, stringifyEstimatorData} from '@/lib/crmEstimator';
+
+type SqliteDatabase = {
+  prepare: (sql: string) => {
+    all: (...args: unknown[]) => unknown[];
+    get: (...args: unknown[]) => unknown;
+    run: (...args: unknown[]) => {changes: number};
+  };
+};
+
+declare namespace Database {
+  export type Database = SqliteDatabase;
+}
 
 type LeadRow = {
   id: string;
@@ -264,7 +275,7 @@ export function updateLeadRow(
 ) {
   const current = getLeadRowById(db, leadId);
   if (!current) {
-    return {found: false as const, conflict: false as const, lead: null as const};
+    return {found: false as const, conflict: false as const, lead: null};
   }
 
   if (version.expectedUpdatedAtUtc && current.updated_at_utc !== version.expectedUpdatedAtUtc) {
@@ -356,7 +367,7 @@ export function assignLeadRow(
 ) {
   const current = getLeadRowById(db, leadId);
   if (!current) {
-    return {found: false as const, duplicate: false as const, conflict: false as const, lead: null as const};
+    return {found: false as const, duplicate: false as const, conflict: false as const, lead: null};
   }
 
   if (version.expectedUpdatedAtUtc && current.updated_at_utc !== version.expectedUpdatedAtUtc) {
@@ -394,7 +405,7 @@ export function unassignLeadRow(
 ) {
   const current = getLeadRowById(db, leadId);
   if (!current) {
-    return {found: false as const, duplicate: false as const, conflict: false as const, lead: null as const};
+    return {found: false as const, duplicate: false as const, conflict: false as const, lead: null};
   }
 
   if (version.expectedUpdatedAtUtc && current.updated_at_utc !== version.expectedUpdatedAtUtc) {

@@ -1,4 +1,4 @@
-import {getDb, nowIso} from '@/lib/crmDb';
+import {nowIso} from '@/lib/crmDb';
 import {createSupabaseAdminClient} from '@/lib/supabase/server';
 
 export type NotificationItem = {
@@ -57,12 +57,7 @@ export async function getNotificationsForEmail(email: string, limit = 20): Promi
     }
   }
 
-  const db = getDb();
-  const rows = db
-    .prepare('SELECT * FROM notifications WHERE lower(recipient_email) = lower(?) AND archived_at = \'\' ORDER BY created_at DESC LIMIT ?')
-    .all(normalizedEmail, limit) as NotificationRow[];
-
-  return rows.map(rowToNotification);
+  return [];
 }
 
 export async function markNotificationRead(notificationId: string, recipientEmail: string) {
@@ -82,12 +77,7 @@ export async function markNotificationRead(notificationId: string, recipientEmai
     return !error;
   }
 
-  const db = getDb();
-  const result = db
-    .prepare('UPDATE notifications SET read_at = @readAt WHERE id = @id AND lower(recipient_email) = lower(@recipientEmail)')
-    .run({id: Number(notificationId), recipientEmail: normalizedEmail, readAt: nowIso()});
-
-  return result.changes > 0;
+  return false;
 }
 
 export async function markAllNotificationsRead(recipientEmail: string) {
@@ -107,7 +97,5 @@ export async function markAllNotificationsRead(recipientEmail: string) {
     return !error;
   }
 
-  const db = getDb();
-  db.prepare('UPDATE notifications SET read_at = @readAt WHERE lower(recipient_email) = lower(@recipientEmail) AND read_at = \'\'').run({recipientEmail: normalizedEmail, readAt: nowIso()});
-  return true;
+  return false;
 }

@@ -1,6 +1,5 @@
 import {randomUUID} from 'crypto';
 import {NextRequest, NextResponse} from 'next/server';
-import {getDb} from '@/lib/crmDb';
 import {createSupabaseAdminClient} from '@/lib/supabase/server';
 import {consumePasswordResetToken} from '@/lib/crmUsersStore';
 import {validatePasswordPolicy} from '@/lib/secretVault';
@@ -29,23 +28,6 @@ async function recordAuditLog(entry: {
       success: entry.success,
       created_at: new Date().toISOString(),
     });
-  }
-
-  try {
-    const db = getDb();
-    db.prepare(
-      `INSERT INTO audit_log (
-        request_id, actor_email, actor_role, action, entity_type, entity_id, detail, success, created_at
-      ) VALUES (
-        @requestId, @actorEmail, @actorRole, @action, @entityType, @entityId, @detail, @success, @createdAt
-      )`
-    ).run({
-      ...entry,
-      success: entry.success ? 1 : 0,
-      createdAt: new Date().toISOString(),
-    });
-  } catch {
-    // noop
   }
 }
 

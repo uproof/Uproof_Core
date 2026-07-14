@@ -1,5 +1,5 @@
 import {createSupabaseAdminClient} from '@/lib/supabase/server';
-import {getDb, nowIso} from '@/lib/crmDb';
+import {nowIso} from '@/lib/crmDb';
 
 export interface RateLimitConfig {
   maxRequests: number;
@@ -48,6 +48,8 @@ type RateLimitRecord = {
   resetTime: number;
 };
 
+const inMemoryRateLimits = new Map<string, RateLimitRecord>();
+
 async function readRateLimitRecord(identifier: string): Promise<RateLimitRecord | null> {
   const supabase = createSupabaseAdminClient();
   if (supabase) {
@@ -65,16 +67,7 @@ async function readRateLimitRecord(identifier: string): Promise<RateLimitRecord 
     }
   }
 
-  if (process.env.NODE_ENV === 'production') {
-    throw new Error('Shared rate limit storage is required in production');
-  }
-
-  const db = getDb();
-  const row = db
-    .prepare('SELECT count, reset_at FROM rate_limits WHERE identifier = ? LIMIT 1')
-    .get(identifier) as RateLimitRecord | undefined;
-
-  return row || null;
+  return inMemoryRateLimits.get(identifier) || null;
 }
 
 async function writeRateLimitRecord(identifier: string, count: number, resetTime: number): Promise<void> {
@@ -89,21 +82,10 @@ async function writeRateLimitRecord(identifier: string, count: number, resetTime
   if (supabase) {
     const {error} = await supabase.from('rate_limits').upsert(payload);
     if (!error) {
+      inMemoryRateLimits.set(identifier, {count, resetTime});
       return;
     }
   }
 
-  if (process.env.NODE_ENV === 'production') {
-    throw new Error('Shared rate limit storage is required in production');
-  }
-
-  const db = getDb();
-  db.prepare(
-    `INSERT INTO rate_limits (identifier, count, reset_at, updated_at_utc)
-     VALUES (@identifier, @count, @reset_at, @updated_at_utc)
-     ON CONFLICT(identifier) DO UPDATE SET
-       count = excluded.count,
-       reset_at = excluded.reset_at,
-       updated_at_utc = excluded.updated_at_utc`
-  ).run(payload);
+  inMemoryRateLimits.set(identifier, {count, resetTime});
 }

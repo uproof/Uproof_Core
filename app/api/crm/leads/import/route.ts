@@ -3,9 +3,10 @@ import {getAdminSession} from '@/lib/adminAuth';
 import {checkRateLimit, RATE_LIMITS} from '@/lib/rateLimit';
 import {canPerform} from '@/lib/permissions';
 import {parseCsv} from '@/lib/csv';
-import {getDb, nowIso} from '@/lib/crmDb';
+import {nowIso} from '@/lib/crmDb';
 import {upsertProjectFromLead} from '@/lib/crmProjectsStore';
 import {CrmLead} from '@/lib/crmMockData';
+import {createSupabaseAdminClient} from '@/lib/supabase/server';
 import {createEmptyCrmEstimatorData, normalizeCrmEstimatorData, stringifyEstimatorData} from '@/lib/crmEstimator';
 
 function normalizeText(value: unknown) {
@@ -74,37 +75,6 @@ function rowToLead(row: Record<string, string>, fallbackId: string): CrmLead {
   };
 }
 
-function leadToSqlParams(lead: CrmLead, now: string) {
-  return {
-    id: lead.id,
-    customer: lead.customer,
-    company: lead.company,
-    phone: lead.phone,
-    email: lead.email,
-    address: lead.address,
-    problem: lead.problem,
-    projectAddress: lead.projectAddress,
-    clientCharacterNote: lead.clientCharacterNote,
-    status: lead.status,
-    progress: lead.progress,
-    activityUpdate: lead.activityUpdate,
-    dealProgress: lead.dealProgress,
-    note: lead.note,
-    owner: lead.owner,
-    value: lead.value,
-    updatedAt: lead.updatedAt,
-    nextAction: lead.nextAction,
-    attachmentsJson: JSON.stringify(lead.attachments),
-    workLogJson: JSON.stringify(lead.workLog),
-    estimatorDataJson: stringifyEstimatorData(lead.estimatorData),
-    assignedSalesUserId: lead.assignedSalesUserId || null,
-    assignedBy: '',
-    assignedAt: '',
-    createdAt: now,
-    updatedAtUtc: now,
-  };
-}
-
 export async function POST(req: NextRequest) {
   const session = await getAdminSession();
   if (!session) {
@@ -151,83 +121,67 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ok: false, error: 'CSV file has too many rows'}, {status: 413});
   }
 
-  const db = getDb();
-  const now = nowIso();
-  const statements = db.prepare(`
-    INSERT INTO leads (
-      id, customer, company, phone, email, address, problem, project_address, client_character_note,
-      status, progress, activity_update, deal_progress, note, owner, value, updated_at, next_action,
-      attachments_json, work_log_json, estimator_data_json, assigned_sales_user_id, assigned_by,
-      assigned_at, created_at, updated_at_utc
-    ) VALUES (
-      @id, @customer, @company, @phone, @email, @address, @problem, @projectAddress, @clientCharacterNote,
-      @status, @progress, @activityUpdate, @dealProgress, @note, @owner, @value, @updatedAt, @nextAction,
-      @attachmentsJson, @workLogJson, @estimatorDataJson, @assignedSalesUserId, @assignedBy,
-      @assignedAt, @createdAt, @updatedAtUtc
-    )
-    ON CONFLICT(id) DO UPDATE SET
-      customer = excluded.customer,
-      company = excluded.company,
-      phone = excluded.phone,
-      email = excluded.email,
-      address = excluded.address,
-      problem = excluded.problem,
-      project_address = excluded.project_address,
-      client_character_note = excluded.client_character_note,
-      status = excluded.status,
-      progress = excluded.progress,
-      activity_update = excluded.activity_update,
-      deal_progress = excluded.deal_progress,
-      note = excluded.note,
-      owner = excluded.owner,
-      value = excluded.value,
-      updated_at = excluded.updated_at,
-      next_action = excluded.next_action,
-      attachments_json = excluded.attachments_json,
-      work_log_json = excluded.work_log_json,
-      estimator_data_json = excluded.estimator_data_json,
-      assigned_sales_user_id = excluded.assigned_sales_user_id,
-      assigned_by = excluded.assigned_by,
-      assigned_at = excluded.assigned_at,
-      updated_at_utc = excluded.updated_at_utc
-  `);
+  const supabase = createSupabaseAdminClient();
+  if (!supabase) {
+    return NextResponse.json({ok: false, error: 'Supabase is required for lead import'}, {status: 503});
+  }
 
-  const inserted: string[] = [];
-  const updated: string[] = [];
+  const imported: string[] = [];
   const skipped: string[] = [];
 
-  const runImport = db.transaction(() => {
-    for (const [index, row] of rows.entries()) {
-      const fallbackId = `L-${100000 + index}`;
-      const lead = rowToLead(row, fallbackId);
+  for (const [index, row] of rows.entries()) {
+    const fallbackId = `L-${100000 + index}`;
+    const lead = rowToLead(row, fallbackId);
 
-      if (!lead.customer || !lead.company || !lead.phone || !lead.email || !lead.address || !lead.owner || !lead.value || !lead.nextAction) {
-        skipped.push(lead.id || fallbackId);
-        continue;
-      }
-
-      const existing = db.prepare('SELECT id FROM leads WHERE id = ? LIMIT 1').get(lead.id) as {id: string} | undefined;
-      statements.run(leadToSqlParams(lead, now));
-      if (existing) {
-        updated.push(lead.id);
-      } else {
-        inserted.push(lead.id);
-      }
-
-      void upsertProjectFromLead(lead);
+    if (!lead.customer || !lead.company || !lead.phone || !lead.email || !lead.address || !lead.owner || !lead.value || !lead.nextAction) {
+      skipped.push(lead.id || fallbackId);
+      continue;
     }
-  });
 
-  runImport();
+    const {error} = await supabase.from('crm_leads').upsert({
+      external_id: lead.id,
+      customer: lead.customer,
+      company: lead.company,
+      phone: lead.phone,
+      email: lead.email,
+      address: lead.address,
+      problem: lead.problem,
+      project_address: lead.projectAddress,
+      client_character_note: lead.clientCharacterNote,
+      status: lead.status,
+      progress: lead.progress,
+      activity_update: lead.activityUpdate,
+      deal_progress: lead.dealProgress,
+      note: lead.note,
+      owner: lead.owner,
+      value: lead.value,
+      updated_at: lead.updatedAt,
+      next_action: lead.nextAction,
+      attachments_json: JSON.stringify(lead.attachments),
+      work_log_json: JSON.stringify(lead.workLog),
+      estimator_data_json: stringifyEstimatorData(lead.estimatorData),
+      assigned_sales_user_id: lead.assignedSalesUserId || null,
+      assigned_by_user_id: '',
+      assigned_at: '',
+      created_at: nowIso(),
+      updated_at_utc: nowIso(),
+    }, {onConflict: 'external_id'});
+
+    if (error) {
+      skipped.push(lead.id);
+      continue;
+    }
+
+    await upsertProjectFromLead(lead);
+    imported.push(lead.id);
+  }
 
   return NextResponse.json({
     ok: true,
-    insertedCount: inserted.length,
-    updatedCount: updated.length,
+    importedCount: imported.length,
     skippedCount: skipped.length,
-    processedCount: inserted.length + updated.length,
-    inserted,
-    updated,
+    processedCount: imported.length,
+    imported,
     skipped,
   });
 }

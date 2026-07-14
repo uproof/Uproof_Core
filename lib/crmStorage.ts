@@ -1,9 +1,15 @@
 import {createSupabaseAdminClient} from '@/lib/supabase/server';
+import {isSupabaseConfigured} from '@/lib/supabase/config';
 
 export type CrmStorageMode = 'sqlite' | 'supabase';
 
 export function getCrmStorageMode(): CrmStorageMode {
-  return process.env.CRM_STORAGE_BACKEND?.trim().toLowerCase() === 'supabase' ? 'supabase' : 'sqlite';
+  const configuredMode = process.env.CRM_STORAGE_BACKEND?.trim().toLowerCase();
+  if (configuredMode === 'supabase' || configuredMode === 'sqlite') {
+    return configuredMode;
+  }
+
+  return isSupabaseConfigured() ? 'supabase' : 'sqlite';
 }
 
 export function createCrmSupabaseClient() {

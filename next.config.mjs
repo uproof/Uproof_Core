@@ -63,6 +63,15 @@ const nextConfig = {
   
   // Security headers
   async headers() {
+    const isProduction = process.env.NODE_ENV === 'production';
+    const scriptSources = ["script-src 'self' 'unsafe-inline' https:"];
+    const connectSources = ["connect-src 'self' https://*.supabase.co https://vitals.vercel-insights.com https://www.googletagmanager.com"];
+
+    if (!isProduction) {
+      scriptSources[0] = "script-src 'self' 'unsafe-inline' 'unsafe-eval' https:";
+      connectSources[0] = "connect-src 'self' http://localhost:* http://127.0.0.1:* ws://localhost:* ws://127.0.0.1:* ws://crm.localhost:* ws://uproof.localhost:* https://*.supabase.co https://vitals.vercel-insights.com https://www.googletagmanager.com";
+    }
+
     const contentSecurityPolicy = [
       "default-src 'self'",
       "base-uri 'self'",
@@ -72,8 +81,8 @@ const nextConfig = {
       "img-src 'self' data: blob: https:",
       "font-src 'self' data: https:",
       "style-src 'self' 'unsafe-inline' https:",
-      "script-src 'self' 'unsafe-inline' https:",
-      "connect-src 'self' https://*.supabase.co https://vitals.vercel-insights.com https://www.googletagmanager.com",
+      scriptSources[0],
+      connectSources[0],
       "frame-src 'self' https://www.google.com https://www.youtube.com",
       'upgrade-insecure-requests',
       'block-all-mixed-content',

@@ -9,6 +9,15 @@ import {readJsonFile, writeJsonFile} from '@/lib/jsonFileStore';
 const PROJECTS_FILE = path.join(process.cwd(), 'data', 'projects-admin.json');
 const PUBLIC_UPLOADS = path.join(process.cwd(), 'public', 'uploads', 'projects');
 
+type AdminProject = {
+  id: string;
+  title: string;
+  location: string;
+  description: string;
+  image?: string;
+  createdAt: string;
+};
+
 // Ensure directories exist
 async function ensureDirectories() {
   try {
@@ -32,7 +41,7 @@ export async function GET() {
   }
   try {
     await ensureDirectories();
-    const projects = await readJsonFile(PROJECTS_FILE, []);
+    const projects = await readJsonFile<AdminProject[]>(PROJECTS_FILE, []);
     return NextResponse.json({ projects });
   } catch (error) {
     console.error('Error reading projects:', error);
@@ -101,9 +110,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Read existing projects
-    const projects = await readJsonFile(PROJECTS_FILE, []);
+    const projects = await readJsonFile<AdminProject[]>(PROJECTS_FILE, []);
 
-    const newProject = {
+    const newProject: AdminProject = {
       id,
       title,
       location,

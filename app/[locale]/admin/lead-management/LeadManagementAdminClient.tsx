@@ -39,6 +39,19 @@ const initialDraft: LeadDraft = {
   note: '',
 };
 
+async function readResponseJson(response: Response) {
+  const text = await response.text().catch(() => '');
+  if (!text.trim()) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    return {ok: false, error: text};
+  }
+}
+
 export default function LeadManagementAdminClient({locale, readOnly = false, initialLeads = [], initialCrmUsers = []}: Props) {
   const isLv = locale === 'lv';
   const [leads, setLeads] = useState<CrmLead[]>(initialLeads);
@@ -93,7 +106,7 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
   const loadCrmUsers = async () => {
     try {
       const response = await fetch('/api/crm/users', {cache: 'no-store'});
-      const data = await response.json();
+      const data = await readResponseJson(response);
       if (data?.ok && Array.isArray(data.users)) {
         const users = data.users.filter((entry: CrmUser) => entry.role === 'sales' && entry.isActive);
         setCrmUsers(users);
@@ -107,7 +120,7 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
     setLoading(true);
     try {
       const response = await fetch('/api/crm/leads', {cache: 'no-store'});
-      const data = await response.json();
+      const data = await readResponseJson(response);
       if (data?.ok) {
         setLeads(data.leads);
         setAssignments((current) => {
@@ -137,7 +150,7 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
         body: JSON.stringify({salesUserId}),
       });
 
-      const data = await response.json();
+      const data = await readResponseJson(response);
       if (!data.ok) {
         throw new Error(data.error || 'Failed to assign lead');
       }
@@ -159,7 +172,7 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
       });
-      const data = await response.json();
+      const data = await readResponseJson(response);
       if (!data.ok) {
         throw new Error(data.error || 'Failed to unassign lead');
       }
@@ -186,7 +199,7 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(draft),
       });
-      const data = await response.json();
+      const data = await readResponseJson(response);
       if (!data.ok) {
         throw new Error(data.error || 'Failed to save lead');
       }
@@ -218,7 +231,7 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
         method: 'POST',
         body: formData,
       });
-      const data = await response.json();
+      const data = await readResponseJson(response);
       if (!data.ok) {
         throw new Error(data.error || 'Failed to import leads');
       }
@@ -241,7 +254,7 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
     setToast(null);
     try {
       const response = await fetch(`/api/crm/leads/${encodeURIComponent(id)}`, {method: 'DELETE'});
-      const data = await response.json();
+      const data = await readResponseJson(response);
       if (!data.ok) throw new Error(data.error || 'Failed to delete lead');
       setToast({title: labels.deleted, message: isLv ? 'Līds noņemts un paziņojums saglabāts.' : 'Lead removed and notification saved.', tone: 'success'});
       await loadLeads();

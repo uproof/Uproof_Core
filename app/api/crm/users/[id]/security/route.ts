@@ -2,7 +2,6 @@ import {randomUUID} from 'crypto';
 import {NextRequest, NextResponse} from 'next/server';
 import {getAdminSession} from '@/lib/adminAuth';
 import {canPerform} from '@/lib/permissions';
-import {getDb} from '@/lib/crmDb';
 import {createSupabaseAdminClient} from '@/lib/supabase/server';
 import {
   getCrmLeadStatusSnapshot,
@@ -42,23 +41,6 @@ async function recordAuditLog(entry: {
       success: entry.success,
       created_at: new Date().toISOString(),
     });
-  }
-
-  try {
-    const db = getDb();
-    db.prepare(
-      `INSERT INTO audit_log (
-        request_id, actor_email, actor_role, action, entity_type, entity_id, detail, success, created_at
-      ) VALUES (
-        @requestId, @actorEmail, @actorRole, @action, @entityType, @entityId, @detail, @success, @createdAt
-      )`
-    ).run({
-      ...entry,
-      success: entry.success ? 1 : 0,
-      createdAt: new Date().toISOString(),
-    });
-  } catch {
-    // Local fallback may be unavailable in production; Supabase insert above is the primary path there.
   }
 }
 

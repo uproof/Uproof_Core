@@ -1,8 +1,20 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import Database from 'better-sqlite3';
 
-const DB_PATH = path.join(process.cwd(), 'data', 'crm.sqlite');
+type SqliteDatabase = {
+  prepare: (sql: string) => {
+    all: (...args: unknown[]) => unknown[];
+    get: (...args: unknown[]) => unknown;
+    run: (...args: unknown[]) => {changes: number};
+  };
+  exec: (sql: string) => void;
+  transaction: <T extends (...args: any[]) => any>(fn: T) => T;
+};
+
+declare namespace Database {
+  export type Database = SqliteDatabase;
+}
+
 let database: Database.Database | null = null;
 
 function isoNow() {
@@ -201,7 +213,7 @@ function ensureSchema(db: Database.Database) {
       event_type TEXT NOT NULL,
       aggregate_type TEXT NOT NULL,
       aggregate_id TEXT NOT NULL,
-      payload_json TEXT NOT NULL,
+      payload_json TEXT NOT NULL
     );
 
     CREATE INDEX IF NOT EXISTS idx_crm_events_created_at
@@ -275,20 +287,8 @@ function seedIfNeeded(db: Database.Database) {
   }
 }
 
-export function getDb() {
-  if (database) {
-    return database;
-  }
-
-  if (process.env.NODE_ENV === 'production') {
-    throw new Error('SQLite fallback is not available in production');
-  }
-
-  fs.mkdirSync(path.dirname(DB_PATH), {recursive: true});
-  database = new Database(DB_PATH);
-  ensureSchema(database);
-  seedIfNeeded(database);
-  return database;
+export function getDb(): Database.Database {
+  throw new Error('SQLite storage has been removed. Use Supabase storage only.');
 }
 
 export function nowIso() {

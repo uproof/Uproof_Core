@@ -3,6 +3,33 @@
 
 create extension if not exists pgcrypto;
 
+-- Generic updated_at trigger.
+create or replace function public.touch_updated_at()
+returns trigger
+language plpgsql
+as $$
+begin
+  new.updated_at = timezone('utc', now());
+  return new;
+end;
+$$;
+
+create table if not exists public.user_profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  email text not null unique,
+  full_name text,
+  role text not null check (role in ('superadmin', 'sales')),
+  is_active boolean not null default true,
+  created_at timestamptz not null default timezone('utc', now()),
+  updated_at timestamptz not null default timezone('utc', now())
+);
+
+drop trigger if exists trg_user_profiles_touch_updated_at on public.user_profiles;
+create trigger trg_user_profiles_touch_updated_at
+before update on public.user_profiles
+for each row
+execute function public.touch_updated_at();
+
 -- Keep role checks server-authoritative (user_profiles), not JWT-claim-only.
 create or replace function public.current_profile_role()
 returns text
@@ -45,33 +72,6 @@ revoke all on function public.is_sales_active() from public;
 grant execute on function public.current_profile_role() to authenticated;
 grant execute on function public.is_superadmin_active() to authenticated;
 grant execute on function public.is_sales_active() to authenticated;
-
--- Generic updated_at trigger.
-create or replace function public.touch_updated_at()
-returns trigger
-language plpgsql
-as $$
-begin
-  new.updated_at = timezone('utc', now());
-  return new;
-end;
-$$;
-
-create table if not exists public.user_profiles (
-  id uuid primary key references auth.users(id) on delete cascade,
-  email text not null unique,
-  full_name text,
-  role text not null check (role in ('superadmin', 'sales')),
-  is_active boolean not null default true,
-  created_at timestamptz not null default timezone('utc', now()),
-  updated_at timestamptz not null default timezone('utc', now())
-);
-
-drop trigger if exists trg_user_profiles_touch_updated_at on public.user_profiles;
-create trigger trg_user_profiles_touch_updated_at
-before update on public.user_profiles
-for each row
-execute function public.touch_updated_at();
 
 create table if not exists public.crm_leads (
   id uuid primary key default gen_random_uuid(),
@@ -179,32 +179,32 @@ drop policy if exists "superadmin_insert_audit_log" on public.audit_log;
 drop policy if exists "superadmin_select_crm_events" on public.crm_events;
 drop policy if exists "superadmin_insert_crm_events" on public.crm_events;
 
-create policy if not exists "superadmin_select_notifications"
+create policy "superadmin_select_notifications"
   on public.notifications
   for select
   using (public.is_superadmin_active());
 
-create policy if not exists "superadmin_insert_notifications"
+create policy "superadmin_insert_notifications"
   on public.notifications
   for insert
   with check (public.is_superadmin_active());
 
-create policy if not exists "superadmin_select_audit_log"
+create policy "superadmin_select_audit_log"
   on public.audit_log
   for select
   using (public.is_superadmin_active());
 
-create policy if not exists "superadmin_insert_audit_log"
+create policy "superadmin_insert_audit_log"
   on public.audit_log
   for insert
   with check (public.is_superadmin_active());
 
-create policy if not exists "superadmin_select_crm_events"
+create policy "superadmin_select_crm_events"
   on public.crm_events
   for select
   using (public.is_superadmin_active());
 
-create policy if not exists "superadmin_insert_crm_events"
+create policy "superadmin_insert_crm_events"
   on public.crm_events
   for insert
   with check (public.is_superadmin_active());
@@ -219,7 +219,7 @@ create table if not exists public.rate_limits (
 alter table public.rate_limits enable row level security;
 
 drop policy if exists "no_public_rate_limit_access" on public.rate_limits;
-create policy if not exists "no_public_rate_limit_access"
+create policy "no_public_rate_limit_access"
   on public.rate_limits
   for all
   using (false)
@@ -238,55 +238,55 @@ drop policy if exists "sales_update_assigned_leads" on public.crm_leads;
 drop policy if exists "sales_read_own_activity" on public.crm_user_activity;
 
 -- user_profiles RLS
-create policy if not exists "superadmin_select_user_profiles"
+create policy "superadmin_select_user_profiles"
   on public.user_profiles
   for select
   using (public.is_superadmin_active());
 
-create policy if not exists "superadmin_insert_user_profiles"
+create policy "superadmin_insert_user_profiles"
   on public.user_profiles
   for insert
   with check (public.is_superadmin_active());
 
-create policy if not exists "superadmin_update_user_profiles"
+create policy "superadmin_update_user_profiles"
   on public.user_profiles
   for update
   using (public.is_superadmin_active())
   with check (public.is_superadmin_active());
 
-create policy if not exists "superadmin_delete_user_profiles"
+create policy "superadmin_delete_user_profiles"
   on public.user_profiles
   for delete
   using (public.is_superadmin_active());
 
-create policy if not exists "sales_select_own_profile"
+create policy "sales_select_own_profile"
   on public.user_profiles
   for select
   using (public.is_sales_active() and id = auth.uid());
 
 -- crm_leads RLS
-create policy if not exists "superadmin_select_crm_leads"
+create policy "superadmin_select_crm_leads"
   on public.crm_leads
   for select
   using (public.is_superadmin_active());
 
-create policy if not exists "superadmin_insert_crm_leads"
+create policy "superadmin_insert_crm_leads"
   on public.crm_leads
   for insert
   with check (public.is_superadmin_active());
 
-create policy if not exists "superadmin_update_crm_leads"
+create policy "superadmin_update_crm_leads"
   on public.crm_leads
   for update
   using (public.is_superadmin_active())
   with check (public.is_superadmin_active());
 
-create policy if not exists "superadmin_delete_crm_leads"
+create policy "superadmin_delete_crm_leads"
   on public.crm_leads
   for delete
   using (public.is_superadmin_active());
 
-create policy if not exists "sales_select_assigned_leads"
+create policy "sales_select_assigned_leads"
   on public.crm_leads
   for select
   using (
@@ -294,7 +294,7 @@ create policy if not exists "sales_select_assigned_leads"
     and assigned_sales_user_id = auth.uid()
   );
 
-create policy if not exists "sales_update_assigned_leads"
+create policy "sales_update_assigned_leads"
   on public.crm_leads
   for update
   using (
@@ -307,17 +307,17 @@ create policy if not exists "sales_update_assigned_leads"
   );
 
 -- crm_user_activity RLS (immutable log: no update/delete policy)
-create policy if not exists "superadmin_select_crm_user_activity"
+create policy "superadmin_select_crm_user_activity"
   on public.crm_user_activity
   for select
   using (public.is_superadmin_active());
 
-create policy if not exists "superadmin_insert_crm_user_activity"
+create policy "superadmin_insert_crm_user_activity"
   on public.crm_user_activity
   for insert
   with check (public.is_superadmin_active());
 
-create policy if not exists "sales_read_own_activity"
+create policy "sales_read_own_activity"
   on public.crm_user_activity
   for select
   using (

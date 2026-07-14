@@ -12,7 +12,6 @@ function publicCrmUser(user: Awaited<ReturnType<typeof getCrmUsers>>[number]) {
     name: user.name,
     role: user.role,
     isActive: user.isActive,
-    hasPassword: !!user.password,
     hasMfaSecret: !!user.mfaSecret,
     createdAt: user.createdAt,
     updatedAtUtc: user.updatedAtUtc,

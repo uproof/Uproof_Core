@@ -1,7 +1,8 @@
-import {getDb, nowIso} from '@/lib/crmDb';
+import {nowIso} from '@/lib/crmDb';
 import {upsertProjectFromLead, deleteProjectByLeadId} from '@/lib/crmProjectsStore';
 import {CrmLead} from '@/lib/crmMockData';
 import {createEmptyCrmEstimatorData, normalizeCrmEstimatorData, stringifyEstimatorData} from '@/lib/crmEstimator';
+import {createCrmSupabaseClient as createSupabaseAdminClient} from '@/lib/crmStorage';
 
 function normalizeWorkLog(workLog: unknown, fallback: CrmLead['workLog']) {
   if (!Array.isArray(workLog)) return fallback;
@@ -30,10 +31,10 @@ function normalizeLead(lead: CrmLead): CrmLead {
   };
 }
 
-function parseJsonArray<T>(value: string, fallback: T[]): T[] {
-  if (!value) return fallback;
+function parseJsonArray<T>(value: unknown, fallback: T[]): T[] {
+  if (value == null || value === '') return fallback;
   try {
-    const parsed = JSON.parse(value);
+    const parsed = typeof value === 'string' ? JSON.parse(value) : value;
     return Array.isArray(parsed) ? (parsed as T[]) : fallback;
   } catch {
     return fallback;
@@ -42,6 +43,7 @@ function parseJsonArray<T>(value: string, fallback: T[]): T[] {
 
 type LeadRow = {
   id: string;
+  external_id: string | null;
   customer: string;
   company: string;
   phone: string;
@@ -60,17 +62,16 @@ type LeadRow = {
   updated_at: string;
   next_action: string;
   attachments_json: string;
-  work_log_json: string;
-  estimator_data_json: string;
+  work_log_json?: unknown;
+  estimator_data_json?: unknown;
   assigned_sales_user_id: string | null;
-  assigned_by: string;
-  assigned_at: string;
-  updated_at_utc: string;
+  assigned_by_user_id?: string | null;
+  assigned_at?: string | null;
 };
 
 function rowToLead(row: LeadRow): CrmLead {
   return normalizeLead({
-    id: row.id,
+    id: row.external_id || row.id,
     customer: row.customer,
     company: row.company,
     phone: row.phone,
@@ -85,10 +86,10 @@ function rowToLead(row: LeadRow): CrmLead {
     dealProgress: row.deal_progress,
     note: row.note,
     owner: row.owner,
-    value: row.value,
-    updatedAt: row.updated_at,
-    updatedAtUtc: row.updated_at_utc,
-    nextAction: row.next_action,
+    value: String(row.value || ''),
+    updatedAt: String(row.updated_at || ''),
+    updatedAtUtc: String(row.updated_at || ''),
+    nextAction: String(row.next_action || ''),
     assignedSalesUserId: row.assigned_sales_user_id,
     attachments: parseJsonArray<string>(row.attachments_json, []),
     workLog: parseJsonArray(row.work_log_json, []),
@@ -102,39 +103,62 @@ type GetCrmLeadsOptions = {
 };
 
 export async function getCrmLeads(options: GetCrmLeadsOptions = {}): Promise<CrmLead[]> {
-  const db = getDb();
+  const supabase = createSupabaseAdminClient();
+  if (!supabase) {
+    return [];
+  }
+
   const assignedSalesUserId = options.assignedSalesUserId?.trim();
   const limit = typeof options.limit === 'number' && Number.isFinite(options.limit) && options.limit > 0 ? Math.floor(options.limit) : 0;
-  const rows = assignedSalesUserId
-    ? limit > 0
-      ? (db
-          .prepare('SELECT * FROM leads WHERE assigned_sales_user_id = ? ORDER BY updated_at_utc DESC, created_at DESC LIMIT ?')
-          .all(assignedSalesUserId, limit) as LeadRow[])
-      : (db
-          .prepare('SELECT * FROM leads WHERE assigned_sales_user_id = ? ORDER BY updated_at_utc DESC, created_at DESC')
-          .all(assignedSalesUserId) as LeadRow[])
-    : limit > 0
-      ? (db.prepare('SELECT * FROM leads ORDER BY updated_at_utc DESC, created_at DESC LIMIT ?').all(limit) as LeadRow[])
-      : (db.prepare('SELECT * FROM leads ORDER BY updated_at_utc DESC, created_at DESC').all() as LeadRow[]);
+  let query = supabase
+    .from('crm_leads')
+    .select('id,external_id,customer,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,work_log_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
+    .order('updated_at', {ascending: false})
+    .order('created_at', {ascending: false});
 
-  return rows.map(rowToLead);
+  if (assignedSalesUserId) {
+    query = query.eq('assigned_sales_user_id', assignedSalesUserId);
+  }
+
+  if (limit > 0) {
+    query = query.limit(limit);
+  }
+
+  const {data, error} = await query;
+  if (error || !Array.isArray(data)) {
+    return [];
+  }
+
+  return data.map((row) => rowToLead(row as LeadRow));
 }
 
 export async function getCrmLeadById(leadId: string): Promise<CrmLead | null> {
-  const db = getDb();
-  const row = db.prepare('SELECT * FROM leads WHERE lower(id) = lower(?) LIMIT 1').get(leadId) as LeadRow | undefined;
-  if (!row) {
+  const normalizedLeadId = leadId.trim();
+  if (!normalizedLeadId) {
     return null;
   }
-  return rowToLead(row);
+
+  const supabase = createSupabaseAdminClient();
+  if (!supabase) {
+    return null;
+  }
+
+  const {data, error} = await supabase
+    .from('crm_leads')
+    .select('id,external_id,customer,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,work_log_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
+    .or(`external_id.eq.${normalizedLeadId},id.eq.${normalizedLeadId}`)
+    .maybeSingle();
+
+  if (error || !data) {
+    return null;
+  }
+
+  return rowToLead(data as LeadRow);
 }
 
 export async function isLeadAssignedToSalesUser(leadId: string, salesUserId: string): Promise<boolean> {
-  const db = getDb();
-  const row = db
-    .prepare('SELECT id FROM leads WHERE lower(id) = lower(?) AND assigned_sales_user_id = ? LIMIT 1')
-    .get(leadId, salesUserId) as {id: string} | undefined;
-  return !!row;
+  const lead = await getCrmLeadById(leadId);
+  return !!lead && lead.assignedSalesUserId === salesUserId;
 }
 
 type NewLeadInput = {
@@ -164,7 +188,11 @@ function nextLeadId(leads: CrmLead[]) {
 }
 
 export async function addCrmLead(input: NewLeadInput): Promise<CrmLead> {
-  const db = getDb();
+  const supabase = createSupabaseAdminClient();
+  if (!supabase) {
+    throw new Error('Supabase is required for lead storage');
+  }
+
   const leads = await getCrmLeads();
   const now = nowIso();
   const lead: CrmLead = normalizeLead({
@@ -184,7 +212,7 @@ export async function addCrmLead(input: NewLeadInput): Promise<CrmLead> {
     note: (input.note || '').trim() || 'New lead added manually.',
     owner: input.owner.trim(),
     value: input.value.trim(),
-    updatedAt: 'Just now',
+    updatedAt: now,
     updatedAtUtc: now,
     nextAction: input.nextAction.trim(),
     attachments: [],
@@ -193,37 +221,53 @@ export async function addCrmLead(input: NewLeadInput): Promise<CrmLead> {
     assignedSalesUserId: null,
   });
 
-  db.prepare(`
-    INSERT INTO leads (
-      id, customer, company, phone, email, address, problem, project_address, client_character_note,
-      status, progress, activity_update, deal_progress, note, owner, value, updated_at, next_action,
-      attachments_json, work_log_json, estimator_data_json, created_at, updated_at_utc
-    ) VALUES (
-      @id, @customer, @company, @phone, @email, @address, @problem, @projectAddress, @clientCharacterNote,
-      @status, @progress, @activityUpdate, @dealProgress, @note, @owner, @value, @updatedAt, @nextAction,
-      @attachmentsJson, @workLogJson, @estimatorDataJson, @createdAt, @updatedAtUtc
-    )
-  `).run({
-    ...lead,
-    projectAddress: lead.projectAddress,
-    clientCharacterNote: lead.clientCharacterNote,
-    activityUpdate: lead.activityUpdate,
-    dealProgress: lead.dealProgress,
-    attachmentsJson: JSON.stringify(lead.attachments),
-    workLogJson: JSON.stringify(lead.workLog),
-    estimatorDataJson: stringifyEstimatorData(lead.estimatorData),
-    createdAt: now,
-    updatedAtUtc: now,
-  });
+  const {error} = await supabase.from('crm_leads').upsert({
+    external_id: lead.id,
+    customer: lead.customer,
+    company: lead.company,
+    phone: lead.phone,
+    email: lead.email,
+    address: lead.address,
+    problem: lead.problem,
+    project_address: lead.projectAddress,
+    client_character_note: lead.clientCharacterNote,
+    status: lead.status,
+    progress: lead.progress,
+    activity_update: lead.activityUpdate,
+    deal_progress: lead.dealProgress,
+    note: lead.note,
+    owner: lead.owner,
+    value: Number(String(lead.value).replace(/[^0-9.-]/g, '')) || 0,
+    updated_at: lead.updatedAt,
+    next_action: lead.nextAction,
+    attachments_json: lead.attachments,
+    estimator_data_json: lead.estimatorData,
+    assigned_sales_user_id: null,
+    assigned_by_user_id: null,
+    assigned_at: null,
+  }, {onConflict: 'external_id'});
+
+  if (error) {
+    throw new Error(error.message || 'Failed to create CRM lead');
+  }
 
   await upsertProjectFromLead(lead);
   return lead;
 }
 
 export async function deleteCrmLead(leadId: string): Promise<boolean> {
-  const db = getDb();
-  const result = db.prepare('DELETE FROM leads WHERE id = ?').run(leadId);
-  if (result.changes === 0) {
+  const supabase = createSupabaseAdminClient();
+  if (!supabase) {
+    return false;
+  }
+
+  const {error} = await supabase.from('crm_leads').delete().or(`external_id.eq.${leadId},id.eq.${leadId}`);
+  if (error) {
+    throw new Error(error.message || 'Failed to delete CRM lead');
+  }
+
+  const current = await getCrmLeadById(leadId);
+  if (current) {
     return false;
   }
   await deleteProjectByLeadId(leadId);
@@ -231,7 +275,6 @@ export async function deleteCrmLead(leadId: string): Promise<boolean> {
 }
 
 export async function updateCrmLead(leadId: string, updates: Partial<CrmLead>): Promise<CrmLead | null> {
-  const db = getDb();
   const current = await getCrmLeads();
   const existing = current.find((lead) => lead.id.toLowerCase() === leadId.toLowerCase());
   if (!existing) {
@@ -261,42 +304,43 @@ export async function updateCrmLead(leadId: string, updates: Partial<CrmLead>): 
     assignedSalesUserId: existing.assignedSalesUserId || null,
   });
 
-  db.prepare(`
-    UPDATE leads SET
-      customer = @customer,
-      company = @company,
-      phone = @phone,
-      email = @email,
-      address = @address,
-      problem = @problem,
-      project_address = @projectAddress,
-      client_character_note = @clientCharacterNote,
-      status = @status,
-      progress = @progress,
-      activity_update = @activityUpdate,
-      deal_progress = @dealProgress,
-      note = @note,
-      owner = @owner,
-      value = @value,
-      updated_at = @updatedAt,
-      next_action = @nextAction,
-      attachments_json = @attachmentsJson,
-      work_log_json = @workLogJson,
-      estimator_data_json = @estimatorDataJson,
-      updated_at_utc = @updatedAtUtc
-    WHERE id = @id
-  `).run({
-    ...nextLead,
-    projectAddress: nextLead.projectAddress,
-    clientCharacterNote: nextLead.clientCharacterNote,
-    activityUpdate: nextLead.activityUpdate,
-    dealProgress: nextLead.dealProgress,
-    attachmentsJson: JSON.stringify(nextLead.attachments),
-    workLogJson: JSON.stringify(nextLead.workLog),
-    estimatorDataJson: stringifyEstimatorData(nextLead.estimatorData),
-    updatedAtUtc: nowIso(),
-  });
+  const supabase = createSupabaseAdminClient();
+  if (!supabase) {
+    return null;
+  }
 
-  await upsertProjectFromLead(nextLead);
-  return nextLead;
+  const {data, error} = await supabase
+    .from('crm_leads')
+    .update({
+      customer: nextLead.customer,
+      company: nextLead.company,
+      phone: nextLead.phone,
+      email: nextLead.email,
+      address: nextLead.address,
+      problem: nextLead.problem,
+      project_address: nextLead.projectAddress,
+      client_character_note: nextLead.clientCharacterNote,
+      status: nextLead.status,
+      progress: nextLead.progress,
+      activity_update: nextLead.activityUpdate,
+      deal_progress: nextLead.dealProgress,
+      note: nextLead.note,
+      owner: nextLead.owner,
+      value: Number(String(nextLead.value).replace(/[^0-9.-]/g, '')) || 0,
+      updated_at: nextLead.updatedAt,
+      next_action: nextLead.nextAction,
+      attachments_json: nextLead.attachments,
+      estimator_data_json: nextLead.estimatorData,
+    })
+    .or(`external_id.eq.${leadId},id.eq.${leadId}`)
+    .select('id,external_id,customer,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,work_log_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
+    .maybeSingle();
+
+  if (error || !data) {
+    return null;
+  }
+
+  const updatedLead = rowToLead(data as LeadRow);
+  await upsertProjectFromLead(updatedLead);
+  return updatedLead;
 }

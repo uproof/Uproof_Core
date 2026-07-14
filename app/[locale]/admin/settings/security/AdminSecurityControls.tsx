@@ -1,7 +1,6 @@
 "use client";
 
 import {useState} from 'react';
-import Link from 'next/link';
 
 type Props = {
   locale: string;
@@ -13,7 +12,7 @@ export default function AdminSecurityControls({locale, userId, email}: Props) {
   const isLv = locale === 'lv';
   const [newPassword, setNewPassword] = useState('');
   const [message, setMessage] = useState('');
-  const [busy, setBusy] = useState<'password' | 'revoke' | 'mfa' | ''>('');
+  const [busy, setBusy] = useState<'password' | 'revoke' | ''>('');
   const passwordHint = isLv
     ? 'Parolei jābūt vismaz 8 rakstzīmēm ar lielo burtu, ciparu un speciālu simbolu.'
     : 'Password must be at least 8 characters with one uppercase letter, one number, and one special symbol.';
@@ -38,20 +37,6 @@ export default function AdminSecurityControls({locale, userId, email}: Props) {
       setNewPassword('');
     } catch (error: any) {
       setMessage(error?.message || 'Failed to change password');
-    } finally {
-      setBusy('');
-    }
-  };
-
-  const revokeMfa = async () => {
-    setBusy('mfa');
-    setMessage('');
-    try {
-      const data = await postAction('reset-mfa');
-      if (!data.ok) throw new Error(data.error || 'Failed to reset MFA');
-      setMessage(isLv ? 'MFA atiestatīts.' : 'MFA reset. Add it again below.');
-    } catch (error: any) {
-      setMessage(error?.message || 'Failed to reset MFA');
     } finally {
       setBusy('');
     }
@@ -89,9 +74,7 @@ export default function AdminSecurityControls({locale, userId, email}: Props) {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            <button type="button" onClick={() => void revokeMfa()} disabled={busy !== ''} className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-800 transition hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-60">{busy === 'mfa' ? '...' : isLv ? 'Revoke MFA' : 'Revoke MFA'}</button>
             <button type="button" onClick={() => void revokeSessions()} disabled={busy !== ''} className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-800 transition hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-60">{busy === 'revoke' ? '...' : isLv ? 'Revoke access' : 'Revoke access'}</button>
-            <Link href={`/${locale}/mfa/setup/admin`} className="rounded-2xl border border-sky-200 bg-white px-4 py-2 text-sm font-semibold text-sky-700 transition hover:bg-sky-50">{isLv ? 'Add MFA' : 'Add MFA'}</Link>
           </div>
         </div>
       </div>

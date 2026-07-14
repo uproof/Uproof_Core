@@ -373,6 +373,7 @@
   },
   "contact": {
     "title": "GET IN TOUCH",
+    "sectionTitle": "How can we help?",
     "form": {
       "name": "Name",
       "namePlaceholder": "Your name",

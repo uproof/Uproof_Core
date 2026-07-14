@@ -10,9 +10,6 @@ type Props = {
 export default function AdminLoginPage({locale, redirectTarget}: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [mfaCode, setMfaCode] = useState('');
-  const [recoveryCode, setRecoveryCode] = useState('');
-  const [showRecoveryCode, setShowRecoveryCode] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -22,10 +19,7 @@ export default function AdminLoginPage({locale, redirectTarget}: Props) {
         title: 'Meld je aan als superadmin',
         email: 'E-mail',
         password: 'Wachtwoord',
-        code: 'CODE',
-        recovery: 'Herstelcode',
         button: 'Doorgaan',
-        setup: 'Authenticator instellen',
       }
     : locale === 'lv'
       ? {
@@ -33,20 +27,14 @@ export default function AdminLoginPage({locale, redirectTarget}: Props) {
           title: 'Pieslēgties kā superadmin',
           email: 'E-pasts',
           password: 'Parole',
-          code: 'CODE',
-          recovery: 'Atjaunošanas kods',
           button: 'Turpināt',
-          setup: 'Iestatīt autentifikatoru',
         }
       : {
           heading: 'CMS sign in',
-        title: 'Sign in',
+          title: 'Sign in',
           email: 'Email',
           password: 'Password',
-          code: 'CODE',
-          recovery: 'Recovery code',
           button: 'Continue',
-        setup: 'Authenticator setup',
         };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -58,16 +46,11 @@ export default function AdminLoginPage({locale, redirectTarget}: Props) {
       const response = await fetch('/api/admin/login', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({email, password, role: 'superadmin', mfaCode, recoveryCode}),
+        body: JSON.stringify({email, password, role: 'superadmin'}),
       });
       const data = await response.json();
       if (!response.ok || !data.ok) {
         throw new Error(data.error || 'Login failed');
-      }
-
-      if (data.nextStep === 'mfa-setup') {
-        window.location.assign(`/${locale}/mfa/setup/admin?redirect=${encodeURIComponent(redirectTarget)}`);
-        return;
       }
 
       window.location.assign(redirectTarget);
@@ -98,29 +81,6 @@ export default function AdminLoginPage({locale, redirectTarget}: Props) {
                 <label className="block text-sm font-semibold text-slate-700">{labels.password}</label>
                 <input value={password} onChange={(event) => setPassword(event.target.value)} type="password" autoComplete="current-password" className="mt-2 w-full rounded-2xl border border-sky-200 bg-white px-4 py-3 text-slate-900 outline-none focus:border-sky-400" />
               </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label className="block text-sm font-semibold text-slate-700">{labels.code}</label>
-                  <input value={mfaCode} onChange={(event) => setMfaCode(event.target.value)} inputMode="numeric" autoComplete="one-time-code" className="mt-2 w-full rounded-2xl border border-sky-200 bg-white px-4 py-3 text-slate-900 outline-none focus:border-sky-400" />
-                </div>
-                <div className="flex items-end">
-                  <button
-                    type="button"
-                    onClick={() => setShowRecoveryCode((current) => !current)}
-                    className="w-full rounded-2xl border border-sky-200 px-4 py-3 text-sm font-semibold text-sky-700 transition hover:bg-sky-50"
-                  >
-                    {showRecoveryCode ? 'Hide recovery code' : 'Use recovery code'}
-                  </button>
-                </div>
-              </div>
-
-              {showRecoveryCode ? (
-                <div>
-                  <label className="block text-sm font-semibold text-slate-700">{labels.recovery}</label>
-                  <input value={recoveryCode} onChange={(event) => setRecoveryCode(event.target.value)} autoComplete="off" className="mt-2 w-full rounded-2xl border border-sky-200 bg-white px-4 py-3 text-slate-900 outline-none focus:border-sky-400" />
-                </div>
-              ) : null}
-
               {message ? <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">{message}</div> : null}
 
               <button type="submit" disabled={loading} className="inline-flex w-full items-center justify-center rounded-2xl bg-sky-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-60">
@@ -128,9 +88,7 @@ export default function AdminLoginPage({locale, redirectTarget}: Props) {
               </button>
             </form>
 
-            <p className="mt-4 text-xs leading-5 text-slate-500">
-              If this is the first sign-in on a device, the next step will be {labels.setup.toLowerCase()}.
-            </p>
+            <p className="mt-4 text-xs leading-5 text-slate-500">Use your approved CMS email and password to continue.</p>
           </div>
         </div>
       </div>

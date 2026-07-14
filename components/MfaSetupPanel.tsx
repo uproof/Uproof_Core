@@ -41,6 +41,7 @@ export default function MfaSetupPanel({locale, scope, backHref, title, subtitle,
   const [recoveryCodes, setRecoveryCodes] = useState<string[]>([]);
   const [alreadyConfigured, setAlreadyConfigured] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [resetting, setResetting] = useState(false);
 
   const copy = useMemo(() => {
     if (locale === 'en') {
@@ -101,16 +102,17 @@ export default function MfaSetupPanel({locale, scope, backHref, title, subtitle,
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const startEnrollment = async () => {
+  const startEnrollment = async (forceReset = false) => {
     setLoading(true);
     setMessage('');
     setRecoveryCodes([]);
+    setAlreadyConfigured(false);
 
     try {
       const response = await fetch('/api/security/mfa/setup/start', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({scope}),
+        body: JSON.stringify({scope, forceReset}),
       });
       const data = (await response.json()) as StartResponse;
       if (!data.ok) {
@@ -130,6 +132,15 @@ export default function MfaSetupPanel({locale, scope, backHref, title, subtitle,
       setMessage(error?.message || 'Failed to start authenticator setup');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResetAndStart = async () => {
+    setResetting(true);
+    try {
+      await startEnrollment(true);
+    } finally {
+      setResetting(false);
     }
   };
 
@@ -212,9 +223,19 @@ export default function MfaSetupPanel({locale, scope, backHref, title, subtitle,
           {alreadyConfigured ? (
             <div className="mt-6 rounded-3xl border border-emerald-200 bg-emerald-50 p-5">
               <p className="text-base font-semibold text-emerald-900">{copy.already}</p>
-              <a href={completedHref} className="mt-4 inline-flex rounded-2xl bg-emerald-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-600">
-                {copy.next}
-              </a>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={() => void handleResetAndStart()}
+                  disabled={loading || resetting}
+                  className="inline-flex rounded-2xl bg-amber-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-amber-600 disabled:opacity-60"
+                >
+                  {resetting ? '...' : 'Reset and set up new'}
+                </button>
+                <a href={completedHref} className="inline-flex rounded-2xl bg-emerald-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-600">
+                  {copy.next}
+                </a>
+              </div>
             </div>
           ) : null}
 

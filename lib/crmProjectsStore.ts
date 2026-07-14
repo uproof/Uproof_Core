@@ -1,5 +1,6 @@
-import {getDb, nowIso} from '@/lib/crmDb';
+import {nowIso} from '@/lib/crmDb';
 import {getCrmLeads} from '@/lib/crmLeadsStore';
+import {createCrmSupabaseClient as createSupabaseAdminClient} from '@/lib/crmStorage';
 import type {CrmLead} from '@/lib/crmMockData';
 import {createEmptyCrmEstimatorData, normalizeCrmEstimatorData, stringifyEstimatorData, summarizeEstimatorData} from '@/lib/crmEstimator';
 
@@ -72,40 +73,50 @@ export async function getCrmProjects(options: CrmProjectsOptions = {}): Promise<
 }
 
 export async function upsertProjectFromLead(lead: CrmLead): Promise<void> {
-  const db = getDb();
-  const now = nowIso();
+  const supabase = createSupabaseAdminClient();
+  if (!supabase) {
+    throw new Error('Supabase is required for project storage');
+  }
 
-  db.prepare(`
-    INSERT INTO projects (
-      id, lead_id, title, location, owner, phase, budget, due_date, estimator_data_json, created_at, updated_at_utc
-    ) VALUES (
-      @id, @leadId, @title, @location, @owner, @phase, @budget, @dueDate, @estimatorDataJson, @createdAt, @updatedAtUtc
-    )
-    ON CONFLICT(lead_id) DO UPDATE SET
-      title = excluded.title,
-      location = excluded.location,
-      owner = excluded.owner,
-      phase = excluded.phase,
-      budget = excluded.budget,
-      due_date = excluded.due_date,
-      estimator_data_json = excluded.estimator_data_json,
-      updated_at_utc = excluded.updated_at_utc
-  `).run({
+  const now = nowIso();
+  const payload = {
     id: lead.id,
-    leadId: lead.id,
+    lead_id: lead.id,
     title: lead.projectAddress || lead.address || lead.customer,
     location: lead.projectAddress || lead.address || lead.customer,
     owner: lead.owner,
     phase: lead.status.replaceAll('_', ' '),
     budget: lead.value,
-    dueDate: lead.nextAction,
-    estimatorDataJson: stringifyEstimatorData(normalizeCrmEstimatorData(lead.estimatorData, createEmptyCrmEstimatorData())),
-    createdAt: now,
-    updatedAtUtc: now,
-  });
+    due_date: lead.nextAction,
+    estimator_data_json: stringifyEstimatorData(normalizeCrmEstimatorData(lead.estimatorData, createEmptyCrmEstimatorData())),
+    created_at: now,
+    updated_at_utc: now,
+  };
+
+  const {error} = await supabase.from('projects').upsert(payload, {onConflict: 'lead_id'});
+  if (error) {
+    const message = error.message || 'Failed to upsert project';
+    if (/public\.projects|schema cache|does not exist/i.test(message)) {
+      console.warn('Skipping project sync because the projects table is unavailable:', message);
+      return;
+    }
+    throw new Error(message);
+  }
 }
 
 export async function deleteProjectByLeadId(leadId: string): Promise<void> {
-  const db = getDb();
-  db.prepare('DELETE FROM projects WHERE lead_id = ?').run(leadId);
+  const supabase = createSupabaseAdminClient();
+  if (!supabase) {
+    throw new Error('Supabase is required for project storage');
+  }
+
+  const {error} = await supabase.from('projects').delete().eq('lead_id', leadId);
+  if (error) {
+    const message = error.message || 'Failed to delete project';
+    if (/public\.projects|schema cache|does not exist/i.test(message)) {
+      console.warn('Skipping project delete because the projects table is unavailable:', message);
+      return;
+    }
+    throw new Error(message);
+  }
 }
