@@ -1,7 +1,7 @@
 import {createHash, randomBytes, randomUUID} from 'crypto';
 import {getDb, nowIso} from '@/lib/crmDb';
 import {createCrmSupabaseClient as createSupabaseAdminClient} from '@/lib/crmStorage';
-import {getCrmLeadById} from '@/lib/crmLeadsStore';
+import {findCrmLeadRowById, getCrmLeadById} from '@/lib/crmLeadsStore';
 import {decryptSecret, encryptSecret, normalizeSecretInput, validatePasswordPolicy} from '@/lib/secretVault';
 
 export type CrmUserRole = 'sales' | 'superadmin';
@@ -46,6 +46,28 @@ function safeDecryptSecret(value: string) {
 
 export function getPlainMfaSecret(user: Pick<CrmUser, 'mfaSecret'> | null | undefined) {
   return safeDecryptSecret(user?.mfaSecret || '');
+}
+
+async function getCrmUserProfileIdByEmail(email: string) {
+  const normalizedEmail = email.trim().toLowerCase();
+  if (!normalizedEmail) {
+    return null;
+  }
+
+  const supabase = createSupabaseAdminClient();
+  if (supabase) {
+    const {data, error} = await supabase
+      .from('user_profiles')
+      .select('id')
+      .eq('email', normalizedEmail)
+      .maybeSingle();
+
+    if (!error && data?.id) {
+      return String(data.id);
+    }
+  }
+
+  return null;
 }
 
 function rowToCrmUser(row: CrmUserRow): CrmUser {
@@ -126,12 +148,7 @@ export async function getCrmUserByEmail(email: string): Promise<CrmUser | null> 
     }
   }
 
-  const db = getDb();
-  const row = db
-    .prepare('SELECT * FROM crm_users WHERE lower(email) = lower(?) LIMIT 1')
-    .get(normalizedEmail) as CrmUserRow | undefined;
-
-  return row ? rowToCrmUser(row) : null;
+  return null;
 }
 
 export async function getCrmUserById(id: string): Promise<CrmUser | null> {
@@ -164,12 +181,7 @@ export async function getCrmUserById(id: string): Promise<CrmUser | null> {
     }
   }
 
-  const db = getDb();
-  const row = db
-    .prepare('SELECT * FROM crm_users WHERE id = ? LIMIT 1')
-    .get(userId) as CrmUserRow | undefined;
-
-  return row ? rowToCrmUser(row) : null;
+  return null;
 }
 
 type CreateCrmUserInput = {
@@ -1011,27 +1023,33 @@ export async function assignLeadToCrmUser(input: AssignLeadInput): Promise<{assi
     throw new Error('leadId, salesUserId and assignedBy are required');
   }
 
-  const currentLead = await getCrmLeadById(leadId);
-  if (!currentLead) {
-    return {assigned: false, duplicate: false};
-  }
-
-  if (currentLead.assignedSalesUserId === salesUserId) {
-    return {assigned: true, duplicate: true};
-  }
-
   const supabase = createSupabaseAdminClient();
   if (supabase) {
     const now = new Date().toISOString();
+    const leadRow = await findCrmLeadRowById(leadId);
+
+    if (!leadRow) {
+      console.error('assignLeadToCrmUser lookup failed', {
+        leadId,
+        salesUserId,
+      });
+      return {assigned: false, duplicate: false};
+    }
+
+    if (leadRow.assigned_sales_user_id === salesUserId) {
+      return {assigned: true, duplicate: true};
+    }
+
+    const actorProfileId = await getCrmUserProfileIdByEmail(assignedBy);
     const {error} = await supabase
       .from('crm_leads')
       .update({
         assigned_sales_user_id: salesUserId,
-        assigned_by_user_id: assignedBy,
+        assigned_by_user_id: actorProfileId,
         assigned_at: now,
         updated_at: now,
       })
-      .eq('external_id', leadId);
+      .eq('id', leadRow.id);
 
     if (error) {
       throw new Error(error.message || 'Failed to assign lead in Supabase');
@@ -1071,18 +1089,22 @@ export async function unassignLeadFromCrmUser(input: UnassignLeadInput): Promise
     throw new Error('leadId and unassignedBy are required');
   }
 
-  const currentLead = await getCrmLeadById(leadId);
-  if (!currentLead) {
-    return {unassigned: false, duplicate: false};
-  }
-
-  if (!currentLead.assignedSalesUserId) {
-    return {unassigned: true, duplicate: true};
-  }
-
   const supabase = createSupabaseAdminClient();
   if (supabase) {
     const now = new Date().toISOString();
+    const leadRow = await findCrmLeadRowById(leadId);
+
+    if (!leadRow) {
+      console.error('unassignLeadFromCrmUser lookup failed', {
+        leadId,
+      });
+      return {unassigned: false, duplicate: false};
+    }
+
+    if (!leadRow.assigned_sales_user_id) {
+      return {unassigned: true, duplicate: true};
+    }
+
     const {error} = await supabase
       .from('crm_leads')
       .update({
@@ -1091,13 +1113,22 @@ export async function unassignLeadFromCrmUser(input: UnassignLeadInput): Promise
         assigned_at: null,
         updated_at: now,
       })
-      .eq('external_id', leadId);
+      .eq('id', leadRow.id);
 
     if (error) {
       throw new Error(error.message || 'Failed to unassign lead in Supabase');
     }
 
     return {unassigned: true, duplicate: false};
+  }
+
+  const currentLead = await getCrmLeadById(leadId);
+  if (!currentLead) {
+    return {unassigned: false, duplicate: false};
+  }
+
+  if (!currentLead.assignedSalesUserId) {
+    return {unassigned: true, duplicate: true};
   }
 
   const db = getDb();

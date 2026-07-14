@@ -41,7 +41,7 @@ function parseJsonArray<T>(value: unknown, fallback: T[]): T[] {
   }
 }
 
-type LeadRow = {
+export type CrmLeadRow = {
   id: string;
   external_id: string | null;
   customer: string;
@@ -62,14 +62,13 @@ type LeadRow = {
   updated_at: string;
   next_action: string;
   attachments_json: string;
-  work_log_json?: unknown;
   estimator_data_json?: unknown;
   assigned_sales_user_id: string | null;
   assigned_by_user_id?: string | null;
   assigned_at?: string | null;
 };
 
-function rowToLead(row: LeadRow): CrmLead {
+function rowToLead(row: CrmLeadRow): CrmLead {
   return normalizeLead({
     id: row.external_id || row.id,
     customer: row.customer,
@@ -92,7 +91,7 @@ function rowToLead(row: LeadRow): CrmLead {
     nextAction: String(row.next_action || ''),
     assignedSalesUserId: row.assigned_sales_user_id,
     attachments: parseJsonArray<string>(row.attachments_json, []),
-    workLog: parseJsonArray(row.work_log_json, []),
+    workLog: [],
     estimatorData: normalizeCrmEstimatorData(parseJsonArray(row.estimator_data_json, []), createEmptyCrmEstimatorData()),
   });
 }
@@ -112,7 +111,7 @@ export async function getCrmLeads(options: GetCrmLeadsOptions = {}): Promise<Crm
   const limit = typeof options.limit === 'number' && Number.isFinite(options.limit) && options.limit > 0 ? Math.floor(options.limit) : 0;
   let query = supabase
     .from('crm_leads')
-    .select('id,external_id,customer,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,work_log_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
+    .select('id,external_id,customer,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
     .order('updated_at', {ascending: false})
     .order('created_at', {ascending: false});
 
@@ -129,10 +128,10 @@ export async function getCrmLeads(options: GetCrmLeadsOptions = {}): Promise<Crm
     return [];
   }
 
-  return data.map((row) => rowToLead(row as LeadRow));
+  return data.map((row) => rowToLead(row as CrmLeadRow));
 }
 
-export async function getCrmLeadById(leadId: string): Promise<CrmLead | null> {
+export async function findCrmLeadRowById(leadId: string): Promise<CrmLeadRow | null> {
   const normalizedLeadId = leadId.trim();
   if (!normalizedLeadId) {
     return null;
@@ -143,17 +142,36 @@ export async function getCrmLeadById(leadId: string): Promise<CrmLead | null> {
     return null;
   }
 
-  const {data, error} = await supabase
+  const byExternalId = await supabase
     .from('crm_leads')
-    .select('id,external_id,customer,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,work_log_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
-    .or(`external_id.eq.${normalizedLeadId},id.eq.${normalizedLeadId}`)
+    .select('id,external_id,customer,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
+    .eq('external_id', normalizedLeadId)
     .maybeSingle();
 
-  if (error || !data) {
+  if (!byExternalId.error && byExternalId.data) {
+    return byExternalId.data as CrmLeadRow;
+  }
+
+  const byId = await supabase
+    .from('crm_leads')
+    .select('id,external_id,customer,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
+    .eq('id', normalizedLeadId)
+    .maybeSingle();
+
+  if (byId.error || !byId.data) {
     return null;
   }
 
-  return rowToLead(data as LeadRow);
+  return byId.data as CrmLeadRow;
+}
+
+export async function getCrmLeadById(leadId: string): Promise<CrmLead | null> {
+  const row = await findCrmLeadRowById(leadId);
+  if (!row) {
+    return null;
+  }
+
+  return rowToLead(row);
 }
 
 export async function isLeadAssignedToSalesUser(leadId: string, salesUserId: string): Promise<boolean> {
@@ -329,18 +347,18 @@ export async function updateCrmLead(leadId: string, updates: Partial<CrmLead>): 
       value: Number(String(nextLead.value).replace(/[^0-9.-]/g, '')) || 0,
       updated_at: nextLead.updatedAt,
       next_action: nextLead.nextAction,
-      attachments_json: nextLead.attachments,
-      estimator_data_json: nextLead.estimatorData,
+      attachments_json: JSON.stringify(nextLead.attachments),
+      estimator_data_json: stringifyEstimatorData(nextLead.estimatorData),
     })
     .or(`external_id.eq.${leadId},id.eq.${leadId}`)
-    .select('id,external_id,customer,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,work_log_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
+    .select('id,external_id,customer,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
     .maybeSingle();
 
   if (error || !data) {
     return null;
   }
 
-  const updatedLead = rowToLead(data as LeadRow);
+  const updatedLead = rowToLead(data as CrmLeadRow);
   await upsertProjectFromLead(updatedLead);
   return updatedLead;
 }
