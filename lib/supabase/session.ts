@@ -47,6 +47,8 @@ export async function resolveSupabaseAdminSession(accessToken: string | undefine
     return null;
   }
 
+  const issuedAtMs = decodeJwtIssuedAt(accessToken);
+
   const profileResult = await supabase
     .from('user_profiles')
     .select('role,is_active,session_valid_after')
@@ -62,7 +64,6 @@ export async function resolveSupabaseAdminSession(accessToken: string | undefine
     return null;
   }
 
-  const issuedAtMs = decodeJwtIssuedAt(accessToken);
   const validAfterMs = profileResult.data.session_valid_after ? Date.parse(profileResult.data.session_valid_after) : NaN;
   if (issuedAtMs !== null && Number.isFinite(validAfterMs) && issuedAtMs < validAfterMs) {
     return null;

@@ -360,6 +360,7 @@ export async function updateCrmUser(input: UpdateCrmUserInput): Promise<CrmUser 
 
   const supabase = createSupabaseAdminClient();
   if (supabase) {
+    const passwordChanged = !!nextPasswordPlain;
     if (nextPasswordPlain) {
       const passwordResult = await supabase.auth.admin.updateUserById(userId, {password: nextPasswordPlain});
       if (passwordResult.error) {
@@ -367,12 +368,15 @@ export async function updateCrmUser(input: UpdateCrmUserInput): Promise<CrmUser 
       }
     }
 
+    const sessionValidAfter = passwordChanged ? nowIso() : current.sessionValidAfter || null;
+
     const {data, error} = await supabase
       .from('user_profiles')
       .update({
         full_name: nextName,
         is_active: nextActive,
         crm_mfa_secret: nextMfaSecret,
+        session_valid_after: sessionValidAfter,
       })
       .eq('id', userId)
       .select('id,email,full_name,role,is_active,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
