@@ -21,7 +21,7 @@ export default function AdminSecurityControls({locale, userId, email}: Props) {
     const response = await fetch(`/api/crm/users/${encodeURIComponent(userId)}/security`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({action, ...payload}),
+      body: JSON.stringify({action, locale, ...payload}),
     });
     return response.json();
   };
@@ -33,6 +33,11 @@ export default function AdminSecurityControls({locale, userId, email}: Props) {
     try {
       const data = await postAction('set-password', {newPassword});
       if (!data.ok) throw new Error(data.error || 'Failed to change password');
+      if (data.logoutRequired) {
+        setMessage(isLv ? 'Parole atjaunināta. Notiek atteikšanās...' : 'Password updated. Signing out...');
+        window.location.assign(`/${locale}/admin/login`);
+        return;
+      }
       setMessage(isLv ? 'Parole atjaunināta.' : 'Password updated.');
       setNewPassword('');
     } catch (error: any) {
@@ -62,6 +67,7 @@ export default function AdminSecurityControls({locale, userId, email}: Props) {
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-500">{isLv ? 'Superadmin profile' : 'Superadmin profile'}</p>
         <h3 className="mt-2 text-2xl font-bold text-slate-900">{email}</h3>
         <p className="mt-1 text-sm text-slate-600">{isLv ? 'Šie ir apstiprinātie superadmini CMS pārvaldībai.' : 'These are the approved superadmin accounts for CMS management.'}</p>
+        <p className="mt-2 text-xs text-slate-500">{isLv ? 'Parole netiek rādīta. To var tikai nomainīt vai atiestatīt.' : 'The password is never displayed. It can only be changed or reset.'}</p>
 
         <div className="mt-5 space-y-3">
           <div>

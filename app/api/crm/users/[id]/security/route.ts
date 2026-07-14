@@ -15,6 +15,24 @@ import {
   revokeCrmUserSessions,
 } from '@/lib/crmUsersStore';
 import {validatePasswordPolicy} from '@/lib/secretVault';
+import {SUPABASE_ACCESS_TOKEN_COOKIE, SUPABASE_REFRESH_TOKEN_COOKIE} from '@/lib/supabase/session';
+
+function clearCurrentBrowserSession(response: NextResponse) {
+  response.cookies.set(SUPABASE_ACCESS_TOKEN_COOKIE, '', {
+    httpOnly: true,
+    sameSite: 'strict',
+    secure: process.env.NODE_ENV === 'production',
+    path: '/',
+    maxAge: 0,
+  });
+  response.cookies.set(SUPABASE_REFRESH_TOKEN_COOKIE, '', {
+    httpOnly: true,
+    sameSite: 'strict',
+    secure: process.env.NODE_ENV === 'production',
+    path: '/',
+    maxAge: 0,
+  });
+}
 
 async function recordAuditLog(entry: {
   requestId: string;
@@ -62,6 +80,7 @@ export async function POST(req: NextRequest, {params}: {params: Promise<{id: str
   const action = String(body.action || '').trim();
   const reason = String(body.reason || '').trim();
   const adminPassword = String(body.adminPassword || '').trim();
+  const isSelfPasswordChange = action === 'set-password' && session.email.toLowerCase() === target.email.toLowerCase();
 
   if (adminPassword) {
     const supabase = createSupabaseAdminClient();
@@ -153,6 +172,9 @@ export async function POST(req: NextRequest, {params}: {params: Promise<{id: str
     }
     case 'reset-password': {
       const reset = await issuePasswordResetToken(target.id, session.email);
+      const locale = String(body.locale || 'en').trim() || 'en';
+      const baseUrl = new URL(req.url).origin;
+      const resetLink = `${baseUrl}/${encodeURIComponent(locale)}/admin/reset-password?token=${encodeURIComponent(reset.token)}`;
       await recordAuditLog({
         requestId,
         actorEmail: session.email,
@@ -163,7 +185,7 @@ export async function POST(req: NextRequest, {params}: {params: Promise<{id: str
         detail: reason || 'Password reset link issued',
         success: true,
       });
-      return NextResponse.json({ok: true, expiresAt: reset.expiresAt});
+      return NextResponse.json({ok: true, expiresAt: reset.expiresAt, resetLink, token: reset.token});
     }
     case 'revoke-sessions': {
       const user = await revokeCrmUserSessions(target.id);
@@ -242,7 +264,11 @@ export async function POST(req: NextRequest, {params}: {params: Promise<{id: str
         detail: reason || 'Password updated by superadmin',
         success: true,
       });
-      return NextResponse.json({ok: true, user: {id: user.id, email: user.email}});
+      const response = NextResponse.json({ok: true, logoutRequired: isSelfPasswordChange, user: {id: user.id, email: user.email}});
+      if (isSelfPasswordChange) {
+        clearCurrentBrowserSession(response);
+      }
+      return response;
     }
     default:
       return NextResponse.json({ok: false, error: 'Unsupported action'}, {status: 400});

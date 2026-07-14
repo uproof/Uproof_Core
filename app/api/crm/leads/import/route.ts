@@ -48,6 +48,11 @@ function parseJsonArray<T>(value: string, fallback: T[]) {
   }
 }
 
+function parseMoneyValue(value: string) {
+  const numeric = Number(String(value || '').replace(/[^0-9.-]/g, ''));
+  return Number.isFinite(numeric) && numeric >= 0 ? numeric : 0;
+}
+
 function rowToLead(row: Record<string, string>, fallbackId: string): CrmLead {
   return {
     id: getRowValue(row, 'id', 'lead id', 'lead_id') || fallbackId,
@@ -131,42 +136,40 @@ export async function POST(req: NextRequest) {
     const skipped: string[] = [];
 
     for (const [index, row] of rows.entries()) {
-    const fallbackId = `L-${100000 + index}`;
-    const lead = rowToLead(row, fallbackId);
+      const fallbackId = `L-${100000 + index}`;
+      const lead = rowToLead(row, fallbackId);
 
       if (!lead.customer || !lead.company || !lead.phone || !lead.email || !lead.address || !lead.owner || !lead.value || !lead.nextAction) {
         skipped.push(lead.id || fallbackId);
         continue;
       }
 
-    const {error} = await supabase.from('crm_leads').upsert({
-      external_id: lead.id,
-      customer: lead.customer,
-      company: lead.company,
-      phone: lead.phone,
-      email: lead.email,
-      address: lead.address,
-      problem: lead.problem,
-      project_address: lead.projectAddress,
-      client_character_note: lead.clientCharacterNote,
-      status: lead.status,
-      progress: lead.progress,
-      activity_update: lead.activityUpdate,
-      deal_progress: lead.dealProgress,
-      note: lead.note,
-      owner: lead.owner,
-      value: lead.value,
-      updated_at: lead.updatedAt,
-      next_action: lead.nextAction,
-      attachments_json: JSON.stringify(lead.attachments),
-      work_log_json: JSON.stringify(lead.workLog),
-      estimator_data_json: stringifyEstimatorData(lead.estimatorData),
-      assigned_sales_user_id: lead.assignedSalesUserId || null,
-      assigned_by_user_id: '',
-      assigned_at: '',
-      created_at: nowIso(),
-      updated_at_utc: nowIso(),
-    }, {onConflict: 'external_id'});
+      const {error} = await supabase.from('crm_leads').upsert({
+        external_id: lead.id,
+        customer: lead.customer,
+        company: lead.company,
+        phone: lead.phone,
+        email: lead.email,
+        address: lead.address,
+        problem: lead.problem,
+        project_address: lead.projectAddress,
+        client_character_note: lead.clientCharacterNote,
+        status: lead.status,
+        progress: lead.progress,
+        activity_update: lead.activityUpdate,
+        deal_progress: lead.dealProgress,
+        note: lead.note,
+        owner: lead.owner,
+        value: parseMoneyValue(lead.value),
+        updated_at: lead.updatedAt,
+        next_action: lead.nextAction,
+        attachments_json: JSON.stringify(lead.attachments),
+        work_log_json: JSON.stringify(lead.workLog),
+        estimator_data_json: stringifyEstimatorData(lead.estimatorData),
+        assigned_sales_user_id: null,
+        assigned_by_user_id: null,
+        assigned_at: null,
+      }, {onConflict: 'external_id'});
 
       if (error) {
         skipped.push(lead.id);

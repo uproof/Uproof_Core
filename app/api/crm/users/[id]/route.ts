@@ -4,6 +4,7 @@ import {checkRateLimit, RATE_LIMITS} from '@/lib/rateLimit';
 import {canPerform} from '@/lib/permissions';
 import {deleteCrmUser, getCrmUserById, updateCrmUser} from '@/lib/crmUsersStore';
 import {validatePasswordPolicy} from '@/lib/secretVault';
+import {clearAdminCookie} from '@/lib/adminAuth';
 import {SUPABASE_ACCESS_TOKEN_COOKIE, SUPABASE_REFRESH_TOKEN_COOKIE} from '@/lib/supabase/session';
 
 function clearCurrentBrowserSession(response: NextResponse) {
@@ -80,6 +81,7 @@ export async function PATCH(req: NextRequest, {params}: {params: Promise<{id: st
   });
 
   if (isSelfPasswordChange) {
+    await clearAdminCookie();
     clearCurrentBrowserSession(response);
   }
 

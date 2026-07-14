@@ -37,6 +37,15 @@ export async function checkRateLimit(
   };
 }
 
+export async function clearRateLimit(identifier: string): Promise<void> {
+  const supabase = createSupabaseAdminClient();
+  if (supabase) {
+    await supabase.from('rate_limits').delete().eq('identifier', identifier);
+  }
+
+  inMemoryRateLimits.delete(identifier);
+}
+
 export const RATE_LIMITS = {
   LOGIN: { maxRequests: 5, windowMs: 15 * 60 * 1000 }, // 5 per 15 minutes
   CONTACT: { maxRequests: 5, windowMs: 60 * 60 * 1000 }, // 5 per hour

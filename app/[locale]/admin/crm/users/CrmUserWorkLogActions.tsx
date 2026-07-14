@@ -48,7 +48,7 @@ export default function CrmUserWorkLogActions({locale, userId, userName}: Props)
         disabled={busy}
         className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-800 transition hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {busy ? '...' : isLv ? 'Notīrīt darba žurnālus' : 'Clear work logs'}
+        {busy ? '...' : isLv ? 'Atiestatīt darba žurnālus' : 'Reset work logs'}
       </button>
       {message ? <p className="text-xs text-slate-500">{message}</p> : null}
     </div>

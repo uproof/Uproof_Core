@@ -90,8 +90,9 @@ function getNotificationRecipients(actorEmail: string) {
 }
 
 export async function logCrmUserActivity(input: LogCrmUserActivityInput) {
+  const actorEmail = input.actorEmail.trim().toLowerCase();
   const record = {
-    actorEmail: input.actorEmail,
+    actorEmail,
     actorRole: input.actorRole,
     action: input.action,
     leadId: input.leadId || '',
@@ -175,7 +176,7 @@ export async function clearCrmUserActivityByEmail(email: string) {
     const {error} = await supabase
       .from('crm_user_activity')
       .delete()
-      .eq('actor_email', normalizedEmail);
+      .ilike('actor_email', normalizedEmail);
 
     return !error;
   }

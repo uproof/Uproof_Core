@@ -196,6 +196,10 @@ export default function SalesUserManagementAdminClient({
       if (!data?.ok) {
         throw new Error(data.error || 'Failed to update user');
       }
+      if (data.logoutRequired) {
+        window.location.assign(`/${locale}/admin/login`);
+        return;
+      }
       setMessage(isLv ? 'Lietotājs atjaunināts.' : 'User updated.');
       await loadCrmUsers();
       if (typeof patch.password === 'string') {
@@ -262,7 +266,7 @@ export default function SalesUserManagementAdminClient({
       const response = await fetch(`/api/crm/users/${encodeURIComponent(user.id)}/security`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({action, ...payload}),
+        body: JSON.stringify({action, locale, ...payload}),
       });
       const data = await readResponseJson(response);
       if (!data?.ok) {
@@ -270,9 +274,14 @@ export default function SalesUserManagementAdminClient({
       }
 
       if (action === 'reset-password') {
+        if (data.resetLink) {
+          void navigator.clipboard?.writeText(String(data.resetLink)).catch(() => {});
+        }
         setSecurityMessages((current) => ({
           ...current,
-          [user.id]: isLv ? 'Paroles atiestatīšanas saite ir sagatavota un jānogādā drošā kanālā.' : 'Password reset link prepared and must be delivered through a secure channel.',
+          [user.id]: data.resetLink
+            ? `${isLv ? 'Paroles atiestatīšanas saite:' : 'Password reset link:'} ${data.resetLink}`
+            : (isLv ? 'Paroles atiestatīšanas saite ir sagatavota un jānogādā drošā kanālā.' : 'Password reset link prepared and must be delivered through a secure channel.'),
         }));
       } else {
         setSecurityMessages((current) => ({
