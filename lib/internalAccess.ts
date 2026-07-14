@@ -1,23 +1,23 @@
 import {redirect} from 'next/navigation';
 import {getAdminSession, getPendingAdminSession} from '@/lib/adminAuth';
-import {getCrmUserByEmail, getPlainMfaSecret} from '@/lib/crmUsersStore';
+import {getCrmUserByEmail} from '@/lib/crmUsersStore';
 
 export async function redirectAuthenticatedInternalUser(locale: string) {
   const pendingSession = await getPendingAdminSession();
   if (pendingSession?.role === 'sales') {
-    redirect(`/${locale}/mfa/setup/crm?redirect=/${locale}/crm`);
+    redirect(`/${locale}/crm`);
   }
   if (pendingSession?.role === 'superadmin') {
-    redirect(`/${locale}/mfa/setup/admin?redirect=/${locale}/admin`);
+    redirect(`/${locale}/admin`);
   }
 
   const session = await getAdminSession();
   if (session?.role === 'sales') {
     const user = await getCrmUserByEmail(session.email);
-    if (user && getPlainMfaSecret(user)) {
+    if (user) {
       redirect(`/${locale}/crm`);
     }
-    redirect(`/${locale}/mfa/setup/crm?redirect=/${locale}/crm`);
+    redirect(`/${locale}/crm/login`);
   }
 
   if (session?.role === 'superadmin') {
@@ -32,8 +32,8 @@ export async function requireSalesWorkspace(locale: string) {
   }
 
   const user = await getCrmUserByEmail(session.email);
-  if (!getPlainMfaSecret(user)) {
-    redirect(`/${locale}/mfa/setup/crm?redirect=/${locale}/crm`);
+  if (!user) {
+    redirect(`/${locale}/crm/login`);
   }
 
   return {session, user};
@@ -50,8 +50,8 @@ export async function requireSuperadminWorkspace(locale: string) {
   }
 
   const user = await getCrmUserByEmail(session.email);
-  if (!getPlainMfaSecret(user)) {
-    redirect(`/${locale}/mfa/setup/admin`);
+  if (!user) {
+    redirect(`/${locale}/admin/login`);
   }
 
   return {session, user};

@@ -53,7 +53,6 @@ export async function PATCH(req: NextRequest, {params}: {params: Promise<{id: st
       role: user.role,
       isActive: user.isActive,
       hasPassword: false,
-      hasMfaSecret: !!user.mfaSecret,
       createdAt: user.createdAt,
       updatedAtUtc: user.updatedAtUtc,
     },

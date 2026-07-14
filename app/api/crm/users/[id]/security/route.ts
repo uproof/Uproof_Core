@@ -12,8 +12,6 @@ import {
   getCrmUserById,
   getCrmUserByEmail,
   issuePasswordResetToken,
-  replaceRecoveryCodes,
-  resetCrmUserMfa,
   revokeCrmUserSessions,
 } from '@/lib/crmUsersStore';
 import {validatePasswordPolicy} from '@/lib/secretVault';
@@ -91,7 +89,6 @@ export async function POST(req: NextRequest, {params}: {params: Promise<{id: str
           role: target.role,
           isActive: target.isActive,
           hasPassword: false,
-          hasMfaSecret: !!target.mfaSecret,
           sessionValidAfter: target.sessionValidAfter || '',
           archivedAt: target.archivedAt || '',
           createdAt: target.createdAt,
@@ -168,23 +165,6 @@ export async function POST(req: NextRequest, {params}: {params: Promise<{id: str
       });
       return NextResponse.json({ok: true, expiresAt: reset.expiresAt});
     }
-    case 'reset-mfa': {
-      const user = await resetCrmUserMfa(target.id);
-      if (!user) {
-        return NextResponse.json({ok: false, error: 'CRM user not found'}, {status: 404});
-      }
-      await recordAuditLog({
-        requestId,
-        actorEmail: session.email,
-        actorRole: session.role,
-        action: 'crm_user_reset_mfa',
-        entityType: 'crm_user',
-        entityId: target.id,
-        detail: reason || 'MFA secret cleared and sessions revoked',
-        success: true,
-      });
-      return NextResponse.json({ok: true, user: {id: user.id, email: user.email, hasMfaSecret: !!user.mfaSecret}});
-    }
     case 'revoke-sessions': {
       const user = await revokeCrmUserSessions(target.id);
       if (!user) {
@@ -235,20 +215,6 @@ export async function POST(req: NextRequest, {params}: {params: Promise<{id: str
         success: true,
       });
       return NextResponse.json({ok: true, deleted: true});
-    }
-    case 'generate-recovery-codes': {
-      const codes = await replaceRecoveryCodes(target.id, 10);
-      await recordAuditLog({
-        requestId,
-        actorEmail: session.email,
-        actorRole: session.role,
-        action: 'crm_user_generate_recovery_codes',
-        entityType: 'crm_user',
-        entityId: target.id,
-        detail: reason || `Generated ${codes.length} recovery codes`,
-        success: true,
-      });
-      return NextResponse.json({ok: true, codes});
     }
     case 'set-password': {
       const newPassword = String(body.newPassword || '').trim();

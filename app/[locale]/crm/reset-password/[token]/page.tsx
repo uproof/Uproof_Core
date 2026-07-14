@@ -23,7 +23,7 @@ export default function ResetPasswordPage() {
     locale === 'en'
       ? {
           title: 'Create a new password',
-          subtitle: 'MFA stays enabled after the reset.',
+          subtitle: 'Use this password to sign back in after the reset.',
           password: 'New password',
           confirm: 'Confirm password',
           submit: 'Save password',
@@ -32,7 +32,7 @@ export default function ResetPasswordPage() {
       : locale === 'nl-BE'
         ? {
             title: 'Nieuw wachtwoord maken',
-            subtitle: 'MFA blijft actief na de reset.',
+          subtitle: 'Gebruik dit wachtwoord om opnieuw in te loggen na de reset.',
             password: 'Nieuw wachtwoord',
             confirm: 'Bevestig wachtwoord',
             submit: 'Wachtwoord opslaan',
@@ -40,7 +40,7 @@ export default function ResetPasswordPage() {
           }
         : {
             title: 'Izveidot jaunu paroli',
-            subtitle: 'Pēc atiestatīšanas MFA paliek aktīva.',
+          subtitle: 'Pēc atiestatīšanas izmanto šo paroli, lai pierakstītos vēlreiz.',
             password: 'Jaunā parole',
             confirm: 'Apstiprini paroli',
             submit: 'Saglabāt paroli',

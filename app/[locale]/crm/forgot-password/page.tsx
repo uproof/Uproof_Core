@@ -15,7 +15,7 @@ export default function ForgotPasswordPage() {
     locale === 'en'
       ? {
           title: 'Reset your password',
-          subtitle: 'Request a reset link and keep MFA unchanged.',
+          subtitle: 'Request a reset link and sign in again with your password.',
           emailLabel: 'Email',
           emailPlaceholder: 'Enter your email',
           submit: 'Send reset link',
@@ -25,7 +25,7 @@ export default function ForgotPasswordPage() {
       : locale === 'nl-BE'
         ? {
             title: 'Wachtwoord opnieuw instellen',
-            subtitle: 'Vraag een resetlink aan en MFA blijft actief.',
+          subtitle: 'Vraag een resetlink aan en log daarna opnieuw in met je wachtwoord.',
             emailLabel: 'E-mail',
             emailPlaceholder: 'Voer je e-mail in',
             submit: 'Resetlink sturen',
@@ -34,7 +34,7 @@ export default function ForgotPasswordPage() {
           }
         : {
             title: 'Atiestatīt paroli',
-            subtitle: 'Pieprasi atiestatīšanas saiti, MFA paliek aktīva.',
+          subtitle: 'Pieprasi atiestatīšanas saiti un pēc tam piesakies ar savu paroli.',
             emailLabel: 'E-pasts',
             emailPlaceholder: 'Ievadi e-pastu',
             submit: 'Sūtīt atiestatīšanas saiti',

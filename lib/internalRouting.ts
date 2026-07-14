@@ -17,8 +17,8 @@ export function isInternalAuthPath(pathname: string) {
   return (
     /^\/(login|crm-login)(\/|$)/.test(pathname) ||
     /^\/(lv|en|nl-BE)\/(login|crm-login)(\/|$)/.test(pathname) ||
-    /^\/(admin|crm|mfa)(\/|$)/.test(pathname) ||
-    /^\/(lv|en|nl-BE)\/(admin|crm|mfa)(\/|$)/.test(pathname) ||
+    /^\/(admin|crm)(\/|$)/.test(pathname) ||
+    /^\/(lv|en|nl-BE)\/(admin|crm)(\/|$)/.test(pathname) ||
     /^\/api\/(admin|crm|security)(\/|$)/.test(pathname)
   );
 }

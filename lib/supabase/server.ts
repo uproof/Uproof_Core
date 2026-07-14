@@ -3,6 +3,7 @@ import {
   getSupabaseAnonKey,
   getSupabaseServiceRoleKey,
   getSupabaseUrl,
+  isSupabaseAdminConfigured,
   isSupabaseConfigured,
 } from '@/lib/supabase/config';
 
@@ -20,7 +21,7 @@ export function createSupabaseServerClient() {
 }
 
 export function createSupabaseAdminClient() {
-  if (!isSupabaseConfigured()) {
+  if (!isSupabaseAdminConfigured()) {
     return null;
   }
 

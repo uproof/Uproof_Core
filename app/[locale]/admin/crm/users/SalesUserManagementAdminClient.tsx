@@ -4,8 +4,7 @@ import {FormEvent, useCallback, useEffect, useMemo, useRef, useState} from 'reac
 import Link from 'next/link';
 import Card from '@/components/Card';
 
-type CrmUser = {id: string; email: string; name: string; role: 'sales' | 'superadmin'; isActive: boolean; mfaSecret?: string};
-type CrmUserPublic = {id: string; email: string; name: string; role: 'sales' | 'superadmin'; isActive: boolean; hasPassword?: boolean; hasMfaSecret?: boolean};
+type CrmUserPublic = {id: string; email: string; name: string; role: 'sales' | 'superadmin'; isActive: boolean; hasPassword?: boolean};
 type CrmUserActivity = {id: number; actorEmail: string; actorRole: string; action: string; leadId: string; detail: string; createdAt: string};
 type CrmLead = {id: string; assignedSalesUserId?: string | null};
 
@@ -77,10 +76,8 @@ export default function SalesUserManagementAdminClient({
       dashboard: isLv ? 'Dashboard' : 'Dashboard',
       viewLeads: isLv ? 'Līdu pārvaldība' : 'Lead management',
       resetPasswordLink: isLv ? 'Atiestatīt paroli' : 'Reset password link',
-      resetMfa: isLv ? 'Atiestatīt MFA' : 'Reset MFA',
       revokeSessions: isLv ? 'Atsaukt piekļuvi' : 'Revoke access',
       disableAccount: isLv ? 'Atspējot piekļuvi' : 'Disable access',
-      recoveryCodes: isLv ? 'Atjaunošanas kodi' : 'Recovery codes',
       deleteUser: isLv ? 'Dzēst lietotāju' : 'Delete user',
     }),
     [isLv]
@@ -259,12 +256,7 @@ export default function SalesUserManagementAdminClient({
         throw new Error(data.error || 'Security action failed');
       }
 
-      if (Array.isArray(data.codes)) {
-        setSecurityMessages((current) => ({
-          ...current,
-          [user.id]: `${labels.recoveryCodes}: ${data.codes.join(' · ')}`,
-        }));
-      } else if (action === 'reset-password') {
+      if (action === 'reset-password') {
         setSecurityMessages((current) => ({
           ...current,
           [user.id]: isLv ? 'Paroles atiestatīšanas saite ir sagatavota un jānogādā drošā kanālā.' : 'Password reset link prepared and must be delivered through a secure channel.',
@@ -376,9 +368,7 @@ export default function SalesUserManagementAdminClient({
                     }} className="rounded-lg border border-sky-200 bg-white px-2 py-1 text-xs text-sky-700">{labels.rename}</button>
                     <button type="button" onClick={() => void onUpdateUser(user, {isActive: !user.isActive})} className="rounded-lg border border-sky-200 bg-white px-2 py-1 text-xs text-sky-700">{user.isActive ? labels.deactivate : labels.activate}</button>
                     <button type="button" onClick={() => void onSecurityAction(user, 'reset-password')} className="rounded-lg border border-amber-200 bg-white px-2 py-1 text-xs text-amber-700">{labels.resetPasswordLink}</button>
-                    <button type="button" onClick={() => void onSecurityAction(user, 'reset-mfa')} className="rounded-lg border border-amber-200 bg-white px-2 py-1 text-xs text-amber-700">{labels.resetMfa}</button>
                     <button type="button" onClick={() => void onSecurityAction(user, 'revoke-sessions')} className="rounded-lg border border-amber-200 bg-white px-2 py-1 text-xs text-amber-700">{labels.revokeSessions}</button>
-                    <button type="button" onClick={() => void onSecurityAction(user, 'generate-recovery-codes')} className="rounded-lg border border-emerald-200 bg-white px-2 py-1 text-xs text-emerald-700">{labels.recoveryCodes}</button>
                     <button type="button" onClick={() => void onExportUserData(user)} className="rounded-lg border border-sky-200 bg-white px-2 py-1 text-xs text-sky-700">{isLv ? 'Lejupielādēt datus' : 'Download data'}</button>
                     <button type="button" onClick={() => void onSecurityAction(user, 'disable-account')} className="rounded-lg border border-rose-200 bg-white px-2 py-1 text-xs text-rose-700">{labels.disableAccount}</button>
                     <button type="button" onClick={() => void onDeleteUser(user)} className="rounded-lg border border-rose-300 bg-white px-2 py-1 text-xs text-rose-800">{labels.deleteUser}</button>
