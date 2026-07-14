@@ -8,6 +8,7 @@ import {readJsonFile, writeJsonFile} from '@/lib/jsonFileStore';
 
 const PROJECTS_FILE = path.join(process.cwd(), 'data', 'projects-admin.json');
 const PUBLIC_UPLOADS = path.join(process.cwd(), 'public', 'uploads', 'projects');
+const IS_READ_ONLY_RUNTIME = Boolean(process.env.VERCEL);
 
 type AdminProject = {
   id: string;
@@ -20,6 +21,10 @@ type AdminProject = {
 
 // Ensure directories exist
 async function ensureDirectories() {
+  if (IS_READ_ONLY_RUNTIME) {
+    return;
+  }
+
   try {
     await import('fs/promises').then((fs) => fs.access(PUBLIC_UPLOADS));
   } catch {
@@ -40,7 +45,6 @@ export async function GET() {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
   try {
-    await ensureDirectories();
     const projects = await readJsonFile<AdminProject[]>(PROJECTS_FILE, []);
     return NextResponse.json({ projects });
   } catch (error) {
@@ -56,6 +60,13 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    if (IS_READ_ONLY_RUNTIME) {
+      return NextResponse.json(
+        { error: 'Project writes are disabled in serverless runtime. Use CRM-backed project management flows.' },
+        { status: 503 }
+      );
+    }
+
     await ensureDirectories();
     const formData = await request.formData();
     

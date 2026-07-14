@@ -58,7 +58,15 @@ export async function logCrmAudit(event: Omit<CrmAuditEvent, 'at'>) {
     at: new Date().toISOString(),
   };
 
-  await fs.mkdir(path.dirname(AUDIT_LOG_PATH), {recursive: true});
-  await fs.appendFile(AUDIT_LOG_PATH, `${JSON.stringify(record)}\n`, 'utf8');
+  try {
+    await fs.mkdir(path.dirname(AUDIT_LOG_PATH), {recursive: true});
+    await fs.appendFile(AUDIT_LOG_PATH, `${JSON.stringify(record)}\n`, 'utf8');
+  } catch (error: any) {
+    // Vercel runtime filesystem is read-only under /var/task.
+    if (error?.code !== 'EROFS' && error?.code !== 'ENOENT') {
+      throw error;
+    }
+  }
+
   await sendToExternalSink(record);
 }
