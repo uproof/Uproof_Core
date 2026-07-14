@@ -180,6 +180,33 @@ type CreateCrmUserInput = {
   mfaSecret?: string;
 };
 
+async function findAuthUserIdByEmail(email: string) {
+  const supabase = createSupabaseAdminClient();
+  if (!supabase) {
+    return null;
+  }
+
+  const target = email.trim().toLowerCase();
+  for (let page = 1; page <= 10; page += 1) {
+    const {data, error} = await supabase.auth.admin.listUsers({page, perPage: 100});
+    if (error) {
+      return null;
+    }
+
+    const users = data?.users || [];
+    const matched = users.find((entry) => String(entry.email || '').trim().toLowerCase() === target);
+    if (matched?.id) {
+      return matched.id;
+    }
+
+    if (users.length < 100) {
+      break;
+    }
+  }
+
+  return null;
+}
+
 export async function createCrmUser(input: CreateCrmUserInput): Promise<CrmUser> {
   const role = input.role || 'sales';
   const email = input.email.trim().toLowerCase();
@@ -196,6 +223,17 @@ export async function createCrmUser(input: CreateCrmUserInput): Promise<CrmUser>
 
   const supabase = createSupabaseAdminClient();
   if (supabase) {
+    const {data: existingProfile} = await supabase
+      .from('user_profiles')
+      .select('id,email,full_name,role,is_active,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
+      .eq('email', email)
+      .maybeSingle();
+
+    if (existingProfile) {
+      throw new Error('A user with this email already exists');
+    }
+
+    let authUserId = '';
     const createAuthResult = await supabase.auth.admin.createUser({
       email,
       password: password || undefined,
@@ -208,13 +246,24 @@ export async function createCrmUser(input: CreateCrmUserInput): Promise<CrmUser>
     });
 
     if (createAuthResult.error) {
-      throw new Error(createAuthResult.error.message || 'Failed to create CRM user in Supabase Auth');
+      const authMessage = createAuthResult.error.message || 'Failed to create CRM user in Supabase Auth';
+      if (/already been registered|already exists|duplicate/i.test(authMessage)) {
+        const recoveredAuthUserId = await findAuthUserIdByEmail(email);
+        if (!recoveredAuthUserId) {
+          throw new Error('A user with this email already exists in Auth, but profile recovery failed');
+        }
+        authUserId = recoveredAuthUserId;
+      } else {
+        throw new Error(authMessage);
+      }
+    } else {
+      authUserId = createAuthResult.data.user?.id || '';
     }
 
     const {data, error} = await supabase
       .from('user_profiles')
-      .insert({
-        id: createAuthResult.data.user?.id || randomUUID(),
+      .upsert({
+        id: authUserId || randomUUID(),
         email,
         full_name: name,
         role,
@@ -222,7 +271,7 @@ export async function createCrmUser(input: CreateCrmUserInput): Promise<CrmUser>
         crm_mfa_secret: encryptedMfaSecret,
         session_valid_after: createdAt,
         archived_at: null,
-      })
+      }, {onConflict: 'id'})
       .select('id,email,full_name,role,is_active,crm_mfa_secret,session_valid_after,archived_at,created_at,updated_at')
       .single();
 
