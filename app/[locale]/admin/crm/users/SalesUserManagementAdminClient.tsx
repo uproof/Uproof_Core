@@ -75,6 +75,7 @@ export default function SalesUserManagementAdminClient({
       edit: isLv ? 'Rediģēt' : 'Edit',
       save: isLv ? 'Saglabāt' : 'Save',
       cancel: isLv ? 'Atcelt' : 'Cancel',
+      passwordNote: isLv ? 'Lai atiestatītu vai atjauninātu paroli, ievadi jaunu vērtību un spied Saglabāt.' : 'To reset or update the password, enter a new value and click Save.',
       createUser: isLv ? 'Izveidot pārdevēju' : 'Create sales user',
       dashboards: isLv ? 'Pārdevēju dashboard pārskats' : 'Sales dashboard overview',
       assignedLeads: isLv ? 'Piešķirtie līdi' : 'Assigned leads',
@@ -88,7 +89,6 @@ export default function SalesUserManagementAdminClient({
       rename: isLv ? 'Mainīt vārdu' : 'Rename',
       dashboard: isLv ? 'Dashboard' : 'Dashboard',
       viewLeads: isLv ? 'Līdu pārvaldība' : 'Lead management',
-      resetPasswordLink: isLv ? 'Atiestatīt paroli' : 'Reset password link',
       revokeSessions: isLv ? 'Atsaukt piekļuvi' : 'Revoke access',
       disableAccount: isLv ? 'Atspējot piekļuvi' : 'Disable access',
       deleteUser: isLv ? 'Dzēst lietotāju' : 'Delete user',
@@ -376,6 +376,7 @@ export default function SalesUserManagementAdminClient({
                           ) : null}
                         </div>
                         <p className="text-xs text-slate-500">{labels.userPasswordHint}</p>
+                        <p className="text-xs text-slate-500">{labels.passwordNote}</p>
                       </div>
                     )}
                   </div>
@@ -389,7 +390,6 @@ export default function SalesUserManagementAdminClient({
                       }
                     }} className="rounded-lg border border-sky-200 bg-white px-2 py-1 text-xs text-sky-700">{labels.rename}</button>
                     <button type="button" onClick={() => void onUpdateUser(user, {isActive: !user.isActive})} className="rounded-lg border border-sky-200 bg-white px-2 py-1 text-xs text-sky-700">{user.isActive ? labels.deactivate : labels.activate}</button>
-                    <button type="button" onClick={() => void onSecurityAction(user, 'reset-password')} className="rounded-lg border border-amber-200 bg-white px-2 py-1 text-xs text-amber-700">{labels.resetPasswordLink}</button>
                     <button type="button" onClick={() => void onSecurityAction(user, 'revoke-sessions')} className="rounded-lg border border-amber-200 bg-white px-2 py-1 text-xs text-amber-700">{labels.revokeSessions}</button>
                     <button type="button" onClick={() => void onExportUserData(user)} className="rounded-lg border border-sky-200 bg-white px-2 py-1 text-xs text-sky-700">{isLv ? 'Lejupielādēt datus' : 'Download data'}</button>
                     <button type="button" onClick={() => void onSecurityAction(user, 'disable-account')} className="rounded-lg border border-rose-200 bg-white px-2 py-1 text-xs text-rose-700">{labels.disableAccount}</button>

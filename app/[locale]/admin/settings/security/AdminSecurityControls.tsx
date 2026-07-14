@@ -16,6 +16,9 @@ export default function AdminSecurityControls({locale, userId, email}: Props) {
   const passwordHint = isLv
     ? 'Parolei jābūt vismaz 8 rakstzīmēm ar lielo burtu, ciparu un speciālu simbolu.'
     : 'Password must be at least 8 characters with one uppercase letter, one number, and one special symbol.';
+  const updateHint = isLv
+    ? 'Lai atjauninātu savu paroli, ievadi jaunu vērtību un spied Saglabāt. Ja maini savu pašreizējo paroli, sesija tiks pārtraukta.'
+    : 'To update your password, enter a new value and click Save. If you change your own password, your session will be signed out.';
 
   const postAction = async (action: string, payload: Record<string, unknown> = {}) => {
     const response = await fetch(`/api/crm/users/${encodeURIComponent(userId)}/security`, {
@@ -77,6 +80,7 @@ export default function AdminSecurityControls({locale, userId, email}: Props) {
               <button type="button" onClick={() => void changePassword()} disabled={busy !== '' || !newPassword.trim()} className="rounded-2xl bg-sky-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-60">{busy === 'password' ? '...' : isLv ? 'Saglabāt' : 'Save'}</button>
             </div>
             <p className="mt-2 text-xs text-slate-500">{passwordHint}</p>
+            <p className="mt-1 text-xs text-slate-500">{updateHint}</p>
           </div>
 
           <div className="flex flex-wrap gap-2">

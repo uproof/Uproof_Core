@@ -16,7 +16,7 @@ export default function CrmUserWorkLogActions({locale, userId, userName}: Props)
   const [message, setMessage] = useState('');
 
   const clearWorkLogs = async () => {
-    if (!window.confirm(isLv ? `Notīrīt visus darba žurnālus lietotājam ${userName}?` : `Clear all work logs for ${userName}?`)) {
+    if (!window.confirm(isLv ? `Notīrīt visus darba žurnālus un sākt no nulles lietotājam ${userName}?` : `Clear all work logs and start fresh for ${userName}?`)) {
       return;
     }
 
@@ -48,7 +48,7 @@ export default function CrmUserWorkLogActions({locale, userId, userName}: Props)
         disabled={busy}
         className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-800 transition hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {busy ? '...' : isLv ? 'Atiestatīt darba žurnālus' : 'Reset work logs'}
+        {busy ? '...' : isLv ? 'Notīrīt darba žurnālus' : 'Clear work logs'}
       </button>
       {message ? <p className="text-xs text-slate-500">{message}</p> : null}
     </div>

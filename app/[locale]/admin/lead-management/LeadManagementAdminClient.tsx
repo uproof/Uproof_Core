@@ -150,6 +150,10 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
     }
   }, [initialLeads.length]);
 
+  useEffect(() => {
+    void loadLeads({silent: true});
+  }, []);
+
   const onAssignLead = async (leadId: string) => {
     const salesUserId = assignments[leadId];
     if (!salesUserId) {

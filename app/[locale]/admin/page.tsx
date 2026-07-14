@@ -169,7 +169,7 @@ export default async function AdminDashboard({params}: {params: Promise<{locale:
                 <span className="hidden sm:inline">View Website</span>
               </Link>
               <div className="order-4">
-                <AdminLogout locale={locale} />
+                <AdminLogout locale={locale} email={session.email} securityHref={`/${locale}/admin/settings/security`} />
               </div>
             </div>
           </div>
