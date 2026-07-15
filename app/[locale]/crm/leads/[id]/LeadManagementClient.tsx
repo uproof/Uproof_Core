@@ -136,9 +136,51 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
       updatedAtUtc: updatedLead.updatedAtUtc,
     };
 
-    liveChannelRef.current?.postMessage(payload);
-    window.localStorage.setItem(`crm-lead-live:${updatedLead.id}`, JSON.stringify(payload));
-    window.localStorage.removeItem(`crm-lead-live:${updatedLead.id}`);
+    try {
+      liveChannelRef.current?.postMessage(payload);
+      window.localStorage.setItem(`crm-lead-live:${updatedLead.id}`, JSON.stringify(payload));
+      window.localStorage.removeItem(`crm-lead-live:${updatedLead.id}`);
+    } catch {
+      // Ignore environments that block storage or broadcast APIs.
+    }
+  };
+
+  const clearWorkLogs = async () => {
+    if (!showWorkLog || accessScope !== 'admin') {
+      return;
+    }
+
+    if (!window.confirm(isLv ? 'Notīrīt visus darba žurnālus šim līdam?' : 'Clear all work logs for this lead?')) {
+      return;
+    }
+
+    setSaveState('saving');
+    setSaveError('');
+    try {
+      const response = await fetch(`/api/crm/leads/${encodeURIComponent(lead.id)}`, {
+        method: 'PATCH',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({updatedAtUtc: version, workLog: []}),
+      });
+
+      const data = await response.json();
+      if (!data.ok) {
+        throw new Error(data.error || 'Failed to clear work logs');
+      }
+
+      if (data.lead?.updatedAtUtc) {
+        setVersion(data.lead.updatedAtUtc);
+      }
+      if (data.lead) {
+        applySavedLead(data.lead);
+        broadcastLeadUpdate(data.lead);
+      }
+
+      setSaveState('saved');
+    } catch (error: any) {
+      setSaveState('error');
+      setSaveError(error?.message || 'Failed to clear work logs');
+    }
   };
 
   const applySavedLead = (savedLead: CrmLead) => {
@@ -189,7 +231,6 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
         broadcastLeadUpdate(data.lead);
       }
       setSaveState('saved');
-      router.refresh();
     } catch (error: any) {
       setSaveState('error');
       setSaveError(error?.message || 'Save failed');
@@ -436,6 +477,15 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
                   <div className="text-sm font-semibold text-sky-500">{isLv ? 'Veiktie darbi šim līdam' : 'Work done on this lead'}</div>
                   <p className="mt-1 text-sm text-slate-600">{isLv ? 'Šī sadaļa redzama tikai CMS / superadmin.' : 'This section is visible only in CMS / superadmin.'}</p>
                 </div>
+                {accessScope === 'admin' ? (
+                  <button
+                    type="button"
+                    onClick={() => void clearWorkLogs()}
+                    className="inline-flex h-10 items-center justify-center rounded-xl border border-amber-200 bg-amber-50 px-3 text-xs font-semibold text-amber-800 transition hover:bg-amber-100"
+                  >
+                    {isLv ? 'Notīrīt žurnālus' : 'Clear logs'}
+                  </button>
+                ) : null}
               </div>
               <div className="space-y-4">
                 {workLog.length > 0 ? workLog.map((entry) => (
