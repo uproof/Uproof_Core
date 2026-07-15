@@ -201,7 +201,7 @@ export async function getAdminSession(): Promise<AdminSession | null> {
     return null;
   }
 
-  if (session.ip && session.ip !== currentIp) {
+  if (session.ip && currentIp !== 'unknown' && session.ip !== currentIp) {
     return null;
   }
 
