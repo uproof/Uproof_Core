@@ -149,7 +149,7 @@ export async function findCrmLeadRowById(leadId: string): Promise<CrmLeadRow | n
   const byExternalId = await supabase
     .from('crm_leads')
     .select('id,external_id,customer,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
-    .eq('external_id', normalizedLeadId)
+    .ilike('external_id', normalizedLeadId)
     .maybeSingle();
 
   if (!byExternalId.error && byExternalId.data) {

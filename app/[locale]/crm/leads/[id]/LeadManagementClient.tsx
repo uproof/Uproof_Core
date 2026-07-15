@@ -28,6 +28,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
   const isLv = locale === 'lv';
   const isSalesScope = accessScope === 'sales';
   const canRevealClientData = accessScope === 'admin' || accessScope === 'sales';
+  const backHref = `/${locale}/${accessScope === 'admin' ? 'admin/crm/leads' : 'crm/leads'}`;
   const router = useRouter();
   const tabIdRef = useRef(typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`);
   const liveChannelRef = useRef<BroadcastChannel | null>(null);
@@ -256,7 +257,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <Link href={`/${locale}/crm/leads`} className="inline-flex h-11 min-w-[150px] items-center justify-center gap-2 rounded-xl border border-sky-200 bg-white px-4 text-sm font-semibold text-sky-700 transition hover:bg-sky-50 sm:justify-start">
+          <Link href={backHref} className="inline-flex h-11 min-w-[150px] items-center justify-center gap-2 rounded-xl border border-sky-200 bg-white px-4 text-sm font-semibold text-sky-700 transition hover:bg-sky-50 sm:justify-start">
             <ArrowLeftIcon className="h-4 w-4" /> {isLv ? 'Atpakaļ uz līdiem' : 'Back to leads'}
           </Link>
           {canRevealClientData ? (

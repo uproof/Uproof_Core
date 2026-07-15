@@ -1,7 +1,8 @@
 "use client";
 
-import {useMemo, useState} from 'react';
+import {useEffect, useMemo, useRef, useState} from 'react';
 import Link from 'next/link';
+import {useRouter} from 'next/navigation';
 import Card from '@/components/Card';
 import Section from '@/components/Section';
 import type {CrmLead} from '@/lib/crmMockData';
@@ -56,8 +57,57 @@ function compareText(left: string, right: string) {
 
 export default function CrmLeadsClient({locale, leads, isSalesView}: Props) {
   const isLv = locale === 'lv';
+  const router = useRouter();
+  const tabIdRef = useRef(typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`);
+  const liveChannelRef = useRef<BroadcastChannel | null>(null);
   const [query, setQuery] = useState('');
   const [sortKey, setSortKey] = useState<LeadSortKey>('updated-desc');
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const channelName = 'crm-lead-live';
+    const messageType = 'crm-lead-updated';
+
+    const handleIncomingUpdate = (event: MessageEvent<unknown>) => {
+      const payload = event.data as {type?: string; sourceTabId?: string} | null;
+      if (!payload || payload.type !== messageType || payload.sourceTabId === tabIdRef.current) {
+        return;
+      }
+
+      router.refresh();
+    };
+
+    const channel = 'BroadcastChannel' in window ? new BroadcastChannel(channelName) : null;
+    liveChannelRef.current = channel;
+    channel?.addEventListener('message', handleIncomingUpdate);
+
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key !== channelName || !event.newValue) {
+        return;
+      }
+
+      try {
+        const payload = JSON.parse(event.newValue) as {type?: string; sourceTabId?: string};
+        if (payload.type === messageType && payload.sourceTabId !== tabIdRef.current) {
+          router.refresh();
+        }
+      } catch {
+        // Ignore malformed broadcast payloads.
+      }
+    };
+
+    window.addEventListener('storage', handleStorage);
+
+    return () => {
+      channel?.removeEventListener('message', handleIncomingUpdate);
+      channel?.close();
+      liveChannelRef.current = null;
+      window.removeEventListener('storage', handleStorage);
+    };
+  }, [router]);
 
   const filteredLeads = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -162,7 +212,7 @@ export default function CrmLeadsClient({locale, leads, isSalesView}: Props) {
 
         <div className="space-y-4">
           {filteredLeads.map((lead) => (
-            <Link key={lead.id} href={`/${locale}/crm/leads/${lead.id.toLowerCase()}`} className="block">
+            <Link key={lead.id} href={`/${locale}/crm/leads/${lead.id}`} className="block">
               <Card variant="outlined" hover className="border-sky-100 bg-white">
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                   <div>
