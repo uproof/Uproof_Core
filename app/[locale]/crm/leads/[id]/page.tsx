@@ -4,7 +4,6 @@ import {createSignedDocQuery} from '@/lib/crmDocs';
 import {getCrmLeads} from '@/lib/crmLeadsStore';
 import {getCrmUserByEmail} from '@/lib/crmUsersStore';
 import {createEmptyCrmEstimatorData} from '@/lib/crmEstimator';
-import {redactLeadForSales} from '@/lib/sensitiveMask';
 import LeadManagementClient from './LeadManagementClient';
 
 type Props = {
@@ -40,7 +39,7 @@ export default async function CrmLeadDetailPage({params}: Props) {
     };
   });
 
-  const salesLead = redactLeadForSales({...lead, workLog: [], estimatorData: lead.estimatorData || createEmptyCrmEstimatorData()});
+  const salesLead = {...lead, workLog: [], estimatorData: lead.estimatorData || createEmptyCrmEstimatorData()};
 
   return <LeadManagementClient locale={locale} lead={salesLead} signedAttachments={signedAttachments} showWorkLog={false} accessScope="sales" />;
 }

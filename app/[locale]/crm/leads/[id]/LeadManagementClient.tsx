@@ -9,6 +9,7 @@ import Section from '@/components/Section';
 import SensitiveValue from '@/components/crm/SensitiveValue';
 import {CrmLead, CrmLeadWorkLogEntry} from '@/lib/crmMockData';
 import {CRM_ESTIMATOR_BOOLEAN_OPTIONS, CRM_ESTIMATOR_FIELD_DEFINITIONS, CRM_ESTIMATOR_FIELD_SECTIONS, createEmptyCrmEstimatorData, formatEstimatorValue} from '@/lib/crmEstimator';
+import {maskText} from '@/lib/sensitiveMask';
 
 const statusOptions = ['NEW', 'CONTACTED', 'INSPECTION_SCHEDULED', 'INSPECTION_COMPLETED', 'ESTIMATING', 'QUOTE_SENT', 'WON', 'LOST', 'PROJECT_STARTED', 'COMPLETED', 'CANCELLED'];
 const progressOptions = ['new', 'reached', 'in progress', 'cancelled', 'won'];
@@ -26,6 +27,7 @@ type Props = {
 export default function LeadManagementClient({locale, lead, signedAttachments, showWorkLog = false, accessScope = 'sales'}: Props) {
   const isLv = locale === 'lv';
   const isSalesScope = accessScope === 'sales';
+  const canRevealClientData = accessScope === 'admin' || accessScope === 'sales';
   const router = useRouter();
   const tabIdRef = useRef(typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`);
   const liveChannelRef = useRef<BroadcastChannel | null>(null);
@@ -44,6 +46,13 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
   const [saveError, setSaveError] = useState('');
   const [showClientData, setShowClientData] = useState(false);
   const workLog: CrmLeadWorkLogEntry[] = showWorkLog ? (lead.workLog || []) : [];
+  const clientDataVisible = showClientData && canRevealClientData;
+  const displayCustomerName = accessScope === 'admin' ? customerName : (clientDataVisible ? customerName : maskText(customerName));
+  const displayPhone = accessScope === 'admin' ? lead.phone : (clientDataVisible ? lead.phone : '');
+  const displayEmail = accessScope === 'admin' ? lead.email : (clientDataVisible ? lead.email : '');
+  const displayAddress = accessScope === 'admin' ? lead.address : (clientDataVisible ? lead.address : maskText(lead.address));
+  const displayCompany = accessScope === 'admin' ? lead.company : (clientDataVisible ? lead.company : maskText(lead.company));
+  const displayValue = accessScope === 'admin' ? lead.value : (clientDataVisible ? lead.value : maskText(lead.value));
 
   const estimatorSections = useMemo(() => CRM_ESTIMATOR_FIELD_SECTIONS, []);
 
@@ -242,7 +251,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
       <div className="mb-3 flex flex-col gap-3 border-b border-sky-100 pb-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-sky-500">{isLv ? 'Līda pārvaldība' : 'Lead management'}</p>
-          <h2 className="mt-0 text-3xl font-bold tracking-tight text-slate-900">{customerName}</h2>
+          <h2 className="mt-0 text-3xl font-bold tracking-tight text-slate-900">{displayCustomerName}</h2>
           <p className="mt-2 text-sm text-slate-500">{accessScope === 'admin' ? (isLv ? 'CMS / superadmin skats' : 'CMS / superadmin view') : (isLv ? 'CRM pārdošanas skats' : 'CRM sales view')}</p>
         </div>
 
@@ -250,7 +259,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
           <Link href={`/${locale}/crm/leads`} className="inline-flex h-11 min-w-[150px] items-center justify-center gap-2 rounded-xl border border-sky-200 bg-white px-4 text-sm font-semibold text-sky-700 transition hover:bg-sky-50 sm:justify-start">
             <ArrowLeftIcon className="h-4 w-4" /> {isLv ? 'Atpakaļ uz līdiem' : 'Back to leads'}
           </Link>
-          {accessScope === 'admin' ? (
+          {canRevealClientData ? (
             <button
               type="button"
               onClick={() => setShowClientData((current) => !current)}
@@ -283,7 +292,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
           <label className="mt-3 block text-sm font-medium text-slate-700">
             {isLv ? 'Klienta vārds' : 'Client name'}
             <input
-              value={customerName}
+              value={displayCustomerName}
               onChange={(e) => setCustomerName(e.target.value)}
               readOnly={isSalesScope}
               disabled={isSalesScope}
@@ -295,29 +304,29 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
           <div className="mt-5 space-y-3 text-sm text-slate-700">
             <div className="flex items-center gap-3 rounded-2xl border border-sky-100 bg-white px-4 py-3 shadow-sm">
               <PhoneIcon className="h-4 w-4 shrink-0 text-sky-500" />
-              {showClientData && accessScope === 'admin' ? (
-                <span className="min-w-0 break-words text-slate-900">{lead.phone}</span>
+              {clientDataVisible ? (
+                <span className="min-w-0 break-words text-slate-900">{displayPhone}</span>
               ) : (
                 <SensitiveValue value={lead.phone} kind="phone" className="min-w-0 border-0 p-0 hover:bg-transparent" />
               )}
             </div>
             <div className="flex items-center gap-3 rounded-2xl border border-sky-100 bg-white px-4 py-3 shadow-sm">
               <EnvelopeIcon className="h-4 w-4 shrink-0 text-sky-500" />
-              {showClientData && accessScope === 'admin' ? (
-                <span className="min-w-0 break-words text-slate-900">{lead.email}</span>
+              {clientDataVisible ? (
+                <span className="min-w-0 break-words text-slate-900">{displayEmail}</span>
               ) : (
                 <SensitiveValue value={lead.email} kind="email" className="min-w-0 border-0 p-0 hover:bg-transparent" />
               )}
             </div>
-            <div className="flex items-center gap-3 rounded-2xl border border-sky-100 bg-white px-4 py-3 shadow-sm"><MapPinIcon className="h-4 w-4 shrink-0 text-sky-500" /> <span className="min-w-0 break-words">{lead.address}</span></div>
+            <div className="flex items-center gap-3 rounded-2xl border border-sky-100 bg-white px-4 py-3 shadow-sm"><MapPinIcon className="h-4 w-4 shrink-0 text-sky-500" /> <span className="min-w-0 break-words">{displayAddress}</span></div>
           </div>
 
           <div className="mt-5 rounded-2xl border border-sky-100 bg-white p-4 shadow-sm">
             <p className="text-sm font-semibold text-slate-900">{isLv ? 'Kontaktinformācija' : 'Contact details'}</p>
             <div className="mt-4 space-y-3 text-sm text-slate-700">
               <div><span className="font-semibold text-slate-900">{isLv ? 'Atbildīgais' : 'Owner'}:</span> {lead.owner}</div>
-              <div><span className="font-semibold text-slate-900">{isLv ? 'Uzņēmums' : 'Company'}:</span> {lead.company}</div>
-              <div className="flex items-center gap-2"><span className="font-semibold text-slate-900">{isLv ? 'Vērtība' : 'Value'}:</span> {showClientData && accessScope === 'admin' ? <span className="text-slate-900">{lead.value}</span> : <SensitiveValue value={lead.value} kind="amount" className="border-0 p-0 hover:bg-transparent" />}</div>
+              <div><span className="font-semibold text-slate-900">{isLv ? 'Uzņēmums' : 'Company'}:</span> {displayCompany}</div>
+              <div className="flex items-center gap-2"><span className="font-semibold text-slate-900">{isLv ? 'Vērtība' : 'Value'}:</span> {clientDataVisible ? <span className="text-slate-900">{displayValue}</span> : <SensitiveValue value={lead.value} kind="amount" className="border-0 p-0 hover:bg-transparent" />}</div>
               <div><span className="font-semibold text-slate-900">{isLv ? 'Atjaunots' : 'Updated'}:</span> {lead.updatedAt}</div>
             </div>
           </div>
