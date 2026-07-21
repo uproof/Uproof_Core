@@ -1,3 +1,4 @@
+import {randomUUID} from 'crypto';
 import {nowIso} from '@/lib/crmDb';
 import {upsertProjectFromLead, deleteProjectByLeadId} from '@/lib/crmProjectsStore';
 import {CrmLead} from '@/lib/crmMockData';
@@ -200,13 +201,8 @@ type NewLeadInput = {
   estimatorData?: CrmLead['estimatorData'];
 };
 
-function nextLeadId(leads: CrmLead[]) {
-  const max = leads.reduce((acc, lead) => {
-    const num = Number(lead.id.replace(/[^\d]/g, ''));
-    if (Number.isNaN(num)) return acc;
-    return Math.max(acc, num);
-  }, 1040);
-  return `L-${max + 1}`;
+function createLeadExternalId() {
+  return `L-${randomUUID()}`;
 }
 
 export async function addCrmLead(input: NewLeadInput): Promise<CrmLead> {
@@ -215,10 +211,9 @@ export async function addCrmLead(input: NewLeadInput): Promise<CrmLead> {
     throw new Error('Supabase is required for lead storage');
   }
 
-  const leads = await getCrmLeads();
   const now = nowIso();
   const lead: CrmLead = normalizeLead({
-    id: nextLeadId(leads),
+    id: createLeadExternalId(),
     customer: input.customer.trim(),
     company: input.company.trim(),
     phone: input.phone.trim(),

@@ -22,7 +22,13 @@ async function resizeDir(dir, maxWidth, label) {
   const files = readdirSync(dir).filter(f => /\.(webp|jpe?g|png)$/i.test(f));
 
   for (const file of files) {
-    const src = join(dir, file);
+    const safeFile = file.includes('/') || file.includes('\\') ? '' : file;
+    if (!safeFile) {
+      console.warn(`  SKIP unsafe filename ${file}`);
+      continue;
+    }
+
+    const src = `${dir}/${safeFile}`;
     const buf = await sharp(src).metadata();
 
     if (buf.width <= maxWidth) {
@@ -33,9 +39,9 @@ async function resizeDir(dir, maxWidth, label) {
     const oldSize = statSync(src).size;
 
     // Back up original
-    const backupLabel = join(BACKUP_DIR, label);
+    const backupLabel = `${BACKUP_DIR}/${label}`;
     mkdirSync(backupLabel, { recursive: true });
-    copyFileSync(src, join(backupLabel, file));
+    copyFileSync(src, `${backupLabel}/${safeFile}`);
 
     const tmpPath = src + '.tmp.webp';
 

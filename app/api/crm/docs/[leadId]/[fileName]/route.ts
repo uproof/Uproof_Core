@@ -6,6 +6,13 @@ import {isLeadAssignedToSalesUser} from '@/lib/crmLeadsStore';
 import {getCrmUserByEmail} from '@/lib/crmUsersStore';
 import {checkRateLimit, RATE_LIMITS} from '@/lib/rateLimit';
 import {canPerform} from '@/lib/permissions';
+import {z} from 'zod';
+
+const docQuerySchema = z.object({
+  exp: z.coerce.number().int().positive(),
+  sid: z.string().trim().min(1),
+  sig: z.string().trim().min(1),
+});
 
 export async function GET(
   req: NextRequest,
@@ -23,9 +30,15 @@ export async function GET(
   }
 
   const {leadId, fileName} = await params;
-  const exp = Number(req.nextUrl.searchParams.get('exp') || '0');
-  const sid = req.nextUrl.searchParams.get('sid') || '';
-  const sig = req.nextUrl.searchParams.get('sig') || '';
+  
+  const query = Object.fromEntries(req.nextUrl.searchParams.entries());
+  const validation = docQuerySchema.safeParse(query);
+
+  if (!validation.success) {
+    return NextResponse.json({ok: false, error: 'Invalid document request parameters'}, {status: 400});
+  }
+
+  const {exp, sid, sig} = validation.data;
 
   if (sid !== session.sid) {
     return NextResponse.json({ok: false, error: 'Session mismatch'}, {status: 403});

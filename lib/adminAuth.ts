@@ -37,9 +37,9 @@ function getSecret() {
   const secret = process.env.ADMIN_TOKEN_SECRET || process.env.NEXTAUTH_SECRET || '';
   if (!secret) {
     if (process.env.NODE_ENV === 'production') {
-      throw new Error('ADMIN_TOKEN_SECRET is required in production');
+      throw new Error('Critical Security Error: ADMIN_TOKEN_SECRET is required in production');
     }
-    return 'dev-secret-change-me';
+    throw new Error('Security Error: ADMIN_TOKEN_SECRET must be set in your environment.');
   }
   return secret;
 }
@@ -190,14 +190,13 @@ export async function getAdminSession(): Promise<AdminSession | null> {
   const cookieStore = await cookies();
   const headerStore = await headers();
   const currentIp = headerStore.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
-  const supabaseAccessToken = getSupabaseAccessToken(cookieStore);
-  if (supabaseAccessToken) {
-    return await resolveSupabaseAdminSession(supabaseAccessToken);
-  }
-
   const token = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
   const session = decodeToken(token);
   if (!session) {
+    const supabaseAccessToken = getSupabaseAccessToken(cookieStore);
+    if (supabaseAccessToken) {
+      return await resolveSupabaseAdminSession(supabaseAccessToken);
+    }
     return null;
   }
 

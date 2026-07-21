@@ -3,8 +3,14 @@ import {isSuperadminAuthenticated} from '@/lib/adminAuth';
 import path from 'path';
 import {readJsonFile, writeJsonFile} from '@/lib/jsonFileStore';
 
+const LOCALE_MESSAGE_FILES: Record<'lv' | 'en' | 'nl-BE', string> = {
+  lv: path.join(process.cwd(), 'messages', 'lv.json'),
+  en: path.join(process.cwd(), 'messages', 'en.json'),
+  'nl-BE': path.join(process.cwd(), 'messages', 'nl-BE.json'),
+};
+
 function filePath(locale: string) {
-  return path.join(process.cwd(), 'messages', `${locale}.json`);
+  return LOCALE_MESSAGE_FILES[locale as keyof typeof LOCALE_MESSAGE_FILES];
 }
 
 function validateLocale(locale: string): boolean {

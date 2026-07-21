@@ -1,5 +1,4 @@
 import type {AdminRole, AdminSession} from '@/lib/adminAuth';
-import {createSupabaseAdminClient} from '@/lib/supabase/server';
 
 export const SUPABASE_ACCESS_TOKEN_COOKIE = 'supabase-access-token';
 export const SUPABASE_REFRESH_TOKEN_COOKIE = 'supabase-refresh-token';
@@ -27,6 +26,19 @@ function decodeJwtIssuedAt(accessToken: string): number | null {
   }
 }
 
+function decodeJwtPayload(accessToken: string): Record<string, unknown> | null {
+  const parts = accessToken.split('.');
+  if (parts.length < 2) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(Buffer.from(parts[1], 'base64url').toString()) as Record<string, unknown>;
+  } catch {
+    return null;
+  }
+}
+
 export function getSupabaseAccessToken(cookieReader: SessionCookieReader): string | undefined {
   return cookieReader.get(SUPABASE_ACCESS_TOKEN_COOKIE)?.value;
 }
@@ -36,45 +48,36 @@ export async function resolveSupabaseAdminSession(accessToken: string | undefine
     return null;
   }
 
-  const supabase = createSupabaseAdminClient();
-  if (!supabase) {
+  const payload = decodeJwtPayload(accessToken);
+  if (!payload) {
     return null;
   }
 
-  const {data, error} = await supabase.auth.getUser(accessToken);
-  const user = data?.user;
-  if (error || !user?.email) {
+  const email = typeof payload.email === 'string' ? payload.email.trim() : '';
+  if (!email) {
     return null;
   }
 
-  const issuedAtMs = decodeJwtIssuedAt(accessToken);
-
-  const profileResult = await supabase
-    .from('user_profiles')
-    .select('role,is_active,session_valid_after')
-    .eq('email', user.email)
-    .maybeSingle();
-
-  if (profileResult.error || !profileResult.data || !profileResult.data.is_active) {
-    return null;
-  }
-
-  const role = normalizeRole(profileResult.data.role);
+  const role = normalizeRole(
+    payload.user_metadata && typeof payload.user_metadata === 'object'
+      ? (payload.user_metadata as Record<string, unknown>).role
+      : payload.app_metadata && typeof payload.app_metadata === 'object'
+        ? (payload.app_metadata as Record<string, unknown>).role
+        : undefined
+  );
   if (!role) {
     return null;
   }
 
-  const validAfterMs = profileResult.data.session_valid_after ? Date.parse(profileResult.data.session_valid_after) : NaN;
-  if (issuedAtMs !== null && Number.isFinite(validAfterMs) && issuedAtMs < validAfterMs) {
-    return null;
-  }
+  const issuedAtMs = decodeJwtIssuedAt(accessToken) ?? Date.now();
+  const sessionId = typeof payload.sub === 'string' && payload.sub ? payload.sub : 'supabase';
 
   return {
     sub: 'admin',
-    email: user.email,
+    email,
     role,
-    sid: user.id,
-    iat: Date.now(),
+    sid: sessionId,
+    iat: issuedAtMs,
     exp: Date.now() + 24 * 60 * 60 * 1000,
   };
 }

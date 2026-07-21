@@ -6,6 +6,11 @@ import {createCrmSupabaseClient as createSupabaseAdminClient} from '@/lib/crmSto
 import {findCrmLeadRowById} from '@/lib/crmLeadsStore';
 import {getCrmUserByEmail, getCrmUserById} from '@/lib/crmUsersStore';
 import {logCrmUserActivity} from '@/lib/crmUserActivityStore';
+import {z} from 'zod';
+
+const assignLeadSchema = z.object({
+  salesUserId: z.string().trim().min(1, 'salesUserId is required'),
+});
 
 export async function POST(
   req: NextRequest,
@@ -28,12 +33,15 @@ export async function POST(
     }
 
     const {id} = await params;
-    const body = await req.json().catch(() => ({} as Record<string, string>));
-    const salesUserId = String(body.salesUserId || '').trim();
+    const json = await req.json().catch(() => ({}));
+    const validation = assignLeadSchema.safeParse(json);
 
-    if (!salesUserId) {
-      return NextResponse.json({ok: false, error: 'Missing salesUserId'}, {status: 400});
+    if (!validation.success) {
+      const firstError = validation.error.issues[0]?.message || 'Invalid input';
+      return NextResponse.json({ok: false, error: firstError}, {status: 400});
     }
+
+    const {salesUserId} = validation.data;
 
     const salesUser = await getCrmUserById(salesUserId);
     if (!salesUser || salesUser.role !== 'sales' || !salesUser.isActive) {

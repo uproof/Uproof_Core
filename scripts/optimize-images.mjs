@@ -41,7 +41,7 @@ async function optimizeImage(filePath) {
     
     console.log(`✓ Done: ${newSize}MB (saved ${saved}MB)`);
   } catch (error) {
-    console.error(`Error optimizing ${filePath}:`, error.message);
+    console.error('Error optimizing image', {filePath, message: error.message});
   }
 }
 

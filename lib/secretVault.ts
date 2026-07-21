@@ -9,6 +9,7 @@ const PASSWORD_PARALLELIZATION = 1;
 
 const SECRET_ALGO = 'aes-256-gcm';
 const SECRET_IV_BYTES = 12;
+const SECRET_AUTH_TAG_BYTES = 16;
 
 function getVaultSecret() {
   const secret = (
@@ -20,10 +21,9 @@ function getVaultSecret() {
 
   if (!secret) {
     if (process.env.NODE_ENV === 'production') {
-      throw new Error('CRM_DATA_SECRET or ADMIN_TOKEN_SECRET is required in production');
+      throw new Error('Critical Security Error: CRM_DATA_SECRET or ADMIN_TOKEN_SECRET is required in production.');
     }
-
-    return 'dev-secret-change-me';
+    throw new Error('Security Error: A secret (CRM_DATA_SECRET or ADMIN_TOKEN_SECRET) must be set in your environment.');
   }
 
   return secret;
@@ -78,25 +78,40 @@ export function verifyPassword(password: string, encoded: string) {
 
 export function encryptSecret(secret: string) {
   const iv = crypto.randomBytes(SECRET_IV_BYTES);
-  const cipher = crypto.createCipheriv(SECRET_ALGO, getSecretKey(), iv);
+  const cipher = crypto.createCipheriv(SECRET_ALGO, getSecretKey(), iv, {authTagLength: SECRET_AUTH_TAG_BYTES});
   const encrypted = Buffer.concat([cipher.update(secret, 'utf8'), cipher.final()]);
   const tag = cipher.getAuthTag();
   return ['enc', 'v1', iv.toString('base64url'), tag.toString('base64url'), encrypted.toString('base64url')].join(':');
 }
 
 export function decryptSecret(payload: string) {
-  const parts = String(payload || '').split(':');
+  if (!payload) {
+    throw new Error('Decryption Error: Missing ciphertext value');
+  }
+
+  const parts = String(payload).split(':');
   if (parts.length !== 5 || parts[0] !== 'enc' || parts[1] !== 'v1') {
-    return '';
+    throw new Error('Decryption Error: Invalid ciphertext format or version');
   }
 
   const iv = Buffer.from(parts[2], 'base64url');
   const tag = Buffer.from(parts[3], 'base64url');
   const encrypted = Buffer.from(parts[4], 'base64url');
-  const decipher = crypto.createDecipheriv(SECRET_ALGO, getSecretKey(), iv);
-  decipher.setAuthTag(tag);
 
-  return Buffer.concat([decipher.update(encrypted), decipher.final()]).toString('utf8');
+  if (tag.length !== SECRET_AUTH_TAG_BYTES) {
+    throw new Error('Decryption Error: Invalid authentication tag length');
+  }
+
+  try {
+    const decipher = crypto.createDecipheriv(SECRET_ALGO, getSecretKey(), iv, {authTagLength: SECRET_AUTH_TAG_BYTES});
+    decipher.setAuthTag(tag);
+    return Buffer.concat([decipher.update(encrypted), decipher.final()]).toString('utf8');
+  } catch (err: any) {
+    if (err.message?.includes('Unsupported state or unable to authenticate data')) {
+      throw new Error('Decryption Error: Authentication failed (data may be corrupted or secret changed)');
+    }
+    throw new Error(`Decryption Error: ${err.message || 'Unknown failure'}`);
+  }
 }
 
 export function normalizeSecretInput(value: string) {

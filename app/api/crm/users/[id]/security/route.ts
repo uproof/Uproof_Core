@@ -10,12 +10,28 @@ import {
   disableCrmUser,
   deleteCrmUser,
   getCrmUserById,
-  getCrmUserByEmail,
   issuePasswordResetToken,
   revokeCrmUserSessions,
 } from '@/lib/crmUsersStore';
 import {validatePasswordPolicy} from '@/lib/secretVault';
 import {SUPABASE_ACCESS_TOKEN_COOKIE, SUPABASE_REFRESH_TOKEN_COOKIE} from '@/lib/supabase/session';
+import {z} from 'zod';
+
+const securityActionSchema = z.object({
+  action: z.enum([
+    'export-user-data',
+    'delete-user',
+    'reset-password',
+    'revoke-sessions',
+    'disable-account',
+    'archive-account',
+    'set-password'
+  ]),
+  reason: z.string().trim().optional(),
+  adminPassword: z.string().trim().optional(),
+  newPassword: z.string().trim().optional(),
+  locale: z.string().trim().optional(),
+});
 
 function clearCurrentBrowserSession(response: NextResponse) {
   response.cookies.set(SUPABASE_ACCESS_TOKEN_COOKIE, '', {
@@ -76,10 +92,15 @@ export async function POST(req: NextRequest, {params}: {params: Promise<{id: str
     return NextResponse.json({ok: false, error: 'CRM user not found'}, {status: 404});
   }
 
-  const body = await req.json().catch(() => ({} as Record<string, unknown>));
-  const action = String(body.action || '').trim();
-  const reason = String(body.reason || '').trim();
-  const adminPassword = String(body.adminPassword || '').trim();
+  const json = await req.json().catch(() => ({}));
+  const validation = securityActionSchema.safeParse(json);
+
+  if (!validation.success) {
+    const firstError = validation.error.issues[0]?.message || 'Invalid action';
+    return NextResponse.json({ok: false, error: firstError}, {status: 400});
+  }
+
+  const {action, reason, adminPassword, newPassword, locale} = validation.data;
   const isSelfPasswordChange = action === 'set-password' && session.email.toLowerCase() === target.email.toLowerCase();
 
   if (adminPassword) {
@@ -91,7 +112,6 @@ export async function POST(req: NextRequest, {params}: {params: Promise<{id: str
   }
 
   const requestId = randomUUID();
-  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
 
   switch (action) {
     case 'export-user-data': {
@@ -172,9 +192,9 @@ export async function POST(req: NextRequest, {params}: {params: Promise<{id: str
     }
     case 'reset-password': {
       const reset = await issuePasswordResetToken(target.id, session.email);
-      const locale = String(body.locale || 'en').trim() || 'en';
+      const targetLocale = locale || 'en';
       const baseUrl = new URL(req.url).origin;
-      const resetLink = `${baseUrl}/${encodeURIComponent(locale)}/admin/reset-password?token=${encodeURIComponent(reset.token)}`;
+      const resetLink = `${baseUrl}/${encodeURIComponent(targetLocale)}/admin/reset-password?token=${encodeURIComponent(reset.token)}`;
       await recordAuditLog({
         requestId,
         actorEmail: session.email,
@@ -239,7 +259,6 @@ export async function POST(req: NextRequest, {params}: {params: Promise<{id: str
       return NextResponse.json({ok: true, deleted: true});
     }
     case 'set-password': {
-      const newPassword = String(body.newPassword || '').trim();
       if (!newPassword) {
         return NextResponse.json({ok: false, error: 'New password is required'}, {status: 400});
       }

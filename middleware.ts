@@ -2,7 +2,6 @@ import createMiddleware from 'next-intl/middleware';
 import {routing} from './i18n/routing';
 import {NextRequest, NextResponse} from 'next/server';
 import {latviaCities, belgiumCities} from '@/lib/cities';
-import {createSupabaseAdminClient} from '@/lib/supabase/server';
 import {SUPABASE_ACCESS_TOKEN_COOKIE} from '@/lib/supabase/session';
 import {getCrmRedirectHost, isCrmHost, isInternalAuthPath, isLegacyInternalHost} from '@/lib/internalRouting';
 import {createClient as createSupabaseMiddlewareClient, applySupabaseCookies} from '@/utils/supabase/middleware';
@@ -13,7 +12,6 @@ const BELGIUM_CITY_SET = new Set<string>(belgiumCities);
 
 // Enforce canonical hosts (redirect www/admin aliases -> the intended host)
 const CANONICAL_HOST = 'uproof.eu';
-const MFA_DEV_SECRET_FALLBACK = 'dev-secret-change-me';
 
 function enforceCanonicalHost(request: NextRequest) {
   const hostHeader = request.headers.get('host') || '';
@@ -59,6 +57,19 @@ function decodePayload(payload: string) {
   return atob(padded);
 }
 
+function decodeJwtClaims(token: string) {
+  const parts = token.split('.');
+  if (parts.length < 2) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(decodePayload(parts[1])) as Record<string, unknown>;
+  } catch {
+    return null;
+  }
+}
+
 function normalizeJsonInit(init?: number | ResponseInit): ResponseInit | undefined {
   if (typeof init === 'number') {
     return {status: init};
@@ -68,27 +79,6 @@ function normalizeJsonInit(init?: number | ResponseInit): ResponseInit | undefin
 }
 
 async function getSessionRoleFromCookie(sessionToken: string | undefined, supabaseAccessToken: string | undefined): Promise<'sales' | 'superadmin' | null> {
-  if (supabaseAccessToken) {
-    const supabase = createSupabaseAdminClient();
-    if (supabase) {
-      const {data, error} = await supabase.auth.getUser(supabaseAccessToken);
-      const user = data?.user;
-      if (!error && user?.email) {
-        const profile = await supabase
-          .from('user_profiles')
-          .select('role,is_active')
-          .eq('email', user.email)
-          .maybeSingle();
-        if (!profile.error && profile.data?.is_active) {
-          if (profile.data.role === 'sales' || profile.data.role === 'superadmin') {
-            return profile.data.role;
-          }
-        }
-      }
-    }
-    return null;
-  }
-
   if (!sessionToken) return null;
   const parts = sessionToken.split('.');
   if (parts.length !== 2) return null;
@@ -97,7 +87,9 @@ async function getSessionRoleFromCookie(sessionToken: string | undefined, supaba
   if (!payload) return null;
 
   try {
-    const secret = process.env.ADMIN_TOKEN_SECRET || process.env.NEXTAUTH_SECRET || MFA_DEV_SECRET_FALLBACK;
+    const secret = process.env.ADMIN_TOKEN_SECRET || process.env.NEXTAUTH_SECRET || '';
+    if (!secret) return null; // Enforce secret presence
+
     const keyData = new TextEncoder().encode(secret);
     const messageData = new TextEncoder().encode(payload);
     const cryptoKey = await crypto.subtle.importKey('raw', keyData, {name: 'HMAC', hash: 'SHA-256'}, false, ['sign']);
@@ -116,6 +108,18 @@ async function getSessionRoleFromCookie(sessionToken: string | undefined, supaba
     if (parsed.role === 'sales' || parsed.role === 'superadmin') {
       return parsed.role;
     }
+
+    if (supabaseAccessToken) {
+      const claims = decodeJwtClaims(supabaseAccessToken);
+      const role = claims?.user_metadata && typeof claims.user_metadata === 'object'
+        ? (claims.user_metadata as Record<string, unknown>).role
+        : claims?.app_metadata && typeof claims.app_metadata === 'object'
+          ? (claims.app_metadata as Record<string, unknown>).role
+          : null;
+      if (role === 'sales' || role === 'superadmin') {
+        return role;
+      }
+    }
     return null;
   } catch {
     return null;
@@ -127,8 +131,7 @@ export default async function middleware(request: NextRequest) {
   const canonicalResponse = enforceCanonicalHost(request);
   if (canonicalResponse) return canonicalResponse;
 
-  const {supabase, supabaseResponse} = createSupabaseMiddlewareClient(request);
-  await supabase.auth.getUser().catch(() => null);
+  const {supabaseResponse} = createSupabaseMiddlewareClient(request);
 
   const wrapResponse = (response: NextResponse) => applySupabaseCookies(response, supabaseResponse);
   const redirectWithCookies = (url: URL, status?: number) => wrapResponse(NextResponse.redirect(url, status));

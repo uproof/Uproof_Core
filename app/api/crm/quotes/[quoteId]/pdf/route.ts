@@ -4,6 +4,11 @@ import {logCrmAudit} from '@/lib/crmAudit';
 import {canPerform} from '@/lib/permissions';
 import {createStampedPdfBuffer} from '@/lib/simplePdf';
 import {getCrmQuotes} from '@/lib/crmQuotesStore';
+import {z} from 'zod';
+
+const paramsSchema = z.object({
+  quoteId: z.string().trim().min(1),
+});
 
 export async function GET(
   req: NextRequest,
@@ -18,7 +23,13 @@ export async function GET(
     return NextResponse.json({ok: false, error: 'Only superadmin can download quote PDFs'}, {status: 403});
   }
 
-  const {quoteId} = await params;
+  const rawParams = await params;
+  const validation = paramsSchema.safeParse(rawParams);
+  if (!validation.success) {
+    return NextResponse.json({ok: false, error: 'Invalid quote ID'}, {status: 400});
+  }
+  const {quoteId} = validation.data;
+
   const quotes = await getCrmQuotes();
   const quote = quotes.find((entry) => entry.id.toLowerCase() === quoteId.toLowerCase());
   if (!quote) {

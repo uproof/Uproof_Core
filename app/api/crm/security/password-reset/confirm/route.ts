@@ -3,7 +3,12 @@ import {NextRequest, NextResponse} from 'next/server';
 import {createSupabaseAdminClient} from '@/lib/supabase/server';
 import {consumePasswordResetToken} from '@/lib/crmUsersStore';
 import {validatePasswordPolicy} from '@/lib/secretVault';
-import {parsePassword, parseResetToken} from '@/lib/authValidation';
+import {z} from 'zod';
+
+const confirmResetSchema = z.object({
+  token: z.string().trim().min(32, 'Invalid token'),
+  newPassword: z.string().trim().min(8, 'Password must be at least 8 characters'),
+});
 
 async function recordAuditLog(entry: {
   requestId: string;
@@ -32,13 +37,15 @@ async function recordAuditLog(entry: {
 }
 
 export async function POST(req: NextRequest) {
-  const body = await req.json().catch(() => ({} as Record<string, unknown>));
-  const token = parseResetToken(body.token);
-  const newPassword = parsePassword(body.newPassword);
+  const json = await req.json().catch(() => ({}));
+  const validation = confirmResetSchema.safeParse(json);
 
-  if (!token || !newPassword) {
-    return NextResponse.json({ok: false, error: 'Token and new password are required'}, {status: 400});
+  if (!validation.success) {
+    const firstError = validation.error.issues[0]?.message || 'Invalid input';
+    return NextResponse.json({ok: false, error: firstError}, {status: 400});
   }
+
+  const {token, newPassword} = validation.data;
 
   const passwordPolicyError = validatePasswordPolicy(newPassword);
   if (passwordPolicyError) {
@@ -47,7 +54,7 @@ export async function POST(req: NextRequest) {
 
   const user = await consumePasswordResetToken(token, newPassword);
   if (!user) {
-    return NextResponse.json({ok: false, error: 'Unable to reset password'}, {status: 400});
+    return NextResponse.json({ok: false, error: 'Invalid or expired reset token'}, {status: 400});
   }
 
   await recordAuditLog({

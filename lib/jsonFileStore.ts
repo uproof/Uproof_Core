@@ -2,8 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 
 async function writeAtomic(filePath: string, content: string) {
-  const directory = path.dirname(filePath);
-  const tempPath = path.join(directory, `${path.basename(filePath)}.${process.pid}.${Date.now()}.tmp`);
+  const tempPath = `${filePath}.${process.pid}.${Date.now()}.tmp`;
   await fs.writeFile(tempPath, content, 'utf8');
   await fs.rename(tempPath, filePath);
 }

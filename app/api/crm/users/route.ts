@@ -4,6 +4,13 @@ import {createCrmUser, getCrmUsers} from '@/lib/crmUsersStore';
 import {checkRateLimit, RATE_LIMITS} from '@/lib/rateLimit';
 import {canPerform} from '@/lib/permissions';
 import {validatePasswordPolicy} from '@/lib/secretVault';
+import {z} from 'zod';
+
+const createUserSchema = z.object({
+  email: z.string().trim().email('Invalid email address'),
+  name: z.string().trim().min(2, 'Name must be at least 2 characters').max(120, 'Name must be at most 120 characters'),
+  password: z.string().trim().min(1, 'Password is required'),
+});
 
 function publicCrmUser(user: Awaited<ReturnType<typeof getCrmUsers>>[number]) {
   return {
@@ -49,28 +56,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ok: false, error: 'Too many requests'}, {status: 429});
     }
 
-    const body = await req.json().catch(() => ({} as Record<string, string>));
-    const email = String(body.email || '').trim();
-    const name = String(body.name || '').trim();
-    const providedPassword = String(body.password || '').trim();
+    const json = await req.json().catch(() => ({}));
+    const validation = createUserSchema.safeParse(json);
 
-    if (!/^\S+@\S+\.\S+$/.test(email)) {
-      return NextResponse.json({ok: false, error: 'Invalid email'}, {status: 400});
+    if (!validation.success) {
+      const firstError = validation.error.issues[0]?.message || 'Invalid input';
+      return NextResponse.json({ok: false, error: firstError}, {status: 400});
     }
 
-    if (name.length < 2 || name.length > 120) {
-      return NextResponse.json({ok: false, error: 'Invalid name'}, {status: 400});
-    }
-
-    if (!email || !name) {
-      return NextResponse.json({ok: false, error: 'Missing email or name'}, {status: 400});
-    }
-
-    const password = providedPassword;
-
-    if (!password) {
-      return NextResponse.json({ok: false, error: 'Password is required'}, {status: 400});
-    }
+    const {email, name, password} = validation.data;
 
     const passwordPolicyError = validatePasswordPolicy(password);
     if (passwordPolicyError) {

@@ -1,22 +1,29 @@
 import {NextRequest, NextResponse} from 'next/server';
 import {issuePasswordResetToken, getCrmUserByEmail} from '@/lib/crmUsersStore';
 import {isCrmHost} from '@/lib/internalRouting';
-import {parseEmail} from '@/lib/authValidation';
+import {z} from 'zod';
+
+const requestResetSchema = z.object({
+  email: z.string().trim().email('Invalid email address'),
+});
 
 export async function POST(req: NextRequest) {
   if (process.env.NODE_ENV === 'production' && !isCrmHost(req.nextUrl.hostname)) {
     return NextResponse.json({ok: false, error: 'Forbidden'}, {status: 403});
   }
 
-  const body = await req.json().catch(() => ({} as Record<string, unknown>));
-  const email = parseEmail(body.email);
+  const json = await req.json().catch(() => ({}));
+  const validation = requestResetSchema.safeParse(json);
 
-  if (!email) {
-    return NextResponse.json({ok: false, error: 'Email is required'}, {status: 400});
+  if (!validation.success) {
+    return NextResponse.json({ok: false, error: 'Valid email is required'}, {status: 400});
   }
+
+  const {email} = validation.data;
 
   const user = await getCrmUserByEmail(email);
   if (!user) {
+    // Return success even if user not found to prevent user enumeration
     return NextResponse.json({ok: true});
   }
 

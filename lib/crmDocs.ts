@@ -6,7 +6,7 @@ function getDocsSecret() {
     if (process.env.NODE_ENV === 'production') {
       throw new Error('CRM_DOCS_SECRET is required in production');
     }
-    return 'crm-docs-dev-secret-change-me';
+    throw new Error('CRM_DOCS_SECRET or ADMIN_TOKEN_SECRET must be set in development');
   }
   return secret;
 }

@@ -6,6 +6,13 @@ import {deleteCrmUser, getCrmUserById, updateCrmUser} from '@/lib/crmUsersStore'
 import {validatePasswordPolicy} from '@/lib/secretVault';
 import {clearAdminCookie} from '@/lib/adminAuth';
 import {SUPABASE_ACCESS_TOKEN_COOKIE, SUPABASE_REFRESH_TOKEN_COOKIE} from '@/lib/supabase/session';
+import {z} from 'zod';
+
+const updateUserSchema = z.object({
+  name: z.string().trim().min(1).optional(),
+  isActive: z.boolean().optional(),
+  password: z.string().trim().optional(),
+});
 
 function clearCurrentBrowserSession(response: NextResponse) {
   response.cookies.set(SUPABASE_ACCESS_TOKEN_COOKIE, '', {
@@ -41,10 +48,15 @@ export async function PATCH(req: NextRequest, {params}: {params: Promise<{id: st
   }
 
   const {id} = await params;
-  const body = await req.json().catch(() => ({} as Record<string, unknown>));
-  const name = typeof body.name === 'string' ? body.name : undefined;
-  const isActive = typeof body.isActive === 'boolean' ? body.isActive : undefined;
-  const password = typeof body.password === 'string' ? body.password : undefined;
+  const json = await req.json().catch(() => ({}));
+  const validation = updateUserSchema.safeParse(json);
+
+  if (!validation.success) {
+    const firstError = validation.error.issues[0]?.message || 'Invalid input';
+    return NextResponse.json({ok: false, error: firstError}, {status: 400});
+  }
+
+  const {name, isActive, password} = validation.data;
 
   const current = await getCrmUserById(id);
   if (!current) {

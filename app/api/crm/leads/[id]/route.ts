@@ -8,6 +8,26 @@ import {findCrmLeadRowById, getCrmLeadById, isLeadAssignedToSalesUser} from '@/l
 import {logCrmUserActivity} from '@/lib/crmUserActivityStore';
 import {upsertProjectFromLead} from '@/lib/crmProjectsStore';
 import {createEmptyCrmEstimatorData, normalizeCrmEstimatorData, stringifyEstimatorData} from '@/lib/crmEstimator';
+import {z} from 'zod';
+
+const updateLeadSchema = z.object({
+  customer: z.string().trim().min(1).optional(),
+  address: z.string().trim().min(1).optional(),
+  problem: z.string().trim().optional(),
+  projectAddress: z.string().trim().optional(),
+  clientCharacterNote: z.string().trim().optional(),
+  note: z.string().trim().optional(),
+  status: z.string().trim().optional(),
+  progress: z.string().trim().optional(),
+  activityUpdate: z.string().trim().optional(),
+  dealProgress: z.string().trim().optional(),
+  owner: z.string().trim().min(1).optional(),
+  value: z.string().trim().min(1).optional(),
+  nextAction: z.string().trim().optional(),
+  updatedAtUtc: z.string().trim().min(1, 'Missing updatedAtUtc version'),
+  workLog: z.array(z.any()).optional(),
+  estimatorData: z.record(z.string(), z.any()).optional(),
+});
 
 export async function DELETE(
   req: NextRequest,
@@ -61,16 +81,20 @@ export async function PATCH(
     }
   }
 
-  const body = await req.json().catch(() => ({} as Record<string, unknown>));
+  const json = await req.json().catch(() => ({}));
+  const validation = updateLeadSchema.safeParse(json);
+
+  if (!validation.success) {
+    const firstError = validation.error.issues[0]?.message || 'Invalid input';
+    return NextResponse.json({ok: false, error: firstError}, {status: 400});
+  }
+
+  const body = validation.data;
   const canEditProfileFields = session.role === 'superadmin';
   const currentLeadRow = await findCrmLeadRowById(id);
 
   if (!currentLeadRow) {
     return NextResponse.json({ok: false, error: 'Lead not found'}, {status: 404});
-  }
-
-  if (typeof body.updatedAtUtc !== 'string' || !body.updatedAtUtc.trim()) {
-    return NextResponse.json({ok: false, error: 'Missing updatedAtUtc version'}, {status: 400});
   }
 
   const supabase = createSupabaseAdminClient();
@@ -86,21 +110,21 @@ export async function PATCH(
   const updatedAt = new Date().toISOString();
   const updatedLead = {
     ...currentLead,
-    customer: canEditProfileFields && typeof body.customer === 'string' ? String(body.customer) : currentLead.customer,
-    address: canEditProfileFields && typeof body.address === 'string' ? String(body.address) : currentLead.address,
-    problem: typeof body.problem === 'string' ? String(body.problem) : currentLead.problem,
-    projectAddress: typeof body.projectAddress === 'string' ? String(body.projectAddress) : currentLead.projectAddress || currentLead.address,
-    clientCharacterNote: typeof body.clientCharacterNote === 'string' ? String(body.clientCharacterNote) : currentLead.clientCharacterNote,
-    note: typeof body.note === 'string' ? String(body.note) : currentLead.note,
-    status: typeof body.status === 'string' ? String(body.status) : currentLead.status,
-    progress: typeof body.progress === 'string' ? String(body.progress) : currentLead.progress,
-    activityUpdate: typeof body.activityUpdate === 'string' ? String(body.activityUpdate) : currentLead.activityUpdate,
-    dealProgress: typeof body.dealProgress === 'string' ? String(body.dealProgress) : currentLead.dealProgress,
-    owner: canEditProfileFields && typeof body.owner === 'string' ? String(body.owner) : currentLead.owner,
-    value: canEditProfileFields && typeof body.value === 'string' ? String(body.value) : currentLead.value,
-    nextAction: typeof body.nextAction === 'string' ? String(body.nextAction) : currentLead.nextAction,
-    workLog: canEditProfileFields && Array.isArray(body.workLog) ? body.workLog as never : currentLead.workLog,
-    estimatorData: canEditProfileFields && body.estimatorData && typeof body.estimatorData === 'object'
+    customer: canEditProfileFields && body.customer ? body.customer : currentLead.customer,
+    address: canEditProfileFields && body.address ? body.address : currentLead.address,
+    problem: body.problem ?? currentLead.problem,
+    projectAddress: body.projectAddress || currentLead.projectAddress || currentLead.address,
+    clientCharacterNote: body.clientCharacterNote ?? currentLead.clientCharacterNote,
+    note: body.note ?? currentLead.note,
+    status: body.status ?? currentLead.status,
+    progress: body.progress ?? currentLead.progress,
+    activityUpdate: body.activityUpdate ?? currentLead.activityUpdate,
+    dealProgress: body.dealProgress ?? currentLead.dealProgress,
+    owner: canEditProfileFields && body.owner ? body.owner : currentLead.owner,
+    value: canEditProfileFields && body.value ? body.value : currentLead.value,
+    nextAction: body.nextAction ?? currentLead.nextAction,
+    workLog: canEditProfileFields && Array.isArray(body.workLog) ? body.workLog : currentLead.workLog,
+    estimatorData: canEditProfileFields && body.estimatorData
       ? normalizeCrmEstimatorData(body.estimatorData as never, createEmptyCrmEstimatorData())
       : currentLead.estimatorData,
     updatedAt,

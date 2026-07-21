@@ -8,10 +8,15 @@ import {upsertProjectFromLead} from '@/lib/crmProjectsStore';
 import {CrmLead} from '@/lib/crmMockData';
 import {createSupabaseAdminClient} from '@/lib/supabase/server';
 import {createEmptyCrmEstimatorData, normalizeCrmEstimatorData, stringifyEstimatorData} from '@/lib/crmEstimator';
+import {z} from 'zod';
 
-function normalizeText(value: unknown) {
-  return String(value || '').trim();
-}
+const importLeadRowSchema = z.object({
+  customer: z.string().trim().min(1, 'Customer name is required'),
+  company: z.string().trim().min(1, 'Company name is required'),
+  phone: z.string().trim().min(1, 'Phone number is required'),
+  email: z.string().trim().email('Invalid email address'),
+  address: z.string().trim().min(1, 'Address is required'),
+});
 
 function normalizeHeaderKey(value: string) {
   return String(value || '')
@@ -133,21 +138,22 @@ export async function POST(req: NextRequest) {
     }
 
     const imported: string[] = [];
-    const skipped: string[] = [];
+    const skipped: Array<{id: string; reason: string}> = [];
 
     for (const [index, row] of rows.entries()) {
       const fallbackId = `L-${100000 + index}`;
       const lead = rowToLead(row, fallbackId);
-      const updatedAt = lead.updatedAt && lead.updatedAt !== 'Imported' ? lead.updatedAt : nowIso();
+      
+      const validation = importLeadRowSchema.safeParse(lead);
+      if (!validation.success) {
+        skipped.push({id: lead.id || fallbackId, reason: validation.error.issues[0]?.message || 'Invalid row data'});
+        continue;
+      }
 
+      const updatedAt = lead.updatedAt && lead.updatedAt !== 'Imported' ? lead.updatedAt : nowIso();
       const normalizedOwner = lead.owner || session.email || 'Unassigned';
       const normalizedValue = lead.value || '0';
       const normalizedNextAction = lead.nextAction || 'Follow up';
-
-      if (!lead.customer || !lead.company || !lead.phone || !lead.email || !lead.address) {
-        skipped.push(lead.id || fallbackId);
-        continue;
-      }
 
       const {error} = await supabase.from('crm_leads').upsert({
         external_id: lead.id,
@@ -176,7 +182,7 @@ export async function POST(req: NextRequest) {
       }, {onConflict: 'external_id'});
 
       if (error) {
-        skipped.push(lead.id);
+        skipped.push({id: lead.id, reason: error.message || 'Database error'});
         continue;
       }
 

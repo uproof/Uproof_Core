@@ -2,8 +2,14 @@ import {NextRequest, NextResponse} from 'next/server';
 import {getAdminSession} from '@/lib/adminAuth';
 import {logCrmAudit} from '@/lib/crmAudit';
 import {checkRateLimit, RATE_LIMITS} from '@/lib/rateLimit';
+import {z} from 'zod';
 
-const CLIENT_ALLOWED_ACTIONS = new Set(['reveal']);
+const auditActionSchema = z.object({
+  action: z.literal('reveal'),
+  resource: z.string().trim().max(120).optional(),
+  field: z.string().trim().max(64).optional(),
+  detail: z.string().trim().max(256).optional(),
+});
 
 export async function POST(req: NextRequest) {
   const session = await getAdminSession();
@@ -17,25 +23,24 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ok: false, error: 'Too many requests'}, {status: 429});
   }
 
-  const body = await req.json().catch(() => ({} as {action?: string; resource?: string; field?: string; detail?: string}));
+  const json = await req.json().catch(() => ({}));
+  const validation = auditActionSchema.safeParse(json);
 
-  if (!body.action || !CLIENT_ALLOWED_ACTIONS.has(body.action)) {
-    return NextResponse.json({ok: false, error: 'Missing action'}, {status: 400});
+  if (!validation.success) {
+    return NextResponse.json({ok: false, error: 'Invalid audit action'}, {status: 400});
   }
 
-  const safeResource = body.resource ? String(body.resource).slice(0, 120) : undefined;
-  const safeField = body.field ? String(body.field).slice(0, 64) : undefined;
-  const safeDetail = body.detail ? String(body.detail).slice(0, 256) : undefined;
+  const {action, resource, field, detail} = validation.data;
 
   await logCrmAudit({
-    action: 'reveal',
+    action,
     userEmail: session.email,
     role: session.role,
     sessionId: session.sid,
     ip,
-    resource: safeResource,
-    field: safeField,
-    detail: safeDetail,
+    resource,
+    field,
+    detail,
   });
 
   return NextResponse.json({ok: true});

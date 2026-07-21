@@ -61,7 +61,11 @@ function buildSignedAdminSessionCookie(email) {
     process.env.ADMIN_TOKEN_SECRET ||
     readEnvValue('.env.crm.local', 'ADMIN_TOKEN_SECRET') ||
     process.env.NEXTAUTH_SECRET ||
-    'dev-secret-change-me';
+    '';
+
+  if (!secret) {
+    throw new Error('ADMIN_TOKEN_SECRET is required for CRM flow tests');
+  }
   const payload = {
     sub: 'admin',
     email,

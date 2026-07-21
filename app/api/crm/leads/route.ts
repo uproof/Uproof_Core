@@ -5,6 +5,19 @@ import {logCrmAudit} from '@/lib/crmAudit';
 import {logCrmUserActivity} from '@/lib/crmUserActivityStore';
 import {getCrmUserByEmail} from '@/lib/crmUsersStore';
 import {canPerform} from '@/lib/permissions';
+import {z} from 'zod';
+
+const createLeadSchema = z.object({
+  customer: z.string().trim().min(1, 'Customer name is required'),
+  company: z.string().trim().min(1, 'Company name is required'),
+  phone: z.string().trim().min(1, 'Phone number is required'),
+  email: z.string().trim().email('Invalid email address'),
+  address: z.string().trim().min(1, 'Address is required'),
+  owner: z.string().trim().min(1, 'Owner is required'),
+  value: z.string().trim().min(1, 'Value is required'),
+  nextAction: z.string().trim().min(1, 'Next action is required'),
+  note: z.string().trim().optional(),
+});
 
 export async function GET() {
   const session = await getAdminSession();
@@ -35,24 +48,26 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ok: false, error: 'Only superadmin can add leads'}, {status: 403});
     }
 
-    const body = await req.json().catch(() => ({} as Record<string, string>));
-    const required = ['customer', 'company', 'phone', 'email', 'address', 'owner', 'value', 'nextAction'] as const;
-    for (const field of required) {
-      if (!body[field] || !String(body[field]).trim()) {
-        return NextResponse.json({ok: false, error: `Missing ${field}`}, {status: 400});
-      }
+    const body = await req.json().catch(() => ({}));
+    const result = createLeadSchema.safeParse(body);
+
+    if (!result.success) {
+      const firstError = result.error.issues[0]?.message || 'Invalid input';
+      return NextResponse.json({ok: false, error: firstError}, {status: 400});
     }
 
+    const {data} = result;
+
     const lead = await addCrmLead({
-      customer: String(body.customer),
-      company: String(body.company),
-      phone: String(body.phone),
-      email: String(body.email),
-      address: String(body.address),
-      owner: String(body.owner),
-      value: String(body.value),
-      nextAction: String(body.nextAction),
-      note: body.note ? String(body.note) : undefined,
+      customer: data.customer,
+      company: data.company,
+      phone: data.phone,
+      email: data.email,
+      address: data.address,
+      owner: data.owner,
+      value: data.value,
+      nextAction: data.nextAction,
+      note: data.note,
     });
 
     const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
