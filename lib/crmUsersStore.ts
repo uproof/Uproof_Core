@@ -1,4 +1,4 @@
-import {createHmac, randomBytes, randomUUID} from 'crypto';
+import {pbkdf2Sync, randomBytes, randomUUID} from 'crypto';
 import {nowIso} from '@/lib/crmDb';
 import {createCrmSupabaseClient as createSupabaseAdminClient} from '@/lib/crmStorage';
 import {findCrmLeadRowById, getCrmLeadById} from '@/lib/crmLeadsStore';
@@ -368,7 +368,7 @@ function getSecurityFingerprintSecret() {
 }
 
 function hashSecurityValue(value: string) {
-  return createHmac('sha256', getSecurityFingerprintSecret()).update(value).digest('hex');
+  return pbkdf2Sync(value, getSecurityFingerprintSecret(), 310000, 32, 'sha512').toString('hex');
 }
 
 /**
