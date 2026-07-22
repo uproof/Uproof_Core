@@ -187,7 +187,6 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
       }
 
       setSaveState('saved');
-      router.refresh();
     } catch (error: any) {
       setSaveState('error');
       setSaveError(error?.message || 'Failed to clear work logs');
@@ -242,7 +241,6 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
         broadcastLeadUpdate(data.lead);
       }
       setSaveState('saved');
-      router.refresh();
     } catch (error: any) {
       setSaveState('error');
       setSaveError(error?.message || 'Save failed');
