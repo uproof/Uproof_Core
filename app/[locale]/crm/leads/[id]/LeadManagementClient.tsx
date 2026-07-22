@@ -344,10 +344,17 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
             <div className="mt-4 space-y-2">
               {signedAttachments.length > 0 ? (
                 signedAttachments.map((attachment) => (
-                  <a key={attachment.name} href={attachment.url} className="flex items-center justify-between rounded-xl border border-sky-100 bg-sky-50 px-4 py-3 text-sm text-slate-700 transition hover:bg-sky-100">
-                    <span>{attachment.name}</span>
-                    <span className="text-xs font-semibold text-sky-700">{isLv ? 'Lejupielādēt' : 'Download'}</span>
-                  </a>
+                  attachment.url ? (
+                    <a key={attachment.name} href={attachment.url} className="flex items-center justify-between rounded-xl border border-sky-100 bg-sky-50 px-4 py-3 text-sm text-slate-700 transition hover:bg-sky-100">
+                      <span>{attachment.name}</span>
+                      <span className="text-xs font-semibold text-sky-700">{isLv ? 'Lejupielādēt' : 'Download'}</span>
+                    </a>
+                  ) : (
+                    <div key={attachment.name} className="flex items-center justify-between rounded-xl border border-sky-100 bg-sky-50 px-4 py-3 text-sm text-slate-500">
+                      <span>{attachment.name}</span>
+                      <span className="text-xs font-semibold text-sky-500">{isLv ? 'Nav pieejams' : 'Unavailable'}</span>
+                    </div>
+                  )
                 ))
               ) : (
                 <div className="rounded-xl border border-dashed border-sky-200 bg-white px-4 py-3 text-sm text-slate-500">

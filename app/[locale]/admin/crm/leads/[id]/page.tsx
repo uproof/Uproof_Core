@@ -27,17 +27,25 @@ export default async function AdminCrmLeadDetailPage({params}: Props) {
     notFound();
   }
 
-  const signedAttachments = lead.attachments.map((fileName) => {
-    const query = createSignedDocQuery({
-      leadId: lead.id,
-      fileName,
-      sessionId: session.sid,
-      ttlSeconds: 15 * 60,
-    });
-    return {
-      name: fileName,
-      url: `/api/crm/docs/${encodeURIComponent(lead.id)}/${encodeURIComponent(fileName)}?${query}`,
-    };
+  const attachmentNames = Array.isArray(lead.attachments) ? lead.attachments : [];
+  const signedAttachments = attachmentNames.map((fileName) => {
+    try {
+      const query = createSignedDocQuery({
+        leadId: lead.id,
+        fileName,
+        sessionId: session.sid,
+        ttlSeconds: 15 * 60,
+      });
+      return {
+        name: fileName,
+        url: `/api/crm/docs/${encodeURIComponent(lead.id)}/${encodeURIComponent(fileName)}?${query}`,
+      };
+    } catch {
+      return {
+        name: fileName,
+        url: '',
+      };
+    }
   });
 
   return <LeadManagementClient locale={locale} lead={lead} signedAttachments={signedAttachments} showWorkLog={true} accessScope="admin" />;

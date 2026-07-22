@@ -26,17 +26,25 @@ export default async function CrmLeadDetailPage({params}: Props) {
     notFound();
   }
 
-  const signedAttachments = lead.attachments.map((fileName) => {
-    const query = createSignedDocQuery({
-      leadId: lead.id,
-      fileName,
-      sessionId: session?.sid || 'anonymous',
-      ttlSeconds: 15 * 60,
-    });
-    return {
-      name: fileName,
-      url: `/api/crm/docs/${encodeURIComponent(lead.id)}/${encodeURIComponent(fileName)}?${query}`,
-    };
+  const attachmentNames = Array.isArray(lead.attachments) ? lead.attachments : [];
+  const signedAttachments = attachmentNames.map((fileName) => {
+    try {
+      const query = createSignedDocQuery({
+        leadId: lead.id,
+        fileName,
+        sessionId: session?.sid || 'anonymous',
+        ttlSeconds: 15 * 60,
+      });
+      return {
+        name: fileName,
+        url: `/api/crm/docs/${encodeURIComponent(lead.id)}/${encodeURIComponent(fileName)}?${query}`,
+      };
+    } catch {
+      return {
+        name: fileName,
+        url: '',
+      };
+    }
   });
 
   const salesLead = {...lead, workLog: [], estimatorData: lead.estimatorData || createEmptyCrmEstimatorData()};
