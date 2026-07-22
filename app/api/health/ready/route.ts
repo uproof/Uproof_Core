@@ -8,7 +8,7 @@ export async function GET() {
       throw new Error('Supabase unavailable');
     }
 
-    const {error} = await supabase.from('rate_limits').select('identifier').limit(1);
+    const {error} = await supabase.from('user_profiles').select('id').limit(1);
     if (error) {
       throw error;
     }

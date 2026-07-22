@@ -6,6 +6,34 @@ export interface RateLimitConfig {
   windowMs: number; // milliseconds
 }
 
+let remoteRateLimitsEnabled = true;
+
+function getSupabaseErrorInfo(error: unknown) {
+  if (!error || typeof error !== 'object') {
+    return {message: '', status: 0, code: ''};
+  }
+
+  const candidate = error as {message?: unknown; status?: unknown; code?: unknown; details?: unknown; hint?: unknown};
+  const status = Number(candidate.status);
+  const message = [candidate.message, candidate.details, candidate.hint].filter((part) => typeof part === 'string' && part.trim()).join(' ');
+  return {
+    message,
+    status: Number.isFinite(status) ? status : 0,
+    code: typeof candidate.code === 'string' ? candidate.code : '',
+  };
+}
+
+function isRemoteRateLimitUnavailable(error: unknown) {
+  const info = getSupabaseErrorInfo(error);
+  return (
+    info.status === 403 ||
+    info.status === 404 ||
+    info.status === 42501 ||
+    /permission denied|does not exist|schema cache|relation .*rate_limits|rate_limits/i.test(info.message) ||
+    /42501/.test(info.code)
+  );
+}
+
 export async function checkRateLimit(
   identifier: string,
   config: RateLimitConfig
@@ -38,9 +66,19 @@ export async function checkRateLimit(
 }
 
 export async function clearRateLimit(identifier: string): Promise<void> {
-  const supabase = createSupabaseAdminClient();
-  if (supabase) {
-    await supabase.from('rate_limits').delete().eq('identifier', identifier);
+  if (remoteRateLimitsEnabled) {
+    const supabase = createSupabaseAdminClient();
+    if (supabase) {
+      const {error} = await supabase.from('rate_limits').delete().eq('identifier', identifier);
+      if (!error) {
+        inMemoryRateLimits.delete(identifier);
+        return;
+      }
+
+      if (isRemoteRateLimitUnavailable(error)) {
+        remoteRateLimitsEnabled = false;
+      }
+    }
   }
 
   inMemoryRateLimits.delete(identifier);
@@ -60,19 +98,25 @@ type RateLimitRecord = {
 const inMemoryRateLimits = new Map<string, RateLimitRecord>();
 
 async function readRateLimitRecord(identifier: string): Promise<RateLimitRecord | null> {
-  const supabase = createSupabaseAdminClient();
-  if (supabase) {
+  if (remoteRateLimitsEnabled) {
+    const supabase = createSupabaseAdminClient();
+    if (supabase) {
     const {data, error} = await supabase
       .from('rate_limits')
       .select('count,reset_at')
       .eq('identifier', identifier)
       .maybeSingle();
 
-    if (!error && data) {
-      return {
-        count: Number(data.count || 0),
-        resetTime: Number(data.reset_at || 0),
-      };
+      if (!error && data) {
+        return {
+          count: Number(data.count || 0),
+          resetTime: Number(data.reset_at || 0),
+        };
+      }
+
+      if (error && isRemoteRateLimitUnavailable(error)) {
+        remoteRateLimitsEnabled = false;
+      }
     }
   }
 
@@ -87,12 +131,18 @@ async function writeRateLimitRecord(identifier: string, count: number, resetTime
     updated_at_utc: nowIso(),
   };
 
-  const supabase = createSupabaseAdminClient();
-  if (supabase) {
-    const {error} = await supabase.from('rate_limits').upsert(payload);
-    if (!error) {
-      inMemoryRateLimits.set(identifier, {count, resetTime});
-      return;
+  if (remoteRateLimitsEnabled) {
+    const supabase = createSupabaseAdminClient();
+    if (supabase) {
+      const {error} = await supabase.from('rate_limits').upsert(payload);
+      if (!error) {
+        inMemoryRateLimits.set(identifier, {count, resetTime});
+        return;
+      }
+
+      if (isRemoteRateLimitUnavailable(error)) {
+        remoteRateLimitsEnabled = false;
+      }
     }
   }
 
