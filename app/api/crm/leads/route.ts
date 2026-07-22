@@ -5,6 +5,7 @@ import {logCrmAudit} from '@/lib/crmAudit';
 import {logCrmUserActivity} from '@/lib/crmUserActivityStore';
 import {getCrmUserByEmail} from '@/lib/crmUsersStore';
 import {canPerform} from '@/lib/permissions';
+import {mapCrmApiError} from '@/lib/crmApiErrors';
 import {z} from 'zod';
 
 const createLeadSchema = z.object({
@@ -100,6 +101,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ok: true, lead});
   } catch (error: any) {
-    return NextResponse.json({ok: false, error: error?.message || 'Failed to save lead'}, {status: 500});
+    const mapped = mapCrmApiError(error, 'Failed to save lead');
+    return NextResponse.json({ok: false, error: mapped.message}, {status: mapped.status});
   }
 }

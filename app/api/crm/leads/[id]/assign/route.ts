@@ -6,6 +6,7 @@ import {createCrmSupabaseClient as createSupabaseAdminClient} from '@/lib/crmSto
 import {findCrmLeadRowById} from '@/lib/crmLeadsStore';
 import {getCrmUserByEmail, getCrmUserById} from '@/lib/crmUsersStore';
 import {logCrmUserActivity} from '@/lib/crmUserActivityStore';
+import {mapCrmApiError} from '@/lib/crmApiErrors';
 import {z} from 'zod';
 
 const assignLeadSchema = z.object({
@@ -76,7 +77,8 @@ export async function POST(
       .eq('id', leadRow.id);
 
     if (updateError) {
-      return NextResponse.json({ok: false, error: updateError.message || 'Failed to assign lead'}, {status: 500});
+      const mapped = mapCrmApiError(updateError, 'Failed to assign lead');
+      return NextResponse.json({ok: false, error: mapped.message}, {status: mapped.status});
     }
 
     try {
@@ -105,6 +107,7 @@ export async function POST(
     });
   } catch (error: any) {
     console.error('lead assignment route failed', error);
-    return NextResponse.json({ok: false, error: error?.message || 'Failed to assign lead'}, {status: 500});
+    const mapped = mapCrmApiError(error, 'Failed to assign lead');
+    return NextResponse.json({ok: false, error: mapped.message}, {status: mapped.status});
   }
 }

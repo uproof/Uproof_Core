@@ -15,6 +15,7 @@ import {
 } from '@/lib/crmUsersStore';
 import {validatePasswordPolicy} from '@/lib/secretVault';
 import {SUPABASE_ACCESS_TOKEN_COOKIE, SUPABASE_REFRESH_TOKEN_COOKIE} from '@/lib/supabase/session';
+import {mapCrmApiError} from '@/lib/crmApiErrors';
 import {z} from 'zod';
 
 const securityActionSchema = z.object({
@@ -77,43 +78,44 @@ async function recordAuditLog(entry: {
 }
 
 export async function POST(req: NextRequest, {params}: {params: Promise<{id: string}>}) {
-  const session = await getAdminSession();
-  if (!session) {
-    return NextResponse.json({ok: false, error: 'Unauthorized'}, {status: 401});
-  }
-
-  if (!canPerform(session.role, 'createCrmUsers')) {
-    return NextResponse.json({ok: false, error: 'Only superadmin can manage CRM security'}, {status: 403});
-  }
-
-  const {id} = await params;
-  const target = await getCrmUserById(id);
-  if (!target) {
-    return NextResponse.json({ok: false, error: 'CRM user not found'}, {status: 404});
-  }
-
-  const json = await req.json().catch(() => ({}));
-  const validation = securityActionSchema.safeParse(json);
-
-  if (!validation.success) {
-    const firstError = validation.error.issues[0]?.message || 'Invalid action';
-    return NextResponse.json({ok: false, error: firstError}, {status: 400});
-  }
-
-  const {action, reason, adminPassword, newPassword, locale} = validation.data;
-  const isSelfPasswordChange = action === 'set-password' && session.email.toLowerCase() === target.email.toLowerCase();
-
-  if (adminPassword) {
-    const supabase = createSupabaseAdminClient();
-    const {error} = await supabase?.auth.signInWithPassword({email: session.email, password: adminPassword}) || {error: new Error('Supabase unavailable')};
-    if (error) {
-      return NextResponse.json({ok: false, error: 'Super admin re-authentication failed'}, {status: 401});
+  try {
+    const session = await getAdminSession();
+    if (!session) {
+      return NextResponse.json({ok: false, error: 'Unauthorized'}, {status: 401});
     }
-  }
 
-  const requestId = randomUUID();
+    if (!canPerform(session.role, 'createCrmUsers')) {
+      return NextResponse.json({ok: false, error: 'Only superadmin can manage CRM security'}, {status: 403});
+    }
 
-  switch (action) {
+    const {id} = await params;
+    const target = await getCrmUserById(id);
+    if (!target) {
+      return NextResponse.json({ok: false, error: 'CRM user not found'}, {status: 404});
+    }
+
+    const json = await req.json().catch(() => ({}));
+    const validation = securityActionSchema.safeParse(json);
+
+    if (!validation.success) {
+      const firstError = validation.error.issues[0]?.message || 'Invalid action';
+      return NextResponse.json({ok: false, error: firstError}, {status: 400});
+    }
+
+    const {action, reason, adminPassword, newPassword, locale} = validation.data;
+    const isSelfPasswordChange = action === 'set-password' && session.email.toLowerCase() === target.email.toLowerCase();
+
+    if (adminPassword) {
+      const supabase = createSupabaseAdminClient();
+      const {error} = await supabase?.auth.signInWithPassword({email: session.email, password: adminPassword}) || {error: new Error('Supabase unavailable')};
+      if (error) {
+        return NextResponse.json({ok: false, error: 'Super admin re-authentication failed'}, {status: 401});
+      }
+    }
+
+    const requestId = randomUUID();
+
+    switch (action) {
     case 'export-user-data': {
       const [activity, leads] = await Promise.all([
         getCrmUserActivitySnapshot(target.email),
@@ -289,7 +291,11 @@ export async function POST(req: NextRequest, {params}: {params: Promise<{id: str
       }
       return response;
     }
-    default:
-      return NextResponse.json({ok: false, error: 'Unsupported action'}, {status: 400});
+      default:
+        return NextResponse.json({ok: false, error: 'Unsupported action'}, {status: 400});
+    }
+  } catch (error) {
+    const mapped = mapCrmApiError(error, 'Failed to process CRM security action');
+    return NextResponse.json({ok: false, error: mapped.message}, {status: mapped.status});
   }
 }

@@ -8,6 +8,7 @@ import {upsertProjectFromLead} from '@/lib/crmProjectsStore';
 import {CrmLead} from '@/lib/crmMockData';
 import {createSupabaseAdminClient} from '@/lib/supabase/server';
 import {createEmptyCrmEstimatorData, normalizeCrmEstimatorData, stringifyEstimatorData} from '@/lib/crmEstimator';
+import {mapCrmApiError} from '@/lib/crmApiErrors';
 import {z} from 'zod';
 
 const importLeadRowSchema = z.object({
@@ -200,6 +201,7 @@ export async function POST(req: NextRequest) {
       skipped,
     });
   } catch (error: any) {
-    return NextResponse.json({ok: false, error: error?.message || 'Failed to import leads'}, {status: 500});
+    const mapped = mapCrmApiError(error, 'Failed to import leads');
+    return NextResponse.json({ok: false, error: mapped.message}, {status: mapped.status});
   }
 }

@@ -8,6 +8,7 @@ import {findCrmLeadRowById, getCrmLeadById, isLeadAssignedToSalesUser} from '@/l
 import {logCrmUserActivity} from '@/lib/crmUserActivityStore';
 import {upsertProjectFromLead} from '@/lib/crmProjectsStore';
 import {createEmptyCrmEstimatorData, normalizeCrmEstimatorData, stringifyEstimatorData} from '@/lib/crmEstimator';
+import {mapCrmApiError} from '@/lib/crmApiErrors';
 import {z} from 'zod';
 
 const updateLeadSchema = z.object({
@@ -157,10 +158,16 @@ export async function PATCH(
     .eq('id', currentLeadRow.id);
 
   if (error) {
-    return NextResponse.json({ok: false, error: error.message || 'Failed to save lead'}, {status: 500});
+    const mapped = mapCrmApiError(error, 'Failed to save lead');
+    return NextResponse.json({ok: false, error: mapped.message}, {status: mapped.status});
   }
 
-  await upsertProjectFromLead(updatedLead);
+  try {
+    await upsertProjectFromLead(updatedLead);
+  } catch (projectSyncError) {
+    // Project mirroring should not block lead updates in CRM.
+    console.warn('crm lead project sync failed', projectSyncError);
+  }
 
   try {
     await logCrmUserActivity({

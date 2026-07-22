@@ -35,6 +35,40 @@ type CrmProjectsOptions = {
 
 let projectsTableAvailable: boolean | null = null;
 
+function getSupabaseErrorText(error: unknown) {
+  if (!error || typeof error !== 'object') {
+    return '';
+  }
+
+  const candidate = error as {
+    message?: unknown;
+    details?: unknown;
+    hint?: unknown;
+    code?: unknown;
+  };
+
+  return [
+    typeof candidate.message === 'string' ? candidate.message : '',
+    typeof candidate.details === 'string' ? candidate.details : '',
+    typeof candidate.hint === 'string' ? candidate.hint : '',
+    typeof candidate.code === 'string' ? candidate.code : '',
+  ].filter(Boolean).join(' ');
+}
+
+function isProjectsTableMissingError(error: unknown) {
+  if (!error || typeof error !== 'object') {
+    return false;
+  }
+
+  const text = getSupabaseErrorText(error);
+  if (/public\.projects|schema cache|does not exist|pgrst205|relation .*projects/i.test(text)) {
+    return true;
+  }
+
+  const status = Number((error as {status?: unknown})?.status);
+  return Number.isFinite(status) && status === 404;
+}
+
 async function isProjectsTableAvailable(supabase: NonNullable<ReturnType<typeof createSupabaseAdminClient>>): Promise<boolean> {
   if (projectsTableAvailable !== null) {
     return projectsTableAvailable;
@@ -42,13 +76,12 @@ async function isProjectsTableAvailable(supabase: NonNullable<ReturnType<typeof 
 
   const {error} = await supabase.from('projects').select('lead_id').limit(1);
   if (error) {
-    const message = error.message || '';
-    if (/public\.projects|schema cache|does not exist/i.test(message)) {
+    if (isProjectsTableMissingError(error)) {
       projectsTableAvailable = false;
       return false;
     }
 
-    throw new Error(message || 'Failed to check project storage availability');
+    throw new Error(getSupabaseErrorText(error) || 'Failed to check project storage availability');
   }
 
   projectsTableAvailable = true;
@@ -111,7 +144,7 @@ export async function upsertProjectFromLead(lead: CrmLead): Promise<void> {
     title: lead.projectAddress || lead.address || lead.customer,
     location: lead.projectAddress || lead.address || lead.customer,
     owner: lead.owner,
-    phase: lead.status.replaceAll('_', ' '),
+    phase: String(lead.status || 'NEW').replaceAll('_', ' '),
     budget: lead.value,
     due_date: lead.nextAction,
     estimator_data_json: stringifyEstimatorData(normalizeCrmEstimatorData(lead.estimatorData, createEmptyCrmEstimatorData())),
@@ -121,12 +154,11 @@ export async function upsertProjectFromLead(lead: CrmLead): Promise<void> {
 
   const {error} = await supabase.from('projects').upsert(payload, {onConflict: 'lead_id'});
   if (error) {
-    const message = error.message || 'Failed to upsert project';
-    if (/public\.projects|schema cache|does not exist/i.test(message)) {
+    if (isProjectsTableMissingError(error)) {
       projectsTableAvailable = false;
       return;
     }
-    throw new Error(message);
+    throw new Error(getSupabaseErrorText(error) || 'Failed to upsert project');
   }
 }
 
@@ -142,11 +174,10 @@ export async function deleteProjectByLeadId(leadId: string): Promise<void> {
 
   const {error} = await supabase.from('projects').delete().eq('lead_id', leadId);
   if (error) {
-    const message = error.message || 'Failed to delete project';
-    if (/public\.projects|schema cache|does not exist/i.test(message)) {
+    if (isProjectsTableMissingError(error)) {
       projectsTableAvailable = false;
       return;
     }
-    throw new Error(message);
+    throw new Error(getSupabaseErrorText(error) || 'Failed to delete project');
   }
 }

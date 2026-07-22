@@ -4,6 +4,7 @@ import {createCrmUser, getCrmUsers} from '@/lib/crmUsersStore';
 import {checkRateLimit, RATE_LIMITS} from '@/lib/rateLimit';
 import {canPerform} from '@/lib/permissions';
 import {validatePasswordPolicy} from '@/lib/secretVault';
+import {mapCrmApiError} from '@/lib/crmApiErrors';
 import {z} from 'zod';
 
 const createUserSchema = z.object({
@@ -87,6 +88,7 @@ export async function POST(req: NextRequest) {
     if (/already been registered|already exists|duplicate/i.test(message)) {
       return NextResponse.json({ok: false, error: 'A user with this email already exists. Use password update instead.'}, {status: 409});
     }
-    return NextResponse.json({ok: false, error: message}, {status: 500});
+    const mapped = mapCrmApiError(error, message);
+    return NextResponse.json({ok: false, error: mapped.message}, {status: mapped.status});
   }
 }
