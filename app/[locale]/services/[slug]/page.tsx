@@ -53,7 +53,7 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
   },
   'valcprofila-montaza': {
     title: {
-      lv: 'Valcprofila jumta montāža Rīgā | Stāvošā šuve ar 10 gadu garantiju',
+      lv: 'Valcprofila jumta montāža Rīgā | Stāvošā šuve',
       en: 'Standing Seam Metal Roofing in Riga | Hermetic Connections',
       'nl-BE': 'Staande naad metalen dakbedekking in België | Hermetische verbindingen'
     },
@@ -79,7 +79,7 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
   },
   'skurstena-piesleguma-montaza-labosana': {
     title: {
-      lv: 'Skursteņa pieslēguma montāža un labošana Rīgā | Hermētiski mezgli',
+      lv: 'Skursteņa pieslēguma montāža Rīgā | Hermētiski mezgli',
       en: 'Chimney Flashing Installation and Repair in Riga | Leak-Proof Joints',
       'nl-BE': 'Schoorsteenaansluiting montage en herstel | Waterdichte details'
     },
@@ -92,7 +92,7 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
   },
   'dakstina-jumta-labosana': {
     title: {
-      lv: 'Dakstiņa jumta labošana Rīgā | Dakstiņu jumtu remonts ar garantiju',
+      lv: 'Dakstiņa jumta labošana Rīgā | Dakstiņu remonts',
       en: 'Tile Roof Repair in Riga | Professional Tile Roof Fixing',
       'nl-BE': 'Pannendak herstelling | Professionele pannendak reparatie'
     },
@@ -144,7 +144,7 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
   },
   'jumta-apkope-remonts': {
     title: {
-      lv: 'Jumta apkope un remonts Rīgā | Ātra palīdzība, bezmaksas apskate',
+      lv: 'Jumta apkope un remonts Rīgā | Ātra palīdzība',
       en: 'Roof Maintenance and Repair in Riga | Fast Response + Free Assessment',
       'nl-BE': 'Dakonderhoud en reparatie in België | Reiniging, Schadevoorkoming'
     },
@@ -170,7 +170,7 @@ const META: Record<string, {title: Record<string, string>; description: Record<s
   },
   'jumta-remonts': {
     title: {
-      lv: 'Jumta remonts Rīgā 24/7 | Jumta remonta pakalpojumi ar garantiju',
+      lv: 'Jumta remonts Rīgā 24/7 | Jumta remonts ar garantiju',
       en: 'Emergency Roof Repair in Riga | Fast 24/7 Response',
       'nl-BE': 'Noodreparatie dak België | Snelle 24/7 reactie'
     },

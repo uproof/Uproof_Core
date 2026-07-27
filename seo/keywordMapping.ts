@@ -29,6 +29,209 @@ export interface KeywordMappingEntry {
 
 export const keywordMapping: KeywordMappingEntry[] = [
   {
+    keyword: 'jumiķa pakalpojumi',
+    intent: 'core-service',
+    primaryUrl: '/lv/services',
+    supportingUrls: ['/lv/services/jumta-buvnieciba', '/lv/services/jumta-renovacija', '/lv/services/jumta-apkope-remonts'],
+    notes: 'Broad commercial roofing-services intent. Services hub should stay canonical.'
+  },
+  {
+    keyword: 'jumiķi',
+    intent: 'core-service',
+    primaryUrl: '/lv/services',
+    supportingUrls: ['/lv/services/jumta-buvnieciba', '/lv/services/jumta-renovacija'],
+    notes: 'General roofer intent. Treat as a services-page query, not hiring intent.'
+  },
+  {
+    keyword: 'jumta darbi',
+    intent: 'core-service',
+    primaryUrl: '/lv/services',
+    supportingUrls: ['/lv/services/jumta-buvnieciba', '/lv/services/jumta-apkope-remonts'],
+    notes: 'Umbrella phrase for roofing work. Services listing is canonical.'
+  },
+  {
+    keyword: 'jumta atjaunošana',
+    intent: 'renovation',
+    primaryUrl: '/lv/services/jumta-renovacija',
+    supportingUrls: ['/lv/services/jumta-buvnieciba'],
+    notes: 'Restoration/revival phrase. Renovation page should capture it.'
+  },
+  {
+    keyword: 'jumta labošana',
+    intent: 'repair',
+    primaryUrl: '/lv/services/jumta-apkope-remonts',
+    supportingUrls: ['/lv/services/jumta-renovacija'],
+    notes: 'Repair synonym. Maintenance + repair page should stay canonical.'
+  },
+  {
+    keyword: 'jauns jumts',
+    intent: 'core-service',
+    primaryUrl: '/lv/services/jumta-buvnieciba',
+    supportingUrls: ['/lv/services/jumta-renovacija'],
+    notes: 'New-roof intent. Construction page is canonical.'
+  },
+  {
+    keyword: 'jumta izbūve',
+    intent: 'core-service',
+    primaryUrl: '/lv/services/jumta-buvnieciba',
+    supportingUrls: ['/lv/services/jumta-renovacija'],
+    notes: 'Roof build / installation intent. Construction page is canonical.'
+  },
+  {
+    keyword: 'jumta seguma nomaiņa',
+    intent: 'renovation',
+    primaryUrl: '/lv/services/jumta-renovacija',
+    supportingUrls: ['/lv/services/jumta-buvnieciba'],
+    notes: 'Roof-cover replacement. Renovation page should capture the term.'
+  },
+  {
+    keyword: 'jumta seguma montāža',
+    intent: 'installation',
+    primaryUrl: '/lv/services/jumta-buvnieciba',
+    supportingUrls: ['/lv/services/valcprofila-montaza', '/lv/services/dakstinu-montaza'],
+    notes: 'General installation intent. Construction page is canonical.'
+  },
+  {
+    keyword: 'jumta uzstādīšana',
+    intent: 'installation',
+    primaryUrl: '/lv/services/jumta-buvnieciba',
+    supportingUrls: ['/lv/services/valcprofila-montaza', '/lv/services/dakstinu-montaza'],
+    notes: 'Roof installation intent. Construction page is canonical.'
+  },
+  {
+    keyword: 'jumta rekonstrukcija',
+    intent: 'renovation',
+    primaryUrl: '/lv/services/jumta-renovacija',
+    supportingUrls: ['/lv/services/jumta-buvnieciba'],
+    notes: 'Reconstruction intent. Renovation page is canonical.'
+  },
+  {
+    keyword: 'jumta pārbūve',
+    intent: 'renovation',
+    primaryUrl: '/lv/services/jumta-renovacija',
+    supportingUrls: ['/lv/services/jumta-buvnieciba'],
+    notes: 'Major roof rebuild intent. Renovation page should win.'
+  },
+  {
+    keyword: 'jumta maiņa',
+    intent: 'renovation',
+    primaryUrl: '/lv/services/jumta-renovacija',
+    supportingUrls: ['/lv/services/jumta-buvnieciba'],
+    notes: 'Replacement synonym. Renovation page is canonical.'
+  },
+  {
+    keyword: 'jumta montāža',
+    intent: 'installation',
+    primaryUrl: '/lv/services/jumta-buvnieciba',
+    supportingUrls: ['/lv/services/valcprofila-montaza', '/lv/services/dakstinu-montaza'],
+    notes: 'Generic roof installation query. Construction page is canonical.'
+  },
+  {
+    keyword: 'jumta nomaiņa',
+    intent: 'renovation',
+    primaryUrl: '/lv/services/jumta-renovacija',
+    supportingUrls: ['/lv/services/jumta-buvnieciba'],
+    notes: 'Replacement intent. Renovation page is canonical.'
+  },
+  {
+    keyword: 'valcprofila montāža',
+    intent: 'profile',
+    primaryUrl: '/lv/services/valcprofila-montaza',
+    supportingUrls: ['/lv/services/jumta-buvnieciba', '/lv/materials/valcprofils'],
+    notes: 'Standing seam installation phrase. Service page remains canonical.'
+  },
+  {
+    keyword: 'valcprofila jumts',
+    intent: 'profile',
+    primaryUrl: '/lv/services/valcprofila-montaza',
+    supportingUrls: ['/lv/materials/valcprofils', '/lv/services/jumta-buvnieciba'],
+    notes: 'Standing seam roof intent. Service page remains canonical.'
+  },
+  {
+    keyword: 'metāla jumts',
+    intent: 'profile',
+    primaryUrl: '/lv/services/valcprofila-montaza',
+    supportingUrls: ['/lv/materials/valcprofils', '/lv/materials/ruukki-classic'],
+    notes: 'Metal roof intent. Standing seam service is the best fit.'
+  },
+  {
+    keyword: 'skārda jumts',
+    intent: 'profile',
+    primaryUrl: '/lv/services/valcprofila-montaza',
+    supportingUrls: ['/lv/materials/valcprofils', '/lv/services/jumta-buvnieciba'],
+    notes: 'Sheet-metal roofing intent. Standing seam service is canonical.'
+  },
+  {
+    keyword: 'dakstiņu jumts',
+    intent: 'material',
+    primaryUrl: '/lv/services/dakstinu-montaza',
+    supportingUrls: ['/lv/services/jumta-renovacija'],
+    notes: 'Tile-roof query. Tile installation page is canonical.'
+  },
+  {
+    keyword: 'jumta loksnes',
+    intent: 'material',
+    primaryUrl: '/lv/materials/valcprofils',
+    supportingUrls: ['/lv/services/valcprofila-montaza', '/lv/services/jumta-buvnieciba'],
+    notes: 'Roof sheets/material intent. Material page is the cleanest target.'
+  },
+  {
+    keyword: 'jumiķi rīgā',
+    intent: 'city',
+    primaryUrl: '/lv/cities/riga',
+    supportingUrls: ['/lv/services', '/lv/services/jumta-apkope-remonts', '/lv/services/jumta-renovacija'],
+    notes: 'Local roofer intent. City page should absorb the query.'
+  },
+  {
+    keyword: 'jumta remonts rīgā',
+    intent: 'city',
+    primaryUrl: '/lv/cities/riga',
+    supportingUrls: ['/lv/services/jumta-apkope-remonts', '/lv/urgency/caurs-jumts'],
+    notes: 'Local repair intent. City page should be canonical.'
+  },
+  {
+    keyword: 'jumta nomaiņa rīgā',
+    intent: 'city',
+    primaryUrl: '/lv/cities/riga',
+    supportingUrls: ['/lv/services/jumta-renovacija', '/lv/services/jumta-buvnieciba'],
+    notes: 'Local replacement intent. City page is canonical.'
+  },
+  {
+    keyword: 'jumta montāža rīgā',
+    intent: 'city',
+    primaryUrl: '/lv/cities/riga',
+    supportingUrls: ['/lv/services/jumta-buvnieciba', '/lv/services/valcprofila-montaza'],
+    notes: 'Local installation intent. City page is canonical.'
+  },
+  {
+    keyword: 'jumiķi mārupē',
+    intent: 'city',
+    primaryUrl: '/lv/services',
+    supportingUrls: ['/lv/services/jumta-buvnieciba', '/lv/services/jumta-renovacija'],
+    notes: 'No dedicated city page exists; route to services hub with Mārupē coverage.'
+  },
+  {
+    keyword: 'jumiķi jūrmalā',
+    intent: 'city',
+    primaryUrl: '/lv/services',
+    supportingUrls: ['/lv/services/jumta-buvnieciba', '/lv/services/jumta-renovacija'],
+    notes: 'No dedicated city page exists; route to services hub with Jūrmala coverage.'
+  },
+  {
+    keyword: 'jumiķi ādažos',
+    intent: 'city',
+    primaryUrl: '/lv/services',
+    supportingUrls: ['/lv/services/jumta-buvnieciba', '/lv/services/jumta-renovacija'],
+    notes: 'No dedicated city page exists; route to services hub with Ādaži coverage.'
+  },
+  {
+    keyword: 'jumiķi siguldā',
+    intent: 'city',
+    primaryUrl: '/lv/services',
+    supportingUrls: ['/lv/services/jumta-buvnieciba', '/lv/services/jumta-renovacija'],
+    notes: 'No dedicated city page exists; route to services hub with Sigulda coverage.'
+  },
+  {
     keyword: 'profesionāli jumiķi',
     intent: 'career',
     primaryUrl: '/lv/career',

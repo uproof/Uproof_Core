@@ -14,25 +14,23 @@ type Props = {
 };
 
 const titles: Record<string, string> = {
-  lv: 'Vakances: Darbs Jumiķiem un Palīgiem Rīgā',
+  lv: 'Careers at UpRoof | Roofing Jobs in Latvia',
   en: 'Careers at UpRoof | Professional Roofers and Assistants',
   'nl-BE': 'Werken bij UpRoof | Dakwerkers en assistenten',
 };
 
 const descriptions: Record<string, string> = {
-  lv: 'Apskati aktuālās vakances profesionāliem jumiķiem un jumiķa palīgiem UpRoof komandā. Atver konkrētu vakanci, apskati detaļas un piesakies tieši.',
+  lv: 'See open jobs for professional roofers and roofing assistants at UpRoof. Fill out the application and attach your CV.',
   en: 'See open jobs for professional roofers and roofing assistants at UpRoof. Fill out the application and attach your CV.',
   'nl-BE': 'Bekijk vacatures voor dakwerkers en assistenten bij UpRoof. Vul het formulier in en voeg je cv toe.',
 };
 
 const keywords: Record<string, string[]> = {
   lv: [
-    'darbs jumiķiem',
-    'profesionāli jumiķi',
-    'jumiķa palīgi',
-    'vakances jumta nozarē',
-    'darbs jumta nozarē Latvijā',
-    'jumiķu vakances',
+    'roofing jobs Latvia',
+    'professional roofers',
+    'roofing assistants',
+    'roofing vacancies',
   ],
   en: [
     'roofing jobs Latvia',
@@ -78,7 +76,7 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
           url: '/images/icons/career-header.png',
           width: 1200,
           height: 630,
-          alt: 'UpRoof karjeras vakances jumiķiem',
+          alt: 'UpRoof career vacancies for roofers',
         },
       ],
     },
@@ -108,11 +106,11 @@ export default async function CareerPage({params}: Props) {
     about: [
       {
         '@type': 'Thing',
-        name: locale === 'lv' ? 'Profesionāli jumiķi' : 'Professional roofers',
+        name: 'Professional roofers',
       },
       {
         '@type': 'Thing',
-        name: locale === 'lv' ? 'Jumiķa palīgi' : 'Roofing assistants',
+        name: 'Roofing assistants',
       },
     ],
     isPartOf: {

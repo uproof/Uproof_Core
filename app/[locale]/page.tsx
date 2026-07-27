@@ -72,7 +72,7 @@ export default async function HomePage({params}: Props) {
   const banner = bannerText[locale] || bannerText.lv;
 
   const seoIntro: Record<string, string> = {
-    lv: 'Jumiķa pakalpojumi, jumiķi, jumta darbi, jumta remonts, jumta labošana, jumta atjaunošana, jumta renovācija, jumta nomaiņa, jumta montāža un jumta būvniecība Rīgā, Mārupē, Jūrmalā, Ādažos, Siguldā, Pierīgā un visā Latvijā.',
+    lv: 'Jumiķa pakalpojumi, jumiķi, jumta darbi, jumta remonts, jumta labošana, jumta atjaunošana, jumta renovācija, jumta nomaiņa, jumta montāža, jumta būvniecība, jumta seguma nomaiņa, jumta seguma montāža, jumta uzstādīšana, jumta rekonstrukcija, jumta pārbūve un jumta maiņa Rīgā, Mārupē, Jūrmalā, Ādažos, Siguldā, Pierīgā un visā Latvijā.',
     en: 'Our core focus is roofing services, roof repairs, roof renovation and roof installation in Riga and throughout Latvia.',
     'nl-BE': 'Onze kernfocus ligt op dakdiensten, dakreparatie, dakrenovatie en dakinstallatie in Letland.',
   };

@@ -274,6 +274,41 @@ export default async function middleware(request: NextRequest) {
     return redirectWithCookies(redirectUrl, 301);
   }
 
+  // Normalize legacy /et paths that were left behind from older content exports.
+  // Keep them on the closest current canonical pages instead of letting them 404.
+  const legacyEtPathMap: Record<string, string> = {
+    '/et/services/metallist-katuse-paigaldus': '/lv/services/valcprofila-montaza',
+    '/et/services/katuse-ehitus': '/lv/services/jumta-buvnieciba',
+    '/et/services/jumta-krasosana': '/lv/services/jumta-krasosana',
+    '/et/services/valcprofila-montaza': '/lv/services/valcprofila-montaza',
+    '/et/materials/metallist-profiilikatus': '/lv/materials/valcprofils',
+    '/et/materials/shingli-katted': '/lv/materials/bitumena-rulli',
+    '/et/materials/valcprofils': '/lv/materials/valcprofils',
+  };
+  const legacyEtMappedPath = legacyEtPathMap[pathname];
+  if (legacyEtMappedPath) {
+    const redirectUrl = new URL(legacyEtMappedPath, nextUrl);
+    return redirectWithCookies(redirectUrl, 301);
+  }
+
+  const stackedLegacyEtMatch = pathname.match(/^\/(lv|en|nl-BE)\/et(\/.*)?$/);
+  if (stackedLegacyEtMatch) {
+    const locale = stackedLegacyEtMatch[1];
+    const remainder = stackedLegacyEtMatch[2] || '';
+    const legacyEtLocalePathMap: Record<string, string> = {
+      '/materials/metallist-profiilikatus': '/materials/valcprofils',
+      '/materials/shingli-katted': '/materials/bitumena-rulli',
+      '/materials/valcprofils': '/materials/valcprofils',
+      '/services/metallist-katuse-paigaldus': '/services/valcprofila-montaza',
+      '/services/katuse-ehitus': '/services/jumta-buvnieciba',
+      '/services/jumta-krasosana': '/services/jumta-krasosana',
+      '/services/valcprofila-montaza': '/services/valcprofila-montaza',
+    };
+    const canonicalRemainder = legacyEtLocalePathMap[remainder] || remainder;
+    const redirectUrl = new URL(`/${locale}${canonicalRemainder}`, nextUrl);
+    return redirectWithCookies(redirectUrl, 301);
+  }
+
   // Normalize malformed sitemap index paths such as /lv/sitemap-index.xml/urgency.
   const localizedSitemapIndexMatch = pathname.match(/^\/(lv|en|nl-BE)\/sitemap[-_]index\.xml(?:\/.+)?$/);
   if (localizedSitemapIndexMatch) {

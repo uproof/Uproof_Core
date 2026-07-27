@@ -11,7 +11,7 @@ type Props = {
 };
 
 const titles: Record<string, string> = {
-  lv: 'Sazinies ar mums | Bezmaksas jumta novērtējums Latvijā | UpRoof',
+  lv: 'Sazinies ar mums | UpRoof',
   en: 'Contact Us | Free Roofing Quote Latvia | UpRoof',
   'nl-BE': 'Contacteer ons | Gratis dakofferte | UpRoof',
 };

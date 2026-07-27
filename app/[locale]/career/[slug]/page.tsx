@@ -14,13 +14,13 @@ type Props = {
 };
 
 const pageTitles: Record<string, string> = {
-  lv: 'Darbs Jumiķiem Rīgā | UpRoof',
+  lv: 'Roofing Job at UpRoof | Latvia',
   en: 'Roofing Job at UpRoof | Latvia',
   'nl-BE': 'Dakwerk vacature bij UpRoof | Letland',
 };
 
 const pageDescriptions: Record<string, string> = {
-  lv: 'Skatiet pilnu vakances aprakstu, darba pienākumus un pieteikšanās informāciju.',
+  lv: 'View the full job description, responsibilities, and application details.',
   en: 'View the full job description, responsibilities, and application details.',
   'nl-BE': 'Bekijk de volledige vacature, verantwoordelijkheden en sollicitatie-informatie.',
 };

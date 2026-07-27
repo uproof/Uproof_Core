@@ -13,81 +13,81 @@
     "careers": "Darba iespējas",
     "cities": "Pilsētas",
     "materials": "Materiāli",
-    "reviews": "Atsauksmes",
-    "seasonalServices": "Sezonālie pakalpojumi",
-    "snowRemoval": "Sniega tīrīšana",
-    "stormDamage": "Vētras bojājumi"
-  },
-  "breadcrumbs": {
-    "home": "Sākums",
-    "services": "Pakalpojumi",
+      "title": "Careers at UpRoof",
+      "heroKicker": "Working at UpRoof",
+      "heroIntro": "We are looking for roofers and roofing assistants who want to work in a well-organized team with a clear process and quality results.",
+      "eyebrow": "Careers at UpRoof",
+      "intro": "Join UpRoof and work on roofing projects across Latvia with a safe workplace, an organized process, and long-term cooperation.",
+      "benefitsLabel": "What we offer",
+      "benefitsTitle": "Stable work with a clear process",
+      "benefitsIntro": "We value precision, safety, and a responsible attitude. The team works with a structured rhythm and reliable quality.",
     "projects": "Projekti",
     "about": "Par mums",
-    "contact": "Kontakti",
-    "blog": "Blogs",
+          "title": "Clear work rhythm",
+          "description": "Work with a predictable plan and an organized day-to-day flow."
     "career": "Darbs"
   },
-  "serviceTags": {
-    "construction": "Būvniecība",
+          "title": "Quality sites",
+          "description": "Work on carefully organized jobs with visible results."
     "profiling": "Metāla profila darbi",
     "insulation": "Izolācija",
-    "renovation": "Renovācija",
-    "maintenance": "Apkope",
+          "title": "Work across Latvia",
+          "description": "Projects in Riga, the surrounding region, and beyond."
     "painting": "Krāsošana",
     "tiling": "Dakstiņu montāža",
-    "skylights": "Jumta logi",
-    "gutters": "Notekas",
-    "chimney": "Skurstenim darbi"
-  },
-  "pages": {
-    "services": {"title": "Mūsu jumtu pakalpojumi"},
-    "projects": {"title": "Pabeigtie projekti"},
-    "career": {
-      "title": "Darbs UpRoof",
-      "heroKicker": "Darbs UpRoof",
-      "heroIntro": "Meklējam jumiķus un jumiķa palīgus, kuri grib strādāt sakārtotā komandā, ar skaidru procesu un kvalitatīvu rezultātu.",
-      "eyebrow": "Darbs UpRoof",
-      "intro": "Pievienojies UpRoof komandai. Darbs pie jumtu projektiem visā Latvijā ar drošu darba vidi, sakārtotu procesu un ilgtermiņa sadarbību.",
-      "benefitsLabel": "Ko piedāvājam",
-      "benefitsTitle": "Stabils darbs ar skaidru procesu",
-      "benefitsIntro": "Pie mums svarīga ir precizitāte, drošība un atbildīga attieksme. Mēs veidojam sakārtotu darba ritmu un kvalitāti, uz kuru var paļauties.",
+      "jobsLabel": "Open jobs",
+      "jobsTitle": "Professional roofers and roofing assistants",
+      "jobsIntro": "Here you’ll see the current job positions that can be added or updated from the admin panel without coding.",
+      "jobsEmpty": "There are no published job positions yet. Add them in the admin panel and they will appear here.",
+      "formPanelKicker": "Application",
+      "formPanelTitle": "Complete the application in Tally",
+      "formPanelIntro": "The form is simple, quick, and ready for CV uploads. After review, we will contact candidates whose profile matches the role.",
+      "formTitle": "Apply for a role",
+      "formIntro": "Fill in the application and attach your CV.",
+      "formHint": "Upload a PDF, DOC, or DOCX CV up to 10 MB.",
+      "formBadge": "Tally form",
+      "eyebrow": "Careers at UpRoof",
+      "intro": "Join UpRoof and work on roofing projects across Latvia with a safe workplace, an organized process, and long-term cooperation.",
+          "title": "Direct to our team",
+          "description": "Your application goes straight to the team, without extra steps."
+      "benefitsIntro": "We value precision, safety, and a responsible attitude. The team works with a structured rhythm and reliable quality.",
       "benefits": {
-        "schedule": {
-          "title": "Skaidrs darba ritms",
-          "description": "Darbs ar saprotamu plānu, kārtību un prognozējamu ikdienu."
+          "title": "Quick to complete",
+          "description": "The form is easy to use on mobile and takes only a few minutes."
+          "description": "Work with a predictable plan and an organized day-to-day flow."
         },
-        "work": {
-          "title": "Kvalitatīvi objekti",
-          "description": "Darbs pie rūpīgi organizētiem projektiem ar redzamu rezultātu."
+          "title": "Reviewed promptly",
+          "description": "We review applications and contact suitable candidates."
+          "description": "Work on carefully organized jobs with visible results."
         },
-        "latvia": {
-          "title": "Darbs visā Latvijā",
-          "description": "Objekti Rīgā, Pierīgā un citur Latvijā."
+      "jobsViewButton": "View vacancy",
+      "jobsApplyButton": "Apply",
+      "benefitsLabelShort": "Benefits",
         }
-      },
-      "jobsLabel": "Atvērtās vakances",
-      "jobsTitle": "Profesionāli jumiķi un jumiķa palīgi",
-      "jobsIntro": "Šeit redzēsi aktuālās vakances, kuras var pievienot vai atjaunināt no admin paneļa bez programmēšanas.",
-      "jobsEmpty": "Pašlaik nav publicētu vakances pozīciju. Pievieno tās admin panelī, lai tās parādītos šeit.",
-      "formPanelKicker": "Pieteikšanās",
-      "formPanelTitle": "Aizpildi pieteikumu Tally formā",
-      "formPanelIntro": "Forma ir vienkārša, ātra un piemērota CV pievienošanai. Pēc pieteikuma saņemšanas mēs sazināsimies ar kandidātiem, kuru profils atbilst vakancēm.",
-      "formTitle": "Pieteikties vakancei",
-      "formIntro": "Aizpildi pieteikumu un pievieno savu CV.",
-      "formHint": "CV pievieno PDF, DOC vai DOCX formātā līdz 10 MB.",
-      "formBadge": "Tally forma",
+        "projects": "Completed projects",
+        "experience": "Years of experience",
+        "warranty": "Years of warranty",
+        "satisfaction": "Client satisfaction"
+      "jobsEmpty": "There are no published job positions yet. Add them in the admin panel and they will appear here.",
+      "formPanelKicker": "Application",
+      "formPanelTitle": "Complete the application in Tally",
+      "formPanelIntro": "The form is simple, quick, and ready for CV uploads. After review, we will contact candidates whose profile matches the role.",
+      "formTitle": "Apply for a role",
+      "formIntro": "Fill in the application and attach your CV.",
+      "formHint": "Upload a PDF, DOC, or DOCX CV up to 10 MB.",
+      "formBadge": "Tally form",
       "formFeatures": {
         "direct": {
-          "title": "Tieši komandai",
-          "description": "Pieteikums nonāk pie mūsu komandas bez liekas starpniecības."
+          "title": "Direct to our team",
+          "description": "Your application goes straight to the team, without extra steps."
         },
         "fast": {
-          "title": "Ātra aizpildīšana",
-          "description": "Forma ir ērta arī telefonā un neaizņem daudz laika."
+          "title": "Quick to complete",
+          "description": "The form is easy to use on mobile and takes only a few minutes."
         },
         "review": {
-          "title": "Operatīva izskatīšana",
-          "description": "Mēs pārskatām pieteikumus un sazināmies ar piemērotajiem kandidātiem."
+          "title": "Reviewed promptly",
+          "description": "We review applications and contact suitable candidates."
         }
       },
       "fields": {
