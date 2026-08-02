@@ -33,7 +33,7 @@
     "react-dom": "^18.3.0",
     "react-hook-form": "^7.76.1",
     "sanitize-html": "^2.17.5",
-    "sharp": "^0.34.5",
+    "sharp": "^0.35.3",
     "three": "^0.180.0",
     "uuid": "^13.0.0",
     "vanta": "^0.5.24",
@@ -41,17 +41,16 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
+    "dotenv": "^17.4.2",
     "@types/node": "^20.14.0",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
     "@types/sanitize-html": "^2.16.1",
     "@types/three": "^0.180.0",
     "autoprefixer": "^10.4.0",
-    "baseline-browser-mapping": "^2.9.19",
-    "dotenv": "^17.4.2",
     "eslint": "^9.0.0",
     "eslint-config-next": "^15.5.10",
-    "postcss": "^8.5.14",
+    "postcss": "^8.5.18",
     "prisma": "^6.19.3",
     "tailwindcss": "^3.4.0",
     "typescript": "^5.5.0"
@@ -65,7 +64,7 @@
     "not ie 11"
   ],
   "overrides": {
-    "postcss": "^8.5.14",
+    "postcss": "^8.5.18",
     "minimatch": "^10.2.5"
   }
 }

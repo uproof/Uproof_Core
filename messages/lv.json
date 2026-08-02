@@ -1,18 +1,48 @@
 {
   "common": {
-    "home": "Sākums",
-    "contactUs": "Sazināties ar mums"
+    "home": "Home",
+    "contactUs": "Contact Us"
   },
   "nav": {
-    "home": "Sākums",
-    "services": "Pakalpojumi",
-    "projects": "Projekti",
-    "about": "Par mums",
-    "contact": "Kontakti",
-    "blog": "Blogs",
-    "careers": "Darba iespējas",
-    "cities": "Pilsētas",
-    "materials": "Materiāli",
+    "home": "Home",
+    "services": "Services",
+    "projects": "Projects",
+    "about": "About Us",
+    "contact": "Contact",
+    "blog": "Blog",
+    "careers": "Careers",
+    "cities": "Cities",
+    "materials": "Materials",
+    "reviews": "Reviews",
+    "seasonalServices": "Seasonal services",
+    "snowRemoval": "Snow Removal",
+    "stormDamage": "Storm Damage"
+  },
+  "breadcrumbs": {
+    "home": "Home",
+    "services": "Services",
+    "projects": "Projects",
+    "about": "About Us",
+    "contact": "Contact",
+    "blog": "Blog",
+    "career": "Careers"
+  },
+  "serviceTags": {
+    "construction": "Construction",
+    "profiling": "Metal Profiling",
+    "insulation": "Insulation",
+    "renovation": "Renovation",
+    "maintenance": "Maintenance",
+    "painting": "Painting",
+    "tiling": "Tiling",
+    "skylights": "Skylights",
+    "gutters": "Gutters",
+    "chimney": "Chimney Work"
+  },
+  "pages": {
+    "services": {"title": "Our Roofing Services"},
+    "projects": {"title": "Completed Projects"},
+    "career": {
       "title": "Careers at UpRoof",
       "heroKicker": "Working at UpRoof",
       "heroIntro": "We are looking for roofers and roofing assistants who want to work in a well-organized team with a clear process and quality results.",
@@ -21,53 +51,23 @@
       "benefitsLabel": "What we offer",
       "benefitsTitle": "Stable work with a clear process",
       "benefitsIntro": "We value precision, safety, and a responsible attitude. The team works with a structured rhythm and reliable quality.",
-    "projects": "Projekti",
-    "about": "Par mums",
+      "benefits": {
+        "schedule": {
           "title": "Clear work rhythm",
           "description": "Work with a predictable plan and an organized day-to-day flow."
-    "career": "Darbs"
-  },
+        },
+        "work": {
           "title": "Quality sites",
           "description": "Work on carefully organized jobs with visible results."
-    "profiling": "Metāla profila darbi",
-    "insulation": "Izolācija",
+        },
+        "latvia": {
           "title": "Work across Latvia",
           "description": "Projects in Riga, the surrounding region, and beyond."
-    "painting": "Krāsošana",
-    "tiling": "Dakstiņu montāža",
+        }
+      },
       "jobsLabel": "Open jobs",
       "jobsTitle": "Professional roofers and roofing assistants",
       "jobsIntro": "Here you’ll see the current job positions that can be added or updated from the admin panel without coding.",
-      "jobsEmpty": "There are no published job positions yet. Add them in the admin panel and they will appear here.",
-      "formPanelKicker": "Application",
-      "formPanelTitle": "Complete the application in Tally",
-      "formPanelIntro": "The form is simple, quick, and ready for CV uploads. After review, we will contact candidates whose profile matches the role.",
-      "formTitle": "Apply for a role",
-      "formIntro": "Fill in the application and attach your CV.",
-      "formHint": "Upload a PDF, DOC, or DOCX CV up to 10 MB.",
-      "formBadge": "Tally form",
-      "eyebrow": "Careers at UpRoof",
-      "intro": "Join UpRoof and work on roofing projects across Latvia with a safe workplace, an organized process, and long-term cooperation.",
-          "title": "Direct to our team",
-          "description": "Your application goes straight to the team, without extra steps."
-      "benefitsIntro": "We value precision, safety, and a responsible attitude. The team works with a structured rhythm and reliable quality.",
-      "benefits": {
-          "title": "Quick to complete",
-          "description": "The form is easy to use on mobile and takes only a few minutes."
-          "description": "Work with a predictable plan and an organized day-to-day flow."
-        },
-          "title": "Reviewed promptly",
-          "description": "We review applications and contact suitable candidates."
-          "description": "Work on carefully organized jobs with visible results."
-        },
-      "jobsViewButton": "View vacancy",
-      "jobsApplyButton": "Apply",
-      "benefitsLabelShort": "Benefits",
-        }
-        "projects": "Completed projects",
-        "experience": "Years of experience",
-        "warranty": "Years of warranty",
-        "satisfaction": "Client satisfaction"
       "jobsEmpty": "There are no published job positions yet. Add them in the admin panel and they will appear here.",
       "formPanelKicker": "Application",
       "formPanelTitle": "Complete the application in Tally",
@@ -91,405 +91,405 @@
         }
       },
       "fields": {
-        "fullName": "Vārds un uzvārds",
-        "email": "E-pasts",
-        "phone": "Tālruņa numurs",
-        "location": "Pilsēta / atrašanās vieta",
-        "locationPlaceholder": "Rīga",
-        "experience": "Darba pieredze",
-        "experiencePlaceholder": "2+ gadi jumta darbos",
-        "message": "Pastāsti par sevi",
-        "messagePlaceholder": "Pastāsti, kādu darbu meklē un kāda ir tava pieredze.",
-        "cv": "Pievieno CV",
-        "submit": "Nosūtīt pieteikumu",
-        "sending": "Sūta...",
-        "success": "Pieteikums nosūtīts. Mēs ar tevi sazināsimies tuvākajā laikā.",
-        "error": "Radās kļūda, nosūtot pieteikumu. Lūdzu, mēģini vēlreiz vai raksti uz contact@uproof.eu.",
-        "fileError": "CV jābūt PDF, DOC vai DOCX failam līdz 10 MB.",
-        "requiredError": "Šis lauks ir obligāts"
+        "fullName": "Full name",
+        "email": "Email",
+        "phone": "Phone number",
+        "location": "City / location",
+        "locationPlaceholder": "Riga",
+        "experience": "Work experience",
+        "experiencePlaceholder": "2+ years in roofing",
+        "message": "Tell us about yourself",
+        "messagePlaceholder": "Tell us what role you are looking for and what experience you have.",
+        "cv": "Attach CV",
+        "submit": "Send application",
+        "sending": "Sending...",
+        "success": "Application sent. We will be in touch soon.",
+        "error": "Something went wrong while sending the application. Please try again or email contact@uproof.eu.",
+        "fileError": "CV must be a PDF, DOC, or DOCX file up to 10 MB.",
+        "requiredError": "This field is required"
       }
     },
     "about": {
-  "title": "Par UpRoof",
-  "description": "UpRoof ir jumtu būvniecības eksperti ar ilggadēju pieredzi un aizrautību pret savu darbu. Mēs piedāvājam pilna cikla jumta risinājumus – no projektēšanas un materiālu izvēles līdz montāžai, krāsošanai un ilgtermiņa apkopei. Mūsu komanda sastāv no sertificētiem speciālistiem, kuri rūpējas par katru detaļu, lai nodrošinātu augstāko kvalitāti, drošību un estētiku. UpRoof klientiem sniedz individuālu pieeju, skaidru komunikāciju un garantētu rezultātu. Mēs lepojamies ar paveiktajiem projektiem un esam uzticams partneris gan privātmāju, gan uzņēmumu jumtu būvniecībā.",
+  "title": "About UpRoof",
+  "description": "UpRoof are roofing experts with years of experience and a passion for quality. We deliver complete roofing solutions including design, material selection, installation, painting and long-term maintenance. Our certified specialists pay attention to every detail, ensuring the highest standards of quality, safety and aesthetics. We offer a personal approach, clear communication and guaranteed results. We take pride in our completed projects and are a trusted partner for both private homes and businesses.",
     "values": {
         "quality": {
-          "title": "Kvalitāte",
-          "description": "Izmantojam pārbaudītus materiālus un tehnoloģijas ilgmūžīgam rezultātam."
+          "title": "QUALITY",
+          "description": "We use proven materials and techniques for lasting results."
         },
         "reliability": {
-          "title": "Uzticamība",
-          "description": "Ievērojam termiņus, sniedzam skaidru komunikāciju un garantijas."
+          "title": "RELIABILITY",
+          "description": "We meet deadlines, provide clear communication, and offer guarantees."
         },
         "certified": {
-          "title": "Sertificēts būvuzņēmums",
-          "description": "Mūsu speciālisti ir sertificēti un uzņēmums atbilst visām prasībām."
+          "title": "CERTIFIED COMPANY",
+          "description": "Our specialists are certified and the company meets all requirements."
         },
         "guarantee": {
-          "title": "10 gadu garantija",
-          "description": "Piedāvājam 10 gadu garantiju visiem veiktajiem darbiem."
+          "title": "10-YEAR WARRANTY",
+          "description": "We offer a 10-year warranty on all completed work."
         },
         "contract": {
-          "title": "Līguma skaidrība",
-          "description": "Līgumā atrunāti visi nosacījumi, materiāli, metodes un rezultāts."
+          "title": "Contact Us",
+          "description": "All terms, materials, methods, and results are specified in the contract."
         },
         "fixedcost": {
-          "title": "Nemainīgas izmaksas",
-          "description": "Garantējam izmaksu nemainīgumu darba procesa gaitā."
+          "title": "FIXED COSTS",
+          "description": "We guarantee cost stability throughout the work process."
         },
         "payment": {
-          "title": "Samaksa pēc darba uzsākšanas",
-          "description": "Sāksim darbu un tikai pēc tam prasīsim samaksu."
+          "title": "PAYMENT AFTER START",
+          "description": "We start work and only then request payment."
         },
         "partners": {
-          "title": "Sadarbības partneri",
-          "description": "Mūsu partneri ir lielākie namu apsaimniekotāji Latvijā."
+          "title": "PARTNERSHIPS",
+          "description": "Our partners are the largest property managers in Latvia."
         },
         "insurance": {
-          "title": "Drošība un apdrošināšana",
-          "description": "Ievērojam visus darba drošības pasākumus un esam apdrošināti."
+          "title": "SAFETY & INSURANCE",
+          "description": "We follow all safety measures and are insured."
         }
       }
     },
-    "contact": {"title": "Sazinies ar mums", "sectionTitle": "Kā varam palīdzēt?"}
+    "contact": {"title": "Contact Us", "sectionTitle": "How can we help?"}
   },
   "projects": {
-    "title": "Projekti",
-    "projectDetails": "Projekta detaļas",
-    "servicesProvided": "Sniegtie pakalpojumi",
-    "backToProjects": "Atpakaļ uz visiem projektiem",
+    "title": "Projects",
+    "projectDetails": "Project Details",
+    "servicesProvided": "Services Provided",
+    "backToProjects": "Back to all projects",
     "items": {
       "fullCycleConstruction": {
-        "title": "Pilna cikla jumta būvniecība ar valcprofilu",
-        "location": "Jelgava, Latvija",
-        "description": "Pilna cikla jumta būvniecība ar valcprofila segumu, konstrukcijas atjaunošanu, jumta siltināšanu, skursteņu apdari ar skārdu, vēja kastes izbūvi, noteksistēmas montāžu."
+        "title": "Full-Cycle Roof Construction with Metal Profile",
+        "location": "Jelgava, Latvia",
+        "description": "Full-cycle roof construction with metal profile covering, structure restoration, roof insulation, chimney cladding with tin, gutter system installation and drainage system mounting."
       },
       "renovationMetalRoof": {
-        "title": "Jumta renovācija ar valcprofilu",
-        "location": "Latvija",
-        "description": "Jumta renovācija ar valcprofila segumu, jumta logu montāža un vēja kastes atjaunošana."
+        "title": "Roof Renovation with Metal Profile",
+        "location": "Latvia",
+        "description": "Roof renovation with metal profile covering, skylight installation and wind box restoration."
       },
       "ventilatedRidge": {
-        "title": "Ventilējamās kores montāža",
-        "location": "Latvija",
-        "description": "Ventilējamās kores montāža valcprofila jumtam izmantojot bez skrūvju montāžu."
+        "title": "Ventilated Ridge Installation",
+        "location": "Latvia",
+        "description": "Ventilated ridge installation on metal profile roof using screw-free mounting method."
       },
       "roofReplacement": {
-        "title": "Jumta seguma nomaiņa",
-        "location": "Latvija",
-        "description": "Jumta seguma nomaiņa, skursteņa pieslēguma montāža un vēja kastes atjaunošana."
+        "title": "Roof Covering Replacement",
+        "location": "Latvia",
+        "description": "Roof covering replacement, chimney flashing installation and wind box restoration."
       },
       "tiledRoof": {
-        "title": "Dakstiņa jumta montāža",
-        "location": "Latvija",
-        "description": "Dakstiņa jumta montāža privātmājai."
+        "title": "Tile Roof Installation",
+        "location": "Latvia",
+        "description": "Tile roof installation for private house."
       },
       "skylightInstallation": {
-        "title": "Jumta logu montāža",
-        "location": "Jaunciems, Latvija",
-        "description": "Jumta logu montāža valcprofila jumtam Jaunciemā."
+        "title": "Skylight Installation",
+        "location": "Jaunciems, Latvia",
+        "description": "Skylight installation on metal profile roof in Jaunciems."
       },
       "cathedralPainting": {
-        "title": "Katedrāles jumta krāsošana",
-        "location": "Latgale, Latvija",
-        "description": "Jumta krāsošana katedrāles valcprofila jumtam Latgalē."
+        "title": "Cathedral Roof Painting",
+        "location": "Latgale, Latvia",
+        "description": "Roof painting of cathedral metal profile roof in Latgale."
       },
       "apartmentPainting": {
-        "title": "Daudzdzīvokļu mājas jumta krāsošana",
-        "location": "Grīziņkalns, Latvija",
-        "description": "Daudzīvokļu mājas jumta krāsošana Grīziņkalnā."
+        "title": "Apartment Building Roof Painting",
+        "location": "Grīziņkalns, Latvia",
+        "description": "Multi-apartment building roof painting in Grīziņkalns."
       },
       "privatePainting": {
-        "title": "Privātmājas metāla jumta krāsošana",
-        "location": "Baldone, Latvija",
-        "description": "Privātmājas metāla jumta krāsošana Baldonē."
+        "title": "Private House Metal Roof Painting",
+        "location": "Baldone, Latvia",
+        "description": "Private house metal roof painting in Baldone."
       },
       "galvanizedProfilingFacade": {
-        "title": "Cinkota valcprofila montāža",
-        "location": "Carnikava, Latvija",
-        "description": "Cinkota valcprofila montāža un koka fasādes atjaunošana Carnikavā."
+        "title": "Galvanized Metal Profile Installation",
+        "location": "Carnikava, Latvia",
+        "description": "Galvanized metal profile installation and wood facade restoration in Carnikava."
       },
       "rigaPainting": {
-        "title": "Daudzdzīvokļu mājas krāsošana",
-        "location": "Rīga, Latvija",
-        "description": "Daudzdzīvokļu mājas krāsošana Rīgā."
+        "title": "Multi-Apartment Building Painting",
+        "location": "Riga, Latvia",
+        "description": "Multi-apartment building painting in Riga."
       },
       "tiledRoofRepair": {
-        "title": "Dakstiņa jumta labošana un skursteņa pieslēguma atjaunošana",
-        "location": "Rīga, Latvija",
-        "description": "Bojāto dakstiņu nomaiņa, kores mezgla sakārtošana un skursteņa pieslēguma labošana ar hermētiskiem skārda risinājumiem."
+        "title": "Tile Roof Repair and Chimney Flashing Restoration",
+        "location": "Riga, Latvia",
+        "description": "Replacement of damaged tiles, ridge detail restoration, and chimney flashing repair with leak-proof sheet-metal solutions."
       },
       "ozolniekiRenovationProfiling": {
-        "title": "Jumta renovācija / valcprofila montāža",
-        "location": "Ozolnieki, Jelgavas novads",
-        "description": "Jumta renovācija un valcprofila montāža privātīpašumam Ozolniekos, nodrošinot hermētiskus mezglus, precīzu montāžu un ilgtermiņa izturību."
+        "title": "Roof Renovation / Standing Seam Installation",
+        "location": "Ozolnieki, Jelgava Municipality",
+        "description": "Roof renovation and standing seam metal profile installation for a private property in Ozolnieki, including watertight details and precise finishing."
       }
     }
   },
   "home": {
     "hero": {
-      "title": "JUMIĶA PAKALPOJUMI, JUMTA DARBI UN JUMTA REMONTS",
-      "subtitle": "LIELISKI JUMTI IR MŪSU MISIJA!",
-      "cta": "Sazināties",
-      "learnMore": "Uzzināt vairāk",
-      "orderNow": "Pieteikties"
+      "title": "ROOF RENOVATION AND CONSTRUCTION",
+      "subtitle": "EXCELLENT ROOFS ARE OUR MISSION!",
+      "cta": "Get Started",
+      "learnMore": "View Roofing Services",
+      "orderNow": "Order Now"
     },
     "services": {
-      "title": "JUMTA PAKALPOJUMI UN JUMTA DARBI",
+      "title": "ROOFING SOLUTIONS",
       "buttons": {
-        "orderNow": "Pieteikties",
-        "learnMore": "Uzzināt vairāk"
+        "orderNow": "Order Now",
+        "learnMore": "Learn More"
       },
       "construction": {
-        "title": "JUMTA BŪVNIECĪBA",
-        "description": "Piedāvājam pilna cikla jumta būvniecību un renovāciju ar <bold>10 gadu garantiju</bold>. Jumta konstrukciju atjaunošana, izolācijas materiālu ieklāšana, jumta seguma ieklāšana, jumta logu montāža, jumta noteksistēmas montāža un citu jumta aksesuāru montāža."
+        "title": "ROOF CONSTRUCTION",
+        "description": "We offer full-cycle roof construction and renovation with a <bold>10-year warranty</bold>. Roof structure restoration, insulation installation, roof covering installation, skylight installation, gutter system installation, and installation of other roof accessories."
       },
       "roofStructure": {
-        "title": "JUMTA KONSTRUKCIJU MONTĀŽA",
-        "description": "Montējam gatavas jumta kopnes un jumta koka konstrukcijas. Veicam jumta spāru montāžu, mūrlatas montāžu un jumta krēsla montāžu, nodrošinot precīzu ģeometriju un drošus mezglus."
+        "title": "ROOF STRUCTURE INSTALLATION",
+        "description": "We install prefabricated roof trusses and timber roof structures. Services include rafter installation, wall plate installation, and roof frame assembly with precise geometry and reliable joints."
       },
       "painting": {
-        "title": "JUMTA KRĀSOŠANA",
-        "description": "Metāla jumta krāsošana lieliem un maziem jumtiem izmantojot trīs līmeņu tīrīšanu, rūsas apstrādi un trīs kārtu krāsošanu izcilam rezultātam un krāsas noturībai"
+        "title": "ROOF PAINTING",
+        "description": "Metal roof painting for large and small roofs using three-level cleaning, rust treatment, and three-layer painting for excellent results and paint durability"
       },
       "maintenance": {
-        "title": "JUMTA APKOPE",
-        "description": "Profesionāla jumta apkope - jumta tīrīšana no sniega, noteku tīrīšana no lapām, jumta labošana un bojājumu noteikšana, skursteņu atjaunošana, jumta drošības elementu uzstādīšana"
+        "title": "ROOF MAINTENANCE",
+        "description": "Professional roof maintenance - snow removal from roofs, leaf cleaning from gutters, roof repairs, damage detection, chimney restoration, and installation of roof safety elements"
       },
       "metalProfile": {
-        "title": "VALCPROFILA MONTĀŽA",
-        "description": "Valcprofila montāža izmantojot pilnībā hermētiskus skārda dubultlocījumu risinājumus visos savienojumos, pieslēgumos ar logiem un skursteņiem. Esam spējīgi paveikt arī īpaši sarežģītus valcprofila darbus ar nestandarta risinājumiem."
+        "title": "METAL PROFILE INSTALLATION",
+        "description": "Metal profile installation using fully hermetic tin double-fold solutions in all joints, connections with windows and chimneys. We are capable of performing complex metal profile work with non-standard solutions."
       },
       "tiledRoof": {
-        "title": "DAKSTIŅA JUMTU MONTĀŽA",
-        "description": "Māla vai betona dakstiņu montāža kombinācijā ar mūsu skārda apstrādes prasmēm rada jumtu kas pilnībā hermētiski kalpos mūžīgi. Nodrošinam pareizu zemseguma ventilāciju un dakstiņu jumtu pabeidzam ar hermētiskiem valcēta skārda pieslēgumiem pie sienām, logiem un citās sarežģītās vietās."
+        "title": "TILE ROOF INSTALLATION",
+        "description": "Clay or concrete tile installation combined with our tin processing skills creates roofs that are completely hermetic and will serve for a lifetime. We ensure proper underlay ventilation and complete tile roofs with hermetic rolled tin connections at walls, windows, and other complex locations."
       },
       "skylights": {
-        "title": "JUMTA LOGU MONTĀŽA",
-        "description": "Piedāvājam Roto un Velux jumta logu montāžu gan jaunos projektos gan arī ar tiem papildinot jau esošus jumtus, lai iegūtu papildus gaismu jumta stāvā, bet vienlaikus nezaudējot jumta funkcionalitāti."
+        "title": "SKYLIGHT INSTALLATION",
+        "description": "We offer Roto and Velux skylight installations in new projects and also adding them to existing roofs to gain additional light in the attic, while maintaining roof functionality."
       },
       "gutterSystem": {
-        "title": "JUMTA NOTEKSISTĒMAS MONTĀŽA",
-        "description": "Noteksistēmas uzstādam gan viegli gan sarežģīti pieejamās vietās un augstumos. Rūpējamies, lai notekas vienmēr strādātu ar ūdens paškrites mehānismu, tādā veidā padarot to funkcionalitāti ilgmūžīgu. Veicam arī vēja kastes atjaunošanas darbus, ja tas nepieciešams veiksmīgai noteksistēmas ierīkošanai."
+        "title": "GUTTER SYSTEM INSTALLATION",
+        "description": "We install drainage systems in both easily and complexly accessible locations and heights. We ensure that gutters always operate with the water self-flow mechanism, making their functionality long-lasting. We also perform wind box restoration work when necessary for successful gutter installation."
       },
       "chimneyConnection": {
-        "title": "SKURSTEŅA PIESLĒGUMA MONTĀŽA / LABOŠANA",
-        "description": "Augstas precizitātes skursteņa pieslēguma montāža un labošana ar hermētiskiem skārda mezgliem. Novēršam noplūdes, atjaunojam hidroizolāciju un nodrošinām ilgtermiņa drošību."
+        "title": "CHIMNEY FLASHING INSTALLATION / REPAIR",
+        "description": "High-precision chimney flashing installation and repair with watertight sheet-metal details. We stop leaks around penetrations, restore waterproofing, and secure long-term roof performance."
       },
       "tileRoofRepair": {
-        "title": "DAKSTIŅA JUMTA LABOŠANA",
-        "description": "Vidējas līdz augstas sarežģītības dakstiņa jumta labošana: bojāto dakstiņu nomaiņa, kores un pieslēgumu atjaunošana, noplūžu novēršana un profilaktiskā apkope."
+        "title": "TILE ROOF REPAIR",
+        "description": "Medium-to-high difficulty tile roof repair: replacement of damaged tiles, ridge and flashing restoration, leak elimination, and preventive maintenance for longer roof life."
       },
       "snowRemoval": {
-        "title": "SNIEGA UN LEDUS TĪRĪŠANA NO JUMTA",
-        "description": "Nodarbojamies ar profesionālu un drošu sniega tīrīšanu no īpašumiem visā Latvijā. Sniegotās ziemās krītošs ledus uz garāmgājēiem ir bīstams, tāpēc mēs palīdzam jumtus padarīt drošākus. Vienmēr rūpējamies par kontrolētu sniega nogādāšanu zemē, satiksmes regulēšanu un nodrošinam arī sniega aizvešanu un teritorijas sakopšanu."
+        "title": "SNOW AND ICE REMOVAL FROM ROOF",
+        "description": "We engage in professional and safe snow removal from properties throughout Latvia. In snowy winters, falling ice on pedestrians is dangerous, so we help make roofs safer. We always care for controlled snow removal to the ground, traffic regulation, and also provide snow disposal and territory cleaning."
       },
       "leafCleaning": {
-        "title": "JUMTA TĪRĪŠANA NO LAPĀM UN NOTEKSISTĒMAS TĪRĪŠANA",
-        "description": "Sakrājušās lapas un zari aizsprosto jumta teknes un kavē ūdens novadīšanu. Bet lapas un zari uz jumta uzskrāj mitrumu, kas paātrina jumta bojāšanos un rūsēšanu. Tāpēc mēs vienmēr iesakām pirms ziemas jumtu pienācīgi apkopt, lai tas kalpotu labāk un ilgāk."
+        "title": "ROOF CLEANING AND GUTTER CLEANING",
+        "description": "Accumulated leaves and branches block roof gutters and impede water drainage. But leaves and branches on the roof accumulate moisture, which accelerates roof damage and corrosion. Therefore, we always recommend proper roof maintenance before winter so it will work better and longer."
       }
     },
     "solutions": {
-      "title": "PROFESIONĀLI JUMTA RISINĀJUMI!",
-      "renovation": "Jumta renovācija",
-      "profiling": "Valcprofila montāža",
-      "repair": "Jumta labošana",
-      "drainage": "Noteksistēmu uzstādīšana",
-      "painting": "Jumta krāsošana",
-      "cleaning": "Sniega un lapu tīrīšana"
+      "title": "PROFESSIONAL ROOFING SOLUTIONS!",
+      "renovation": "Roof Renovation",
+      "profiling": "Metal Profile Installation",
+      "repair": "Roof Repair",
+      "drainage": "Drainage System Installation",
+      "painting": "Roof Painting",
+      "cleaning": "Snow and Leaf Removal"
     },
     "faq": {
-      "title": "JUMTA JAUTĀJUMI UN ATBILDES",
-      "subtitle": "Atrodiet atbildes uz biežāk uzdotajiem jautājumiem par mūsu jumta pakalpojumiem.",
+      "title": "QUESTIONS AND ANSWERS",
+      "subtitle": "Find answers to commonly asked questions about our roofing services.",
       "q1": {
-        "question": "Kādus pakalpojumus mēs piedāvājam?",
-        "answer": "Mēs specializējamies augstas kvalitātes jumtu būvniecībā, sākot ar jumta konstrukciju izbūvi un atjaunošanu, līdz jumta seguma montāžai ar visiem nepieciešamajiem jumta aksesuāriem un papildus detaļām. Jūsu ērtībām, piedāvājam visus jumtam nepieciešamos risinājumus, tā skaitā skursteņu atjaunošanu, jumta logu montāžu, noteksistēmas montāžu, drošības elementu izbūvi un citus. Mūsu valcprofila jumtu montāžai piedāvājam 10 gadu garantiju!"
+        "question": "What services do we offer?",
+        "answer": "We specialize in high-quality roof construction, starting with the construction and renovation of roof structures, to the installation of roofing with all the necessary roof accessories and additional parts. For your convenience, we offer all the necessary roof solutions, including chimney renovation, skylight installation, gutter installation, construction of safety elements and others. We offer a 10-year warranty for the installation of our rolled profile roofs!"
       },
       "q2": {
-        "question": "Ar kādiem jumtu veidiem mēs strādājam?",
-        "answer": "Mēs strādājam ar slīpo jumtu būvniecību un renovāciju un biežākie materiāli kurus izmantojam ir valcprofila metāla jumti, metāla lokšņu jumti un dakstiņa jumti, bet varam ieklāt arī jūsu īpašo materiālu. Mūsu komanda sastāv no vairākām brigādēm un katra no tām specializējas konkrētā jumta veidā un regulāri atjaunina savas zināšanas, lai nodrošinātu labākos risinājumus katram jumta veidam."
+        "question": "Do we provide a warranty?",
+        "answer": "We provide a warranty for all our work, for example, we offer a 10-year warranty for rolled profile assembly work and an additional 50-year manufacturer's warranty for the materials used."
       },
       "q3": {
-        "question": "Vai mēs sniedzam garantiju?",
-        "answer": "Mēs nodrošinam garantiju visiem mūsu darbiem, piemēram valcprofila montāžas darbiem mēs piedāvājam 10 gadu garantiju un papildus 50 gadu ražotāja garantiju izmantotajiem materiāliem."
+        "question": "How quickly can roof diagnostics be performed?",
+        "answer": "We use advanced diagnostic equipment to assess roof conditions efficiently. For most projects, we can complete a thorough inspection and provide a detailed assessment within 1-2 business days after initial contact."
       },
       "q4": {
-        "question": "Cik ātri var veikt jumta diagnostiku?",
-        "answer": "Mēs izmantojam modernu diagnostikas aprīkojumu, lai efektīvi novērtētu jumta stāvokli. Lielākajai daļai projektu mēs varam pabeigt rūpīgu inspekciju un sniegt detalizētu novērtējumu 1-2 darba dienu laikā pēc sākotnējās saskarsmes."
+        "question": "What types of roofs do we work with?",
+        "answer": "We work with pitched roof construction and renovation and the most common materials we use are rolled metal roofs, metal sheet roofs and tiled roofs, but we can also install your special material. Our team consists of several teams, each of which specializes in a specific type of roof and regularly updates its knowledge to provide the best solutions for each type of roof."
       },
       "q5": {
-        "question": "Vai jumta remontu var veikt ziemā?",
-        "answer": "Jā, mēs varam veikt lielāko daļu jumta remontu visu gadu. Lai gan daži materiāli vislabāk darbojas siltākā laikā, mums ir īpašas tehnikas un materiāli, kas ļauj droši pabeigt ārkārtas remontus pat aukstā laikā."
+        "question": "Can roof repairs be carried out in winter?",
+        "answer": "Yes, we can perform most roof repairs year-round. While some materials work best in warmer weather, we have specialized techniques and materials that allow us to safely complete emergency repairs even in cold conditions."
       },
       "q6": {
-        "question": "Vai metāla jumti ir skaļi?",
-        "answer": "Metāla jumti ir skaļāki salīdzinot ar citiem jumta segumiem, tomēr tas vairāk ir mīts nekā patiesība. Metāla jumtus var padarīt klusus iestrādājot skaņas slāpējošu kārtu. Ja jumts ir mansarda stāvā, siltinājums un vēdināšanas kanāls rada gaisa un siltinājuma barjeras, kas aiztur skaņu. Ja jumts ir bez siltinājuma, aukstie bēniņi un siltinātā bēniņu grīda nodrošina pietiekamu attālumu. Lielākā daļa cilvēku apliecina, ka skaņa ikdienā nav traucējoša, dažkārt pat apgalvo, ka lietus skaņa ir patīkama un nomierinoša."
+        "question": "Are metal roofs noisy?",
+        "answer": "Metal roofs are louder compared to other roofing materials, but this is more myth than reality. Metal roofs can be made quiet by incorporating sound-dampening layers during construction. If the roof is on an attic floor, insulation and ventilation create air and insulation barriers that block sound. If the roof has no insulation, the cold attic and insulated attic floor provide sufficient distance. Most people living under metal roofs confirm that sound is not bothersome in daily life, and sometimes even find the rain sound pleasant and calming."
       }
     }
   },
   "reviews": {
-    "title": "Ko Saka Mūsu Klienti",
-    "subtitle": "Īstas atsauksmes no apmierinātiem klientiem",
+    "title": "What Our Clients Say",
+    "subtitle": "Real feedback from satisfied customers",
     "review1": {
       "name": "Diana Vilistere",
-      "text": "Metāla jumta nomaiņas darbi manā īpašumā tika veikti augstā profesionālā līmenī, ar augstu kvalitāti un noteiktajos termiņos. Līgumslēdzējs nodrošināja sistemātisku ikdienas darbu uzraudzību, regulāri sniedzot pārskatus par paveikto. Varu ieteikt UpRoof kā uzticamu līgumslēdzēju un uzticamu partneri."
+      "text": "The metal roofing replacement work on my property was performed at a high professional level, with high quality and within the specified deadlines. The contractor provided systematic monitoring of the daily work, regularly providing reports on the work done. I can recommend UpRoof as a reliable contractor and a reliable partner."
     },
     "review2": {
       "name": "Alens Jucēvičs",
-      "text": "Es noteikti iesaku šo uzņēmumu jumta un fasādes uzstādīšanai. Viņi īsā laikā, sarežģītos laika apstākļos izveidoja jauku putnu būrīti no vecās stikla siltumnīcas. Ir ļoti svarīgi, ka komandai vadību uztic nopietns profesionālis Kārlis. Projekta vadītājs un arī līgumslēdzējs Pēteris kopā ar visiem darbiniekiem visu izdarīja precīzi un laikā. Komanda ir zinošs un patīkams sadarbības partneris. Noteikti iesaku."
+      "text": "I definitely recommend this company for roof and facade installation. They created a nice birdhouse from an old glass greenhouse in a short time, in difficult weather conditions. It is very important that the team is led by a serious professional, Kārlis. The project manager and also the contractor, Pēteris, together with all the employees, did everything accurately and on time. The team is knowledgeable and pleasant to deal with. I definitely recommend it."
     },
     "review3": {
       "name": "Julja Semena",
-      "text": "Sadarbība bija profesionāla un labi organizēta. Ļoti laba pieredze. Pakalpojums tika sniegts kvalitatīvi un laikā. Noteikti iesaku."
+      "text": "The cooperation was professional and well organized. Very good experience. The service was provided with quality and on time. I definitely recommend it."
     },
     "review4": {
       "name": "Lana Zerdecka",
-      "text": "Liels paldies par paveikto darbu! Ātra konsultācija un operatīvs risinājums. Esam ļoti apmierināti ar sniegto pakalpojumu. Noteikti ieteicam!"
+      "text": "Thank you very much for the work done! Quick consultation and prompt solution. We are very satisfied with the service provided. We definitely recommend!"
     },
     "review5": {
       "name": "Dita Majore",
-      "text": "Ļoti labs serviss! Vajadzēja noņemt skursteni, aizblīvēt skursteņa caurumu jumtā un sienā, kā arī noņemt stiprinājumus, kur skurstens bija piestiprināts pie ārsienas, un aizblīvēt caurumus arī tur. Viņi arī pārbaudīja jumtu un aizblīvēja plaisas, kur ūdens tecēja cauri. Pēc tam viņi izņēma visus materiālus un atstāja pilnīgi tīru, skaistu vietu. Fantastiska attieksme pret mums kā klientu, ļoti patīkama sadarbība. Noteikti griezīsimies pie viņiem atkal, kad būs vajadzība!"
+      "text": "Very good service! We needed to remove the chimney, seal the chimney hole in the roof and wall, as well as remove the fasteners where the chimney was attached to the outer wall, and seal the holes there as well. They also inspected the roof and sealed the cracks where water was leaking through. All the materials were then removed and left a completely clean, beautiful place. Fantastic attitude towards us as a customer, very pleasant cooperation. We will definitely turn to them again when the need arises!"
     },
     "review6": {
       "name": "XBRAND STUDIO",
-      "text": "Es ļoti iesaku šo komandu! Darbs tika veikts perfekti – jumts tika nokrāsots kvalitatīvi, rūpīgi un ātri. Komanda bija profesionāla, atsaucīga un rūpējās par visu līdz mazākajām detaļām. Rezultāts izskatās lieliski, un esmu vairāk nekā apmierināts ar paveikto darbu. Paldies par lielisku darbu!"
+      "text": "I highly recommend this team! The work was done perfectly – the roof was painted qualitatively, carefully and quickly. The team was professional, responsive and took care of everything down to the smallest detail. The result looks great, and I am more than satisfied with the work done. Thank you for the great work!"
     },
     "review7": {
       "name": "Ivo Taurins",
-      "text": "Puiši strādā profesionāli, kvalitatīvi. Uzklausa un realizē klienta vēlmes."
+      "text": "The guys work professionally and qualitatively. They listen to and realize the client's wishes."
     },
     "review8": {
       "name": "Alexey Konstantinov",
-      "text": "Esmu apmierināts ar darbu, UpRoof ir atbildīga firma, es iesaku UpRoof kompāniju ikvienam, kam nepieciešams kvalitatīvs jumts👍👍👍"
+      "text": "I was satisfied with the work, UpRoof is a responsible company, I recommend UpRoof to everyone who needs a quality roof👍👍👍"
     },
     "review9": {
       "name": "Rihards Liepa",
-      "text": "Izcila kvalitāte, izcils serviss"
+      "text": "Excellent quality, excellent service"
     }
   },
   "materials": {
-    "title": "Jumta materiāli",
-    "description": "Augstas kvalitātes jumta materiāli visiem jumta veidiem. Profesionāla konsultācija un uzstādīšana ar 10 gadu garantiju."
+    "title": "Roofing Materials",
+    "description": "High-quality roofing materials for all roof types. Professional consultation and installation with 10-year warranty."
   },
   "contact": {
-    "title": "SAZINIES AR MUMS",
-    "sectionTitle": "Kā varam palīdzēt?",
-    "intro": "Ir kāds projekts prātā? Mēs labprāt par to uzzinātu.",
+    "title": "GET IN TOUCH",
+    "sectionTitle": "How can we help?",
     "form": {
-      "name": "Vārds",
-      "namePlaceholder": "Jūsu vārds",
-      "phone": "Tel.nr",
-      "email": "E-pasts",
-      "message": "Kā varam palīdzēt?",
-      "messagePlaceholder": "Pastāstiet mums par savu projektu...",
-      "submit": "PIETEIKTIES",
-      "sending": "SŪTA...",
-      "required": "(obligāts)",
-      "nameError": "Vārds ir obligāts",
-      "phoneError": "Tālruņa numurs ir obligāts",
-      "messageError": "Ziņojums ir obligāts"
+      "name": "Name",
+      "namePlaceholder": "Your name",
+      "phone": "Phone",
+      "email": "Email",
+      "message": "How can we help?",
+      "messagePlaceholder": "Tell us about your project...",
+      "submit": "SEND MESSAGE",
+      "sending": "SENDING...",
+      "required": "(required)",
+      "nameError": "Name is required",
+      "phoneError": "Phone number is required",
+      "messageError": "Message is required"
     },
-    "formTitle": "Sūtiet mums ziņojumu",
-    "successMessage": "Paldies! Mēs sazināsimies ar jums 2 stundu laikā.",
-    "consultation": "Konsultācija ar mūsu jumtu speciālistu ir bez maksas!",
-    "cta": "Sazināties",
+    "formTitle": "Send us a message",
+    "successMessage": "Thank you! We will contact you within 2 hours.",
+    "consultation": "Consultation with our roofing specialist is free!",
+    "cta": "Contact us so we can help you!",
     "company": "SIA UpLift"
   },
   "cookies": {
-    "title": "Mēs Vērtējam Jūsu Privātumu",
-    "description": "Mēs izmantojam sīkdatnes, lai uzlabotu jūsu pārlūkošanas pieredzi, analizētu vietnes apmeklējumu un personalizētu saturu. Jūs varat izvēlēties, kuras sīkdatnes pieņemt.",
+    "title": "We Value Your Privacy",
+    "description": "We use cookies to improve your browsing experience, analyze site traffic, and personalize content. You can choose which cookies to accept.",
     "necessary": {
-      "title": "Nepieciešamās Sīkdatnes",
-      "required": "Vienmēr Aktīvas"
+      "title": "Necessary Cookies",
+      "required": "Always Active"
     },
     "analytics": {
-      "title": "Analītikas Sīkdatnes"
+      "title": "Analytics Cookies"
     },
-    "acceptAll": "Pieņemt Visas",
-    "rejectAll": "Tikai Nepieciešamās",
-    "savePreferences": "Saglabāt Preferences",
-    "learnMore": "Uzziniet vairāk mūsu",
-    "privacyPolicy": "Privātuma Politikā"
+    "acceptAll": "Accept All",
+    "rejectAll": "Necessary Only",
+    "savePreferences": "Save Preferences",
+    "learnMore": "Learn more in our",
+    "privacyPolicy": "Privacy Policy"
   },
   "privacy": {
-    "title": "Privātuma Politika",
-    "lastUpdated": "Pēdējo reizi atjaunināts",
+    "title": "Privacy Policy",
+    "lastUpdated": "Last Updated",
     "intro": {
-      "title": "Ievads",
-      "content": "UpRoof (SIA UpLift) respektē jūsu privātumu un ir apņēmusies aizsargāt jūsu personas datus. Šī privātuma politika izskaidro, kā mēs vācam, izmantojam un aizsargājam jūsu informāciju, kad jūs apmeklējat mūsu vietni vai izmantojat mūsu pakalpojumus."
+      "title": "Introduction",
+      "content": "At UpRoof (SIA UpLift), we respect your privacy and are committed to protecting your personal data. This privacy policy explains how we collect, use, and protect your information when you visit our website or use our services."
     },
     "dataCollected": {
-      "title": "Informācija, ko mēs vācam",
-      "intro": "Mēs vācam šādus informācijas veidus:",
+      "title": "Information We Collect",
+      "intro": "We collect the following types of information:",
       "items": {
-        "contact": "Kontaktinformāciju (vārds, e-pasts, tālruņa numurs), kad jūs iesniedzat pieprasījumus",
-        "technical": "Tehniskos datus (IP adrese, pārlūkprogrammas tips, ierīces informācija)",
-        "usage": "Lietošanas datus (apmeklētās lapas, pavadītais laiks, atsauces lapas)"
+        "contact": "Contact information (name, email, phone number) when you submit inquiries",
+        "technical": "Technical data (IP address, browser type, device information)",
+        "usage": "Usage data (pages visited, time spent, referring pages)"
       }
     },
     "cookies": {
-      "title": "Sīkdatnes un izsekošana",
-      "intro": "Mēs izmantojam sīkdatnes, lai uzlabotu jūsu pieredzi mūsu vietnē:",
+      "title": "Cookies and Tracking",
+      "intro": "We use cookies to improve your experience on our website:",
       "necessary": {
-        "title": "Nepieciešamās Sīkdatnes",
-        "description": "Nepieciešamas, lai vietne darbotos pareizi. Tās ietver sesijas pārvaldību un drošības funkcijas."
+        "title": "Necessary Cookies",
+        "description": "Essential for the website to function properly. These include session management and security features."
       },
       "analytics": {
-        "title": "Analītikas Sīkdatnes",
-        "description": "Palīdz mums saprast, kā apmeklētāji izmanto mūsu vietni, izmantojot Vercel Analytics. Tas ietver lapu skatījumus, navigācijas modeļus un veiktspējas rādītājus. Netiek vākta personiski identificējama informācija."
+        "title": "Analytics Cookies",
+        "description": "Help us understand how visitors use our website through Vercel Analytics. This includes page views, navigation patterns, and performance metrics. No personally identifiable information is collected."
       }
     },
     "rights": {
-      "title": "Jūsu tiesības (GDPR)",
-      "intro": "Saskaņā ar GDPR jums ir šādas tiesības:",
+      "title": "Your Rights (GDPR)",
+      "intro": "Under GDPR, you have the following rights:",
       "items": {
-        "access": "Tiesības piekļūt saviem personas datiem",
-        "rectification": "Tiesības labot neprecīzus datus",
-        "erasure": "Tiesības pieprasīt savu datu dzēšanu",
-        "restriction": "Tiesības ierobežot savu datu apstrādi",
-        "portability": "Tiesības uz datu pārnesamību",
-        "objection": "Tiesības iebilst pret apstrādi"
+        "access": "Right to access your personal data",
+        "rectification": "Right to correct inaccurate data",
+        "erasure": "Right to request deletion of your data",
+        "restriction": "Right to restrict processing of your data",
+        "portability": "Right to data portability",
+        "objection": "Right to object to processing"
       }
     },
     "contact": {
-      "title": "Sazinieties ar mums",
-      "content": "Ja jums ir kādi jautājumi par šo privātuma politiku vai vēlaties izmantot savas tiesības, lūdzu, sazinieties ar mums:"
+      "title": "Contact Us",
+      "intro": "Have a project in mind? We'd love to hear from you.",
+      "content": "If you have any questions about this privacy policy or wish to exercise your rights, please contact us:"
     }
   },
   "footer": {
     "company": "SIA UpLift",
-    "rights": "Visas tiesības aizsargātas",
-    "quickLinks": "Noderīgas saites",
-    "contactTitle": "Kontakti",
-    "followUs": "Sekojiet mums",
-    "home": "Sākums",
-    "servicesLink": "Pakalpojumi",
-    "blogLink": "Blogs",
-    "projectsLink": "Projekti",
-    "reviewsLink": "Atsauksmes",
-    "careers": "Darbs",
-    "contactLink": "Kontakti",
-    "stormDamage": "Vētras bojājumi",
-    "roofLeak": "Tek jumts?"
+    "rights": "All rights reserved",
+    "quickLinks": "Quick Links",
+    "contactTitle": "Contact",
+    "followUs": "Follow Us",
+    "home": "Home",
+    "servicesLink": "Services",
+    "blogLink": "Blog",
+    "projectsLink": "Projects",
+    "reviewsLink": "Reviews",
+    "careers": "Careers",
+    "contactLink": "Contact",
+    "stormDamage": "Storm Damage",
+    "roofLeak": "Roof Leak?"
   }
   ,
   "Cities": {
-    "title": "Pilsētas, kurās strādājam",
-    "description": "Atrodi jumtu pakalpojumus savā pilsētā.",
-    "subtitle": "Izvēlies pilsētu, lai apskatītu pakalpojumus un projektus.",
+    "title": "Cities we serve",
+    "description": "Find roofing services in your city.",
+    "subtitle": "Choose your city to see local services and projects.",
     "CityNames": {
-      "riga": "Rīga",
-      "jurmala": "Jūrmala",
+      "riga": "Riga",
+      "jurmala": "Jurmala",
       "jelgava": "Jelgava",
       "ogre": "Ogre",
       "salaspils": "Salaspils",
-      "kekava": "Ķekava",
-      "brussel": "Brisele",
-      "antwerpen": "Antverpene",
-      "gent": "Genta",
-      "brugge": "Brige",
-      "leuven": "Leuvena",
-      "mechelen": "Mekele"
+      "kekava": "Kekava",
+      "brussel": "Brussels",
+      "antwerpen": "Antwerp",
+      "gent": "Ghent",
+      "brugge": "Bruges",
+      "leuven": "Leuven",
+      "mechelen": "Mechelen"
     }
   }
 }
