@@ -496,17 +496,17 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
               <p className="mt-1 text-sm text-slate-600">{isLv ? 'Fiksēti lauki ar izvēlnēm un skaitliskiem ievadlaukiem.' : 'Fixed fields with select and numeric inputs.'}</p>
             </div>
 
-            <div className="space-y-6">
+            <div className="overflow-hidden rounded-2xl border border-slate-200/70 bg-slate-50/40">
               {estimatorSections.map((section) => (
-                <div key={section} className="rounded-2xl border border-sky-100 bg-sky-50/40 p-4">
-                  <div className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-sky-500">{section}</div>
-                  <div className="grid gap-4 sm:grid-cols-2">
+                <div key={section} className="border-b border-slate-200/70 last:border-b-0">
+                  <div className="px-4 pt-4 text-xs font-semibold uppercase tracking-[0.22em] text-sky-500">{section}</div>
+                  <div className="grid gap-4 px-4 py-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                     {CRM_ESTIMATOR_FIELD_DEFINITIONS.filter((definition) => definition.section === section && !HIDDEN_ESTIMATOR_KEYS.has(definition.key)).map((definition) => {
                       const value = estimatorData[definition.key];
                       const inputId = `estimator-${String(definition.key)}`;
 
                       return (
-                        <label key={definition.key} htmlFor={inputId} className="flex min-w-0 flex-col gap-2 text-sm font-medium text-slate-700 sm:col-span-1">
+                        <label key={definition.key} htmlFor={inputId} className="flex min-w-0 flex-col gap-2 text-sm font-medium text-slate-700">
                           <span>{definition.label}</span>
                           {definition.helper ? <span className="text-xs font-normal text-slate-500">{definition.helper}</span> : null}
                           {definition.type === 'select' ? (
@@ -542,7 +542,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
                   </div>
 
                   {section === 'Water management' ? (
-                    <div className="mt-4">
+                    <div className="border-t border-slate-200/70 px-4 py-4">
                       <label className="flex min-w-0 flex-col gap-2 text-sm font-medium text-slate-700">
                         {isLv ? 'Papildu komentāri (ūdens apsaimniekošana)' : 'Additional comments (water management)'}
                         <textarea
@@ -558,7 +558,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
                   ) : null}
 
                   {section === 'Insulation' ? (
-                    <div className="mt-4">
+                    <div className="border-t border-slate-200/70 px-4 py-4">
                       <label className="flex min-w-0 flex-col gap-2 text-sm font-medium text-slate-700">
                         {isLv ? 'Papildu komentāri (siltināšana)' : 'Additional comments (insulation)'}
                         <textarea
@@ -574,7 +574,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
                   ) : null}
 
                   {section === 'Structure' ? (
-                    <div className="mt-4 space-y-4">
+                    <div className="border-t border-slate-200/70 px-4 py-4 space-y-4">
                       <label className="flex min-w-0 flex-col gap-2 text-sm font-medium text-slate-700">
                         {isLv ? 'Papildu komentāri (koka fasāde / konstrukcija)' : 'Additional comments (wood facade / structure)'}
                         <textarea
@@ -587,7 +587,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
                         />
                       </label>
 
-                      <div className="rounded-xl border border-sky-200 bg-white p-3">
+                      <div className="rounded-none border-0 bg-transparent">
                         <div className="mb-3 flex items-center justify-between gap-3">
                           <div className="text-sm font-semibold text-slate-800">{isLv ? 'Skursteņu darbi' : 'Chimney work items'}</div>
                           <button
@@ -601,13 +601,13 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
 
                         <div className="space-y-3">
                           {(estimatorData.chimneyEntries || []).map((entry, index) => (
-                            <div key={`chimney-entry-${index}`} className="grid gap-2 rounded-lg border border-sky-100 p-3 sm:grid-cols-[1.2fr_0.45fr_1fr_auto]">
+                            <div key={`chimney-entry-${index}`} className="grid gap-3 rounded-xl border border-slate-200/70 bg-white p-3 md:grid-cols-[minmax(0,1.3fr)_minmax(0,0.45fr)_minmax(0,1fr)_auto] md:items-end">
                               <label className="flex flex-col gap-1 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
                                 {isLv ? 'Darba veids' : 'Work type'}
                                 <select
                                   value={entry.workType}
                                   onChange={(event) => updateChimneyEntries((entries) => entries.map((item, itemIndex) => itemIndex === index ? {...item, workType: event.target.value} : item))}
-                                  className="h-10 rounded-lg border border-sky-200 bg-white px-3 text-sm font-medium tracking-normal text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                                  className="h-10 w-full min-w-0 rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium tracking-normal text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
                                 >
                                   <option value="">{isLv ? 'Izvēlies' : 'Select'}</option>
                                   {CHIMNEY_WORK_TYPE_OPTIONS.map((option) => (
@@ -625,7 +625,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
                                   min="0"
                                   value={entry.quantity === null ? '' : String(entry.quantity)}
                                   onChange={(event) => updateChimneyEntries((entries) => entries.map((item, itemIndex) => itemIndex === index ? {...item, quantity: event.target.value ? Number(event.target.value) : null} : item))}
-                                  className="h-10 rounded-lg border border-sky-200 bg-white px-3 text-sm text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                                  className="h-10 w-full min-w-0 rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
                                 />
                               </label>
 
@@ -636,12 +636,12 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
                                   onChange={(event) => updateChimneyEntries((entries) => entries.map((item, itemIndex) => itemIndex === index ? {...item, notes: event.target.value} : item))}
                                   onInput={autoExpandTextarea}
                                   rows={1}
-                                  className="min-h-[40px] rounded-lg border border-sky-200 bg-white px-3 py-2 text-sm normal-case tracking-normal text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                                  className="min-h-[40px] w-full min-w-0 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm normal-case tracking-normal text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
                                   placeholder={isLv ? 'Papildu informācija' : 'Additional details'}
                                 />
                               </label>
 
-                              <div className="flex items-end">
+                              <div className="flex items-end md:justify-end">
                                 <button
                                   type="button"
                                   onClick={() => updateChimneyEntries((entries) => entries.filter((_, itemIndex) => itemIndex !== index))}
@@ -654,7 +654,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
                           ))}
 
                           {(!estimatorData.chimneyEntries || estimatorData.chimneyEntries.length === 0) ? (
-                            <div className="rounded-lg border border-dashed border-sky-200 px-3 py-2 text-xs text-slate-500">
+                            <div className="rounded-lg border border-dashed border-slate-300 bg-white px-3 py-2 text-xs text-slate-500">
                               {isLv ? 'Pievieno skursteņu darbus, ja nepieciešams.' : 'Add chimney work items when needed.'}
                             </div>
                           ) : null}
