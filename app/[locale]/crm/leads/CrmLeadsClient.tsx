@@ -40,6 +40,8 @@ const statusRank = new Map<string, number>([
   ['CANCELLED', 10],
 ]);
 
+const LEAD_GRID_COLUMNS = 'grid-cols-[minmax(0,1.35fr)_minmax(0,0.85fr)_minmax(0,0.85fr)_minmax(0,0.85fr)_minmax(0,0.85fr)]';
+
 function parseMoney(value: string) {
   const numeric = Number.parseFloat(value.replace(/[^\d,.-]/g, '').replace(',', '.'));
   return Number.isFinite(numeric) ? numeric : 0;
@@ -225,9 +227,15 @@ export default function CrmLeadsClient({locale, leads, isSalesView}: Props) {
               className="w-full bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400"
             />
           </label>
+        </div>
+      </div>
 
-          <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-sky-100 bg-white p-2 shadow-sm">
-            <span className="px-2 text-xs font-semibold uppercase tracking-[0.18em] text-sky-500">{isLv ? 'Kārtot' : 'Sort'}</span>
+      <div className="mb-4 rounded-2xl border border-sky-100 bg-white p-3 shadow-sm">
+        <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-sky-500">
+            <span>{isLv ? 'Kārtot' : 'Sort'}</span>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
             {[
               {field: 'createdAt' as const, label: isLv ? 'Datums' : 'Date Created'},
               {field: 'value' as const, label: isLv ? 'Vērtība' : 'Project Value'},
@@ -275,8 +283,8 @@ export default function CrmLeadsClient({locale, leads, isSalesView}: Props) {
 
       <div className="space-y-4">
         <Card variant="outlined" hover={false} className="hidden border-sky-100 bg-sky-50/70 lg:block">
-          <div className="grid grid-cols-[1.2fr_0.8fr_0.8fr_0.8fr_0.8fr] gap-3 text-xs font-semibold uppercase tracking-[0.16em] text-sky-600">
-            <span>{isLv ? 'Līds' : 'Lead'}</span>
+          <div className={`grid ${LEAD_GRID_COLUMNS} items-center gap-3 text-center text-xs font-semibold uppercase tracking-[0.16em] text-sky-600`}>
+            <span className="text-left">{isLv ? 'Līds' : 'Lead'}</span>
             <span>{isLv ? 'Statuss' : 'Status'}</span>
             <span>{isLv ? 'Progress' : 'Progress'}</span>
             <span>{isLv ? 'Aktivitāte' : 'Activity'}</span>
@@ -288,8 +296,8 @@ export default function CrmLeadsClient({locale, leads, isSalesView}: Props) {
           {filteredLeads.map((lead) => (
             <Link key={lead.id} href={`/${locale}/crm/leads/${lead.id}`} className="block">
               <Card variant="outlined" hover className="border-sky-100 bg-white">
-                <div className="grid gap-3 lg:grid-cols-[1.2fr_0.8fr_0.8fr_0.8fr_0.8fr] lg:items-center">
-                  <div>
+                <div className={`grid ${LEAD_GRID_COLUMNS} items-center gap-3 text-center lg:min-h-[92px]`}>
+                  <div className="min-w-0 text-left">
                     <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-500">{lead.id}</div>
                     <h3 className="mt-1 text-lg font-bold text-slate-900">{lead.customer}</h3>
                     <p className="text-sm text-slate-600">{lead.company}</p>
@@ -297,17 +305,17 @@ export default function CrmLeadsClient({locale, leads, isSalesView}: Props) {
                     <p className="mt-1 text-xs text-slate-500">{isSalesView ? maskPhone(lead.phone) : lead.phone} · {isSalesView ? maskEmail(lead.email) : lead.email}</p>
                   </div>
 
-                  <div>
-                    <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-sky-600">
+                  <div className="min-w-0">
+                    <div className="flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-sky-600">
                       {lead.status === 'NEW' ? <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" aria-label={isLv ? 'Jauns līds' : 'New lead'} /> : null}
                       <span>{lead.status.replaceAll('_', ' ')}</span>
                     </div>
                     <div className="mt-1 text-xs text-slate-500">{lead.nextAction}</div>
                   </div>
 
-                  <div className="text-sm text-slate-700">{lead.progress}</div>
-                  <div className="text-sm text-slate-700">{lead.activityUpdate}</div>
-                  <div className="text-sm text-slate-700">{lead.dealProgress}</div>
+                  <div className="min-w-0 text-sm text-slate-700">{lead.progress}</div>
+                  <div className="min-w-0 text-sm text-slate-700">{lead.activityUpdate}</div>
+                  <div className="min-w-0 text-sm text-slate-700">{lead.dealProgress}</div>
                 </div>
               </Card>
             </Link>
