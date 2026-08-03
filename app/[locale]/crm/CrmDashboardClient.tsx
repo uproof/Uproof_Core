@@ -134,27 +134,27 @@ export default function CrmDashboardClient({locale, leads, isSalesView}: Props) 
         </div>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-[14rem_minmax(0,1fr)] lg:items-start">
-        <div className="order-1 h-fit rounded-3xl border border-sky-100 bg-sky-50 p-4 shadow-sm lg:sticky lg:top-4">
-          <p className="text-sm uppercase tracking-[0.22em] text-sky-500">{isLv ? 'Pārskats' : 'Board summary'}</p>
-          <h3 className="mt-3 text-lg font-bold text-slate-900 leading-tight">{isLv ? 'Līdu plūsma' : 'Lead workflow'}</h3>
-          <div className="mt-4 space-y-3 text-sm text-slate-600">
-            <div className="rounded-2xl border border-sky-100 bg-white p-3 shadow-sm">
-              <div className="text-xl font-bold text-slate-900">{filteredLeads.filter((lead) => !['WON', 'LOST', 'COMPLETED', 'CANCELLED'].includes(lead.status)).length}</div>
-              <div className="mt-1">{isLv ? 'Atvērti līdi' : 'Open leads'}</div>
-            </div>
-            <div className="rounded-2xl border border-sky-100 bg-white p-3 shadow-sm">
-              <div className="text-xl font-bold text-slate-900">{filteredLeads.filter((lead) => lead.status === 'INSPECTION_SCHEDULED').length}</div>
-              <div className="mt-1">{isLv ? 'Plānotas apskates' : 'Scheduled inspections'}</div>
-            </div>
-            <div className="rounded-2xl border border-sky-100 bg-white p-3 shadow-sm">
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-500">{isLv ? 'Kopā' : 'Total'}</div>
-              <div className="mt-1 text-lg font-semibold text-slate-900">{leads.length}</div>
-              <div className="mt-1 text-xs text-slate-500">{isLv ? 'Visi līdi sarakstā' : 'All leads in the board'}</div>
-            </div>
+      <div className="mb-4 rounded-2xl border border-sky-100 bg-white p-3 shadow-sm">
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="rounded-xl bg-sky-50 px-3 py-2">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-500">{isLv ? 'Pārskats' : 'Overview'}</p>
+            <p className="text-sm font-semibold text-slate-900">{isLv ? 'Līdu plūsma' : 'Lead flow'}</p>
+          </div>
+          <div className="rounded-xl border border-sky-100 px-3 py-2">
+            <p className="text-xl font-bold text-slate-900">{filteredLeads.filter((lead) => !['WON', 'LOST', 'COMPLETED', 'CANCELLED'].includes(lead.status)).length}</p>
+            <p className="text-xs text-slate-600">{isLv ? 'Atvērti līdi' : 'Open leads'}</p>
+          </div>
+          <div className="rounded-xl border border-sky-100 px-3 py-2">
+            <p className="text-xl font-bold text-slate-900">{filteredLeads.filter((lead) => lead.status === 'INSPECTION_SCHEDULED').length}</p>
+            <p className="text-xs text-slate-600">{isLv ? 'Plānotas apskates' : 'Scheduled inspections'}</p>
+          </div>
+          <div className="ml-auto rounded-xl border border-sky-100 px-3 py-2 text-sm text-slate-600">
+            {isLv ? `Atrasti ${filteredLeads.length} līdi` : `Found ${filteredLeads.length} leads`}
           </div>
         </div>
+      </div>
 
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)] lg:items-start">
         <div className="order-2 h-fit overflow-hidden rounded-3xl border border-sky-100 bg-white shadow-sm lg:sticky lg:top-4">
           <div className="grid grid-cols-[1.15fr_0.7fr_0.65fr_0.7fr_0.8fr_0.75fr] gap-0 border-b border-sky-100 bg-sky-50 px-5 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-sky-500">
             <div>{isLv ? 'Līds' : 'Lead'}</div>

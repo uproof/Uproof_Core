@@ -67,90 +67,98 @@ export default function CrmQuotesClient({locale, quotes, canExportAllQuotes, can
 
   return (
     <Section pad="sm" className="px-0 !py-0">
-      <div className="mb-4">
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary-600">{isLv ? 'Tāmes' : 'Quotes'}</p>
-            <p className="mt-1 text-sm text-slate-500">{isLv ? 'Meklē pēc identifikatora, klienta, statusa vai summas.' : 'Search by identifier, customer, status, amount, or owner.'}</p>
-          </div>
+      <div className="mb-4 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary-600">{isLv ? 'Tāmes' : 'Quotes'}</p>
+          <p className="mt-1 text-sm text-slate-500">{isLv ? 'Meklē pēc identifikatora, klienta, statusa vai summas.' : 'Search by identifier, customer, status, amount, or owner.'}</p>
+        </div>
 
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <label className="flex min-w-[18rem] flex-1 items-center gap-2 rounded-2xl border border-sky-100 bg-white px-4 py-3 shadow-sm">
-              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-primary-600">{isLv ? 'Meklēt' : 'Search'}</span>
-              <input
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder={isLv ? 'Q-2001, summa, klients...' : 'Q-2001, amount, customer...'}
-                className="w-full bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400"
-              />
-            </label>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <label className="flex min-w-[18rem] flex-1 items-center gap-2 rounded-2xl border border-sky-100 bg-white px-4 py-3 shadow-sm">
+            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-primary-600">{isLv ? 'Meklēt' : 'Search'}</span>
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder={isLv ? 'Q-2001, summa, klients...' : 'Q-2001, amount, customer...'}
+              className="w-full bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400"
+            />
+          </label>
 
-            <label className="flex items-center gap-2 rounded-2xl border border-sky-100 bg-white px-4 py-3 shadow-sm">
-              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-primary-600">{isLv ? 'Kārtot' : 'Sort'}</span>
-              <select value={sortKey} onChange={(event) => setSortKey(event.target.value as typeof sortKey)} className="bg-transparent text-sm text-slate-900 outline-none">
-                <option value="updated-desc">{isLv ? 'Jaunākie pirmie' : 'Newest first'}</option>
-                <option value="updated-asc">{isLv ? 'Vecākie pirmie' : 'Oldest first'}</option>
-                <option value="identifier-asc">{isLv ? 'ID A-Z' : 'ID A-Z'}</option>
-                <option value="identifier-desc">{isLv ? 'ID Z-A' : 'ID Z-A'}</option>
-                <option value="customer-asc">{isLv ? 'Klients A-Z' : 'Customer A-Z'}</option>
-                <option value="customer-desc">{isLv ? 'Klients Z-A' : 'Customer Z-A'}</option>
-                <option value="amount-desc">{isLv ? 'Summa no lielākās' : 'Amount high to low'}</option>
-                <option value="amount-asc">{isLv ? 'Summa no mazākās' : 'Amount low to high'}</option>
-                <option value="status-asc">{isLv ? 'Statuss A-Z' : 'Status A-Z'}</option>
-                <option value="status-desc">{isLv ? 'Statuss Z-A' : 'Status Z-A'}</option>
-              </select>
-            </label>
+          <label className="flex items-center gap-2 rounded-2xl border border-sky-100 bg-white px-4 py-3 shadow-sm">
+            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-primary-600">{isLv ? 'Kārtot' : 'Sort'}</span>
+            <select value={sortKey} onChange={(event) => setSortKey(event.target.value as typeof sortKey)} className="bg-transparent text-sm text-slate-900 outline-none">
+              <option value="updated-desc">{isLv ? 'Jaunākie pirmie' : 'Newest first'}</option>
+              <option value="updated-asc">{isLv ? 'Vecākie pirmie' : 'Oldest first'}</option>
+              <option value="identifier-asc">{isLv ? 'ID A-Z' : 'ID A-Z'}</option>
+              <option value="identifier-desc">{isLv ? 'ID Z-A' : 'ID Z-A'}</option>
+              <option value="customer-asc">{isLv ? 'Klients A-Z' : 'Customer A-Z'}</option>
+              <option value="customer-desc">{isLv ? 'Klients Z-A' : 'Customer Z-A'}</option>
+              <option value="amount-desc">{isLv ? 'Summa no lielākās' : 'Amount high to low'}</option>
+              <option value="amount-asc">{isLv ? 'Summa no mazākās' : 'Amount low to high'}</option>
+              <option value="status-asc">{isLv ? 'Statuss A-Z' : 'Status A-Z'}</option>
+              <option value="status-desc">{isLv ? 'Statuss Z-A' : 'Status Z-A'}</option>
+            </select>
+          </label>
 
-            <button
-              type="button"
-              onClick={() => {
-                if (canExportAllQuotes) {
-                  window.location.href = '/api/crm/export';
-                }
-              }}
-              disabled={!canExportAllQuotes}
-              className="rounded-xl border border-sky-200 bg-white px-4 py-2 text-xs font-semibold text-sky-700 transition enabled:hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {isLv ? 'Eksportēt visas tāmes (CSV)' : 'Export all quotes (CSV)'}
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => {
+              if (canExportAllQuotes) {
+                window.location.href = '/api/crm/export';
+              }
+            }}
+            disabled={!canExportAllQuotes}
+            className="rounded-xl border border-sky-200 bg-white px-4 py-2 text-xs font-semibold text-sky-700 transition enabled:hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isLv ? 'Eksportēt visas tāmes (CSV)' : 'Export all quotes (CSV)'}
+          </button>
         </div>
       </div>
-      <div className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
-        <div className="space-y-4">
+
+      <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
+        <div className="space-y-2">
+          <Card variant="outlined" hover={false} className="hidden border-sky-100 bg-sky-50/70 lg:block">
+            <div className="grid grid-cols-[1fr_0.8fr_0.7fr_0.8fr_1.1fr] gap-3 text-xs font-semibold uppercase tracking-[0.16em] text-sky-600">
+              <span>{isLv ? 'Tāme' : 'Quote'}</span>
+              <span>{isLv ? 'Statuss' : 'Status'}</span>
+              <span>{isLv ? 'Summa' : 'Amount'}</span>
+              <span>{isLv ? 'Datums' : 'Sent'}</span>
+              <span>{isLv ? 'Darbības' : 'Actions'}</span>
+            </div>
+          </Card>
+
           {filteredQuotes.map((quote) => (
-            <Card key={quote.id} variant="outlined" hover={false}>
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <Card key={quote.id} variant="outlined" hover={false} className="border-sky-100 bg-white">
+              <div className="grid gap-3 lg:grid-cols-[1fr_0.8fr_0.7fr_0.8fr_1.1fr] lg:items-center">
                 <div>
-                  <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary-600">{quote.id}</div>
-                  <h3 className="mt-2 text-xl font-bold text-gray-900">{quote.customer}</h3>
-                  <p className="mt-1 text-sm text-gray-600">{isLv ? 'Pievienoja' : 'Added by'} {quote.owner}</p>
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary-600">{quote.id}</div>
+                  <h3 className="mt-1 text-lg font-bold text-gray-900">{quote.customer}</h3>
+                  <p className="text-xs text-gray-500">{isLv ? 'Pievienoja' : 'Added by'} {quote.owner}</p>
+                </div>
+                <div className="text-sm font-semibold text-gray-900">{quote.status}</div>
+                <div className="text-sm text-gray-700"><SensitiveValue value={quote.amount} kind="amount" className="border-0 p-0 hover:bg-transparent" /></div>
+                <div className="text-sm text-gray-700">{quote.sentAt}</div>
+                <div>
+                  {canDownloadQuotePdf ? (
+                    <a
+                      href={`/api/crm/quotes/${encodeURIComponent(quote.id)}/pdf`}
+                      className="inline-flex items-center rounded-lg border border-sky-200 px-3 py-1.5 text-xs font-semibold text-sky-700 transition hover:bg-sky-50"
+                    >
+                      {isLv ? 'Lejupielādēt marķētu PDF' : 'Download stamped PDF'}
+                    </a>
+                  ) : (
+                    <span className="text-xs text-slate-400">{isLv ? 'Nav piekļuves PDF' : 'No PDF access'}</span>
+                  )}
+                </div>
+              </div>
+            </Card>
+          ))}
 
           {filteredQuotes.length === 0 ? (
             <Card variant="outlined" hover={false} className="border-dashed border-sky-200 bg-white text-slate-600">
               {isLv ? 'Nav tāmes, kas atbilst filtram.' : 'No quotes match the current search.'}
             </Card>
           ) : null}
-                </div>
-                <div className="rounded-2xl bg-gray-50 px-4 py-3 text-right">
-                  <div className="text-xs uppercase tracking-[0.2em] text-gray-500">{isLv ? 'Statuss' : 'Status'}</div>
-                  <div className="mt-1 text-sm font-semibold text-gray-900">{quote.status}</div>
-                </div>
-              </div>
-              <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-gray-600">
-                <span className="flex items-center gap-2">{isLv ? 'Summa' : 'Amount'}: <SensitiveValue value={quote.amount} kind="amount" className="border-0 p-0 hover:bg-transparent" /></span>
-                <span>{isLv ? 'Nosūtīts' : 'Sent'}: {quote.sentAt}</span>
-                {canDownloadQuotePdf ? (
-                  <a
-                    href={`/api/crm/quotes/${encodeURIComponent(quote.id)}/pdf`}
-                    className="ml-auto inline-flex items-center rounded-lg border border-sky-200 px-3 py-1.5 text-xs font-semibold text-sky-700 transition hover:bg-sky-50"
-                  >
-                    {isLv ? 'Lejupielādēt marķētu PDF' : 'Download stamped PDF'}
-                  </a>
-                ) : null}
-              </div>
-            </Card>
-          ))}
         </div>
 
         <Card variant="outlined" hover={false} className="border-sky-100 bg-sky-50">

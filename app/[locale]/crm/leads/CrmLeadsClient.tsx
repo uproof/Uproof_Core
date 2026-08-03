@@ -253,55 +253,61 @@ export default function CrmLeadsClient({locale, leads, isSalesView}: Props) {
         </div>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-[0.8fr_1.2fr]">
-        <Card variant="outlined" hover={false} className="border-sky-100 bg-sky-50">
-          <p className="text-sm uppercase tracking-[0.22em] text-sky-500">{isLv ? 'Pārskats' : 'Board summary'}</p>
-          <h3 className="mt-3 text-2xl font-bold text-slate-900">{isLv ? 'Līdu plūsma' : 'Lead workflow'}</h3>
-          <div className="mt-6 grid grid-cols-2 gap-3 text-sm text-slate-600">
-            <div className="rounded-2xl border border-sky-100 bg-white p-4 shadow-sm">
-              <div className="text-2xl font-bold text-slate-900">{filteredLeads.filter((lead) => !['WON', 'LOST', 'COMPLETED', 'CANCELLED'].includes(lead.status)).length}</div>
-              {isLv ? 'Atvērti līdi' : 'Open leads'}
-            </div>
-            <div className="rounded-2xl border border-sky-100 bg-white p-4 shadow-sm">
-              <div className="text-2xl font-bold text-slate-900">{filteredLeads.filter((lead) => lead.status === 'INSPECTION_SCHEDULED').length}</div>
-              {isLv ? 'Plānotas apskates' : 'Scheduled inspections'}
-            </div>
+      <Card variant="outlined" hover={false} className="mb-4 border-sky-100 bg-white">
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="rounded-xl bg-sky-50 px-3 py-2">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-500">{isLv ? 'Pārskats' : 'Overview'}</p>
+            <p className="text-sm font-semibold text-slate-900">{isLv ? 'Līdu plūsma' : 'Lead flow'}</p>
           </div>
-          <div className="mt-4 rounded-2xl border border-sky-100 bg-white px-4 py-3 text-sm text-slate-600 shadow-sm">
+          <div className="rounded-xl border border-sky-100 px-3 py-2">
+            <p className="text-xl font-bold text-slate-900">{filteredLeads.filter((lead) => !['WON', 'LOST', 'COMPLETED', 'CANCELLED'].includes(lead.status)).length}</p>
+            <p className="text-xs text-slate-600">{isLv ? 'Atvērti līdi' : 'Open leads'}</p>
+          </div>
+          <div className="rounded-xl border border-sky-100 px-3 py-2">
+            <p className="text-xl font-bold text-slate-900">{filteredLeads.filter((lead) => lead.status === 'INSPECTION_SCHEDULED').length}</p>
+            <p className="text-xs text-slate-600">{isLv ? 'Plānotas apskates' : 'Scheduled inspections'}</p>
+          </div>
+          <div className="ml-auto rounded-xl border border-sky-100 px-3 py-2 text-sm text-slate-600">
             {isLv ? `Atrasti ${filteredLeads.length} līdi` : `Found ${filteredLeads.length} leads`}
+          </div>
+        </div>
+      </Card>
+
+      <div className="space-y-4">
+        <Card variant="outlined" hover={false} className="hidden border-sky-100 bg-sky-50/70 lg:block">
+          <div className="grid grid-cols-[1.2fr_0.8fr_0.8fr_0.8fr_0.8fr] gap-3 text-xs font-semibold uppercase tracking-[0.16em] text-sky-600">
+            <span>{isLv ? 'Līds' : 'Lead'}</span>
+            <span>{isLv ? 'Statuss' : 'Status'}</span>
+            <span>{isLv ? 'Progress' : 'Progress'}</span>
+            <span>{isLv ? 'Aktivitāte' : 'Activity'}</span>
+            <span>{isLv ? 'Darījums' : 'Deal'}</span>
           </div>
         </Card>
 
-        <div className="space-y-4">
+        <div className="space-y-2">
           {filteredLeads.map((lead) => (
             <Link key={lead.id} href={`/${locale}/crm/leads/${lead.id}`} className="block">
               <Card variant="outlined" hover className="border-sky-100 bg-white">
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                <div className="grid gap-3 lg:grid-cols-[1.2fr_0.8fr_0.8fr_0.8fr_0.8fr] lg:items-center">
                   <div>
-                    <div className="text-xs font-semibold uppercase tracking-[0.2em] text-sky-500">{lead.id}</div>
-                    <h3 className="mt-2 text-xl font-bold text-slate-900">{lead.customer}</h3>
-                    <p className="mt-1 text-sm text-slate-600">{lead.company}</p>
-                    <div className="mt-3 text-sm text-slate-600">
-                      <div>{lead.address}</div>
-                      <div>{isSalesView ? maskPhone(lead.phone) : lead.phone}</div>
-                      <div>{isSalesView ? maskEmail(lead.email) : lead.email}</div>
-                    </div>
+                    <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-500">{lead.id}</div>
+                    <h3 className="mt-1 text-lg font-bold text-slate-900">{lead.customer}</h3>
+                    <p className="text-sm text-slate-600">{lead.company}</p>
+                    <p className="mt-1 text-xs text-slate-500">{lead.address}</p>
+                    <p className="mt-1 text-xs text-slate-500">{isSalesView ? maskPhone(lead.phone) : lead.phone} · {isSalesView ? maskEmail(lead.email) : lead.email}</p>
                   </div>
 
-                  <div className="rounded-2xl border border-sky-100 bg-sky-50 px-4 py-3 text-slate-900">
-                    <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-sky-500">
+                  <div>
+                    <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-sky-600">
                       {lead.status === 'NEW' ? <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" aria-label={isLv ? 'Jauns līds' : 'New lead'} /> : null}
                       <span>{lead.status.replaceAll('_', ' ')}</span>
                     </div>
-                    <div className="mt-1 text-sm font-semibold">{lead.nextAction}</div>
+                    <div className="mt-1 text-xs text-slate-500">{lead.nextAction}</div>
                   </div>
-                </div>
 
-                <div className="mt-5 grid gap-3 lg:grid-cols-4 text-sm text-slate-600">
-                  <span>{isLv ? 'Statuss' : 'Status'}: {lead.status.replaceAll('_', ' ')}</span>
-                  <span>{isLv ? 'Progress' : 'Progress'}: {lead.progress}</span>
-                  <span>{isLv ? 'Aktivitāte' : 'Activity'}: {lead.activityUpdate}</span>
-                  <span>{isLv ? 'Darījums' : 'Deal'}: {lead.dealProgress}</span>
+                  <div className="text-sm text-slate-700">{lead.progress}</div>
+                  <div className="text-sm text-slate-700">{lead.activityUpdate}</div>
+                  <div className="text-sm text-slate-700">{lead.dealProgress}</div>
                 </div>
               </Card>
             </Link>
