@@ -4,7 +4,7 @@ export type Locale = typeof locales[number];
 export const latviaCities = ['riga', 'jurmala', 'jelgava', 'ogre', 'salaspils', 'kekava'] as const;
 export const belgiumCities = ['brussel', 'antwerpen', 'gent', 'brugge', 'leuven', 'mechelen'] as const;
 
-export const allCities: string[] = [...latviaCities, ...belgiumCities];
+const allCities: string[] = [...latviaCities, ...belgiumCities];
 
 // Locale-specific city targeting to avoid mixed-country SEO signals.
 export const citiesByLocale: Record<Locale, string[]> = {

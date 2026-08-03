@@ -1,6 +1,6 @@
 import type {CareerJob} from '@/lib/career';
 
-export const CAREER_LOCALES = ['lv', 'en', 'nl-BE'] as const;
+const CAREER_LOCALES = ['lv', 'en', 'nl-BE'] as const;
 
 export function slugifyCareerTitle(value: string) {
   return value

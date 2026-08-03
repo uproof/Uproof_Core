@@ -1,4 +1,4 @@
-export const SERVICE_SLUGS = [
+const SERVICE_SLUGS = [
   'jumta-renovacija',
   'valcprofila-montaza',
   'dakstinu-montaza',

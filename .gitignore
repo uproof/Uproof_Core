@@ -20,3 +20,6 @@ create_blog_images.js
 
 /lib/generated/prisma
 supabase/.temp/
+
+graphify-out/
+.graphify/
