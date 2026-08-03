@@ -8,13 +8,61 @@ import Card from '@/components/Card';
 import Section from '@/components/Section';
 import SensitiveValue from '@/components/crm/SensitiveValue';
 import {CrmLead, CrmLeadWorkLogEntry} from '@/lib/crmMockData';
-import {CRM_ESTIMATOR_BOOLEAN_OPTIONS, CRM_ESTIMATOR_FIELD_DEFINITIONS, CRM_ESTIMATOR_FIELD_SECTIONS, createEmptyCrmEstimatorData, formatEstimatorValue} from '@/lib/crmEstimator';
+import {CRM_ESTIMATOR_BOOLEAN_OPTIONS, CRM_ESTIMATOR_FIELD_DEFINITIONS, CRM_ESTIMATOR_FIELD_SECTIONS, createEmptyCrmEstimatorData, formatEstimatorValue, CrmEstimatorFormData} from '@/lib/crmEstimator';
 import {maskText} from '@/lib/sensitiveMask';
 
 const statusOptions = ['NEW', 'CONTACTED', 'INSPECTION_SCHEDULED', 'INSPECTION_COMPLETED', 'ESTIMATING', 'QUOTE_SENT', 'WON', 'LOST', 'PROJECT_STARTED', 'COMPLETED', 'CANCELLED'];
 const progressOptions = ['new', 'reached', 'in progress', 'cancelled', 'won'];
 const activityOptions = ['First call', '2nd call', '3rd call', 'Message', 'Email'];
 const dealOptions = ['Negotiation', 'Signed', 'Lost', 'Won', 'Cancelled'];
+
+const HIDDEN_ESTIMATOR_KEYS = new Set<keyof CrmEstimatorFormData>([
+  'plannedExecutionTime',
+  'chimneyRenovation',
+  'chimneyRenovationCount',
+  'chimneySheetCladding',
+  'chimneySheetCladdingCount',
+  'chimneyCaps',
+  'chimneyCapsCount',
+]);
+
+const CHIMNEY_WORK_TYPE_OPTIONS = [
+  {value: 'renovation:Daļēji jāpārmūrē', labelLv: 'Skursteņa atjaunošana - daļēji jāpārmūrē', labelEn: 'Chimney renovation - partial rebuild'},
+  {value: 'renovation:Pilnībā jāpārmūrē', labelLv: 'Skursteņa atjaunošana - pilnībā jāpārmūrē', labelEn: 'Chimney renovation - full rebuild'},
+  {value: 'renovation:Jāatjauno apmetums', labelLv: 'Skursteņa atjaunošana - jāatjauno apmetums', labelEn: 'Chimney renovation - refresh render/plaster'},
+  {value: 'renovation:Jāpārkrāso', labelLv: 'Skursteņa atjaunošana - jāpārkrāso', labelEn: 'Chimney renovation - repaint'},
+  {value: 'sheet-cladding', labelLv: 'Skursteņa apdare ar skārdu', labelEn: 'Chimney sheet cladding'},
+  {value: 'caps', labelLv: 'Skursteņu jumtiņi / cepures', labelEn: 'Chimney caps'},
+  {value: 'custom', labelLv: 'Cits darbs', labelEn: 'Other work'},
+];
+
+function autoExpandTextarea(event: React.FormEvent<HTMLTextAreaElement>) {
+  const target = event.currentTarget;
+  target.style.height = 'auto';
+  target.style.height = `${target.scrollHeight}px`;
+}
+
+function syncLegacyChimneyFields(entries: CrmEstimatorFormData['chimneyEntries']) {
+  const renovationEntries = entries.filter((entry) => entry.workType.startsWith('renovation:'));
+  const sheetEntries = entries.filter((entry) => entry.workType === 'sheet-cladding');
+  const capEntries = entries.filter((entry) => entry.workType === 'caps');
+
+  const total = (items: CrmEstimatorFormData['chimneyEntries']) => {
+    const amount = items.reduce((sum, item) => sum + (item.quantity || 0), 0);
+    return amount > 0 ? amount : null;
+  };
+
+  return {
+    chimneyRenovation: renovationEntries.length > 0
+      ? (renovationEntries[0].workType.replace('renovation:', '') || 'jāskatās dzīvē')
+      : 'Nav nepieciešams',
+    chimneyRenovationCount: total(renovationEntries),
+    chimneySheetCladding: sheetEntries.length > 0,
+    chimneySheetCladdingCount: total(sheetEntries),
+    chimneyCaps: capEntries.length > 0,
+    chimneyCapsCount: total(capEntries),
+  };
+}
 
 type Props = {
   locale: string;
@@ -86,6 +134,17 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
 
   const updateEstimatorField = <K extends keyof typeof estimatorData>(key: K, value: (typeof estimatorData)[K]) => {
     setEstimatorData((current) => ({...current, [key]: value}));
+  };
+
+  const updateChimneyEntries = (updater: (entries: CrmEstimatorFormData['chimneyEntries']) => CrmEstimatorFormData['chimneyEntries']) => {
+    setEstimatorData((current) => {
+      const nextEntries = updater(current.chimneyEntries || []);
+      return {
+        ...current,
+        chimneyEntries: nextEntries,
+        ...syncLegacyChimneyFields(nextEntries),
+      };
+    });
   };
 
   useEffect(() => {
@@ -442,7 +501,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
                 <div key={section} className="rounded-2xl border border-sky-100 bg-sky-50/40 p-4">
                   <div className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-sky-500">{section}</div>
                   <div className="grid gap-4 sm:grid-cols-2">
-                    {CRM_ESTIMATOR_FIELD_DEFINITIONS.filter((definition) => definition.section === section).map((definition) => {
+                    {CRM_ESTIMATOR_FIELD_DEFINITIONS.filter((definition) => definition.section === section && !HIDDEN_ESTIMATOR_KEYS.has(definition.key)).map((definition) => {
                       const value = estimatorData[definition.key];
                       const inputId = `estimator-${String(definition.key)}`;
 
@@ -464,6 +523,16 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
                             <input id={inputId} type="number" min="0" value={value === null ? '' : String(value)} onChange={(event) => updateEstimatorField(definition.key, event.target.value ? Number(event.target.value) : null)} placeholder={definition.placeholder} className="h-12 w-full rounded-xl border border-sky-200 bg-white px-4 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100" />
                           ) : definition.type === 'derived' ? (
                             <input id={inputId} value={formatEstimatorValue(value)} readOnly className="h-12 w-full rounded-xl border border-sky-200 bg-white px-4 text-slate-900 outline-none" />
+                          ) : definition.type === 'textarea' ? (
+                            <textarea
+                              id={inputId}
+                              value={formatEstimatorValue(value)}
+                              onChange={(event) => updateEstimatorField(definition.key, event.target.value)}
+                              onInput={autoExpandTextarea}
+                              rows={3}
+                              placeholder={definition.placeholder}
+                              className="min-h-[48px] w-full resize-y rounded-xl border border-sky-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                            />
                           ) : (
                             <input id={inputId} value={formatEstimatorValue(value)} onChange={(event) => updateEstimatorField(definition.key, event.target.value)} placeholder={definition.placeholder} className="h-12 w-full rounded-xl border border-sky-200 bg-white px-4 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100" />
                           )}
@@ -471,9 +540,143 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
                       );
                     })}
                   </div>
+
+                  {section === 'Water management' ? (
+                    <div className="mt-4">
+                      <label className="flex min-w-0 flex-col gap-2 text-sm font-medium text-slate-700">
+                        {isLv ? 'Papildu komentāri (ūdens apsaimniekošana)' : 'Additional comments (water management)'}
+                        <textarea
+                          value={estimatorData.waterManagementComment}
+                          onChange={(event) => updateEstimatorField('waterManagementComment', event.target.value)}
+                          onInput={autoExpandTextarea}
+                          rows={3}
+                          placeholder={isLv ? 'Papildu piezīmes par notekām, zonām vai risinājumiem' : 'Additional notes about gutters, zones, or related details'}
+                          className="min-h-[48px] w-full resize-y rounded-xl border border-sky-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                        />
+                      </label>
+                    </div>
+                  ) : null}
+
+                  {section === 'Insulation' ? (
+                    <div className="mt-4">
+                      <label className="flex min-w-0 flex-col gap-2 text-sm font-medium text-slate-700">
+                        {isLv ? 'Papildu komentāri (siltināšana)' : 'Additional comments (insulation)'}
+                        <textarea
+                          value={estimatorData.insulationComment}
+                          onChange={(event) => updateEstimatorField('insulationComment', event.target.value)}
+                          onInput={autoExpandTextarea}
+                          rows={3}
+                          placeholder={isLv ? 'Papildu piezīmes par siltinājumu' : 'Additional notes about insulation'}
+                          className="min-h-[48px] w-full resize-y rounded-xl border border-sky-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                        />
+                      </label>
+                    </div>
+                  ) : null}
+
+                  {section === 'Structure' ? (
+                    <div className="mt-4 space-y-4">
+                      <label className="flex min-w-0 flex-col gap-2 text-sm font-medium text-slate-700">
+                        {isLv ? 'Papildu komentāri (koka fasāde / konstrukcija)' : 'Additional comments (wood facade / structure)'}
+                        <textarea
+                          value={estimatorData.woodFacadeComment}
+                          onChange={(event) => updateEstimatorField('woodFacadeComment', event.target.value)}
+                          onInput={autoExpandTextarea}
+                          rows={3}
+                          placeholder={isLv ? 'Papildu piezīmes par fasādes vai konstrukcijas darbiem' : 'Additional notes about facade or structure work'}
+                          className="min-h-[48px] w-full resize-y rounded-xl border border-sky-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                        />
+                      </label>
+
+                      <div className="rounded-xl border border-sky-200 bg-white p-3">
+                        <div className="mb-3 flex items-center justify-between gap-3">
+                          <div className="text-sm font-semibold text-slate-800">{isLv ? 'Skursteņu darbi' : 'Chimney work items'}</div>
+                          <button
+                            type="button"
+                            onClick={() => updateChimneyEntries((entries) => [...entries, {workType: '', quantity: null, notes: ''}])}
+                            className="inline-flex h-9 items-center justify-center rounded-lg border border-sky-200 bg-sky-50 px-3 text-xs font-semibold text-sky-700 transition hover:bg-sky-100"
+                          >
+                            {isLv ? 'Pievienot vēl' : 'Add more'}
+                          </button>
+                        </div>
+
+                        <div className="space-y-3">
+                          {(estimatorData.chimneyEntries || []).map((entry, index) => (
+                            <div key={`chimney-entry-${index}`} className="grid gap-2 rounded-lg border border-sky-100 p-3 sm:grid-cols-[1.2fr_0.45fr_1fr_auto]">
+                              <label className="flex flex-col gap-1 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                                {isLv ? 'Darba veids' : 'Work type'}
+                                <select
+                                  value={entry.workType}
+                                  onChange={(event) => updateChimneyEntries((entries) => entries.map((item, itemIndex) => itemIndex === index ? {...item, workType: event.target.value} : item))}
+                                  className="h-10 rounded-lg border border-sky-200 bg-white px-3 text-sm font-medium tracking-normal text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                                >
+                                  <option value="">{isLv ? 'Izvēlies' : 'Select'}</option>
+                                  {CHIMNEY_WORK_TYPE_OPTIONS.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                      {isLv ? option.labelLv : option.labelEn}
+                                    </option>
+                                  ))}
+                                </select>
+                              </label>
+
+                              <label className="flex flex-col gap-1 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                                {isLv ? 'Skaits' : 'Qty'}
+                                <input
+                                  type="number"
+                                  min="0"
+                                  value={entry.quantity === null ? '' : String(entry.quantity)}
+                                  onChange={(event) => updateChimneyEntries((entries) => entries.map((item, itemIndex) => itemIndex === index ? {...item, quantity: event.target.value ? Number(event.target.value) : null} : item))}
+                                  className="h-10 rounded-lg border border-sky-200 bg-white px-3 text-sm text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                                />
+                              </label>
+
+                              <label className="flex flex-col gap-1 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                                {isLv ? 'Piezīmes' : 'Notes'}
+                                <textarea
+                                  value={entry.notes}
+                                  onChange={(event) => updateChimneyEntries((entries) => entries.map((item, itemIndex) => itemIndex === index ? {...item, notes: event.target.value} : item))}
+                                  onInput={autoExpandTextarea}
+                                  rows={1}
+                                  className="min-h-[40px] rounded-lg border border-sky-200 bg-white px-3 py-2 text-sm normal-case tracking-normal text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                                  placeholder={isLv ? 'Papildu informācija' : 'Additional details'}
+                                />
+                              </label>
+
+                              <div className="flex items-end">
+                                <button
+                                  type="button"
+                                  onClick={() => updateChimneyEntries((entries) => entries.filter((_, itemIndex) => itemIndex !== index))}
+                                  className="inline-flex h-10 items-center justify-center rounded-lg border border-rose-200 bg-rose-50 px-3 text-xs font-semibold text-rose-700 transition hover:bg-rose-100"
+                                >
+                                  {isLv ? 'Noņemt' : 'Remove'}
+                                </button>
+                              </div>
+                            </div>
+                          ))}
+
+                          {(!estimatorData.chimneyEntries || estimatorData.chimneyEntries.length === 0) ? (
+                            <div className="rounded-lg border border-dashed border-sky-200 px-3 py-2 text-xs text-slate-500">
+                              {isLv ? 'Pievieno skursteņu darbus, ja nepieciešams.' : 'Add chimney work items when needed.'}
+                            </div>
+                          ) : null}
+                        </div>
+                      </div>
+                    </div>
+                  ) : null}
                 </div>
               ))}
             </div>
+          </Card>
+
+          <Card variant="outlined" hover={false} className="border-sky-100 bg-white">
+            <div className="mb-4 text-sm font-semibold text-sky-500">{isLv ? 'Plānotais / vēlamais izpildes laiks' : 'Planned / desired completion time'}</div>
+            <textarea
+              value={estimatorData.plannedExecutionTime}
+              onChange={(event) => updateEstimatorField('plannedExecutionTime', event.target.value)}
+              onInput={autoExpandTextarea}
+              rows={2}
+              className="min-h-[48px] w-full resize-y rounded-2xl border border-sky-200 bg-white px-4 py-3 text-sm leading-6 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+              placeholder={isLv ? 'Piemērs: Oktobris / līdz ziemas sākumam' : 'Example: October / before winter starts'}
+            />
           </Card>
 
           <Card variant="outlined" hover={false} className="border-sky-100 bg-white">

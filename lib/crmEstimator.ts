@@ -11,6 +11,12 @@ export type CrmEstimatorLegacyRow = {
   notes: string;
 };
 
+export type CrmChimneyEntry = {
+  workType: string;
+  quantity: number | null;
+  notes: string;
+};
+
 export type CrmEstimatorFormData = {
   roofProblem: string;
   existingRoofCovering: string;
@@ -33,16 +39,20 @@ export type CrmEstimatorFormData = {
   eaveBoxFrame: boolean | null;
   insulation: string;
   insulationThickness: string;
+  insulationComment: string;
   atticWalkwayConstruction: boolean | null;
   walkwayPointsFromTo: string;
   roofStructureCondition: string;
   woodFacadeFinish: boolean | null;
+  woodFacadeComment: string;
+  waterManagementComment: string;
   chimneyRenovation: string;
   chimneyRenovationCount: number | null;
   chimneySheetCladding: boolean | null;
   chimneySheetCladdingCount: number | null;
   chimneyCaps: boolean | null;
   chimneyCapsCount: number | null;
+  chimneyEntries: CrmChimneyEntry[];
   snowBarriers: string;
   snowBarrierZones: string;
   roofWalkways: boolean | null;
@@ -136,6 +146,7 @@ export const CRM_ESTIMATOR_FIELD_DEFINITIONS: CrmEstimatorFieldDefinition[] = [
   {section: 'Water management', key: 'gutterSystem', label: 'Noteksistēma', type: 'select', options: [
     {label: 'Visam jumtam', value: 'Visam jumtam'},
     {label: 'Daļai jumta- jānorāda kurai daļai', value: 'Daļai jumta- jānorāda kurai daļai'},
+    {label: 'Abi (visam un daļai)', value: 'Both'},
     {label: 'Nav nepieciešams', value: 'Nav nepieciešams'},
     {label: 'Iebūvēta noteksistēma visam jumtam', value: 'Iebūvēta noteksistēma visam jumtam'},
     {label: 'Grib saglabāt esošo', value: 'Grib saglabāt esošo'},
@@ -145,6 +156,7 @@ export const CRM_ESTIMATOR_FIELD_DEFINITIONS: CrmEstimatorFieldDefinition[] = [
   {section: 'Insulation', key: 'insulation', label: 'Siltināšana', type: 'select', options: [
     {label: 'Visa mansarda platība', value: 'Visa mansarda platība'},
     {label: 'Visa bēniņu platība beramvate', value: 'Visa bēniņu platība beramvate'},
+    {label: 'Abi (mansards un bēniņi)', value: 'Both'},
     {label: 'Nav nepieciešams', value: 'Nav nepieciešams'},
   ]},
   {section: 'Insulation', key: 'insulationThickness', label: 'Siltinājuma biezums, ja bēniņos nepieciešams', type: 'text', placeholder: '200 mm'},
@@ -223,16 +235,20 @@ export function createEmptyCrmEstimatorData(): CrmEstimatorFormData {
     eaveBoxFrame: null,
     insulation: '',
     insulationThickness: '',
+    insulationComment: '',
     atticWalkwayConstruction: null,
     walkwayPointsFromTo: '',
     roofStructureCondition: '',
     woodFacadeFinish: null,
+    woodFacadeComment: '',
+    waterManagementComment: '',
     chimneyRenovation: '',
     chimneyRenovationCount: null,
     chimneySheetCladding: null,
     chimneySheetCladdingCount: null,
     chimneyCaps: null,
     chimneyCapsCount: null,
+    chimneyEntries: [],
     snowBarriers: '',
     snowBarrierZones: '',
     roofWalkways: null,
@@ -296,6 +312,57 @@ function normalizeLegacyRows(value: unknown): CrmEstimatorLegacyRow[] {
     .filter((row): row is CrmEstimatorLegacyRow => Boolean(row && (row.label || row.measurement || row.notes)));
 }
 
+function normalizeChimneyEntries(
+  value: unknown,
+  legacy: Pick<CrmEstimatorFormData, 'chimneyRenovation' | 'chimneyRenovationCount' | 'chimneySheetCladding' | 'chimneySheetCladdingCount' | 'chimneyCaps' | 'chimneyCapsCount'>,
+): CrmChimneyEntry[] {
+  if (Array.isArray(value)) {
+    const normalized = value
+      .map((entry) => {
+        if (!entry || typeof entry !== 'object') return null;
+        const candidate = entry as Partial<CrmChimneyEntry>;
+        const workType = normalizeText(candidate.workType);
+        const quantity = normalizeNumber(candidate.quantity);
+        const notes = normalizeText(candidate.notes);
+        if (!workType && quantity === null && !notes) return null;
+        return {workType, quantity, notes};
+      })
+      .filter((entry): entry is CrmChimneyEntry => Boolean(entry));
+
+    if (normalized.length > 0) {
+      return normalized;
+    }
+  }
+
+  const fromLegacy: CrmChimneyEntry[] = [];
+
+  if (legacy.chimneyRenovation && legacy.chimneyRenovation !== 'Nav nepieciešams') {
+    fromLegacy.push({
+      workType: `renovation:${legacy.chimneyRenovation}`,
+      quantity: legacy.chimneyRenovationCount,
+      notes: '',
+    });
+  }
+
+  if (legacy.chimneySheetCladding) {
+    fromLegacy.push({
+      workType: 'sheet-cladding',
+      quantity: legacy.chimneySheetCladdingCount,
+      notes: '',
+    });
+  }
+
+  if (legacy.chimneyCaps) {
+    fromLegacy.push({
+      workType: 'caps',
+      quantity: legacy.chimneyCapsCount,
+      notes: '',
+    });
+  }
+
+  return fromLegacy;
+}
+
 export function formatEstimatorValue(value: unknown): string {
   if (typeof value === 'boolean') return value ? 'Jā' : 'Nē';
   if (typeof value === 'number') return Number.isFinite(value) ? String(value) : '';
@@ -316,6 +383,20 @@ export function normalizeCrmEstimatorData(value: unknown, fallback: CrmEstimator
 
   const candidate = value as Partial<Record<keyof CrmEstimatorFormData, unknown>>;
   const existingRoofArea = normalizeText(candidate.existingRoofArea);
+  const chimneyRenovation = normalizeText(candidate.chimneyRenovation);
+  const chimneyRenovationCount = normalizeNumber(candidate.chimneyRenovationCount);
+  const chimneySheetCladding = normalizeBoolean(candidate.chimneySheetCladding);
+  const chimneySheetCladdingCount = normalizeNumber(candidate.chimneySheetCladdingCount);
+  const chimneyCaps = normalizeBoolean(candidate.chimneyCaps);
+  const chimneyCapsCount = normalizeNumber(candidate.chimneyCapsCount);
+  const chimneyEntries = normalizeChimneyEntries(candidate.chimneyEntries, {
+    chimneyRenovation,
+    chimneyRenovationCount,
+    chimneySheetCladding,
+    chimneySheetCladdingCount,
+    chimneyCaps,
+    chimneyCapsCount,
+  });
 
   return {
     roofProblem: normalizeText(candidate.roofProblem),
@@ -337,18 +418,22 @@ export function normalizeCrmEstimatorData(value: unknown, fallback: CrmEstimator
     gutterSystem: normalizeText(candidate.gutterSystem),
     eaveBoxRenovation: normalizeBoolean(candidate.eaveBoxRenovation),
     eaveBoxFrame: normalizeBoolean(candidate.eaveBoxFrame),
+    waterManagementComment: normalizeText(candidate.waterManagementComment),
     insulation: normalizeText(candidate.insulation),
     insulationThickness: normalizeText(candidate.insulationThickness),
+    insulationComment: normalizeText(candidate.insulationComment),
     atticWalkwayConstruction: normalizeBoolean(candidate.atticWalkwayConstruction),
     walkwayPointsFromTo: normalizeText(candidate.walkwayPointsFromTo),
     roofStructureCondition: normalizeText(candidate.roofStructureCondition),
     woodFacadeFinish: normalizeBoolean(candidate.woodFacadeFinish),
-    chimneyRenovation: normalizeText(candidate.chimneyRenovation),
-    chimneyRenovationCount: normalizeNumber(candidate.chimneyRenovationCount),
-    chimneySheetCladding: normalizeBoolean(candidate.chimneySheetCladding),
-    chimneySheetCladdingCount: normalizeNumber(candidate.chimneySheetCladdingCount),
-    chimneyCaps: normalizeBoolean(candidate.chimneyCaps),
-    chimneyCapsCount: normalizeNumber(candidate.chimneyCapsCount),
+    woodFacadeComment: normalizeText(candidate.woodFacadeComment),
+    chimneyRenovation,
+    chimneyRenovationCount,
+    chimneySheetCladding,
+    chimneySheetCladdingCount,
+    chimneyCaps,
+    chimneyCapsCount,
+    chimneyEntries,
     snowBarriers: normalizeText(candidate.snowBarriers),
     snowBarrierZones: normalizeText(candidate.snowBarrierZones),
     roofWalkways: normalizeBoolean(candidate.roofWalkways),

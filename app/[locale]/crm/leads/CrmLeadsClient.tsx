@@ -7,6 +7,7 @@ import Card from '@/components/Card';
 import Section from '@/components/Section';
 import type {CrmLead} from '@/lib/crmMockData';
 import {maskEmail, maskPhone} from '@/lib/sensitiveMask';
+import {ArrowsUpDownIcon, ChevronDownIcon, ChevronUpIcon} from '@heroicons/react/24/outline';
 
 type Props = {
   locale: string;
@@ -14,7 +15,8 @@ type Props = {
   isSalesView: boolean;
 };
 
-type LeadSortKey = 'updated-desc' | 'updated-asc' | 'identifier-asc' | 'identifier-desc' | 'customer-asc' | 'customer-desc' | 'activity-asc' | 'activity-desc' | 'value-asc' | 'value-desc' | 'status-asc' | 'status-desc';
+type LeadSortField = 'createdAt' | 'value' | 'activity' | 'status';
+type LeadSortState = {field: LeadSortField; direction: 'asc' | 'desc'} | null;
 
 const activityRank: Record<string, number> = {
   'First call': 1,
@@ -24,9 +26,44 @@ const activityRank: Record<string, number> = {
   Email: 5,
 };
 
+const statusRank = new Map<string, number>([
+  ['NEW', 0],
+  ['CONTACTED', 1],
+  ['INSPECTION_SCHEDULED', 2],
+  ['INSPECTION_COMPLETED', 3],
+  ['ESTIMATING', 4],
+  ['QUOTE_SENT', 5],
+  ['WON', 6],
+  ['LOST', 7],
+  ['PROJECT_STARTED', 8],
+  ['COMPLETED', 9],
+  ['CANCELLED', 10],
+]);
+
 function parseMoney(value: string) {
   const numeric = Number.parseFloat(value.replace(/[^\d,.-]/g, '').replace(',', '.'));
   return Number.isFinite(numeric) ? numeric : 0;
+}
+
+function parseDateValue(value?: string) {
+  const timestamp = value ? Date.parse(value) : Number.NaN;
+  return Number.isFinite(timestamp) ? timestamp : 0;
+}
+
+function compareText(left: string, right: string) {
+  return left.localeCompare(right, undefined, {numeric: true, sensitivity: 'base'});
+}
+
+function compareNumber(left: number, right: number) {
+  return left - right;
+}
+
+function getCreatedAtValue(lead: CrmLead) {
+  return lead.updatedAtUtc || lead.updatedAt;
+}
+
+function getStatusOrderValue(status: string) {
+  return statusRank.get(status) ?? 999;
 }
 
 function getLeadSearchText(lead: CrmLead) {
@@ -51,17 +88,13 @@ function getLeadSearchText(lead: CrmLead) {
   ].join(' ');
 }
 
-function compareText(left: string, right: string) {
-  return left.localeCompare(right, undefined, {numeric: true, sensitivity: 'base'});
-}
-
 export default function CrmLeadsClient({locale, leads, isSalesView}: Props) {
   const isLv = locale === 'lv';
   const router = useRouter();
   const tabIdRef = useRef(typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`);
   const liveChannelRef = useRef<BroadcastChannel | null>(null);
   const [query, setQuery] = useState('');
-  const [sortKey, setSortKey] = useState<LeadSortKey>('updated-desc');
+  const [sortState, setSortState] = useState<LeadSortState>(null);
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -117,38 +150,60 @@ export default function CrmLeadsClient({locale, leads, isSalesView}: Props) {
         return getLeadSearchText(lead).toLowerCase().includes(normalizedQuery);
       })
       .sort((left, right) => {
-        switch (sortKey) {
-          case 'updated-asc':
-            return compareText(left.updatedAtUtc || left.updatedAt, right.updatedAtUtc || right.updatedAt);
-          case 'updated-desc':
-            return compareText(right.updatedAtUtc || right.updatedAt, left.updatedAtUtc || left.updatedAt);
-          case 'identifier-asc':
-            return compareText(left.id, right.id);
-          case 'identifier-desc':
-            return compareText(right.id, left.id);
-          case 'customer-asc':
-            return compareText(left.customer, right.customer);
-          case 'customer-desc':
-            return compareText(right.customer, left.customer);
-          case 'activity-asc':
-            return (activityRank[left.activityUpdate] || 999) - (activityRank[right.activityUpdate] || 999) || compareText(left.activityUpdate, right.activityUpdate);
-          case 'activity-desc':
-            return (activityRank[right.activityUpdate] || 999) - (activityRank[left.activityUpdate] || 999) || compareText(right.activityUpdate, left.activityUpdate);
-          case 'value-asc':
-            return parseMoney(left.value) - parseMoney(right.value) || compareText(left.value, right.value);
-          case 'value-desc':
-            return parseMoney(right.value) - parseMoney(left.value) || compareText(right.value, left.value);
-          case 'status-asc':
-            return compareText(left.status, right.status);
-          case 'status-desc':
-            return compareText(right.status, left.status);
+        const activeSort = sortState ?? {field: 'createdAt' as const, direction: 'desc' as const};
+
+        switch (activeSort.field) {
+          case 'createdAt': {
+            const leftValue = parseDateValue(getCreatedAtValue(left));
+            const rightValue = parseDateValue(getCreatedAtValue(right));
+            const result = compareNumber(leftValue, rightValue) || compareText(left.id, right.id);
+            return activeSort.direction === 'asc' ? result : -result;
+          }
+          case 'value': {
+            const result = compareNumber(parseMoney(left.value), parseMoney(right.value)) || compareText(left.id, right.id);
+            return activeSort.direction === 'asc' ? result : -result;
+          }
+          case 'activity': {
+            const result = compareNumber(activityRank[left.activityUpdate] || 999, activityRank[right.activityUpdate] || 999) || compareText(left.activityUpdate, right.activityUpdate) || compareText(left.id, right.id);
+            return activeSort.direction === 'asc' ? result : -result;
+          }
+          case 'status': {
+            const result = compareNumber(getStatusOrderValue(left.status), getStatusOrderValue(right.status)) || compareText(left.status, right.status) || compareText(left.id, right.id);
+            return activeSort.direction === 'asc' ? result : -result;
+          }
           default:
             return 0;
         }
       });
 
     return nextLeads;
-  }, [leads, query, sortKey]);
+  }, [leads, query, sortState]);
+
+  const cycleSort = (field: LeadSortField) => {
+    setSortState((current) => {
+      if (!current || current.field !== field) {
+        return {field, direction: 'asc'};
+      }
+
+      if (current.direction === 'asc') {
+        return {field, direction: 'desc'};
+      }
+
+      return null;
+    });
+  };
+
+  const getSortIcon = (field: LeadSortField) => {
+    if (!sortState || sortState.field !== field) {
+      return <ArrowsUpDownIcon className="h-4 w-4" aria-hidden="true" />;
+    }
+
+    return sortState.direction === 'asc'
+      ? <ChevronUpIcon className="h-4 w-4" aria-hidden="true" />
+      : <ChevronDownIcon className="h-4 w-4" aria-hidden="true" />;
+  };
+
+  const isSortActive = (field: LeadSortField) => !sortState ? field === 'createdAt' : sortState.field === field;
 
   return (
     <Section pad="sm" className="px-0 !py-0">
@@ -171,23 +226,30 @@ export default function CrmLeadsClient({locale, leads, isSalesView}: Props) {
             />
           </label>
 
-          <label className="flex items-center gap-2 rounded-2xl border border-sky-100 bg-white px-4 py-3 shadow-sm">
-            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-500">{isLv ? 'Kārtot' : 'Sort'}</span>
-            <select value={sortKey} onChange={(event) => setSortKey(event.target.value as LeadSortKey)} className="bg-transparent text-sm text-slate-900 outline-none">
-              <option value="updated-desc">{isLv ? 'Jaunākie pirmie' : 'Newest first'}</option>
-              <option value="updated-asc">{isLv ? 'Vecākie pirmie' : 'Oldest first'}</option>
-              <option value="identifier-asc">{isLv ? 'ID A-Z' : 'ID A-Z'}</option>
-              <option value="identifier-desc">{isLv ? 'ID Z-A' : 'ID Z-A'}</option>
-              <option value="customer-asc">{isLv ? 'Klients A-Z' : 'Customer A-Z'}</option>
-              <option value="customer-desc">{isLv ? 'Klients Z-A' : 'Customer Z-A'}</option>
-              <option value="activity-asc">{isLv ? 'Aktivitāte' : 'Activity'}</option>
-              <option value="activity-desc">{isLv ? 'Aktivitāte pretējā secībā' : 'Activity reverse'}</option>
-              <option value="value-desc">{isLv ? 'Vērtība (no lielākās)' : 'Value high to low'}</option>
-              <option value="value-asc">{isLv ? 'Vērtība (no mazākās)' : 'Value low to high'}</option>
-              <option value="status-asc">{isLv ? 'Statuss A-Z' : 'Status A-Z'}</option>
-              <option value="status-desc">{isLv ? 'Statuss Z-A' : 'Status Z-A'}</option>
-            </select>
-          </label>
+          <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-sky-100 bg-white p-2 shadow-sm">
+            <span className="px-2 text-xs font-semibold uppercase tracking-[0.18em] text-sky-500">{isLv ? 'Kārtot' : 'Sort'}</span>
+            {[
+              {field: 'createdAt' as const, label: isLv ? 'Datums' : 'Date Created'},
+              {field: 'value' as const, label: isLv ? 'Vērtība' : 'Project Value'},
+              {field: 'activity' as const, label: isLv ? 'Aktivitāte' : 'Last Activity'},
+              {field: 'status' as const, label: isLv ? 'Statuss' : 'Lifecycle Stage'},
+            ].map((item) => (
+              <button
+                key={item.field}
+                type="button"
+                onClick={() => cycleSort(item.field)}
+                className={`inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-sm font-semibold transition ${
+                  isSortActive(item.field)
+                    ? 'border-sky-200 bg-sky-50 text-sky-700 shadow-sm'
+                    : 'border-transparent bg-transparent text-slate-600 hover:border-sky-100 hover:bg-sky-50 hover:text-sky-700'
+                }`}
+                aria-pressed={isSortActive(item.field)}
+              >
+                <span>{item.label}</span>
+                <span className="text-sky-500">{getSortIcon(item.field)}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -227,7 +289,10 @@ export default function CrmLeadsClient({locale, leads, isSalesView}: Props) {
                   </div>
 
                   <div className="rounded-2xl border border-sky-100 bg-sky-50 px-4 py-3 text-slate-900">
-                    <div className="text-xs uppercase tracking-[0.2em] text-sky-500">{lead.status.replaceAll('_', ' ')}</div>
+                    <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-sky-500">
+                      {lead.status === 'NEW' ? <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" aria-label={isLv ? 'Jauns līds' : 'New lead'} /> : null}
+                      <span>{lead.status.replaceAll('_', ' ')}</span>
+                    </div>
                     <div className="mt-1 text-sm font-semibold">{lead.nextAction}</div>
                   </div>
                 </div>
