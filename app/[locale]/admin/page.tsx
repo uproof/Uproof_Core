@@ -5,6 +5,7 @@ import {
   HomeIcon,
   UserGroupIcon,
   ClipboardDocumentListIcon,
+  FolderOpenIcon,
 } from '@heroicons/react/24/outline';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import {getAdminSession} from '@/lib/adminAuth';
@@ -53,6 +54,16 @@ export default async function AdminDashboard({params}: {params: Promise<{locale:
       iconBg: 'bg-indigo-100 group-hover:bg-indigo-200',
       iconText: 'text-indigo-700',
       icon: UserGroupIcon,
+    },
+    {
+      href: `/${locale}/admin/project-360`,
+      title: 'Project 360 dashboard',
+      description: 'Access OCR, estimator, and project files from connected Google Sheets data',
+      action: 'Open Project 360',
+      accent: 'border-emerald-100',
+      iconBg: 'bg-emerald-100 group-hover:bg-emerald-200',
+      iconText: 'text-emerald-700',
+      icon: FolderOpenIcon,
     },
   ];
 
