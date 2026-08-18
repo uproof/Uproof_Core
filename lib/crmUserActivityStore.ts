@@ -159,13 +159,13 @@ export async function getRecentCrmUserActivity(limit = 100): Promise<CrmUserActi
     if (!error && Array.isArray(data)) {
       return data.map((row: CrmUserActivityRow) => ({
         id: row.id,
-        actorEmail: row.actor_email,
-        actorRole: row.actor_role,
-        action: row.action,
-        leadId: row.lead_id,
-        detail: row.detail,
-        ip: row.ip,
-        createdAt: row.created_at,
+        actorEmail: row.actor_email || '',
+        actorRole: row.actor_role || '',
+        action: row.action || '',
+        leadId: row.lead_id || '',
+        detail: row.detail || '',
+        ip: row.ip || '',
+        createdAt: row.created_at || '',
       }));
     }
   }

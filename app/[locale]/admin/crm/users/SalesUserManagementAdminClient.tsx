@@ -82,6 +82,10 @@ function formatCallDuration(detail: string) {
   return `${amount}m`;
 }
 
+function normalizeLookupKey(value?: string | null) {
+  return (value || '').trim().toLowerCase();
+}
+
 export default function SalesUserManagementAdminClient({
   locale,
   initialCrmUsers = [],
@@ -105,7 +109,7 @@ export default function SalesUserManagementAdminClient({
   const [securityMessages, setSecurityMessages] = useState<Record<string, string>>({});
   const [creatingUser, setCreatingUser] = useState(false);
   const isFirstActivityRender = useRef(true);
-  const leadMap = useMemo(() => new Map(leads.map((lead) => [lead.id.trim().toLowerCase(), lead])), [leads]);
+  const leadMap = useMemo(() => new Map(leads.map((lead) => [normalizeLookupKey(lead.id), lead])), [leads]);
 
   const labels = useMemo(
     () => ({
@@ -468,10 +472,10 @@ export default function SalesUserManagementAdminClient({
             ) : (
               activity.map((entry) => (
                 <div key={entry.id} className="rounded-xl border border-sky-100 bg-white px-4 py-3 text-xs text-slate-600">
-                  <div className="font-semibold text-slate-900">{entry.actorEmail}</div>
+                  <div className="font-semibold text-slate-900">{entry.actorEmail || '—'}</div>
                   <div>{entry.action}{entry.leadId ? ` · ${entry.leadId}` : ''}</div>
                   <div className="mt-1 flex flex-wrap gap-3 text-slate-500">
-                    <span>Lead added: {formatRelativeTime(leadMap.get(entry.leadId.trim().toLowerCase())?.createdAtUtc || leadMap.get(entry.leadId.trim().toLowerCase())?.createdAt)}</span>
+                    <span>Lead added: {formatRelativeTime(leadMap.get(normalizeLookupKey(entry.leadId))?.createdAtUtc || leadMap.get(normalizeLookupKey(entry.leadId))?.createdAt)}</span>
                     <span>Response: {formatRelativeTime(entry.createdAt)}</span>
                     <span>Call duration: {formatCallDuration(entry.detail || '')}</span>
                   </div>
