@@ -33,6 +33,14 @@ type LogCrmUserActivityInput = {
   ip?: string;
 };
 
+function getOptionalSupabaseClient() {
+  try {
+    return createSupabaseAdminClient();
+  } catch {
+    return null;
+  }
+}
+
 function buildNotification(action: string, actorEmail: string, detail: string, leadId: string) {
   const normalizedLeadId = leadId.trim();
   const actor = actorEmail.trim();
@@ -101,7 +109,7 @@ export async function logCrmUserActivity(input: LogCrmUserActivityInput) {
     createdAt: nowIso(),
   };
 
-  const supabase = createSupabaseAdminClient();
+  const supabase = getOptionalSupabaseClient();
   if (supabase) {
     const activityResult = await supabase.from('crm_user_activity').insert({
       actor_email: record.actorEmail,
@@ -140,7 +148,7 @@ export async function logCrmUserActivity(input: LogCrmUserActivityInput) {
 }
 
 export async function getRecentCrmUserActivity(limit = 100): Promise<CrmUserActivity[]> {
-  const supabase = createSupabaseAdminClient();
+  const supabase = getOptionalSupabaseClient();
   if (supabase) {
     const {data, error} = await supabase
       .from('crm_user_activity')
@@ -171,7 +179,7 @@ export async function clearCrmUserActivityByEmail(email: string) {
     return false;
   }
 
-  const supabase = createSupabaseAdminClient();
+  const supabase = getOptionalSupabaseClient();
   if (supabase) {
     const {error} = await supabase
       .from('crm_user_activity')

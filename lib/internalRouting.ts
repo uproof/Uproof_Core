@@ -15,8 +15,8 @@ export function isLegacyInternalHost(host: string) {
 
 export function isInternalAuthPath(pathname: string) {
   return (
-    /^\/(login|crm-login)(\/|$)/.test(pathname) ||
-    /^\/(lv|en|nl-BE)\/(login|crm-login)(\/|$)/.test(pathname) ||
+    /^\/(login|crm-login|mfa)(\/|$)/.test(pathname) ||
+    /^\/(lv|en|nl-BE)\/(login|crm-login|mfa)(\/|$)/.test(pathname) ||
     /^\/(admin|crm)(\/|$)/.test(pathname) ||
     /^\/(lv|en|nl-BE)\/(admin|crm)(\/|$)/.test(pathname) ||
     /^\/api\/(admin|crm|security)(\/|$)/.test(pathname)

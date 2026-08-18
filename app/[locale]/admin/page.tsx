@@ -2,10 +2,7 @@ import {redirect} from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
-  PencilSquareIcon,
-  DocumentTextIcon,
   HomeIcon,
-  BriefcaseIcon,
   UserGroupIcon,
   ClipboardDocumentListIcon,
 } from '@heroicons/react/24/outline';
@@ -39,7 +36,7 @@ export default async function AdminDashboard({params}: {params: Promise<{locale:
   const tiles: DashboardTile[] = [
     {
       href: `/${locale}/admin/crm/leads`,
-      title: 'Lead Management',
+      title: 'Sales lead management',
       description: 'Add, delete, and assign leads',
       action: 'Open Lead Management',
       accent: 'border-sky-100',
@@ -49,93 +46,13 @@ export default async function AdminDashboard({params}: {params: Promise<{locale:
     },
     {
       href: `/${locale}/admin/crm/users`,
-      title: 'Sales Admin User Management',
+      title: 'Sales team management',
       description: 'Create, delete, and manage sales users with individual logs and dashboard access',
       action: 'Open User Management',
       accent: 'border-indigo-100',
       iconBg: 'bg-indigo-100 group-hover:bg-indigo-200',
       iconText: 'text-indigo-700',
       icon: UserGroupIcon,
-    },
-    {
-      href: `/${locale}/admin/blog`,
-      title: 'Blog Posts',
-      description: 'Create, edit, and manage blog articles',
-      action: 'Manage Blog',
-      accent: '',
-      iconBg: 'bg-primary-100 group-hover:bg-primary-200',
-      iconText: 'text-primary-600',
-      icon: DocumentTextIcon,
-    },
-    {
-      href: `/${locale}/admin/homepage`,
-      title: 'Homepage',
-      description: 'Edit hero, services, stats, and FAQ content',
-      action: 'Edit Homepage',
-      accent: '',
-      iconBg: 'bg-green-100 group-hover:bg-green-200',
-      iconText: 'text-green-600',
-      icon: HomeIcon,
-    },
-    {
-      href: `/${locale}/admin/projects`,
-      title: 'Projects Manager',
-      description: 'Manage portfolio projects and gallery',
-      action: 'Manage Projects',
-      accent: '',
-      iconBg: 'bg-orange-100 group-hover:bg-orange-200',
-      iconText: 'text-orange-600',
-      icon: PencilSquareIcon,
-    },
-    {
-      href: `/${locale}/admin/career`,
-      title: 'Career Positions',
-      description: 'Add, edit, or hide job positions without code changes',
-      action: 'Manage Careers',
-      accent: '',
-      iconBg: 'bg-emerald-100 group-hover:bg-emerald-200',
-      iconText: 'text-emerald-600',
-      icon: BriefcaseIcon,
-    },
-    {
-      href: `/${locale}/admin/services`,
-      title: 'Services Editor',
-      description: 'Edit service descriptions and offerings',
-      action: 'Edit Services',
-      accent: '',
-      iconBg: 'bg-blue-100 group-hover:bg-blue-200',
-      iconText: 'text-blue-600',
-      icon: PencilSquareIcon,
-    },
-    {
-      href: `/${locale}/admin/pages`,
-      title: 'Pages Editor',
-      description: 'Edit About, Contact, and other pages',
-      action: 'Edit Pages',
-      accent: '',
-      iconBg: 'bg-purple-100 group-hover:bg-purple-200',
-      iconText: 'text-purple-600',
-      icon: PencilSquareIcon,
-    },
-    {
-      href: `/${locale}/admin/settings`,
-      title: 'Site Settings',
-      description: 'Configure company info and SEO',
-      action: 'Configure Settings',
-      accent: '',
-      iconBg: 'bg-red-100 group-hover:bg-red-200',
-      iconText: 'text-red-600',
-      icon: PencilSquareIcon,
-    },
-    {
-      href: `/${locale}/admin/messages`,
-      title: 'Messages',
-      description: 'View contact form submissions',
-      action: 'View Messages',
-      accent: '',
-      iconBg: 'bg-indigo-100 group-hover:bg-indigo-200',
-      iconText: 'text-indigo-600',
-      icon: PencilSquareIcon,
     },
   ];
 
@@ -150,8 +67,8 @@ export default async function AdminDashboard({params}: {params: Promise<{locale:
                 <Image src="/logo.svg" alt="UpRoof" width={44} height={44} className="h-full w-full object-contain p-1" priority />
               </div>
               <div>
-                <h1 className="text-xl sm:text-2xl font-bold text-gray-900">UpRoof Admin</h1>
-                <p className="text-xs sm:text-sm text-gray-600">Content Management System</p>
+                <h1 className="text-xl sm:text-2xl font-bold text-gray-900">UpRoof Operations</h1>
+                <p className="text-xs sm:text-sm text-gray-600">Internal CRM and project operations</p>
               </div>
             </div>
             <div className="flex flex-wrap items-center gap-2 sm:gap-4 w-full sm:w-auto">
@@ -162,7 +79,9 @@ export default async function AdminDashboard({params}: {params: Promise<{locale:
                 <NotificationBell locale={locale} />
               </div>
               <Link
-                href={`/${locale}`}
+                href={`https://uproof.eu/${locale}`}
+                target="_blank"
+                rel="noreferrer"
                 className="order-3 text-sm text-gray-600 hover:text-gray-900 flex items-center gap-2"
               >
                 <HomeIcon className="w-5 h-5" />
@@ -180,7 +99,7 @@ export default async function AdminDashboard({params}: {params: Promise<{locale:
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-2">Dashboard</h2>
-          <p className="text-gray-600">Manage your website content</p>
+          <p className="text-gray-600">Manage sales operations. Project 360 modules will be added here.</p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 auto-rows-fr items-stretch">

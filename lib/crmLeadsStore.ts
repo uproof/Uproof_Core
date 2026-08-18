@@ -3,7 +3,7 @@ import {nowIso} from '@/lib/crmDb';
 import {upsertProjectFromLead, deleteProjectByLeadId} from '@/lib/crmProjectsStore';
 import {CrmLead} from '@/lib/crmMockData';
 import {createEmptyCrmEstimatorData, normalizeCrmEstimatorData, stringifyEstimatorData} from '@/lib/crmEstimator';
-import {createCrmSupabaseClient as createSupabaseAdminClient} from '@/lib/crmStorage';
+import {createOptionalCrmSupabaseClient as createSupabaseAdminClient} from '@/lib/crmStorage';
 
 function normalizeWorkLog(workLog: unknown, fallback: CrmLead['workLog']) {
   if (!Array.isArray(workLog)) return fallback;
@@ -49,6 +49,7 @@ function parseJsonArray<T>(value: unknown, fallback: T[]): T[] {
 export type CrmLeadRow = {
   id: string;
   external_id: string | null;
+  created_at?: string | null;
   customer: string;
   company: string;
   phone: string;
@@ -76,6 +77,8 @@ export type CrmLeadRow = {
 function rowToLead(row: CrmLeadRow): CrmLead {
   return normalizeLead({
     id: row.external_id || row.id,
+    createdAt: row.created_at || undefined,
+    createdAtUtc: row.created_at || undefined,
     customer: row.customer,
     company: row.company,
     phone: row.phone,
@@ -116,7 +119,7 @@ export async function getCrmLeads(options: GetCrmLeadsOptions = {}): Promise<Crm
   const limit = typeof options.limit === 'number' && Number.isFinite(options.limit) && options.limit > 0 ? Math.floor(options.limit) : 0;
   let query = supabase
     .from('crm_leads')
-    .select('id,external_id,customer,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
+    .select('id,external_id,created_at,customer,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
     .order('updated_at', {ascending: false})
     .order('created_at', {ascending: false});
 
@@ -149,7 +152,7 @@ export async function findCrmLeadRowById(leadId: string): Promise<CrmLeadRow | n
 
   const byExternalId = await supabase
     .from('crm_leads')
-    .select('id,external_id,customer,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
+    .select('id,external_id,created_at,customer,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
     .ilike('external_id', normalizedLeadId)
     .maybeSingle();
 
@@ -159,7 +162,7 @@ export async function findCrmLeadRowById(leadId: string): Promise<CrmLeadRow | n
 
   const byId = await supabase
     .from('crm_leads')
-    .select('id,external_id,customer,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
+    .select('id,external_id,created_at,customer,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
     .eq('id', normalizedLeadId)
     .maybeSingle();
 
@@ -214,6 +217,8 @@ export async function addCrmLead(input: NewLeadInput): Promise<CrmLead> {
   const now = nowIso();
   const lead: CrmLead = normalizeLead({
     id: createLeadExternalId(),
+    createdAt: now,
+    createdAtUtc: now,
     customer: input.customer.trim(),
     company: input.company.trim(),
     phone: input.phone.trim(),
@@ -240,6 +245,7 @@ export async function addCrmLead(input: NewLeadInput): Promise<CrmLead> {
 
   const {error} = await supabase.from('crm_leads').upsert({
     external_id: lead.id,
+    created_at: now,
     customer: lead.customer,
     company: lead.company,
     phone: lead.phone,

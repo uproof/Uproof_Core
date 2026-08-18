@@ -21,3 +21,11 @@ export function createCrmSupabaseClient() {
 
   return client;
 }
+
+export function createOptionalCrmSupabaseClient() {
+  try {
+    return createCrmSupabaseClient();
+  } catch {
+    return null;
+  }
+}

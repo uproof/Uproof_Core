@@ -6,7 +6,7 @@ import Card from '@/components/Card';
 
 type CrmUserPublic = {id: string; email: string; name: string; role: 'sales' | 'superadmin'; isActive: boolean; hasPassword?: boolean};
 type CrmUserActivity = {id: number; actorEmail: string; actorRole: string; action: string; leadId: string; detail: string; createdAt: string};
-type CrmLead = {id: string; assignedSalesUserId?: string | null};
+type CrmLead = {id: string; assignedSalesUserId?: string | null; createdAt?: string; createdAtUtc?: string};
 
 type NewSalesUserDraft = {
   name: string;
@@ -33,6 +33,55 @@ const initialUserDraft: NewSalesUserDraft = {
   password: '',
 };
 
+function formatRelativeTime(value?: string | null) {
+  if (!value) {
+    return '—';
+  }
+
+  const timestamp = Date.parse(value);
+  if (Number.isNaN(timestamp)) {
+    return '—';
+  }
+
+  const deltaMs = Date.now() - timestamp;
+  const absoluteSeconds = Math.max(0, Math.round(Math.abs(deltaMs) / 1000));
+
+  if (absoluteSeconds < 60) return `${absoluteSeconds}s ago`;
+
+  const minutes = Math.floor(absoluteSeconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+
+  const days = Math.floor(hours / 24);
+  return `${days}d ago`;
+}
+
+function formatCallDuration(detail: string) {
+  const normalized = detail.trim();
+  if (!normalized) {
+    return '—';
+  }
+
+  const match = normalized.match(/(?:call\s*duration|duration)\s*[:=]?\s*(\d+)\s*(s|sec|secs|second|seconds|m|min|mins|minute|minutes)?/i);
+  if (!match) {
+    return '—';
+  }
+
+  const amount = Number(match[1]);
+  if (!Number.isFinite(amount)) {
+    return '—';
+  }
+
+  const unit = (match[2] || 'm').toLowerCase();
+  if (unit.startsWith('s')) {
+    return `${amount}s`;
+  }
+
+  return `${amount}m`;
+}
+
 export default function SalesUserManagementAdminClient({
   locale,
   initialCrmUsers = [],
@@ -56,6 +105,7 @@ export default function SalesUserManagementAdminClient({
   const [securityMessages, setSecurityMessages] = useState<Record<string, string>>({});
   const [creatingUser, setCreatingUser] = useState(false);
   const isFirstActivityRender = useRef(true);
+  const leadMap = useMemo(() => new Map(leads.map((lead) => [lead.id.trim().toLowerCase(), lead])), [leads]);
 
   const labels = useMemo(
     () => ({
@@ -420,6 +470,11 @@ export default function SalesUserManagementAdminClient({
                 <div key={entry.id} className="rounded-xl border border-sky-100 bg-white px-4 py-3 text-xs text-slate-600">
                   <div className="font-semibold text-slate-900">{entry.actorEmail}</div>
                   <div>{entry.action}{entry.leadId ? ` · ${entry.leadId}` : ''}</div>
+                  <div className="mt-1 flex flex-wrap gap-3 text-slate-500">
+                    <span>Lead added: {formatRelativeTime(leadMap.get(entry.leadId.trim().toLowerCase())?.createdAtUtc || leadMap.get(entry.leadId.trim().toLowerCase())?.createdAt)}</span>
+                    <span>Response: {formatRelativeTime(entry.createdAt)}</span>
+                    <span>Call duration: {formatCallDuration(entry.detail || '')}</span>
+                  </div>
                   <div>{entry.detail || '—'}</div>
                   <div className="text-slate-500">{new Date(entry.createdAt).toLocaleString('en-GB')}</div>
                 </div>

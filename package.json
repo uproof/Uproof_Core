@@ -1,5 +1,5 @@
 {
-  "name": "uproof-website",
+  "name": "uproof-operations",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -10,13 +10,12 @@
     "test:crm": "node scripts/test-crm-flows.mjs",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio",
-    "update-metadata": "node scripts/update-blog-metadata.mjs"
+    "prisma:studio": "prisma studio"
   },
   "dependencies": {
     "@headlessui/react": "^2.1.0",
     "@heroicons/react": "^2.1.0",
-    "@prisma/client": "^6.19.3",
+    "@prisma/client": "6.12.0",
     "@supabase/ssr": "^0.12.1",
     "@supabase/supabase-js": "^2.110.0",
     "@types/qrcode": "^1.5.6",
@@ -51,7 +50,7 @@
     "eslint": "^9.0.0",
     "eslint-config-next": "^15.5.10",
     "postcss": "^8.5.18",
-    "prisma": "^6.19.3",
+    "prisma": "6.12.0",
     "tailwindcss": "^3.4.0",
     "typescript": "^5.5.0"
   },
@@ -65,6 +64,9 @@
   ],
   "overrides": {
     "postcss": "^8.5.18",
-    "minimatch": "^10.2.5"
+    "minimatch": "^10.2.5",
+    "brace-expansion": "5.0.9",
+    "js-yaml": "4.3.1",
+    "nanoid": "3.3.18"
   }
 }

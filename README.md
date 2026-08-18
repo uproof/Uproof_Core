@@ -10,9 +10,9 @@ No part of this project may be copied, cloned, redistributed, republished, modif
 
 Any unauthorized use of the code, design system, color scheme, content, or assets is strictly prohibited.
 
-Live site: https://uproof.eu
+Internal platform: https://crm.uproof.eu
 
-Multilingual roofing services website built with Next.js 14 (App Router), TypeScript, Tailwind CSS, and next-intl. The codebase emphasizes performance, SEO (structured data, localized canonicals, hreflang), accessibility, and a scalable content model.
+Authenticated UpRoof Operations platform built with Next.js App Router, TypeScript, Tailwind CSS, next-intl, Supabase Auth, and Supabase Postgres. It owns sales CRM workflows and the future Project 360 operations workspace. The public marketing website is a separate deployment and repository.
 
 This is a private repository. It must not be cloned, copied, redistributed, or used outside authorized purposes.
 

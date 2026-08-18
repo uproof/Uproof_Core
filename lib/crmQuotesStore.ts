@@ -1,4 +1,4 @@
-import {createCrmSupabaseClient as createSupabaseAdminClient} from '@/lib/crmStorage';
+import {createOptionalCrmSupabaseClient as createSupabaseAdminClient} from '@/lib/crmStorage';
 import type {CrmQuote} from '@/lib/crmMockData';
 
 type QuoteRow = {

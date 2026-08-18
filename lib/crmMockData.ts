@@ -9,6 +9,8 @@ export type CrmLeadWorkLogEntry = {
 export type CrmLead = {
   id: string;
   assignedSalesUserId?: string | null;
+  createdAt?: string;
+  createdAtUtc?: string;
   customer: string;
   company: string;
   phone: string;

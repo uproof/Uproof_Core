@@ -1,6 +1,6 @@
 import {pbkdf2Sync, randomBytes, randomUUID} from 'crypto';
 import {nowIso} from '@/lib/crmDb';
-import {createCrmSupabaseClient as createSupabaseAdminClient} from '@/lib/crmStorage';
+import {createOptionalCrmSupabaseClient as createSupabaseAdminClient} from '@/lib/crmStorage';
 import {findCrmLeadRowById, getCrmLeadById} from '@/lib/crmLeadsStore';
 import {decryptSecret, encryptSecret, normalizeSecretInput, validatePasswordPolicy} from '@/lib/secretVault';
 

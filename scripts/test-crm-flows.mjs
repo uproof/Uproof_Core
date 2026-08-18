@@ -2,7 +2,6 @@ import {config as loadEnv} from 'dotenv';
 import {createHmac, randomBytes, randomUUID} from 'crypto';
 import {readFileSync} from 'fs';
 
-loadEnv({path: '.env.website.local'});
 loadEnv({path: '.env.crm.local'});
 
 const baseUrl = process.env.CRM_TEST_BASE_URL || 'http://localhost:3000';

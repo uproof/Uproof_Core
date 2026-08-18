@@ -5,7 +5,6 @@ import path from 'path';
 const command = process.argv[2] || 'dev';
 const nextBinary = path.join(process.cwd(), 'node_modules', '.bin', process.platform === 'win32' ? 'next.cmd' : 'next');
 
-loadEnv({path: '.env.website.local'});
 loadEnv({path: '.env.crm.local'});
 
 const commandArgs = {
