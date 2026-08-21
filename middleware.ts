@@ -92,6 +92,7 @@ export default async function middleware(request: NextRequest) {
   const isCrmLoginPath = /^\/(lv|en|nl-BE)\/crm\/login(\/|$)/.test(pathname);
   const isAdminPath = /^\/(lv|en|nl-BE)\/admin(\/|$)/.test(pathname);
   const isAdminLoginPath = /^\/(lv|en|nl-BE)\/admin\/login(\/|$)/.test(pathname);
+  const isUnlocalizedAdminPath = /^\/admin(\/|$)/.test(pathname);
   const isApiAdminPath = /^\/api\/admin(\/|$)/.test(pathname);
   const isApiCrmPath = /^\/api\/crm(\/|$)/.test(pathname);
   const isApiSecurityPath = /^\/api\/security(\/|$)/.test(pathname);
@@ -105,7 +106,13 @@ export default async function middleware(request: NextRequest) {
   if (!crmHost && !cmsHost && internalPath) return redirectToHost(request, isAdminPath || isAdminLoginPath ? getCmsRedirectHost(host) : getCrmRedirectHost(host), undefined, supabaseResponse);
 
   if (crmHost && isAdminPath) {
-    return redirectToHost(request, getCmsRedirectHost(host), `/${locale}/admin`, supabaseResponse);
+    return redirectToHost(request, host, `/${locale}/admin`, supabaseResponse);
+  }
+
+  if (crmHost && isUnlocalizedAdminPath) {
+    const preferredLocale = cookies.get('preferred_locale')?.value;
+    const adminLocale = preferredLocale && ['lv', 'en', 'nl-BE'].includes(preferredLocale) ? preferredLocale : 'en';
+    return redirectToHost(request, host, `/${adminLocale}${pathname}`, supabaseResponse);
   }
 
   if (cmsHost && isCrmPath) {
