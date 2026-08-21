@@ -12,7 +12,7 @@ import {mapCrmApiError} from '@/lib/crmApiErrors';
 import {z} from 'zod';
 
 const QUOTE_OPTION_TYPES = ['eco', 'optimal', 'lux'] as const;
-const CRM_LEAD_STATUSES = ['NEW', 'CONTACTED', 'INSPECTION_SCHEDULED', 'INSPECTION_COMPLETED', 'ESTIMATING', 'QUOTE_SENT', 'WON', 'LOST', 'PROJECT_STARTED', 'COMPLETED', 'CANCELLED'] as const;
+const CRM_LEAD_STATUSES = ['NEW_LEAD', 'WAITING_DATA', 'ESTIMATING', 'ESTIMATE_DONE', 'ESTIMATE_SENT', 'ACCEPTED', 'DENIED', 'FROZEN'] as const;
 
 function extractQuoteOptions(estimatorData: {legacyRows?: Array<{label?: string; measurement?: string; notes?: string}>}) {
   const legacyRows = Array.isArray(estimatorData?.legacyRows) ? estimatorData.legacyRows : [];

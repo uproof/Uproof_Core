@@ -17,7 +17,7 @@ const importLeadRowSchema = z.object({
   phone: z.string().trim().min(1, 'Phone number is required'),
   email: z.string().trim().email('Invalid email address'),
   address: z.string().trim().min(1, 'Address is required'),
-  status: z.enum(['NEW', 'CONTACTED', 'INSPECTION_SCHEDULED', 'INSPECTION_COMPLETED', 'ESTIMATING', 'QUOTE_SENT', 'WON', 'LOST', 'PROJECT_STARTED', 'COMPLETED', 'CANCELLED']),
+  status: z.enum(['NEW_LEAD', 'WAITING_DATA', 'ESTIMATING', 'ESTIMATE_DONE', 'ESTIMATE_SENT', 'ACCEPTED', 'DENIED', 'FROZEN']),
 });
 
 function normalizeHeaderKey(value: string) {
@@ -73,7 +73,7 @@ function rowToLead(row: Record<string, string>, fallbackId: string): CrmLead {
     problem: getRowValue(row, 'problem', 'issue', 'description'),
     projectAddress: getRowValue(row, 'projectAddress', 'project address', 'project_address', 'address'),
     clientCharacterNote: getRowValue(row, 'clientCharacterNote', 'client character note', 'client_character_note'),
-    status: getRowValue(row, 'status') || 'NEW',
+    status: getRowValue(row, 'status') || 'NEW_LEAD',
     progress: getRowValue(row, 'progress') || 'new',
     activityUpdate: getRowValue(row, 'activityUpdate', 'activity update', 'activity_update'),
     dealProgress: getRowValue(row, 'dealProgress', 'deal progress', 'deal_progress') || 'Negotiation',

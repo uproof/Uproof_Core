@@ -234,7 +234,7 @@ export async function addCrmLead(input: NewLeadInput): Promise<CrmLead> {
     problem: normalizeCrmText(input.problem || ''),
     projectAddress: normalizeCrmText(input.projectAddress || input.address || ''),
     clientCharacterNote: normalizeCrmText(input.clientCharacterNote || ''),
-    status: 'NEW',
+    status: 'NEW_LEAD',
     progress: 'new',
     activityUpdate: 'First call',
     dealProgress: 'Negotiation',

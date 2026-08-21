@@ -12,7 +12,7 @@ type Props = {
   isSalesView: boolean;
 };
 
-type PipelineStageKey = 'new' | 'processing' | 'estimated' | 'quotes-sent' | 'archived';
+type PipelineStageKey = 'new-lead' | 'waiting-data' | 'estimating' | 'estimate-done' | 'estimate-sent' | 'accepted' | 'denied' | 'frozen';
 type DateFilterKey = 'all' | 'today' | 'last-7-days' | 'last-30-days' | 'this-month';
 
 type PipelineStage = {
@@ -24,11 +24,14 @@ type PipelineStage = {
 };
 
 const PIPELINE_STAGES: PipelineStage[] = [
-  {key: 'new', labelEn: 'New', labelLv: 'Jauni', toneClass: 'border-gray-400 bg-gray-300', laneClass: 'border-gray-300 bg-gray-100'},
-  {key: 'processing', labelEn: 'Processing', labelLv: 'Apstrādē', toneClass: 'border-gray-400 bg-gray-300', laneClass: 'border-gray-300 bg-gray-100'},
-  {key: 'estimated', labelEn: 'Estimated', labelLv: 'Novērtēti', toneClass: 'border-gray-400 bg-gray-300', laneClass: 'border-gray-300 bg-gray-100'},
-  {key: 'quotes-sent', labelEn: 'Quotes sent', labelLv: 'Tāmes nosūtītas', toneClass: 'border-gray-400 bg-gray-300', laneClass: 'border-gray-300 bg-gray-100'},
-  {key: 'archived', labelEn: 'Archived', labelLv: 'Arhivēti', toneClass: 'border-gray-500 bg-gray-400', laneClass: 'border-gray-400 bg-gray-200'},
+  {key: 'new-lead', labelEn: 'New lead', labelLv: 'Jauns līds', toneClass: 'border-gray-400 bg-gray-300', laneClass: 'border-gray-300 bg-gray-100'},
+  {key: 'waiting-data', labelEn: 'Waiting data', labelLv: 'Gaida datus', toneClass: 'border-gray-400 bg-gray-300', laneClass: 'border-gray-300 bg-gray-100'},
+  {key: 'estimating', labelEn: 'Estimating', labelLv: 'Tāmēšana', toneClass: 'border-gray-400 bg-gray-300', laneClass: 'border-gray-300 bg-gray-100'},
+  {key: 'estimate-done', labelEn: 'Estimate done', labelLv: 'Tāme pabeigta', toneClass: 'border-gray-400 bg-gray-300', laneClass: 'border-gray-300 bg-gray-100'},
+  {key: 'estimate-sent', labelEn: 'Estimate sent', labelLv: 'Tāme nosūtīta', toneClass: 'border-gray-400 bg-gray-300', laneClass: 'border-gray-300 bg-gray-100'},
+  {key: 'accepted', labelEn: 'Accepted', labelLv: 'Pieņemts', toneClass: 'border-gray-400 bg-gray-300', laneClass: 'border-gray-300 bg-gray-100'},
+  {key: 'denied', labelEn: 'Denied', labelLv: 'Noraidīts', toneClass: 'border-gray-400 bg-gray-300', laneClass: 'border-gray-300 bg-gray-100'},
+  {key: 'frozen', labelEn: 'Frozen', labelLv: 'Iesaldēts', toneClass: 'border-gray-500 bg-gray-400', laneClass: 'border-gray-400 bg-gray-200'},
 ];
 
 const ESTIMATOR_COMPLETION_KEYS: Array<keyof CrmLead['estimatorData']> = [
@@ -131,23 +134,17 @@ function getEstimatorCompletionCount(lead: CrmLead) {
 
 function getPipelineStage(lead: CrmLead): PipelineStageKey {
   const status = String(lead.status || '').toUpperCase();
-  if (['WON', 'LOST', 'PROJECT_STARTED', 'COMPLETED', 'CANCELLED'].includes(status)) {
-    return 'archived';
-  }
-
-  if (status === 'QUOTE_SENT') {
-    return 'quotes-sent';
-  }
-
-  if (status === 'NEW') {
-    return 'new';
-  }
-
-  if (status === 'ESTIMATING') {
-    return 'estimated';
-  }
-
-  return 'processing';
+  const stageByStatus: Record<string, PipelineStageKey> = {
+    NEW_LEAD: 'new-lead',
+    WAITING_DATA: 'waiting-data',
+    ESTIMATING: 'estimating',
+    ESTIMATE_DONE: 'estimate-done',
+    ESTIMATE_SENT: 'estimate-sent',
+    ACCEPTED: 'accepted',
+    DENIED: 'denied',
+    FROZEN: 'frozen',
+  };
+  return stageByStatus[status] || 'waiting-data';
 }
 
 function formatValue(value: string, locale: string) {
@@ -186,11 +183,14 @@ export default function CrmDashboardClient({locale, leads, isSalesView}: Props) 
 
   const board = useMemo(() => {
     const initial: Record<PipelineStageKey, CrmLead[]> = {
-      new: [],
-      processing: [],
-      estimated: [],
-      'quotes-sent': [],
-      archived: [],
+      'new-lead': [],
+      'waiting-data': [],
+      estimating: [],
+      'estimate-done': [],
+      'estimate-sent': [],
+      accepted: [],
+      denied: [],
+      frozen: [],
     };
 
     for (const lead of filteredLeads) {
@@ -203,7 +203,7 @@ export default function CrmDashboardClient({locale, leads, isSalesView}: Props) 
   const notificationGroups = useMemo(() => {
     const now = Date.now();
     const inactiveCutoff = now - 3 * 24 * 60 * 60 * 1000;
-    const activeLeads = leads.filter((lead) => !['WON', 'LOST', 'PROJECT_STARTED', 'COMPLETED', 'CANCELLED'].includes(String(lead.status || '').toUpperCase()));
+    const activeLeads = leads.filter((lead) => String(lead.status || '').toUpperCase() !== 'FROZEN');
 
     return [
       {

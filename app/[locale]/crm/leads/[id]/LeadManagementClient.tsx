@@ -9,7 +9,16 @@ import Section from '@/components/Section';
 import {CrmLead, CrmLeadWorkLogEntry} from '@/lib/crmMockData';
 import {CRM_ESTIMATOR_BOOLEAN_OPTIONS, CRM_ESTIMATOR_FIELD_DEFINITIONS, CRM_ESTIMATOR_FIELD_SECTIONS, createEmptyCrmEstimatorData, formatEstimatorValue, CrmEstimatorFormData} from '@/lib/crmEstimator';
 
-const statusOptions = ['NEW', 'CONTACTED', 'INSPECTION_SCHEDULED', 'INSPECTION_COMPLETED', 'ESTIMATING', 'QUOTE_SENT', 'WON', 'LOST', 'PROJECT_STARTED', 'COMPLETED', 'CANCELLED'];
+const statusOptions = [
+  {value: 'NEW_LEAD', label: 'New lead'},
+  {value: 'WAITING_DATA', label: 'Waiting data'},
+  {value: 'ESTIMATING', label: 'Estimating'},
+  {value: 'ESTIMATE_DONE', label: 'Estimate done'},
+  {value: 'ESTIMATE_SENT', label: 'Estimate sent'},
+  {value: 'ACCEPTED', label: 'Accepted'},
+  {value: 'DENIED', label: 'Denied'},
+  {value: 'FROZEN', label: 'Frozen'},
+];
 const progressOptions = ['new', 'reached', 'in progress', 'cancelled', 'won'];
 const activityOptions = ['First call', '2nd call', '3rd call', 'Message', 'Email'];
 const dealOptions = ['Negotiation', 'Signed', 'Lost', 'Won', 'Cancelled'];
@@ -579,7 +588,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
               <label className="flex min-w-0 flex-col gap-2 text-sm font-medium text-slate-700">
                 {isLv ? 'Statuss' : 'Status'}
                 <select value={status} onChange={(e) => setStatus(e.target.value)} className="h-12 w-full min-w-0 rounded-xl border border-sky-200 bg-white px-4 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100">
-                  {statusOptions.map((option) => <option key={option} value={option}>{option.replaceAll('_', ' ')}</option>)}
+                  {statusOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
                 </select>
               </label>
               <label className="flex min-w-0 flex-col gap-2 text-sm font-medium text-slate-700">
