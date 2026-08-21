@@ -4,7 +4,6 @@ import {
   getApprovedSuperadminCredentials,
   signToken,
 } from '@/lib/adminAuth';
-import {normalizeCrmRole, isSuperadminRole} from '@/lib/crmRoles';
 import {generateCsrfToken} from '@/lib/csrf';
 import {RATE_LIMITS, checkRateLimit, clearRateLimit} from '@/lib/rateLimit';
 import {logCrmUserActivity} from '@/lib/crmUserActivityStore';
@@ -40,12 +39,7 @@ export async function POST(req: NextRequest) {
   const {email: loginEmail, password, role: requestedRole} = await req.json().catch(() => ({email: '', password: '', role: ''}));
   const email = parseEmail(loginEmail);
   const parsedPassword = parsePassword(password);
-  const roleInput = typeof requestedRole === 'string' ? requestedRole.trim() : '';
-  if (roleInput && !normalizeCrmRole(roleInput)) {
-    return NextResponse.json({ok: false, error: 'Invalid role'}, {status: 400});
-  }
-
-  const requestedCrmRole = normalizeCrmRole(roleInput);
+  const role: 'superadmin' | 'sales' = requestedRole === 'sales' ? 'sales' : 'superadmin';
 
   if (!email || !parsedPassword) {
     return NextResponse.json({ok: false, error: 'Email and password are required'}, {status: 400});
@@ -70,7 +64,7 @@ export async function POST(req: NextRequest) {
   }
 
   const approvedSuperadmin = getApprovedSuperadminCredentials().find((entry) => entry.email === email);
-  if (!requestedCrmRole || isSuperadminRole(requestedCrmRole)) {
+  if (role === 'superadmin') {
     if (!approvedSuperadmin || approvedSuperadmin.password !== parsedPassword) {
       return NextResponse.json({ok: false, error: 'Invalid credentials'}, {status: 401});
     }
@@ -78,7 +72,7 @@ export async function POST(req: NextRequest) {
 
   const supabase = createSupabaseServerClient();
   const adminSupabase = createSupabaseAdminClient();
-  if (requestedCrmRole && !isSuperadminRole(requestedCrmRole)) {
+  if (role === 'sales') {
     if (!supabase || !adminSupabase) {
       return NextResponse.json({ok: false, error: 'CRM authentication is unavailable'}, {status: 503});
     }
@@ -98,17 +92,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ok: false, error: 'CRM user is inactive or missing'}, {status: 403});
     }
 
-    const userRole = normalizeCrmRole(profileResult.data.role);
-    if (!userRole) {
-      return NextResponse.json({ok: false, error: 'CRM user role is not configured'}, {status: 403});
-    }
-
     const sessionRotationAt = new Date(Date.now() - 5000).toISOString();
     await adminSupabase.from('user_profiles').update({session_valid_after: sessionRotationAt}).eq('id', profileResult.data.id);
 
     await logCrmUserActivity({
       actorEmail: email,
-      actorRole: userRole,
+      actorRole: role,
       action: 'login_success',
       detail: 'Password verified',
       ip,
@@ -116,7 +105,7 @@ export async function POST(req: NextRequest) {
 
     const response = NextResponse.json({ok: true, nextStep: 'dashboard'});
     setSupabaseAuthCookies(response, data.session);
-    response.cookies.set(ADMIN_SESSION_COOKIE, signToken({role: userRole, email, ip}), {
+    response.cookies.set(ADMIN_SESSION_COOKIE, signToken({role, email, ip}), {
       httpOnly: true,
       sameSite: 'strict',
       secure: process.env.NODE_ENV === 'production',
@@ -134,14 +123,14 @@ export async function POST(req: NextRequest) {
 
   await logCrmUserActivity({
     actorEmail: email,
-    actorRole: 'superadmin',
+    actorRole: role,
     action: 'login_success',
     detail: 'Password verified',
     ip,
   });
 
   const response = NextResponse.json({ok: true, nextStep: 'dashboard'});
-  response.cookies.set(ADMIN_SESSION_COOKIE, signToken({role: 'superadmin', email, ip}), {
+  response.cookies.set(ADMIN_SESSION_COOKIE, signToken({role, email, ip}), {
     httpOnly: true,
     sameSite: 'strict',
     secure: process.env.NODE_ENV === 'production',

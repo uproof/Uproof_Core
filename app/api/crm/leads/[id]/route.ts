@@ -11,45 +11,14 @@ import {createEmptyCrmEstimatorData, normalizeCrmEstimatorData, stringifyEstimat
 import {mapCrmApiError} from '@/lib/crmApiErrors';
 import {z} from 'zod';
 
-const QUOTE_OPTION_TYPES = ['eco', 'optimal', 'lux'] as const;
-const CRM_LEAD_STATUSES = ['NEW', 'CONTACTED', 'INSPECTION_SCHEDULED', 'INSPECTION_COMPLETED', 'ESTIMATING', 'QUOTE_SENT', 'WON', 'LOST', 'PROJECT_STARTED', 'COMPLETED', 'CANCELLED'] as const;
-
-function extractQuoteOptions(estimatorData: {legacyRows?: Array<{label?: string; measurement?: string; notes?: string}>}) {
-  const legacyRows = Array.isArray(estimatorData?.legacyRows) ? estimatorData.legacyRows : [];
-
-  return QUOTE_OPTION_TYPES.map((optionType) => {
-    const row = legacyRows.find((entry) => entry?.label === `quote:${optionType}`);
-    let liked = false;
-    let quoteFileName = '';
-    if (row?.notes) {
-      try {
-        const parsed = JSON.parse(String(row.notes)) as {liked?: boolean; fileName?: string};
-        liked = !!parsed.liked;
-        quoteFileName = typeof parsed.fileName === 'string' ? parsed.fileName : '';
-      } catch {
-        liked = false;
-        quoteFileName = '';
-      }
-    }
-
-    return {
-      option_type: optionType,
-      amount: String(row?.measurement || ''),
-      liked,
-      quote_file_name: quoteFileName,
-    };
-  });
-}
-
 const updateLeadSchema = z.object({
   customer: z.string().trim().min(1).optional(),
-  title: z.string().trim().optional(),
   address: z.string().trim().min(1).optional(),
   problem: z.string().trim().optional(),
   projectAddress: z.string().trim().optional(),
   clientCharacterNote: z.string().trim().optional(),
   note: z.string().trim().optional(),
-  status: z.enum(CRM_LEAD_STATUSES).optional(),
+  status: z.string().trim().optional(),
   progress: z.string().trim().optional(),
   activityUpdate: z.string().trim().optional(),
   dealProgress: z.string().trim().optional(),
@@ -143,7 +112,6 @@ export async function PATCH(
   const updatedLead = {
     ...currentLead,
     customer: canEditProfileFields && body.customer ? body.customer : currentLead.customer,
-    title: body.title ?? currentLead.title ?? '',
     address: canEditProfileFields && body.address ? body.address : currentLead.address,
     problem: body.problem ?? currentLead.problem,
     projectAddress: body.projectAddress || currentLead.projectAddress || currentLead.address,
@@ -157,7 +125,7 @@ export async function PATCH(
     value: canEditProfileFields && body.value ? body.value : currentLead.value,
     nextAction: body.nextAction ?? currentLead.nextAction,
     workLog: canEditProfileFields && Array.isArray(body.workLog) ? body.workLog : currentLead.workLog,
-    estimatorData: body.estimatorData
+    estimatorData: canEditProfileFields && body.estimatorData
       ? normalizeCrmEstimatorData(body.estimatorData as never, createEmptyCrmEstimatorData())
       : currentLead.estimatorData,
     updatedAt,
@@ -168,7 +136,6 @@ export async function PATCH(
     .from('crm_leads')
     .update({
       customer: updatedLead.customer,
-      title: updatedLead.title,
       company: updatedLead.company,
       phone: updatedLead.phone,
       email: updatedLead.email,
@@ -193,27 +160,6 @@ export async function PATCH(
   if (error) {
     const mapped = mapCrmApiError(error, 'Failed to save lead');
     return NextResponse.json({ok: false, error: mapped.message}, {status: mapped.status});
-  }
-
-  try {
-    const quoteOptions = extractQuoteOptions(updatedLead.estimatorData as {legacyRows?: Array<{label?: string; measurement?: string; notes?: string}>});
-    const rows = quoteOptions.map((option) => ({
-      lead_id: currentLeadRow.id,
-      option_type: option.option_type,
-      amount: option.amount,
-      liked: option.liked,
-      quote_file_name: option.quote_file_name,
-    }));
-
-    const quoteOptionsResult = await supabase
-      .from('crm_lead_quote_options')
-      .upsert(rows, {onConflict: 'lead_id,option_type'});
-
-    if (quoteOptionsResult.error) {
-      console.warn('crm lead quote options sync failed', quoteOptionsResult.error);
-    }
-  } catch (quoteOptionsError) {
-    console.warn('crm lead quote options processing failed', quoteOptionsError);
   }
 
   try {

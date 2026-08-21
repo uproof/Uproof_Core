@@ -4,7 +4,6 @@ import {upsertProjectFromLead, deleteProjectByLeadId} from '@/lib/crmProjectsSto
 import {CrmLead} from '@/lib/crmMockData';
 import {createEmptyCrmEstimatorData, normalizeCrmEstimatorData, stringifyEstimatorData} from '@/lib/crmEstimator';
 import {createOptionalCrmSupabaseClient as createSupabaseAdminClient} from '@/lib/crmStorage';
-import {normalizeCrmEmail, normalizeCrmPhone, normalizeCrmText} from '@/lib/crmContacts';
 
 function normalizeWorkLog(workLog: unknown, fallback: CrmLead['workLog']) {
   if (!Array.isArray(workLog)) return fallback;
@@ -25,7 +24,6 @@ function normalizeLead(lead: CrmLead): CrmLead {
   return {
     ...lead,
     assignedSalesUserId: lead.assignedSalesUserId || null,
-    title: lead.title || '',
     problem: lead.problem || '',
     projectAddress: lead.projectAddress || lead.address || '',
     clientCharacterNote: lead.clientCharacterNote || '',
@@ -60,7 +58,6 @@ export type CrmLeadRow = {
   problem: string;
   project_address: string;
   client_character_note: string;
-  title?: string;
   status: string;
   progress: string;
   activity_update: string;
@@ -83,7 +80,6 @@ function rowToLead(row: CrmLeadRow): CrmLead {
     createdAt: row.created_at || undefined,
     createdAtUtc: row.created_at || undefined,
     customer: row.customer,
-    title: row.title || '',
     company: row.company,
     phone: row.phone,
     email: row.email,
@@ -115,16 +111,15 @@ type GetCrmLeadsOptions = {
 
 export async function getCrmLeads(options: GetCrmLeadsOptions = {}): Promise<CrmLead[]> {
   const supabase = createSupabaseAdminClient();
-  const assignedSalesUserId = options.assignedSalesUserId?.trim();
-  const limit = typeof options.limit === 'number' && Number.isFinite(options.limit) && options.limit > 0 ? Math.floor(options.limit) : 0;
-
   if (!supabase) {
     return [];
   }
 
+  const assignedSalesUserId = options.assignedSalesUserId?.trim();
+  const limit = typeof options.limit === 'number' && Number.isFinite(options.limit) && options.limit > 0 ? Math.floor(options.limit) : 0;
   let query = supabase
     .from('crm_leads')
-    .select('id,external_id,created_at,customer,title,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
+    .select('id,external_id,created_at,customer,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
     .order('updated_at', {ascending: false})
     .order('created_at', {ascending: false});
 
@@ -157,7 +152,7 @@ export async function findCrmLeadRowById(leadId: string): Promise<CrmLeadRow | n
 
   const byExternalId = await supabase
     .from('crm_leads')
-    .select('id,external_id,created_at,customer,title,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
+    .select('id,external_id,created_at,customer,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
     .ilike('external_id', normalizedLeadId)
     .maybeSingle();
 
@@ -167,7 +162,7 @@ export async function findCrmLeadRowById(leadId: string): Promise<CrmLeadRow | n
 
   const byId = await supabase
     .from('crm_leads')
-    .select('id,external_id,created_at,customer,title,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
+    .select('id,external_id,created_at,customer,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
     .eq('id', normalizedLeadId)
     .maybeSingle();
 
@@ -194,7 +189,6 @@ export async function isLeadAssignedToSalesUser(leadId: string, salesUserId: str
 
 type NewLeadInput = {
   customer: string;
-  title?: string;
   company: string;
   phone: string;
   email: string;
@@ -225,25 +219,24 @@ export async function addCrmLead(input: NewLeadInput): Promise<CrmLead> {
     id: createLeadExternalId(),
     createdAt: now,
     createdAtUtc: now,
-    customer: normalizeCrmText(input.customer),
-    title: normalizeCrmText(input.title || ''),
-    company: normalizeCrmText(input.company),
-    phone: normalizeCrmPhone(input.phone),
-    email: normalizeCrmEmail(input.email),
-    address: normalizeCrmText(input.address),
-    problem: normalizeCrmText(input.problem || ''),
-    projectAddress: normalizeCrmText(input.projectAddress || input.address || ''),
-    clientCharacterNote: normalizeCrmText(input.clientCharacterNote || ''),
+    customer: input.customer.trim(),
+    company: input.company.trim(),
+    phone: input.phone.trim(),
+    email: input.email.trim(),
+    address: input.address.trim(),
+    problem: (input.problem || '').trim(),
+    projectAddress: (input.projectAddress || input.address || '').trim(),
+    clientCharacterNote: (input.clientCharacterNote || '').trim(),
     status: 'NEW',
     progress: 'new',
     activityUpdate: 'First call',
     dealProgress: 'Negotiation',
-    note: normalizeCrmText(input.note || '') || 'New lead added manually.',
-    owner: normalizeCrmText(input.owner),
-    value: normalizeCrmText(input.value),
+    note: (input.note || '').trim() || 'New lead added manually.',
+    owner: input.owner.trim(),
+    value: input.value.trim(),
     updatedAt: now,
     updatedAtUtc: now,
-    nextAction: normalizeCrmText(input.nextAction),
+    nextAction: input.nextAction.trim(),
     attachments: [],
     workLog: normalizeWorkLog(input.workLog, []),
     estimatorData: normalizeCrmEstimatorData(input.estimatorData, createEmptyCrmEstimatorData()),
@@ -254,7 +247,6 @@ export async function addCrmLead(input: NewLeadInput): Promise<CrmLead> {
     external_id: lead.id,
     created_at: now,
     customer: lead.customer,
-    title: lead.title,
     company: lead.company,
     phone: lead.phone,
     email: lead.email,
@@ -322,7 +314,6 @@ export async function updateCrmLead(leadId: string, updates: Partial<CrmLead>): 
     ...existing,
     ...updates,
     customer: updates.customer?.trim() || existing.customer,
-    title: updates.title?.trim() ?? existing.title ?? '',
     company: updates.company?.trim() || existing.company,
     phone: updates.phone?.trim() || existing.phone,
     email: updates.email?.trim() || existing.email,
@@ -351,7 +342,6 @@ export async function updateCrmLead(leadId: string, updates: Partial<CrmLead>): 
     .from('crm_leads')
     .update({
       customer: nextLead.customer,
-      title: nextLead.title,
       company: nextLead.company,
       phone: nextLead.phone,
       email: nextLead.email,
@@ -372,7 +362,7 @@ export async function updateCrmLead(leadId: string, updates: Partial<CrmLead>): 
       estimator_data_json: stringifyEstimatorData(nextLead.estimatorData),
     })
     .eq('id', existingRow.id)
-    .select('id,external_id,customer,title,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
+    .select('id,external_id,customer,company,phone,email,address,problem,project_address,client_character_note,status,progress,activity_update,deal_progress,note,owner,value,updated_at,next_action,attachments_json,estimator_data_json,assigned_sales_user_id,assigned_by_user_id,assigned_at')
     .maybeSingle();
 
   if (error || !data) {

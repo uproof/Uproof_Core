@@ -6,7 +6,6 @@ import {logCrmUserActivity} from '@/lib/crmUserActivityStore';
 import {getCrmUserByEmail} from '@/lib/crmUsersStore';
 import {canPerform} from '@/lib/permissions';
 import {mapCrmApiError} from '@/lib/crmApiErrors';
-import {normalizeCrmEmail, normalizeCrmPhone, normalizeCrmText} from '@/lib/crmContacts';
 import {z} from 'zod';
 
 const createLeadSchema = z.object({
@@ -60,33 +59,16 @@ export async function POST(req: NextRequest) {
 
     const {data} = result;
 
-    const existingLeads = await getCrmLeads();
-    const normalizedEmail = normalizeCrmEmail(data.email);
-    const normalizedPhone = normalizeCrmPhone(data.phone);
-    const duplicateLead = existingLeads.find((lead) => {
-      const leadEmail = normalizeCrmEmail(lead.email);
-      const leadPhone = normalizeCrmPhone(lead.phone);
-      return (
-        (normalizedEmail && leadEmail === normalizedEmail) ||
-        (normalizedPhone && leadPhone === normalizedPhone) ||
-        (normalizeCrmText(lead.customer).toLowerCase() === normalizeCrmText(data.customer).toLowerCase() && normalizeCrmText(lead.company).toLowerCase() === normalizeCrmText(data.company).toLowerCase())
-      );
-    });
-
-    if (duplicateLead) {
-      return NextResponse.json({ok: false, error: 'Duplicate customer or lead already exists', duplicateLeadId: duplicateLead.id}, {status: 409});
-    }
-
     const lead = await addCrmLead({
-      customer: normalizeCrmText(data.customer),
-      company: normalizeCrmText(data.company),
-      phone: normalizeCrmPhone(data.phone),
-      email: normalizeCrmEmail(data.email),
-      address: normalizeCrmText(data.address),
-      owner: normalizeCrmText(data.owner),
-      value: normalizeCrmText(data.value),
-      nextAction: normalizeCrmText(data.nextAction),
-      note: normalizeCrmText(data.note || ''),
+      customer: data.customer,
+      company: data.company,
+      phone: data.phone,
+      email: data.email,
+      address: data.address,
+      owner: data.owner,
+      value: data.value,
+      nextAction: data.nextAction,
+      note: data.note,
     });
 
     const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';

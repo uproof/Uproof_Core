@@ -1,96 +1,20 @@
 'use client';
 
 import {useEffect, useMemo, useRef, useState} from 'react';
-import {ArrowLeftIcon, PencilSquareIcon, PhoneIcon, EnvelopeIcon, MapPinIcon, CheckCircleIcon} from '@heroicons/react/24/outline';
+import {ArrowLeftIcon, PencilSquareIcon, PhoneIcon, EnvelopeIcon, MapPinIcon, CheckCircleIcon, LockClosedIcon} from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
 import Card from '@/components/Card';
 import Section from '@/components/Section';
+import SensitiveValue from '@/components/crm/SensitiveValue';
 import {CrmLead, CrmLeadWorkLogEntry} from '@/lib/crmMockData';
 import {CRM_ESTIMATOR_BOOLEAN_OPTIONS, CRM_ESTIMATOR_FIELD_DEFINITIONS, CRM_ESTIMATOR_FIELD_SECTIONS, createEmptyCrmEstimatorData, formatEstimatorValue, CrmEstimatorFormData} from '@/lib/crmEstimator';
+import {maskText} from '@/lib/sensitiveMask';
 
 const statusOptions = ['NEW', 'CONTACTED', 'INSPECTION_SCHEDULED', 'INSPECTION_COMPLETED', 'ESTIMATING', 'QUOTE_SENT', 'WON', 'LOST', 'PROJECT_STARTED', 'COMPLETED', 'CANCELLED'];
 const progressOptions = ['new', 'reached', 'in progress', 'cancelled', 'won'];
 const activityOptions = ['First call', '2nd call', '3rd call', 'Message', 'Email'];
 const dealOptions = ['Negotiation', 'Signed', 'Lost', 'Won', 'Cancelled'];
-
-type DesiredInfoRow = {
-  solution: string;
-  time: string;
-};
-
-type QuoteVariantKey = 'eco' | 'optimal' | 'lux';
-
-type QuoteVariantState = {
-  key: QuoteVariantKey;
-  amount: string;
-  liked: boolean;
-  fileName: string;
-};
-
-const QUOTE_VARIANT_ORDER: QuoteVariantKey[] = ['eco', 'optimal', 'lux'];
-
-function parseDesiredInfoRows(solutionValue: string, timeValue: string): DesiredInfoRow[] {
-  const solutions = solutionValue.split('\n').map((entry) => entry.trim());
-  const times = timeValue.split('\n').map((entry) => entry.trim());
-  const count = Math.max(solutions.length, times.length, 1);
-
-  const rows: DesiredInfoRow[] = [];
-  for (let index = 0; index < count; index += 1) {
-    rows.push({solution: solutions[index] || '', time: times[index] || ''});
-  }
-
-  return rows;
-}
-
-function serializeDesiredInfoRows(rows: DesiredInfoRow[]) {
-  const normalized = rows
-    .map((row) => ({solution: row.solution.trim(), time: row.time.trim()}))
-    .filter((row) => row.solution || row.time);
-
-  return {
-    solutions: normalized.map((row) => row.solution).join('\n'),
-    times: normalized.map((row) => row.time).join('\n'),
-  };
-}
-
-function parseQuoteVariantNote(note: string) {
-  if (!note) {
-    return {liked: false, fileName: ''};
-  }
-
-  try {
-    const parsed = JSON.parse(note) as {liked?: boolean; fileName?: string};
-    return {
-      liked: !!parsed.liked,
-      fileName: typeof parsed.fileName === 'string' ? parsed.fileName : '',
-    };
-  } catch {
-    return {liked: false, fileName: ''};
-  }
-}
-
-function parseQuoteVariants(estimatorData: CrmEstimatorFormData): QuoteVariantState[] {
-  const legacyRows = Array.isArray(estimatorData.legacyRows) ? estimatorData.legacyRows : [];
-  return QUOTE_VARIANT_ORDER.map((key) => {
-    const row = legacyRows.find((entry) => entry.label === `quote:${key}`);
-    const parsedNote = parseQuoteVariantNote(row?.notes || '');
-    return {
-      key,
-      amount: row?.measurement || '',
-      liked: parsedNote.liked,
-      fileName: parsedNote.fileName,
-    };
-  });
-}
-
-function serializeQuoteVariants(variants: QuoteVariantState[]) {
-  return variants.map((variant) => ({
-    label: `quote:${variant.key}`,
-    measurement: variant.amount.trim(),
-    notes: JSON.stringify({liked: variant.liked, fileName: variant.fileName.trim()}),
-  }));
-}
 
 const HIDDEN_ESTIMATOR_KEYS = new Set<keyof CrmEstimatorFormData>([
   'plannedExecutionTime',
@@ -151,7 +75,8 @@ type Props = {
 export default function LeadManagementClient({locale, lead, signedAttachments, showWorkLog = false, accessScope = 'sales'}: Props) {
   const isLv = locale === 'lv';
   const isSalesScope = accessScope === 'sales';
-  const backHref = `/${locale}/${accessScope === 'admin' ? 'admin/crm/leads' : 'crm'}`;
+  const canRevealClientData = accessScope === 'admin' || accessScope === 'sales';
+  const backHref = `/${locale}/${accessScope === 'admin' ? 'admin/crm/leads' : 'crm/leads'}`;
   const router = useRouter();
   const tabIdRef = useRef(typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`);
   const liveChannelRef = useRef<BroadcastChannel | null>(null);
@@ -161,23 +86,22 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
   const [activityUpdate, setActivityUpdate] = useState(lead.activityUpdate);
   const [dealProgress, setDealProgress] = useState(lead.dealProgress);
   const [customerName, setCustomerName] = useState(lead.customer);
-  const [title, setTitle] = useState(lead.title || '');
   const [projectAddress, setProjectAddress] = useState(lead.projectAddress || lead.address);
   const [problem, setProblem] = useState(lead.problem || '');
-  const [desiredInfoRows, setDesiredInfoRows] = useState<DesiredInfoRow[]>(parseDesiredInfoRows(lead.clientCharacterNote || '', lead.estimatorData?.plannedExecutionTime || ''));
-  const [quoteVariants, setQuoteVariants] = useState<QuoteVariantState[]>(parseQuoteVariants(lead.estimatorData || createEmptyCrmEstimatorData()));
+  const [clientCharacterNote, setClientCharacterNote] = useState(lead.clientCharacterNote || '');
   const [note, setNote] = useState(lead.note);
   const [estimatorData, setEstimatorData] = useState(lead.estimatorData || createEmptyCrmEstimatorData());
   const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [saveError, setSaveError] = useState('');
-  const [quoteState, setQuoteState] = useState<'idle' | 'creating' | 'created' | 'error'>('idle');
-  const [quoteError, setQuoteError] = useState('');
-  const [quoteAcceptUrl, setQuoteAcceptUrl] = useState('');
+  const [showClientData, setShowClientData] = useState(false);
   const workLog: CrmLeadWorkLogEntry[] = showWorkLog ? (lead.workLog || []) : [];
-  const displayCustomerName = customerName;
-  const displayAddress = lead.address;
-  const displayCompany = lead.company;
-  const displayValue = lead.value;
+  const clientDataVisible = showClientData && canRevealClientData;
+  const displayCustomerName = accessScope === 'admin' ? customerName : (clientDataVisible ? customerName : maskText(customerName));
+  const displayPhone = accessScope === 'admin' ? lead.phone : (clientDataVisible ? lead.phone : '');
+  const displayEmail = accessScope === 'admin' ? lead.email : (clientDataVisible ? lead.email : '');
+  const displayAddress = accessScope === 'admin' ? lead.address : (clientDataVisible ? lead.address : maskText(lead.address));
+  const displayCompany = accessScope === 'admin' ? lead.company : (clientDataVisible ? lead.company : maskText(lead.company));
+  const displayValue = accessScope === 'admin' ? lead.value : (clientDataVisible ? lead.value : maskText(lead.value));
 
   const estimatorSections = useMemo(() => CRM_ESTIMATOR_FIELD_SECTIONS, []);
 
@@ -188,11 +112,9 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
     setActivityUpdate(lead.activityUpdate);
     setDealProgress(lead.dealProgress);
     setCustomerName(lead.customer);
-    setTitle(lead.title || '');
     setProjectAddress(lead.projectAddress || lead.address);
     setProblem(lead.problem || '');
-    setDesiredInfoRows(parseDesiredInfoRows(lead.clientCharacterNote || '', lead.estimatorData?.plannedExecutionTime || ''));
-    setQuoteVariants(parseQuoteVariants(lead.estimatorData || createEmptyCrmEstimatorData()));
+    setClientCharacterNote(lead.clientCharacterNote || '');
     setNote(lead.note);
     setEstimatorData(lead.estimatorData || createEmptyCrmEstimatorData());
   }, [
@@ -207,7 +129,6 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
     lead.progress,
     lead.projectAddress,
     lead.status,
-    lead.title,
     lead.updatedAtUtc,
   ]);
 
@@ -338,11 +259,9 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
     setActivityUpdate(savedLead.activityUpdate);
     setDealProgress(savedLead.dealProgress);
     setCustomerName(savedLead.customer);
-    setTitle(savedLead.title || '');
     setProjectAddress(savedLead.projectAddress || savedLead.address);
     setProblem(savedLead.problem || '');
-    setDesiredInfoRows(parseDesiredInfoRows(savedLead.clientCharacterNote || '', savedLead.estimatorData?.plannedExecutionTime || ''));
-    setQuoteVariants(parseQuoteVariants(savedLead.estimatorData || createEmptyCrmEstimatorData()));
+    setClientCharacterNote(savedLead.clientCharacterNote || '');
     setNote(savedLead.note);
     setEstimatorData(savedLead.estimatorData || createEmptyCrmEstimatorData());
   };
@@ -351,34 +270,22 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
     setSaveState('saving');
     setSaveError('');
     try {
-      const desiredInfo = serializeDesiredInfoRows(desiredInfoRows);
-      const quoteVariantRows = serializeQuoteVariants(quoteVariants);
-      const existingLegacyRows = Array.isArray(estimatorData.legacyRows)
-        ? estimatorData.legacyRows.filter((row) => !QUOTE_VARIANT_ORDER.some((key) => row.label === `quote:${key}`))
-        : [];
-      const estimatorDataForSave = {
-        ...estimatorData,
-        plannedExecutionTime: desiredInfo.times,
-        legacyRows: [...existingLegacyRows, ...quoteVariantRows],
-      };
-
       const response = await fetch(`/api/crm/leads/${encodeURIComponent(lead.id)}`, {
         method: 'PATCH',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
           updatedAtUtc: version,
           ...(isSalesScope ? {} : {customer: customerName}),
-          title,
           projectAddress,
           address: projectAddress,
           problem,
-          clientCharacterNote: desiredInfo.solutions,
+          clientCharacterNote,
           status,
           progress,
           activityUpdate,
           dealProgress,
           note,
-          estimatorData: estimatorDataForSave,
+          estimatorData,
         }),
       });
       const data = await response.json();
@@ -399,30 +306,6 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
     }
   };
 
-  const handleCreateQuote = async () => {
-    setQuoteState('creating');
-    setQuoteError('');
-    setQuoteAcceptUrl('');
-
-    try {
-      const response = await fetch(`/api/crm/leads/${encodeURIComponent(lead.id)}/quotes`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({amount: lead.value}),
-      });
-      const data = await response.json();
-      if (!data.ok) {
-        throw new Error(data.error || 'Failed to create quote');
-      }
-
-      setQuoteAcceptUrl(data.quote?.acceptUrl || '');
-      setQuoteState('created');
-    } catch (error: any) {
-      setQuoteState('error');
-      setQuoteError(error?.message || 'Failed to create quote');
-    }
-  };
-
   return (
     <Section pad="sm" className="px-0 !py-0">
       <div className="mb-3 flex flex-col gap-3 border-b border-sky-100 pb-3 sm:flex-row sm:items-end sm:justify-between">
@@ -436,11 +319,18 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
           <Link href={backHref} className="inline-flex h-11 min-w-[150px] items-center justify-center gap-2 rounded-xl border border-sky-200 bg-white px-4 text-sm font-semibold text-sky-700 transition hover:bg-sky-50 sm:justify-start">
             <ArrowLeftIcon className="h-4 w-4" /> {isLv ? 'Atpakaļ uz līdiem' : 'Back to leads'}
           </Link>
+          {canRevealClientData ? (
+            <button
+              type="button"
+              onClick={() => setShowClientData((current) => !current)}
+              className="inline-flex h-11 min-w-[150px] items-center justify-center gap-2 rounded-xl border border-sky-200 bg-white px-4 text-sm font-semibold text-sky-700 transition hover:bg-sky-50 sm:justify-start"
+            >
+              <LockClosedIcon className="h-4 w-4" />
+              {showClientData ? (isLv ? 'Paslēpt klienta datus' : 'Hide client data') : (isLv ? 'Skatīt klienta datus' : 'View client data')}
+            </button>
+          ) : null}
           <button type="button" onClick={handleSave} className="inline-flex h-11 min-w-[150px] items-center justify-center gap-2 rounded-xl bg-sky-500 px-4 text-sm font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:bg-sky-300 sm:self-end" disabled={saveState === 'saving'}>
             <PencilSquareIcon className="h-4 w-4" /> {isLv ? 'Saglabāt izmaiņas' : 'Save changes'}
-          </button>
-          <button type="button" onClick={handleCreateQuote} className="inline-flex h-11 min-w-[150px] items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-white px-4 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50 disabled:cursor-not-allowed disabled:opacity-60" disabled={quoteState === 'creating'}>
-            {isLv ? 'Izveidot tāmes melnrakstu' : 'Create quote draft'}
           </button>
         </div>
       </div>
@@ -453,21 +343,8 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
         </div>
       )}
 
-      {quoteState !== 'idle' && (
-        <div className={`mb-4 rounded-2xl border px-4 py-3 text-sm ${quoteState === 'created' ? 'border-emerald-100 bg-emerald-50 text-emerald-700' : quoteState === 'error' ? 'border-red-100 bg-red-50 text-red-700' : 'border-emerald-100 bg-emerald-50 text-emerald-700'}`}>
-          {quoteState === 'creating' && (isLv ? 'Izveido tāmes melnrakstu...' : 'Creating quote draft...')}
-          {quoteState === 'created' && (
-            <div className="space-y-1">
-              <div>{isLv ? 'Tāmes melnraksts izveidots.' : 'Quote draft created.'}</div>
-              {quoteAcceptUrl ? <div className="break-all text-xs text-emerald-700">{quoteAcceptUrl}</div> : null}
-            </div>
-          )}
-          {quoteState === 'error' && (quoteError || (isLv ? 'Tāmes izveide neizdevās.' : 'Quote creation failed.'))}
-        </div>
-      )}
-
       <div className="grid gap-6 xl:grid-cols-[minmax(260px,0.62fr)_minmax(0,1.38fr)] 2xl:grid-cols-[minmax(280px,0.58fr)_minmax(0,1.42fr)]">
-        <Card variant="outlined" hover={false} className="!border-gray-300 !bg-gray-300 px-4 py-4 sm:px-5 sm:py-5">
+        <Card variant="outlined" hover={false} className="border-sky-100 bg-sky-50 px-4 py-4 sm:px-5 sm:py-5">
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-sky-500">
             {lead.id}
             <CheckCircleIcon className="h-4 w-4" />
@@ -485,78 +362,64 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
           <p className="mt-2 text-sm text-slate-600">{accessScope === 'admin' ? (isLv ? 'Superadmins var rediģēt klienta datus.' : 'Superadmin can edit customer data.') : (isLv ? 'Klienta profils pārdevējiem ir tikai skatāms.' : 'Customer profile is view-only for sales users.')}</p>
 
           <div className="mt-5 space-y-3 text-sm text-slate-700">
-            <div className="flex items-center gap-3 rounded-2xl border border-gray-300 bg-gray-200 px-4 py-3 shadow-sm">
+            <div className="flex items-center gap-3 rounded-2xl border border-sky-100 bg-white px-4 py-3 shadow-sm">
               <PhoneIcon className="h-4 w-4 shrink-0 text-sky-500" />
-              <a href={`tel:${lead.phone}`} className="text-sm font-semibold text-sky-700 hover:text-sky-800">
-                {isLv ? 'Zvanīt klientam' : 'Call client'}
-              </a>
+              {clientDataVisible ? (
+                <span className="min-w-0 break-words text-slate-900">{displayPhone}</span>
+              ) : (
+                <SensitiveValue value={lead.phone} kind="phone" className="min-w-0 border-0 p-0 hover:bg-transparent" />
+              )}
             </div>
-            <div className="flex items-center gap-3 rounded-2xl border border-gray-300 bg-gray-200 px-4 py-3 shadow-sm">
+            <div className="flex items-center gap-3 rounded-2xl border border-sky-100 bg-white px-4 py-3 shadow-sm">
               <EnvelopeIcon className="h-4 w-4 shrink-0 text-sky-500" />
-              <a href={`mailto:${lead.email}`} className="text-sm font-semibold text-sky-700 hover:text-sky-800">
-                {isLv ? 'Rakstīt klientam' : 'Email client'}
-              </a>
+              {clientDataVisible ? (
+                <span className="min-w-0 break-words text-slate-900">{displayEmail}</span>
+              ) : (
+                <SensitiveValue value={lead.email} kind="email" className="min-w-0 border-0 p-0 hover:bg-transparent" />
+              )}
             </div>
-            <div className="flex items-center gap-3 rounded-2xl border border-gray-300 bg-gray-200 px-4 py-3 shadow-sm"><MapPinIcon className="h-4 w-4 shrink-0 text-sky-500" /> <span className="min-w-0 break-words">{displayAddress}</span></div>
+            <div className="flex items-center gap-3 rounded-2xl border border-sky-100 bg-white px-4 py-3 shadow-sm"><MapPinIcon className="h-4 w-4 shrink-0 text-sky-500" /> <span className="min-w-0 break-words">{displayAddress}</span></div>
           </div>
 
-          <div className="mt-5 rounded-2xl border border-gray-300 bg-gray-200 p-4 shadow-sm">
+          <div className="mt-5 rounded-2xl border border-sky-100 bg-white p-4 shadow-sm">
             <p className="text-sm font-semibold text-slate-900">{isLv ? 'Kontaktinformācija' : 'Contact details'}</p>
             <div className="mt-4 space-y-3 text-sm text-slate-700">
               <div><span className="font-semibold text-slate-900">{isLv ? 'Atbildīgais' : 'Owner'}:</span> {lead.owner}</div>
               <div><span className="font-semibold text-slate-900">{isLv ? 'Uzņēmums' : 'Company'}:</span> {displayCompany}</div>
-              <div className="flex items-center gap-2"><span className="font-semibold text-slate-900">{isLv ? 'Vērtība' : 'Value'}:</span> <span className="text-slate-900">{displayValue}</span></div>
+              <div className="flex items-center gap-2"><span className="font-semibold text-slate-900">{isLv ? 'Vērtība' : 'Value'}:</span> {clientDataVisible ? <span className="text-slate-900">{displayValue}</span> : <SensitiveValue value={lead.value} kind="amount" className="border-0 p-0 hover:bg-transparent" />}</div>
               <div><span className="font-semibold text-slate-900">{isLv ? 'Atjaunots' : 'Updated'}:</span> {lead.updatedAt}</div>
             </div>
           </div>
 
-          <div className="mt-5 rounded-2xl border border-gray-300 bg-gray-200 p-4 shadow-sm">
-            <p className="text-sm font-semibold text-slate-900">{isLv ? 'Tāmes opcijas' : 'Estimate options'}</p>
-            <div className="mt-4 space-y-3">
-              {quoteVariants.map((variant) => {
-                const title = variant.key === 'eco' ? 'Eco option' : variant.key === 'optimal' ? 'Optimal option' : 'Lux option';
-                return (
-                  <div key={variant.key} className="rounded-xl border border-gray-300 bg-gray-300/80 p-3">
-                    <div className="flex items-center justify-between gap-3">
-                      <p className="text-sm font-semibold text-slate-900">{title}</p>
-                      <label className="inline-flex items-center gap-2 text-xs font-semibold text-slate-700">
-                        <input
-                          type="checkbox"
-                          checked={variant.liked}
-                          onChange={(event) => setQuoteVariants((current) => current.map((item) => item.key === variant.key ? {...item, liked: event.target.checked} : item))}
-                          className="h-4 w-4 rounded border-sky-300 text-sky-600 focus:ring-sky-500"
-                        />
-                        {isLv ? 'Klients izvēlējās' : 'Client liked'}
-                      </label>
-                    </div>
+          <div className="mt-5 rounded-2xl border border-sky-100 bg-white p-4 shadow-sm">
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-sm font-semibold text-slate-900">{isLv ? 'Pielikumi' : 'Attachments'}</p>
+              <label className="inline-flex cursor-pointer items-center rounded-xl border border-sky-200 bg-white px-3 py-2 text-xs font-semibold text-sky-700 transition hover:bg-sky-50">
+                {isLv ? 'Pievienot failu' : 'Attach file'}
+                <input type="file" className="hidden" />
+              </label>
+            </div>
 
-                    <div className="mt-3 flex flex-wrap items-center gap-2">
-                      <label className="inline-flex cursor-pointer items-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs font-semibold text-sky-700 transition hover:bg-gray-100">
-                        {isLv ? 'Augšupielādēt tāmi' : 'Upload quote'}
-                        <input
-                          type="file"
-                          className="hidden"
-                          onChange={(event) => {
-                            const fileName = event.target.files?.[0]?.name || '';
-                            setQuoteVariants((current) => current.map((item) => item.key === variant.key ? {...item, fileName} : item));
-                          }}
-                        />
-                      </label>
-                      <span className="text-xs text-slate-600">{variant.fileName || (isLv ? 'Fails nav izvēlēts' : 'No file selected')}</span>
+            <div className="mt-4 space-y-2">
+              {signedAttachments.length > 0 ? (
+                signedAttachments.map((attachment) => (
+                  attachment.url ? (
+                    <a key={attachment.name} href={attachment.url} className="flex items-center justify-between rounded-xl border border-sky-100 bg-sky-50 px-4 py-3 text-sm text-slate-700 transition hover:bg-sky-100">
+                      <span>{attachment.name}</span>
+                      <span className="text-xs font-semibold text-sky-700">{isLv ? 'Lejupielādēt' : 'Download'}</span>
+                    </a>
+                  ) : (
+                    <div key={attachment.name} className="flex items-center justify-between rounded-xl border border-sky-100 bg-sky-50 px-4 py-3 text-sm text-slate-500">
+                      <span>{attachment.name}</span>
+                      <span className="text-xs font-semibold text-sky-500">{isLv ? 'Nav pieejams' : 'Unavailable'}</span>
                     </div>
-
-                    <label className="mt-3 flex flex-col gap-1 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-                      {isLv ? 'Summa' : 'Amount'}
-                      <input
-                        value={variant.amount}
-                        onChange={(event) => setQuoteVariants((current) => current.map((item) => item.key === variant.key ? {...item, amount: event.target.value} : item))}
-                        className="h-10 w-full rounded-lg border border-gray-300 bg-white px-3 text-sm font-medium normal-case tracking-normal text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
-                        placeholder={isLv ? 'Ievadi summu' : 'Enter amount'}
-                      />
-                    </label>
-                  </div>
-                );
-              })}
+                  )
+                ))
+              ) : (
+                <div className="rounded-xl border border-dashed border-sky-200 bg-white px-4 py-3 text-sm text-slate-500">
+                  {isLv ? 'Pielikumu vēl nav.' : 'No attachments yet.'}
+                </div>
+              )}
             </div>
           </div>
         </Card>
@@ -564,24 +427,9 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
         <div className="space-y-6">
           <Card variant="outlined" hover={false} className="border-sky-100 bg-white">
             <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-sky-500">
-              <CheckCircleIcon className="h-5 w-5" /> {isLv ? 'Projekta pamatinformācija' : 'Project general info'}
+              <CheckCircleIcon className="h-5 w-5" /> {isLv ? 'Līda plūsma' : 'Lead workflow'}
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
-              <label className="flex min-w-0 flex-col gap-2 text-sm font-medium text-slate-700">
-                {isLv ? 'Nosaukums' : 'Title'}
-                <input
-                  value={title}
-                  onChange={(event) => setTitle(event.target.value)}
-                  className="h-12 w-full rounded-xl border border-sky-200 bg-white px-4 text-sm leading-6 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
-                  placeholder={isLv ? 'Ievadi nosaukumu' : 'Enter title'}
-                />
-              </label>
-              <label className="flex min-w-0 flex-col gap-2 text-sm font-medium text-slate-700">
-                {isLv ? 'Statuss' : 'Status'}
-                <select value={status} onChange={(e) => setStatus(e.target.value)} className="h-12 w-full min-w-0 rounded-xl border border-sky-200 bg-white px-4 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100">
-                  {statusOptions.map((option) => <option key={option} value={option}>{option.replaceAll('_', ' ')}</option>)}
-                </select>
-              </label>
               <label className="flex min-w-0 flex-col gap-2 text-sm font-medium text-slate-700">
                 {isLv ? 'Problēma' : 'Problem'}
                 <textarea
@@ -602,63 +450,44 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
                   placeholder={isLv ? 'Precīza objekta adrese' : 'Exact project address'}
                 />
               </label>
-              <div className="sm:col-span-2 rounded-2xl border border-sky-100 bg-sky-50/40 p-3">
-                <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] items-end gap-2">
-                  <div className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-600">{isLv ? 'Vēlamais risinājums' : 'Desired solution'}</div>
-                  <div className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-600">{isLv ? 'Vēlamais laiks' : 'Desired time'}</div>
-                  <div />
-
-                  {desiredInfoRows.map((row, index) => (
-                    <div key={`desired-row-${index}`} className="contents">
-                      <input
-                        value={row.solution}
-                        onChange={(event) => {
-                          const next = [...desiredInfoRows];
-                          next[index] = {...next[index], solution: event.target.value};
-                          setDesiredInfoRows(next);
-                        }}
-                        className="h-12 w-full rounded-xl border border-sky-200 bg-white px-4 text-sm text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
-                        placeholder={isLv ? 'Ievadi risinājumu' : 'Enter solution'}
-                      />
-                      <input
-                        value={row.time}
-                        onChange={(event) => {
-                          const next = [...desiredInfoRows];
-                          next[index] = {...next[index], time: event.target.value};
-                          setDesiredInfoRows(next);
-                        }}
-                        className="h-12 w-full rounded-xl border border-sky-200 bg-white px-4 text-sm text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
-                        placeholder={isLv ? 'Piemēram: 2-4 nedēļas' : 'For example: 2-4 weeks'}
-                      />
-                      <div className="flex items-center justify-end">
-                        {desiredInfoRows.length > 1 ? (
-                          <button
-                            type="button"
-                            onClick={() => setDesiredInfoRows(desiredInfoRows.filter((_, itemIndex) => itemIndex !== index))}
-                            className="inline-flex h-10 items-center justify-center rounded-lg border border-rose-200 bg-rose-50 px-3 text-xs font-semibold text-rose-700 transition hover:bg-rose-100"
-                          >
-                            {isLv ? 'Noņemt' : 'Remove'}
-                          </button>
-                        ) : (
-                          <div className="h-10" />
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-2">
-                  <button
-                    type="button"
-                    onClick={() => setDesiredInfoRows([...desiredInfoRows, {solution: '', time: ''}])}
-                    className="inline-flex h-10 items-center justify-center rounded-lg border border-sky-200 bg-white px-3 text-xs font-semibold text-sky-700 transition hover:bg-sky-100"
-                  >
-                    {isLv ? 'Pievienot vēl' : 'Add more'}
-                  </button>
-                </div>
-              </div>
+              <label className="flex min-w-0 flex-col gap-2 text-sm font-medium text-slate-700 sm:col-span-2">
+                {isLv ? 'Client character note' : 'Client character note'}
+                <textarea
+                  value={clientCharacterNote}
+                  onChange={(e) => setClientCharacterNote(e.target.value)}
+                  rows={4}
+                  className="w-full rounded-2xl border border-sky-200 bg-white px-4 py-3 text-sm leading-6 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                  placeholder={isLv ? 'Piemērs: atvērts, steidzīgs, grib zināt cenu' : 'Example: open, in a rush, wants to know the price'}
+                />
+              </label>
             </div>
 
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 2xl:grid-cols-4 items-start">
+              <label className="flex min-w-0 flex-col gap-2 text-sm font-medium text-slate-700">
+                {isLv ? 'Statuss' : 'Status'}
+                <select value={status} onChange={(e) => setStatus(e.target.value)} className="h-12 w-full min-w-0 rounded-xl border border-sky-200 bg-white px-4 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100">
+                  {statusOptions.map((option) => <option key={option} value={option}>{option.replaceAll('_', ' ')}</option>)}
+                </select>
+              </label>
+              <label className="flex min-w-0 flex-col gap-2 text-sm font-medium text-slate-700">
+                {isLv ? 'Progress' : 'Progress'}
+                <select value={progress} onChange={(e) => setProgress(e.target.value)} className="h-12 w-full min-w-0 rounded-xl border border-sky-200 bg-white px-4 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100">
+                  {progressOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                </select>
+              </label>
+              <label className="flex min-w-0 flex-col gap-2 text-sm font-medium text-slate-700">
+                {isLv ? 'Aktivitāte' : 'Activity'}
+                <select value={activityUpdate} onChange={(e) => setActivityUpdate(e.target.value)} className="h-12 w-full min-w-0 rounded-xl border border-sky-200 bg-white px-4 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100">
+                  {activityOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                </select>
+              </label>
+              <label className="flex min-w-0 flex-col gap-2 text-sm font-medium text-slate-700">
+                {isLv ? 'Darījums' : 'Deal'}
+                <select value={dealProgress} onChange={(e) => setDealProgress(e.target.value)} className="h-12 w-full min-w-0 rounded-xl border border-sky-200 bg-white px-4 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100">
+                  {dealOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                </select>
+              </label>
+            </div>
           </Card>
 
           <Card variant="outlined" hover={false} className="border-sky-100 bg-white">
@@ -836,6 +665,18 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
                 </div>
               ))}
             </div>
+          </Card>
+
+          <Card variant="outlined" hover={false} className="border-sky-100 bg-white">
+            <div className="mb-4 text-sm font-semibold text-sky-500">{isLv ? 'Plānotais / vēlamais izpildes laiks' : 'Planned / desired completion time'}</div>
+            <textarea
+              value={estimatorData.plannedExecutionTime}
+              onChange={(event) => updateEstimatorField('plannedExecutionTime', event.target.value)}
+              onInput={autoExpandTextarea}
+              rows={2}
+              className="min-h-[48px] w-full resize-y rounded-2xl border border-sky-200 bg-white px-4 py-3 text-sm leading-6 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+              placeholder={isLv ? 'Piemērs: Oktobris / līdz ziemas sākumam' : 'Example: October / before winter starts'}
+            />
           </Card>
 
           <Card variant="outlined" hover={false} className="border-sky-100 bg-white">

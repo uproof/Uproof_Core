@@ -1,6 +1,5 @@
 import {redirect} from 'next/navigation';
 import {getAdminSession} from '@/lib/adminAuth';
-import {isSuperadminRole} from '@/lib/crmRoles';
 import AdminLoginPage from './AdminLoginPage';
 
 type Props = {params: Promise<{locale: string}>; searchParams?: Promise<{redirect?: string}>};
@@ -11,10 +10,10 @@ export default async function AdminLoginRoute({params, searchParams}: Props) {
   const redirectTarget = typeof redirectTargetRaw === 'string' && redirectTargetRaw.startsWith('/') ? redirectTargetRaw : `/${locale}/admin`;
 
   const session = await getAdminSession();
-  if (session && isSuperadminRole(session.role)) {
+  if (session?.role === 'superadmin') {
     redirect(redirectTarget);
   }
-  if (session && !isSuperadminRole(session.role)) {
+  if (session?.role === 'sales') {
     redirect(`/${locale}/crm`);
   }
 

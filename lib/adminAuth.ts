@@ -3,13 +3,12 @@ import {headers} from 'next/headers';
 import crypto from 'crypto';
 import {createSupabaseAdminClient} from '@/lib/supabase/server';
 import {getSupabaseAccessToken, resolveSupabaseAdminSession} from '@/lib/supabase/session';
-import {normalizeCrmRole, type CrmRole, isSuperadminRole} from '@/lib/crmRoles';
 
 export const ADMIN_SESSION_COOKIE = 'admin_session';
 export const ADMIN_PENDING_SESSION_COOKIE = 'admin_pending_session';
 const DEFAULT_TTL_MS = 24 * 60 * 60 * 1000;
 
-export type AdminRole = CrmRole;
+export type AdminRole = 'superadmin' | 'sales';
 
 export type AdminSession = {
   sub: 'admin';
@@ -77,7 +76,7 @@ function decodeToken(token: string | undefined): AdminSession | null {
     const payload = JSON.parse(Buffer.from(payloadB64, 'base64url').toString()) as AdminSession;
     if (payload.sub !== 'admin') return null;
     if (!payload.email || !payload.sid) return null;
-    if (!normalizeCrmRole(payload.role)) return null;
+    if (payload.role !== 'superadmin' && payload.role !== 'sales') return null;
     if (Date.now() >= payload.exp) return null;
     return payload;
   } catch {
@@ -184,7 +183,7 @@ export async function getMfaSetupSession(): Promise<AdminSession | null> {
 
 export async function isSuperadminAuthenticated(): Promise<boolean> {
   const session = await getAdminSession();
-  return !!session && isSuperadminRole(session.role);
+  return !!session && session.role === 'superadmin';
 }
 
 export async function getAdminSession(): Promise<AdminSession | null> {
@@ -227,7 +226,7 @@ export async function getAdminSession(): Promise<AdminSession | null> {
     return null;
   }
 
-  const role = normalizeCrmRole(data.role);
+  const role = data.role === 'superadmin' ? 'superadmin' : data.role === 'sales' ? 'sales' : null;
   if (!role) {
     if (session.role === 'superadmin' && isApprovedSuperadminEmail(session.email)) {
       return session;

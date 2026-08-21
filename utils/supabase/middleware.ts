@@ -1,6 +1,5 @@
 import { createServerClient } from '@supabase/ssr';
 import { type NextRequest, NextResponse } from 'next/server';
-import {isSupabaseConfigured} from '@/lib/supabase/config';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
@@ -11,10 +10,6 @@ export const createClient = (request: NextRequest) => {
       headers: request.headers,
     },
   });
-
-  if (!isSupabaseConfigured()) {
-    return {supabase: null, supabaseResponse};
-  }
 
   const supabase = createServerClient(
     supabaseUrl!,

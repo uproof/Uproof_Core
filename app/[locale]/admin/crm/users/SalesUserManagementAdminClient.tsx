@@ -3,9 +3,8 @@
 import {FormEvent, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import Link from 'next/link';
 import Card from '@/components/Card';
-import type {CrmUser} from '@/lib/crmUsersStore';
 
-type CrmUserPublic = CrmUser & {hasPassword?: boolean};
+type CrmUserPublic = {id: string; email: string; name: string; role: 'sales' | 'superadmin'; isActive: boolean; hasPassword?: boolean};
 type CrmUserActivity = {id: number; actorEmail: string; actorRole: string; action: string; leadId: string; detail: string; createdAt: string};
 type CrmLead = {id: string; assignedSalesUserId?: string | null; createdAt?: string; createdAtUtc?: string};
 
