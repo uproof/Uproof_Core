@@ -1,19 +1,16 @@
 import {createHash} from 'node:crypto';
 import {getCrmLeads} from '@/lib/crmLeadsStore';
 import type {CrmCustomer} from '@/lib/crmMockData';
+import {createCrmCustomerFingerprint, normalizeCrmEmail, normalizeCrmPhone, normalizeCrmText} from '@/lib/crmContacts';
 
 type CrmCustomersOptions = {
   assignedSalesUserId?: string;
   limit?: number;
 };
 
-function normalizeKey(value: string) {
-  return value.trim().toLowerCase().replace(/\s+/g, ' ');
-}
-
 function customerId(customer: string, company: string, phone: string, email: string) {
   const hash = createHash('sha1')
-    .update([customer, company, phone, email].map(normalizeKey).join('|'))
+    .update(createCrmCustomerFingerprint(customer, company, phone, email))
     .digest('hex')
     .slice(0, 10);
   return `C-${hash}`;
@@ -36,10 +33,10 @@ export async function getCrmCustomers(options: CrmCustomersOptions = {}): Promis
 
     customers.set(id, {
       id,
-      name: lead.customer,
-      company: lead.company,
-      phone: lead.phone,
-      email: lead.email,
+      name: normalizeCrmText(lead.customer),
+      company: normalizeCrmText(lead.company),
+      phone: normalizeCrmPhone(lead.phone),
+      email: normalizeCrmEmail(lead.email),
       leads: 1,
       lastContact: lead.updatedAt,
     });

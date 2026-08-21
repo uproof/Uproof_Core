@@ -2,10 +2,9 @@
 
 import {useMemo, useState} from 'react';
 import Link from 'next/link';
-import {ArrowTopRightOnSquareIcon} from '@heroicons/react/24/outline';
+import {ArrowTopRightOnSquareIcon, ChatBubbleLeftRightIcon, ClockIcon, UserPlusIcon} from '@heroicons/react/24/outline';
 import Section from '@/components/Section';
 import type {CrmLead} from '@/lib/crmMockData';
-import {maskEmail, maskPhone} from '@/lib/sensitiveMask';
 
 type Props = {
   locale: string;
@@ -13,192 +12,340 @@ type Props = {
   isSalesView: boolean;
 };
 
-type DashboardSortKey = 'updated-desc' | 'updated-asc' | 'identifier-asc' | 'identifier-desc' | 'customer-asc' | 'customer-desc' | 'activity-asc' | 'activity-desc' | 'value-asc' | 'value-desc' | 'deal-asc' | 'deal-desc';
+type PipelineStageKey = 'new' | 'processing' | 'estimated' | 'quotes-sent' | 'archived';
+type DateFilterKey = 'all' | 'today' | 'last-7-days' | 'last-30-days' | 'this-month';
 
-const activityRank: Record<string, number> = {
-  'First call': 1,
-  '2nd call': 2,
-  '3rd call': 3,
-  Message: 4,
-  Email: 5,
+type PipelineStage = {
+  key: PipelineStageKey;
+  labelEn: string;
+  labelLv: string;
+  toneClass: string;
+  laneClass: string;
 };
+
+const PIPELINE_STAGES: PipelineStage[] = [
+  {key: 'new', labelEn: 'New', labelLv: 'Jauni', toneClass: 'border-gray-400 bg-gray-300', laneClass: 'border-gray-300 bg-gray-100'},
+  {key: 'processing', labelEn: 'Processing', labelLv: 'Apstrādē', toneClass: 'border-gray-400 bg-gray-300', laneClass: 'border-gray-300 bg-gray-100'},
+  {key: 'estimated', labelEn: 'Estimated', labelLv: 'Novērtēti', toneClass: 'border-gray-400 bg-gray-300', laneClass: 'border-gray-300 bg-gray-100'},
+  {key: 'quotes-sent', labelEn: 'Quotes sent', labelLv: 'Tāmes nosūtītas', toneClass: 'border-gray-400 bg-gray-300', laneClass: 'border-gray-300 bg-gray-100'},
+  {key: 'archived', labelEn: 'Archived', labelLv: 'Arhivēti', toneClass: 'border-gray-500 bg-gray-400', laneClass: 'border-gray-400 bg-gray-200'},
+];
+
+const ESTIMATOR_COMPLETION_KEYS: Array<keyof CrmLead['estimatorData']> = [
+  'roofProblem',
+  'existingRoofCovering',
+  'existingRoofArea',
+  'buildingType',
+  'desiredRoofCovering',
+  'materialType',
+  'roofPitch',
+  'gutterSystem',
+  'insulation',
+  'roofStructureCondition',
+];
+
+const ESTIMATOR_ESTIMATED_THRESHOLD = 4;
+
+function getLeadCreatedAtMs(lead: CrmLead) {
+  const raw = lead.createdAtUtc || lead.createdAt || '';
+  if (!raw) return null;
+  const timestamp = Date.parse(raw);
+  return Number.isFinite(timestamp) ? timestamp : null;
+}
+
+function getLeadActivityAtMs(lead: CrmLead) {
+  const raw = lead.updatedAtUtc || lead.updatedAt || lead.createdAtUtc || lead.createdAt || '';
+  const timestamp = Date.parse(raw);
+  return Number.isFinite(timestamp) ? timestamp : null;
+}
+
+function isClientResponse(lead: CrmLead) {
+  const activity = `${lead.activityUpdate} ${lead.note} ${lead.nextAction}`.toLowerCase();
+  return ['message', 'email', 'response', 'replied', 'reply', 'client called', 'client responded'].some((term) => activity.includes(term));
+}
+
+function isWithinDateFilter(lead: CrmLead, filter: DateFilterKey) {
+  if (filter === 'all') return true;
+
+  const createdAtMs = getLeadCreatedAtMs(lead);
+  if (createdAtMs == null) return false;
+
+  const now = new Date();
+  const createdAt = new Date(createdAtMs);
+
+  if (filter === 'today') {
+    return createdAt.toDateString() === now.toDateString();
+  }
+
+  if (filter === 'last-7-days') {
+    return now.getTime() - createdAtMs <= 7 * 24 * 60 * 60 * 1000;
+  }
+
+  if (filter === 'last-30-days') {
+    return now.getTime() - createdAtMs <= 30 * 24 * 60 * 60 * 1000;
+  }
+
+  if (filter === 'this-month') {
+    return createdAt.getFullYear() === now.getFullYear() && createdAt.getMonth() === now.getMonth();
+  }
+
+  return true;
+}
 
 function parseMoney(value: string) {
   const numeric = Number.parseFloat(value.replace(/[^\d,.-]/g, '').replace(',', '.'));
   return Number.isFinite(numeric) ? numeric : 0;
 }
 
-function compareText(left: string, right: string) {
-  return left.localeCompare(right, undefined, {numeric: true, sensitivity: 'base'});
-}
-
 function getDashboardSearchText(lead: CrmLead) {
   return [
     lead.id,
+    lead.problem,
+    lead.title,
     lead.customer,
     lead.company,
-    lead.phone,
-    lead.email,
     lead.address,
     lead.status,
-    lead.progress,
     lead.activityUpdate,
-    lead.dealProgress,
-    lead.owner,
     lead.value,
     lead.nextAction,
+    lead.note,
   ].join(' ');
+}
+
+function getEstimatorCompletionCount(lead: CrmLead) {
+  return ESTIMATOR_COMPLETION_KEYS.reduce((count, key) => {
+    const value = lead.estimatorData?.[key];
+    if (typeof value === 'string') {
+      return value.trim() ? count + 1 : count;
+    }
+    if (typeof value === 'number') {
+      return Number.isFinite(value) ? count + 1 : count;
+    }
+    if (typeof value === 'boolean') {
+      return count + 1;
+    }
+    return value != null ? count + 1 : count;
+  }, 0);
+}
+
+function getPipelineStage(lead: CrmLead): PipelineStageKey {
+  const status = String(lead.status || '').toUpperCase();
+  if (['WON', 'LOST', 'PROJECT_STARTED', 'COMPLETED', 'CANCELLED'].includes(status)) {
+    return 'archived';
+  }
+
+  if (status === 'QUOTE_SENT') {
+    return 'quotes-sent';
+  }
+
+  if (status === 'NEW') {
+    return 'new';
+  }
+
+  if (status === 'ESTIMATING') {
+    return 'estimated';
+  }
+
+  return 'processing';
+}
+
+function formatValue(value: string, locale: string) {
+  const amount = parseMoney(value);
+  if (!amount) return value || '-';
+  return new Intl.NumberFormat(locale === 'lv' ? 'lv-LV' : 'en-GB', {
+    style: 'currency',
+    currency: 'EUR',
+    maximumFractionDigits: 0,
+  }).format(amount);
 }
 
 export default function CrmDashboardClient({locale, leads, isSalesView}: Props) {
   const isLv = locale === 'lv';
   const [query, setQuery] = useState('');
-  const [sortKey, setSortKey] = useState<DashboardSortKey>('updated-desc');
+  const [dateFilter, setDateFilter] = useState<DateFilterKey>('all');
 
   const filteredLeads = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
 
     return leads
+      .filter((lead) => isWithinDateFilter(lead, dateFilter))
       .filter((lead) => {
         if (!normalizedQuery) return true;
         return getDashboardSearchText(lead).toLowerCase().includes(normalizedQuery);
       })
       .sort((left, right) => {
-        switch (sortKey) {
-          case 'updated-asc':
-            return compareText(left.updatedAtUtc || left.updatedAt, right.updatedAtUtc || right.updatedAt);
-          case 'updated-desc':
-            return compareText(right.updatedAtUtc || right.updatedAt, left.updatedAtUtc || left.updatedAt);
-          case 'identifier-asc':
-            return compareText(left.id, right.id);
-          case 'identifier-desc':
-            return compareText(right.id, left.id);
-          case 'customer-asc':
-            return compareText(left.customer, right.customer);
-          case 'customer-desc':
-            return compareText(right.customer, left.customer);
-          case 'activity-asc':
-            return (activityRank[left.activityUpdate] || 999) - (activityRank[right.activityUpdate] || 999) || compareText(left.activityUpdate, right.activityUpdate);
-          case 'activity-desc':
-            return (activityRank[right.activityUpdate] || 999) - (activityRank[left.activityUpdate] || 999) || compareText(right.activityUpdate, left.activityUpdate);
-          case 'value-asc':
-            return parseMoney(left.value) - parseMoney(right.value) || compareText(left.value, right.value);
-          case 'value-desc':
-            return parseMoney(right.value) - parseMoney(left.value) || compareText(right.value, left.value);
-          case 'deal-asc':
-            return compareText(left.dealProgress, right.dealProgress);
-          case 'deal-desc':
-            return compareText(right.dealProgress, left.dealProgress);
-          default:
-            return 0;
+        const rightCreatedAt = getLeadCreatedAtMs(right) || 0;
+        const leftCreatedAt = getLeadCreatedAtMs(left) || 0;
+        if (rightCreatedAt !== leftCreatedAt) {
+          return rightCreatedAt - leftCreatedAt;
         }
+        return (right.updatedAtUtc || right.updatedAt).localeCompare(left.updatedAtUtc || left.updatedAt);
       });
-  }, [leads, query, sortKey]);
+  }, [dateFilter, leads, query]);
+
+  const board = useMemo(() => {
+    const initial: Record<PipelineStageKey, CrmLead[]> = {
+      new: [],
+      processing: [],
+      estimated: [],
+      'quotes-sent': [],
+      archived: [],
+    };
+
+    for (const lead of filteredLeads) {
+      initial[getPipelineStage(lead)].push(lead);
+    }
+
+    return initial;
+  }, [filteredLeads]);
+
+  const notificationGroups = useMemo(() => {
+    const now = Date.now();
+    const inactiveCutoff = now - 3 * 24 * 60 * 60 * 1000;
+    const activeLeads = leads.filter((lead) => !['WON', 'LOST', 'PROJECT_STARTED', 'COMPLETED', 'CANCELLED'].includes(String(lead.status || '').toUpperCase()));
+
+    return [
+      {
+        key: 'new',
+        label: isLv ? 'Jauni līdi' : 'New leads',
+        icon: UserPlusIcon,
+        tone: 'border-sky-200 bg-sky-50',
+        leads: activeLeads.filter((lead) => String(lead.status || '').toUpperCase() === 'NEW'),
+      },
+      {
+        key: 'responses',
+        label: isLv ? 'Klientu atbildes' : 'Client responses',
+        icon: ChatBubbleLeftRightIcon,
+        tone: 'border-emerald-200 bg-emerald-50',
+        leads: activeLeads.filter(isClientResponse),
+      },
+      {
+        key: 'inactive',
+        label: isLv ? 'Neaktīvi 3+ dienas' : 'Inactive for 3+ days',
+        icon: ClockIcon,
+        tone: 'border-amber-200 bg-amber-50',
+        leads: activeLeads.filter((lead) => {
+          const activityAt = getLeadActivityAtMs(lead);
+          return activityAt != null && activityAt < inactiveCutoff;
+        }),
+      },
+    ];
+  }, [isLv, leads]);
 
   return (
     <Section pad="sm" className="px-0 !py-0">
-      <div className="mb-4 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-sky-500">{isLv ? 'Līdu pārskats' : 'Lead board'}</p>
-          <p className="mt-1 text-sm text-slate-500">{isLv ? 'Meklē pēc identifikatora, aktivitātes, vērtības vai klienta.' : 'Search by identifier, activity, value, or customer.'}</p>
-        </div>
+      <div className="grid gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
+        <aside className="min-w-0 lg:-ml-3 lg:translate-y-8">
+          <section className="flex w-full flex-col gap-3" aria-label={isLv ? 'Paziņojumi' : 'Notifications'}>
+        {notificationGroups.map((group) => {
+          const Icon = group.icon;
+          return (
+            <div key={group.key} className={`w-full rounded-2xl border p-3 ${group.tone}`}>
+              <div className="mb-2 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2 text-sm font-semibold text-slate-900">
+                  <Icon className="h-5 w-5 text-slate-600" />
+                  {group.label}
+                </div>
+                <span className="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-slate-700">{group.leads.length}</span>
+              </div>
+              {group.leads.length > 0 ? (
+                <div className="space-y-1.5">
+                  {group.leads.slice(0, 4).map((lead) => (
+                    <Link key={`${group.key}-${lead.id}`} href={`/${locale}/crm/leads/${lead.id.toLowerCase()}`} className="block rounded-xl bg-white/80 px-3 py-2 text-sm text-slate-700 transition hover:bg-white">
+                      <span className="font-semibold text-slate-900">{lead.title || lead.customer || lead.id}</span>
+                      <span className="ml-2 text-xs text-slate-500">{lead.customer}</span>
+                    </Link>
+                  ))}
+                  {group.leads.length > 4 && <p className="px-1 pt-1 text-xs text-slate-500">+{group.leads.length - 4} more</p>}
+                </div>
+              ) : (
+                <p className="px-1 py-2 text-sm text-slate-500">{isLv ? 'Nav paziņojumu.' : 'No notifications.'}</p>
+              )}
+            </div>
+          );
+        })}
+          </section>
+        </aside>
 
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <label className="flex min-w-[18rem] flex-1 items-center gap-2 rounded-2xl border border-sky-100 bg-white px-4 py-3 shadow-sm">
-            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-500">{isLv ? 'Meklēt' : 'Search'}</span>
-            <input
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder={isLv ? 'L-1040, aktivitāte, summa...' : 'L-1040, activity, amount...'}
-              className="w-full bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400"
-            />
-          </label>
+        <div className="min-w-0">
+          <div className="mb-4">
+            <div className="rounded-2xl border border-sky-100 bg-white p-3 shadow-sm">
+              <div className="grid gap-3 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+                <label className="flex w-full items-center gap-3 rounded-xl border border-sky-100 bg-sky-50/30 px-4 py-3">
+                  <span className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-500">{isLv ? 'Meklēt' : 'Search'}</span>
+                  <input
+                    value={query}
+                    onChange={(event) => setQuery(event.target.value)}
+                    placeholder={isLv ? 'Nosaukums, klients, adrese, nākamā darbība...' : 'Title, client, address, next action...'}
+                    className="w-full bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400"
+                  />
+                </label>
 
-          <label className="flex items-center gap-2 rounded-2xl border border-sky-100 bg-white px-4 py-3 shadow-sm">
-            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-500">{isLv ? 'Kārtot' : 'Sort'}</span>
-            <select value={sortKey} onChange={(event) => setSortKey(event.target.value as DashboardSortKey)} className="bg-transparent text-sm text-slate-900 outline-none">
-              <option value="updated-desc">{isLv ? 'Jaunākie pirmie' : 'Newest first'}</option>
-              <option value="updated-asc">{isLv ? 'Vecākie pirmie' : 'Oldest first'}</option>
-              <option value="identifier-asc">{isLv ? 'ID A-Z' : 'ID A-Z'}</option>
-              <option value="identifier-desc">{isLv ? 'ID Z-A' : 'ID Z-A'}</option>
-              <option value="customer-asc">{isLv ? 'Klients A-Z' : 'Customer A-Z'}</option>
-              <option value="customer-desc">{isLv ? 'Klients Z-A' : 'Customer Z-A'}</option>
-              <option value="activity-desc">{isLv ? 'Aktivitāte (jaunākā)' : 'Activity first'}</option>
-              <option value="activity-asc">{isLv ? 'Aktivitāte (vecākā)' : 'Activity reverse'}</option>
-              <option value="value-desc">{isLv ? 'Vērtība no lielākās' : 'Value high to low'}</option>
-              <option value="value-asc">{isLv ? 'Vērtība no mazākās' : 'Value low to high'}</option>
-              <option value="deal-asc">{isLv ? 'Darījums A-Z' : 'Deal A-Z'}</option>
-              <option value="deal-desc">{isLv ? 'Darījums Z-A' : 'Deal Z-A'}</option>
-            </select>
-          </label>
-        </div>
-      </div>
-
-      <div className="mb-4 rounded-2xl border border-sky-100 bg-white p-3 shadow-sm">
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="rounded-xl bg-sky-50 px-3 py-2">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-500">{isLv ? 'Pārskats' : 'Overview'}</p>
-            <p className="text-sm font-semibold text-slate-900">{isLv ? 'Līdu plūsma' : 'Lead flow'}</p>
-          </div>
-          <div className="rounded-xl border border-sky-100 px-3 py-2">
-            <p className="text-xl font-bold text-slate-900">{filteredLeads.filter((lead) => !['WON', 'LOST', 'COMPLETED', 'CANCELLED'].includes(lead.status)).length}</p>
-            <p className="text-xs text-slate-600">{isLv ? 'Atvērti līdi' : 'Open leads'}</p>
-          </div>
-          <div className="rounded-xl border border-sky-100 px-3 py-2">
-            <p className="text-xl font-bold text-slate-900">{filteredLeads.filter((lead) => lead.status === 'INSPECTION_SCHEDULED').length}</p>
-            <p className="text-xs text-slate-600">{isLv ? 'Plānotas apskates' : 'Scheduled inspections'}</p>
-          </div>
-          <div className="ml-auto rounded-xl border border-sky-100 px-3 py-2 text-sm text-slate-600">
-            {isLv ? `Atrasti ${filteredLeads.length} līdi` : `Found ${filteredLeads.length} leads`}
-          </div>
-        </div>
-      </div>
-
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)] lg:items-start">
-        <div className="order-2 h-fit overflow-hidden rounded-3xl border border-sky-100 bg-white shadow-sm lg:sticky lg:top-4">
-          <div className="grid grid-cols-[1.15fr_0.7fr_0.65fr_0.7fr_0.8fr_0.75fr] gap-0 border-b border-sky-100 bg-sky-50 px-5 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-sky-500">
-            <div>{isLv ? 'Līds' : 'Lead'}</div>
-            <div>{isLv ? 'Statuss' : 'Status'}</div>
-            <div>{isLv ? 'Progress' : 'Progress'}</div>
-            <div>{isLv ? 'Aktivitāte' : 'Activity'}</div>
-            <div>{isLv ? 'Darījums' : 'Deal'}</div>
-            <div>{isLv ? 'Piezīme' : 'Note'}</div>
+                <label className="flex w-full items-center gap-3 rounded-xl border border-sky-100 bg-sky-50/30 px-4 py-3">
+                  <span className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-500">{isLv ? 'Pievienošanas laiks' : 'Date added'}</span>
+                  <select
+                    value={dateFilter}
+                    onChange={(event) => setDateFilter(event.target.value as DateFilterKey)}
+                    className="w-full bg-transparent text-sm text-slate-900 outline-none"
+                  >
+                    <option value="all">{isLv ? 'Visi laiki' : 'All time'}</option>
+                    <option value="today">{isLv ? 'Šodien' : 'Today'}</option>
+                    <option value="last-7-days">{isLv ? 'Pēdējās 7 dienas' : 'Last 7 days'}</option>
+                    <option value="last-30-days">{isLv ? 'Pēdējās 30 dienas' : 'Last 30 days'}</option>
+                    <option value="this-month">{isLv ? 'Šis mēnesis' : 'This month'}</option>
+                  </select>
+                </label>
+              </div>
+            </div>
           </div>
 
-          <div className="divide-y divide-sky-100">
-            {filteredLeads.map((lead) => (
-              <Link
-                key={lead.id}
-                href={`/${locale}/crm/leads/${lead.id.toLowerCase()}`}
-                className="grid grid-cols-[1.15fr_0.7fr_0.65fr_0.7fr_0.8fr_0.75fr] items-center gap-0 px-5 py-5 transition hover:bg-sky-50/60"
-              >
-                <div>
-                  <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-sky-500">
-                    {lead.id}
-                    <ArrowTopRightOnSquareIcon className="h-3.5 w-3.5" />
-                  </div>
-                  <div className="mt-2 text-base font-semibold text-slate-900">{lead.customer}</div>
-                  <div className="mt-1 text-sm text-slate-600">{lead.address}</div>
-                  <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-slate-500">
-                    <span>{isLv ? 'Kontakts:' : 'Contact:'}</span>
-                    <span>{isSalesView ? maskPhone(lead.phone) : lead.phone}</span>
-                    <span>·</span>
-                    <span>{isSalesView ? maskEmail(lead.email) : lead.email}</span>
+          <div className="space-y-4 pb-2">
+        {PIPELINE_STAGES.map((stage) => {
+          const stageLeads = board[stage.key];
+
+          return (
+            <section key={stage.key} className="rounded-3xl border border-slate-200 bg-white p-3 shadow-sm">
+              <div className={`mb-3 flex items-center justify-between rounded-2xl border px-3 py-2 ${stage.toneClass}`}>
+                <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-slate-900">{isLv ? stage.labelLv : stage.labelEn}</h3>
+                <span className="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-slate-700">{stageLeads.length}</span>
+              </div>
+
+              {stageLeads.length > 0 ? (
+                <div className={`max-h-[420px] overflow-auto rounded-2xl border p-2 ${stage.laneClass}`}>
+                  <div className="flex min-w-max items-stretch gap-3 pb-1">
+                    {stageLeads.map((lead) => (
+                      <Link
+                        key={lead.id}
+                        href={`/${locale}/crm/leads/${lead.id.toLowerCase()}`}
+                        className="block min-h-[220px] w-[320px] shrink-0 rounded-2xl border border-gray-400 bg-gray-200 p-3 shadow-sm transition hover:border-gray-500 hover:bg-gray-300 hover:shadow"
+                      >
+                        <div className="mb-2 flex items-center justify-between gap-2">
+                          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-600">{lead.id}</p>
+                          <ArrowTopRightOnSquareIcon className="h-3.5 w-3.5 text-sky-500" />
+                        </div>
+
+                        <div className="space-y-1.5 text-sm text-slate-700">
+                          <p><span className="font-semibold text-slate-900">Title:</span> {lead.title || lead.problem || lead.note || '-'}</p>
+                          <p><span className="font-semibold text-slate-900">{isLv ? 'Last Activity:' : 'Last Activity:'}</span> {lead.activityUpdate || '-'}</p>
+                          <p><span className="font-semibold text-slate-900">{isLv ? 'Address:' : 'Address:'}</span> {lead.address || '-'}</p>
+                          <p><span className="font-semibold text-slate-900">{isLv ? 'Total Value:' : 'Total Value:'}</span> {formatValue(lead.value, locale)}</p>
+                          <p><span className="font-semibold text-slate-900">{isLv ? 'Client Name:' : 'Client Name:'}</span> {lead.customer || '-'}</p>
+                          <p><span className="font-semibold text-slate-900">{isLv ? 'Next action:' : 'Next action:'}</span> {lead.nextAction || lead.note || '-'}</p>
+                        </div>
+                      </Link>
+                    ))}
                   </div>
                 </div>
-
-                <div className="pr-3 text-sm text-slate-700">{lead.status.replaceAll('_', ' ')}</div>
-                <div className="pr-3 text-sm text-slate-700">{lead.progress}</div>
-                <div className="pr-3 text-sm text-slate-700">{lead.activityUpdate}</div>
-                <div className="pr-3 text-sm text-slate-700">{lead.dealProgress}</div>
-                <div className="pr-3 text-sm text-slate-600 line-clamp-2">{lead.note}</div>
-              </Link>
-            ))}
+              ) : (
+                <div className={`rounded-2xl border border-dashed px-3 py-5 text-center text-sm text-slate-500 ${stage.laneClass}`}>
+                  {isLv ? 'Nav līdu šajā rindā.' : 'No leads in this row.'}
+                </div>
+              )}
+            </section>
+          );
+        })}
           </div>
-
-          {filteredLeads.length === 0 ? (
-            <div className="border-t border-dashed border-sky-200 px-5 py-6 text-sm text-slate-600">{isLv ? 'Nav līdu, kas atbilst filtram.' : 'No leads match the current search.'}</div>
-          ) : null}
         </div>
       </div>
     </Section>

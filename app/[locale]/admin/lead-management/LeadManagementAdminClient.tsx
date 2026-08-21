@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Card from '@/components/Card';
 import ToastBanner from '@/components/ToastBanner';
 import type {CrmLead} from '@/lib/crmMockData';
+import type {CrmUser} from '@/lib/crmUsersStore';
 
 type Props = {
   locale: string;
@@ -13,7 +14,6 @@ type Props = {
   initialCrmUsers?: CrmUser[];
   initialActivity?: unknown[];
 };
-type CrmUser = {id: string; email: string; name: string; role: 'sales' | 'superadmin'; isActive: boolean};
 
 type LeadDraft = {
   customer: string;

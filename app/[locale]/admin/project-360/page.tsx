@@ -5,6 +5,28 @@ import {getProject360SheetConfig, loadProject360Sheets} from '@/lib/googleSheets
 
 type Props = {params: Promise<{locale: string}>};
 
+type SheetSummary = {
+  title: string;
+  sheetName: string;
+  description: string;
+  rows: string[][];
+  rowCount: number;
+  dataRowCount: number;
+  columnCount: number;
+};
+
+function getSheetSummary(title: string, sheetName: string, description: string, rows: string[][]): SheetSummary {
+  return {
+    title,
+    sheetName,
+    description,
+    rows,
+    rowCount: rows.length,
+    dataRowCount: rows.length > 0 ? Math.max(rows.length - 1, 0) : 0,
+    columnCount: rows[0]?.length ?? 0,
+  };
+}
+
 function renderCell(value: string | undefined, index: number) {
   return <td key={index} className="border-b border-slate-100 px-3 py-2 align-top text-sm text-slate-700">{value || '—'}</td>;
 }
@@ -23,6 +45,9 @@ export default async function AdminProject360Page({params}: Props) {
 
   const config = getProject360SheetConfig();
   const sheets = config ? await loadProject360Sheets(config) : [];
+  const summaries = sheets.map((sheet) => getSheetSummary(sheet.title, sheet.sheetName, sheet.description, sheet.rows));
+  const totalRows = summaries.reduce((total, sheet) => total + sheet.dataRowCount, 0);
+  const connectedSheets = summaries.filter((sheet) => sheet.rowCount > 0).length;
 
   return (
     <div className="px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
@@ -37,8 +62,26 @@ export default async function AdminProject360Page({params}: Props) {
         </Link>
       </div>
 
+      <div className="grid gap-4 md:grid-cols-3">
+        <div className="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-600">Connected sheets</p>
+          <p className="mt-2 text-3xl font-bold text-slate-900">{connectedSheets}</p>
+          <p className="mt-1 text-sm text-slate-600">Sheets returning rows to the dashboard.</p>
+        </div>
+        <div className="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-600">Visible rows</p>
+          <p className="mt-2 text-3xl font-bold text-slate-900">{totalRows}</p>
+          <p className="mt-1 text-sm text-slate-600">Data rows shown across the connected tabs.</p>
+        </div>
+        <div className="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-600">Integration status</p>
+          <p className="mt-2 text-lg font-semibold text-slate-900">{config ? 'Configured' : 'Not configured'}</p>
+          <p className="mt-1 text-sm text-slate-600">Google Sheets API key and spreadsheet ID are required.</p>
+        </div>
+      </div>
+
       {!config ? (
-        <div className="rounded-2xl border border-dashed border-emerald-200 bg-white px-5 py-4 text-sm text-slate-600 shadow-sm">
+        <div className="mt-6 rounded-2xl border border-dashed border-emerald-200 bg-white px-5 py-4 text-sm text-slate-600 shadow-sm">
           Set <span className="font-semibold text-slate-900">GOOGLE_SHEETS_API_KEY</span> and <span className="font-semibold text-slate-900">PROJECT_360_SPREADSHEET_ID</span> in the CRM env file to connect the dashboard.
           <div className="mt-2 text-xs text-slate-500">
             Optional ranges: <span className="font-mono">PROJECT_360_OCR_RANGE</span>, <span className="font-mono">PROJECT_360_ESTIMATOR_RANGE</span>, <span className="font-mono">PROJECT_360_FILES_RANGE</span>.
@@ -47,12 +90,17 @@ export default async function AdminProject360Page({params}: Props) {
       ) : null}
 
       <div className="mt-6 grid gap-6 xl:grid-cols-3">
-        {sheets.map((sheet) => (
+        {summaries.map((sheet) => (
           <section key={sheet.title} className="overflow-hidden rounded-3xl border border-emerald-100 bg-white shadow-sm">
             <div className="border-b border-emerald-100 bg-emerald-50 px-5 py-4">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-600">{sheet.sheetName}</p>
               <h3 className="mt-1 text-lg font-semibold text-slate-900">{sheet.title}</h3>
               <p className="mt-1 text-sm text-slate-600">{sheet.description}</p>
+              <div className="mt-3 flex flex-wrap gap-2 text-xs font-medium text-slate-600">
+                <span className="rounded-full bg-white px-2.5 py-1 ring-1 ring-emerald-100">{sheet.rowCount} total rows</span>
+                <span className="rounded-full bg-white px-2.5 py-1 ring-1 ring-emerald-100">{sheet.dataRowCount} data rows</span>
+                <span className="rounded-full bg-white px-2.5 py-1 ring-1 ring-emerald-100">{sheet.columnCount} columns</span>
+              </div>
             </div>
 
             <div className="max-h-[34rem] overflow-auto">

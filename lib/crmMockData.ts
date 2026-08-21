@@ -16,6 +16,7 @@ export type CrmLead = {
   phone: string;
   email: string;
   address: string;
+  title?: string;
   problem: string;
   projectAddress: string;
   clientCharacterNote: string;
@@ -55,11 +56,17 @@ export type CrmProject = {
 
 export type CrmQuote = {
   id: string;
+  leadId?: string;
+  revisionNo?: number;
   customer: string;
   status: string;
   amount: string;
   sentAt: string;
   owner: string;
+  acceptedAt?: string;
+  acceptedProjectId?: string;
+  estimateRevisionId?: string;
+  acceptUrl?: string;
 };
 
 export const crmStats: Array<{label: string; value: string; delta: string; tone: string}> = [];
