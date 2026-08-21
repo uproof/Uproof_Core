@@ -3,8 +3,9 @@ import {nowIso} from '@/lib/crmDb';
 import {createOptionalCrmSupabaseClient as createSupabaseAdminClient} from '@/lib/crmStorage';
 import {findCrmLeadRowById, getCrmLeadById} from '@/lib/crmLeadsStore';
 import {decryptSecret, encryptSecret, normalizeSecretInput, validatePasswordPolicy} from '@/lib/secretVault';
+import {CRM_ROLES, normalizeCrmRole, type CrmRole} from '@/lib/crmRoles';
 
-export type CrmUserRole = 'sales' | 'superadmin';
+export type CrmUserRole = CrmRole;
 
 export type CrmUser = {
   id: string;
@@ -86,7 +87,7 @@ export async function getCrmUsers(): Promise<CrmUser[]> {
     const {data, error} = await supabase
       .from('user_profiles')
       .select(PUBLIC_USER_SELECT)
-      .in('role', ['sales', 'superadmin'])
+      .in('role', CRM_ROLES)
       .order('created_at', {ascending: true});
 
     if (!error && data) {
@@ -286,7 +287,7 @@ export async function updateCrmUser(input: UpdateCrmUserInput): Promise<CrmUser 
   }
 
   const current = await getCrmUserById(userId);
-  if (!current || current.role !== 'sales') {
+  if (!current || !normalizeCrmRole(current.role)) {
     return null;
   }
 

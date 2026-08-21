@@ -1,4 +1,5 @@
 import type {AdminRole, AdminSession} from '@/lib/adminAuth';
+import {normalizeCrmRole} from '@/lib/crmRoles';
 
 export const SUPABASE_ACCESS_TOKEN_COOKIE = 'supabase-access-token';
 export const SUPABASE_REFRESH_TOKEN_COOKIE = 'supabase-refresh-token';
@@ -6,10 +7,6 @@ export const SUPABASE_REFRESH_TOKEN_COOKIE = 'supabase-refresh-token';
 export type SessionCookieReader = {
   get(name: string): {value: string} | undefined;
 };
-
-function normalizeRole(role: unknown): AdminRole | null {
-  return role === 'superadmin' || role === 'sales' ? role : null;
-}
 
 function decodeJwtIssuedAt(accessToken: string): number | null {
   const parts = accessToken.split('.');
@@ -58,7 +55,7 @@ export async function resolveSupabaseAdminSession(accessToken: string | undefine
     return null;
   }
 
-  const role = normalizeRole(
+  const role = normalizeCrmRole(
     payload.user_metadata && typeof payload.user_metadata === 'object'
       ? (payload.user_metadata as Record<string, unknown>).role
       : payload.app_metadata && typeof payload.app_metadata === 'object'

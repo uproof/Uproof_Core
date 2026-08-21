@@ -2,8 +2,9 @@ import createMiddleware from 'next-intl/middleware';
 import {routing} from './i18n/routing';
 import {NextRequest, NextResponse} from 'next/server';
 import {SUPABASE_ACCESS_TOKEN_COOKIE} from '@/lib/supabase/session';
-import {getCrmRedirectHost, isCrmHost, isInternalAuthPath, isLegacyInternalHost} from '@/lib/internalRouting';
+import {getCmsRedirectHost, getCrmRedirectHost, isCmsHost, isCrmHost, isInternalAuthPath, isLegacyInternalHost} from '@/lib/internalRouting';
 import {createClient as createSupabaseMiddlewareClient, applySupabaseCookies} from '@/utils/supabase/middleware';
+import {isSuperadminRole} from '@/lib/crmRoles';
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -84,6 +85,7 @@ export default async function middleware(request: NextRequest) {
   const pathname = nextUrl.pathname;
   const host = (request.headers.get('host') || '').split(':')[0].toLowerCase();
   const crmHost = isCrmHost(host);
+  const cmsHost = isCmsHost(host);
   const internalPath = isInternalAuthPath(pathname);
   const locale = getLocaleFromPath(pathname);
   const isCrmPath = /^\/(lv|en|nl-BE)\/crm(\/|$)/.test(pathname);
@@ -99,11 +101,24 @@ export default async function middleware(request: NextRequest) {
     cookies.get(SUPABASE_ACCESS_TOKEN_COOKIE)?.value,
   );
 
-  if (isLegacyInternalHost(host)) return redirectToHost(request, getCrmRedirectHost(host), undefined, supabaseResponse);
-  if (!crmHost && internalPath) return redirectToHost(request, getCrmRedirectHost(host), undefined, supabaseResponse);
+  if (isLegacyInternalHost(host)) return redirectToHost(request, getCmsRedirectHost(host), undefined, supabaseResponse);
+  if (!crmHost && !cmsHost && internalPath) return redirectToHost(request, isAdminPath || isAdminLoginPath ? getCmsRedirectHost(host) : getCrmRedirectHost(host), undefined, supabaseResponse);
+
+  if (crmHost && isAdminPath) {
+    return redirectToHost(request, getCmsRedirectHost(host), `/${locale}/admin`, supabaseResponse);
+  }
+
+  if (cmsHost && isCrmPath) {
+    return redirectToHost(request, getCrmRedirectHost(host), `/${locale}/crm`, supabaseResponse);
+  }
 
   if (crmHost && !internalPath) {
-    const landing = sessionRole === 'superadmin' ? `/${locale}/admin` : sessionRole === 'sales' ? `/${locale}/crm` : `/${locale}/login`;
+    const landing = sessionRole && isSuperadminRole(sessionRole) ? `/${locale}/admin` : sessionRole ? `/${locale}/crm` : `/${locale}/login`;
+    return redirectToHost(request, host, landing, supabaseResponse);
+  }
+
+  if (cmsHost && !internalPath) {
+    const landing = sessionRole && isSuperadminRole(sessionRole) ? `/${locale}/admin` : sessionRole ? `/${locale}/crm` : `/${locale}/admin/login`;
     return redirectToHost(request, host, landing, supabaseResponse);
   }
 
@@ -120,12 +135,12 @@ export default async function middleware(request: NextRequest) {
 
   if (isAdminPath && !isAdminLoginPath) {
     if (!sessionRole) return redirectToHost(request, host, `/${locale}/admin/login`, supabaseResponse);
-    if (sessionRole !== 'superadmin') return redirectToHost(request, host, `/${locale}/crm`, supabaseResponse);
+    if (!isSuperadminRole(sessionRole)) return redirectToHost(request, host, `/${locale}/crm`, supabaseResponse);
   }
 
   if (isCrmPath && !isCrmLoginPath) {
     if (!sessionRole) return redirectToHost(request, host, `/${locale}/crm/login`, supabaseResponse);
-    if (sessionRole === 'superadmin') return redirectToHost(request, host, `/${locale}/admin`, supabaseResponse);
+    if (isSuperadminRole(sessionRole)) return redirectToHost(request, host, `/${locale}/admin`, supabaseResponse);
   }
 
   if (isApiAdminPath && !isApiPublicAuthPath) {
@@ -138,7 +153,7 @@ export default async function middleware(request: NextRequest) {
   if (isApiAdminPath || isApiCrmPath || isApiSecurityPath) return next();
 
   if (isAdminPath || isCrmPath || isCrmLoginPath || isAdminLoginPath) {
-    if (!crmHost) return redirectToHost(request, getCrmRedirectHost(host), undefined, supabaseResponse);
+    if (!crmHost && !cmsHost) return redirectToHost(request, isAdminPath || isAdminLoginPath ? getCmsRedirectHost(host) : getCrmRedirectHost(host), undefined, supabaseResponse);
   }
 
   const setLocale = nextUrl.searchParams.get('setLocale');

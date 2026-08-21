@@ -64,6 +64,7 @@ function rowToLead(row: Record<string, string>, fallbackId: string): CrmLead {
     id: getRowValue(row, 'id', 'lead id', 'lead_id') || fallbackId,
     assignedSalesUserId: getRowValue(row, 'assignedSalesUserId', 'assigned sales user id', 'assigned_sales_user_id') || null,
     customer: getRowValue(row, 'customer', 'customer name', 'client', 'lead', 'name', 'full name'),
+    title: getRowValue(row, 'title', 'lead title', 'name of lead'),
     company: getRowValue(row, 'company', 'company name', 'business', 'organization', 'organization name'),
     phone: getRowValue(row, 'phone', 'phone number', 'mobile', 'telephone', 'tel'),
     email: getRowValue(row, 'email', 'e-mail', 'mail', 'email address'),
@@ -159,6 +160,7 @@ export async function POST(req: NextRequest) {
       const {error} = await supabase.from('crm_leads').upsert({
         external_id: lead.id,
         customer: lead.customer,
+        title: lead.title || lead.problem || lead.customer,
         company: lead.company,
         phone: lead.phone,
         email: lead.email,

@@ -1,12 +1,21 @@
 export const CRM_HOST = 'crm.uproof.eu';
+export const CMS_HOST = 'cms.uproof.eu';
 export const LEGACY_ADMIN_HOST = 'admin.uproof.eu';
 
 export function getCrmRedirectHost(host: string) {
   return host === 'localhost' || host === '127.0.0.1' || host === '::1' || host.endsWith('.localhost') ? 'crm.localhost' : CRM_HOST;
 }
 
+export function getCmsRedirectHost(host: string) {
+  return host === 'localhost' || host === '127.0.0.1' || host === '::1' || host.endsWith('.localhost') ? 'cms.localhost' : CMS_HOST;
+}
+
 export function isCrmHost(host: string) {
   return host === CRM_HOST || host === 'crm.localhost';
+}
+
+export function isCmsHost(host: string) {
+  return host === CMS_HOST || host === 'cms.localhost' || isLegacyInternalHost(host);
 }
 
 export function isLegacyInternalHost(host: string) {
