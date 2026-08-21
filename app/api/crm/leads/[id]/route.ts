@@ -12,6 +12,7 @@ import {mapCrmApiError} from '@/lib/crmApiErrors';
 import {z} from 'zod';
 
 const QUOTE_OPTION_TYPES = ['eco', 'optimal', 'lux'] as const;
+const CRM_LEAD_STATUSES = ['NEW', 'CONTACTED', 'INSPECTION_SCHEDULED', 'INSPECTION_COMPLETED', 'ESTIMATING', 'QUOTE_SENT', 'WON', 'LOST', 'PROJECT_STARTED', 'COMPLETED', 'CANCELLED'] as const;
 
 function extractQuoteOptions(estimatorData: {legacyRows?: Array<{label?: string; measurement?: string; notes?: string}>}) {
   const legacyRows = Array.isArray(estimatorData?.legacyRows) ? estimatorData.legacyRows : [];
@@ -48,7 +49,7 @@ const updateLeadSchema = z.object({
   projectAddress: z.string().trim().optional(),
   clientCharacterNote: z.string().trim().optional(),
   note: z.string().trim().optional(),
-  status: z.string().trim().optional(),
+  status: z.enum(CRM_LEAD_STATUSES).optional(),
   progress: z.string().trim().optional(),
   activityUpdate: z.string().trim().optional(),
   dealProgress: z.string().trim().optional(),

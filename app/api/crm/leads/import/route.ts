@@ -17,6 +17,7 @@ const importLeadRowSchema = z.object({
   phone: z.string().trim().min(1, 'Phone number is required'),
   email: z.string().trim().email('Invalid email address'),
   address: z.string().trim().min(1, 'Address is required'),
+  status: z.enum(['NEW', 'CONTACTED', 'INSPECTION_SCHEDULED', 'INSPECTION_COMPLETED', 'ESTIMATING', 'QUOTE_SENT', 'WON', 'LOST', 'PROJECT_STARTED', 'COMPLETED', 'CANCELLED']),
 });
 
 function normalizeHeaderKey(value: string) {
