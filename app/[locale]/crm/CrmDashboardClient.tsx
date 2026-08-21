@@ -312,7 +312,7 @@ export default function CrmDashboardClient({locale, leads, isSalesView}: Props) 
               </div>
 
               {stageLeads.length > 0 ? (
-                <div className={`overflow-x-auto rounded-2xl border p-2 ${stage.laneClass}`}>
+                <div className={`max-h-[420px] overflow-auto rounded-2xl border p-2 ${stage.laneClass}`}>
                   <div className="flex min-w-max items-stretch gap-3 pb-1">
                     {stageLeads.map((lead) => (
                       <Link
