@@ -105,10 +105,6 @@ export default async function middleware(request: NextRequest) {
   if (isLegacyInternalHost(host)) return redirectToHost(request, getCmsRedirectHost(host), undefined, supabaseResponse);
   if (!crmHost && !cmsHost && internalPath) return redirectToHost(request, isAdminPath || isAdminLoginPath ? getCmsRedirectHost(host) : getCrmRedirectHost(host), undefined, supabaseResponse);
 
-  if (crmHost && isAdminPath) {
-    return redirectToHost(request, host, `/${locale}/admin`, supabaseResponse);
-  }
-
   if (crmHost && isUnlocalizedAdminPath) {
     const preferredLocale = cookies.get('preferred_locale')?.value;
     const adminLocale = preferredLocale && ['lv', 'en', 'nl-BE'].includes(preferredLocale) ? preferredLocale : 'en';
