@@ -432,8 +432,8 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
     }
   };
 
-  const handleConnectGmail = () => {
-    window.open('/api/auth/google', 'crm-gmail-connect', 'popup,width=520,height=720');
+  const handleEmailClient = () => {
+    window.open('https://mail.google.com/mail/u/0/#inbox', 'crm-gmail-inbox', 'popup,width=980,height=760');
   };
 
   return (
@@ -454,9 +454,6 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
           </button>
           <button type="button" onClick={handleCreateQuote} className="inline-flex h-11 min-w-[150px] items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-white px-4 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50 disabled:cursor-not-allowed disabled:opacity-60" disabled={quoteState === 'creating'}>
             {isLv ? 'Izveidot tāmes melnrakstu' : 'Create quote draft'}
-          </button>
-          <button type="button" onClick={handleConnectGmail} className="inline-flex h-11 items-center justify-center rounded-xl border border-gray-300 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-gray-100">
-            {isLv ? 'Savienot Gmail' : 'Connect Gmail'}
           </button>
         </div>
       </div>
@@ -509,9 +506,9 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
             </div>
             <div className="flex items-center gap-3 rounded-2xl border border-gray-300 bg-gray-200 px-4 py-3 shadow-sm">
               <EnvelopeIcon className="h-4 w-4 shrink-0 text-sky-500" />
-              <a href={`mailto:${lead.email}`} className="text-sm font-semibold text-sky-700 hover:text-sky-800">
+              <button type="button" onClick={handleEmailClient} className="text-sm font-semibold text-sky-700 hover:text-sky-800">
                 {isLv ? 'Rakstīt klientam' : 'Email client'}
-              </a>
+              </button>
             </div>
             <div className="flex items-center gap-3 rounded-2xl border border-gray-300 bg-gray-200 px-4 py-3 shadow-sm"><MapPinIcon className="h-4 w-4 shrink-0 text-sky-500" /> <span className="min-w-0 break-words">{displayAddress}</span></div>
           </div>
