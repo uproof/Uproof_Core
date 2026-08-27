@@ -432,6 +432,10 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
     }
   };
 
+  const handleConnectGmail = () => {
+    window.open('/api/auth/google', 'crm-gmail-connect', 'popup,width=520,height=720');
+  };
+
   return (
     <Section pad="sm" className="px-0 !py-0">
       <div className="mb-3 flex flex-col gap-3 border-b border-sky-100 pb-3 sm:flex-row sm:items-end sm:justify-between">
@@ -450,6 +454,9 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
           </button>
           <button type="button" onClick={handleCreateQuote} className="inline-flex h-11 min-w-[150px] items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-white px-4 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50 disabled:cursor-not-allowed disabled:opacity-60" disabled={quoteState === 'creating'}>
             {isLv ? 'Izveidot tāmes melnrakstu' : 'Create quote draft'}
+          </button>
+          <button type="button" onClick={handleConnectGmail} className="inline-flex h-11 items-center justify-center rounded-xl border border-gray-300 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-gray-100">
+            {isLv ? 'Savienot Gmail' : 'Connect Gmail'}
           </button>
         </div>
       </div>
