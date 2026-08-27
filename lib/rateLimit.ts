@@ -56,7 +56,10 @@ export async function checkRateLimit(
   const allowed = count < config.maxRequests;
   const nextCount = allowed ? count + 1 : count;
 
-  await writeRateLimitRecord(identifier, nextCount, resetTime);
+  const stored = await writeRateLimitRecord(identifier, nextCount, resetTime);
+  if (process.env.NODE_ENV === 'production' && !stored) {
+    return {allowed: false, remaining: 0, resetTime};
+  }
 
   return {
     allowed,
@@ -117,13 +120,15 @@ async function readRateLimitRecord(identifier: string): Promise<RateLimitRecord 
       if (error && isRemoteRateLimitUnavailable(error)) {
         remoteRateLimitsEnabled = false;
       }
+    } else {
+      remoteRateLimitsEnabled = false;
     }
   }
 
   return inMemoryRateLimits.get(identifier) || null;
 }
 
-async function writeRateLimitRecord(identifier: string, count: number, resetTime: number): Promise<void> {
+async function writeRateLimitRecord(identifier: string, count: number, resetTime: number): Promise<boolean> {
   const payload = {
     identifier,
     count,
@@ -137,14 +142,18 @@ async function writeRateLimitRecord(identifier: string, count: number, resetTime
       const {error} = await supabase.from('rate_limits').upsert(payload);
       if (!error) {
         inMemoryRateLimits.set(identifier, {count, resetTime});
-        return;
+        return true;
       }
 
       if (isRemoteRateLimitUnavailable(error)) {
         remoteRateLimitsEnabled = false;
       }
+      if (process.env.NODE_ENV === 'production') {
+        return false;
+      }
     }
   }
 
   inMemoryRateLimits.set(identifier, {count, resetTime});
+  return process.env.NODE_ENV !== 'production';
 }

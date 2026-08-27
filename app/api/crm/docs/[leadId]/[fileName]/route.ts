@@ -30,6 +30,7 @@ export async function GET(
   }
 
   const {leadId, fileName} = await params;
+  const safeFileName = fileName.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 120) || 'document';
   
   const query = Object.fromEntries(req.nextUrl.searchParams.entries());
   const validation = docQuerySchema.safeParse(query);
@@ -80,7 +81,7 @@ export async function GET(
   const content = [
     'UpRoof CRM - Protected Document',
     `Lead ID: ${leadId}`,
-    `File: ${fileName}`,
+    `File: ${safeFileName}`,
     `Downloaded by: ${session.email} (${session.role})`,
     `Session: ${session.sid}`,
     `Time: ${new Date().toISOString()}`,
@@ -90,7 +91,7 @@ export async function GET(
     status: 200,
     headers: {
       'Content-Type': 'text/plain; charset=utf-8',
-      'Content-Disposition': `attachment; filename="${fileName}.txt"`,
+      'Content-Disposition': `attachment; filename="${safeFileName}.txt"`,
       'Cache-Control': 'no-store',
     },
   });

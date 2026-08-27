@@ -1,6 +1,7 @@
 import {NextRequest, NextResponse} from 'next/server';
 import {issuePasswordResetToken, getCrmUserByEmail} from '@/lib/crmUsersStore';
 import {isCrmHost} from '@/lib/internalRouting';
+import {checkRateLimit, RATE_LIMITS} from '@/lib/rateLimit';
 import {z} from 'zod';
 
 const requestResetSchema = z.object({
@@ -20,6 +21,11 @@ export async function POST(req: NextRequest) {
   }
 
   const {email} = validation.data;
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+  const limiter = await checkRateLimit(`crm-password-reset:${ip}:${email.toLowerCase()}`, RATE_LIMITS.LOGIN);
+  if (!limiter.allowed) {
+    return NextResponse.json({ok: true});
+  }
 
   const user = await getCrmUserByEmail(email);
   if (!user) {
@@ -28,9 +34,10 @@ export async function POST(req: NextRequest) {
   }
 
   const token = await issuePasswordResetToken(user.id, email);
-  const responseBody: Record<string, unknown> = {ok: true, expiresAt: token.expiresAt};
+  const responseBody: Record<string, unknown> = {ok: true};
 
   if (process.env.NODE_ENV !== 'production') {
+    responseBody.expiresAt = token.expiresAt;
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || new URL(req.url).origin;
     responseBody.resetUrl = `${baseUrl.replace(/\/$/, '')}/crm/reset-password/${token.token}`;
   }

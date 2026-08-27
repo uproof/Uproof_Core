@@ -15,6 +15,7 @@ export async function GET() {
 
     return NextResponse.json({ok: true, status: 'ready', timestamp: new Date().toISOString()});
   } catch (error: any) {
-    return NextResponse.json({ok: false, status: 'not_ready', error: error?.message || 'unavailable'}, {status: 503});
+    console.error('Readiness check failed', error);
+    return NextResponse.json({ok: false, status: 'not_ready', error: 'Service unavailable'}, {status: 503});
   }
 }
