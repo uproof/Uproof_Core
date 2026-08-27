@@ -30,6 +30,13 @@ function setSupabaseAuthCookies(response: NextResponse, session: {access_token: 
   });
 }
 
+function getLocalDevCrmCredential() {
+  if (process.env.LOCAL_DEV_CRM_AUTH !== 'true') return null;
+  const email = (process.env.LOCAL_DEV_CRM_EMAIL || '').trim().toLowerCase();
+  const password = (process.env.LOCAL_DEV_CRM_PASSWORD || '').trim();
+  return email && password ? {email, password} : null;
+}
+
 export async function GET() {
   const token = await generateCsrfToken();
   return NextResponse.json({csrfToken: token});
@@ -83,6 +90,22 @@ export async function POST(req: NextRequest) {
   const supabase = createSupabaseServerClient();
   const adminSupabase = createSupabaseAdminClient();
   if (requestedCrmRole && !isSuperadminRole(requestedCrmRole)) {
+    const localCredential = isLocalDevHost ? getLocalDevCrmCredential() : null;
+    if (localCredential) {
+      if (email !== localCredential.email || parsedPassword !== localCredential.password) {
+        return NextResponse.json({ok: false, error: 'Invalid credentials'}, {status: 401});
+      }
+      const response = NextResponse.json({ok: true, nextStep: 'dashboard'});
+      response.cookies.set(ADMIN_SESSION_COOKIE, signToken({role: 'sales', email, ip}), {
+        httpOnly: true,
+        sameSite: 'strict',
+        secure: false,
+        path: '/',
+        maxAge: 60 * 60 * 24,
+      });
+      return response;
+    }
+
     if (!supabase || !adminSupabase) {
       return NextResponse.json({ok: false, error: 'CRM authentication is unavailable'}, {status: 503});
     }
