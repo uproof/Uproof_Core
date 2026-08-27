@@ -126,22 +126,6 @@ export async function getCrmUserByEmail(email: string): Promise<CrmUser | null> 
     return null;
   }
 
-  const localDevCrmEmail = (process.env.LOCAL_DEV_CRM_AUTH === 'true' ? process.env.LOCAL_DEV_CRM_EMAIL : '').trim().toLowerCase();
-  if (localDevCrmEmail && normalizedEmail === localDevCrmEmail) {
-    const now = nowIso();
-    return {
-      id: 'local-dev-crm-user',
-      email: localDevCrmEmail,
-      name: 'Local CRM Sales',
-      role: 'sales',
-      isActive: true,
-      sessionValidAfter: now,
-      archivedAt: '',
-      createdAt: now,
-      updatedAtUtc: now,
-    };
-  }
-
   const supabase = createSupabaseAdminClient();
   if (supabase) {
     const {data, error} = await supabase
