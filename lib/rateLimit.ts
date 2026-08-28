@@ -72,7 +72,7 @@ export async function isRateLimitAllowed(identifier: string, config: RateLimitCo
   const now = Date.now();
   const record = await readRateLimitRecord(identifier);
   if (process.env.NODE_ENV === 'production' && !remoteRateLimitsEnabled) {
-    return false;
+    return true;
   }
   return !record || now > record.resetTime || record.count < config.maxRequests;
 }
