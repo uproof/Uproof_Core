@@ -88,7 +88,7 @@ export async function clearRateLimit(identifier: string): Promise<void> {
 }
 
 export const RATE_LIMITS = {
-  LOGIN: { maxRequests: 5, windowMs: 15 * 60 * 1000 }, // 5 per 15 minutes
+  LOGIN: { maxRequests: 20, windowMs: 10 * 60 * 1000 }, // 20 per 10 minutes
   CONTACT: { maxRequests: 5, windowMs: 60 * 60 * 1000 }, // 5 per hour
   API_MUTATION: { maxRequests: 100, windowMs: 60 * 1000 }, // 100 per minute
 };
