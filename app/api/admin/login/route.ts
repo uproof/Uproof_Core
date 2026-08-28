@@ -6,7 +6,7 @@ import {
 } from '@/lib/adminAuth';
 import {normalizeCrmRole, isSuperadminRole} from '@/lib/crmRoles';
 import {generateCsrfToken} from '@/lib/csrf';
-import {RATE_LIMITS, checkRateLimit, clearRateLimit} from '@/lib/rateLimit';
+import {RATE_LIMITS, checkRateLimit, clearRateLimit, isRateLimitAllowed} from '@/lib/rateLimit';
 import {logCrmUserActivity} from '@/lib/crmUserActivityStore';
 import {parseEmail, parsePassword} from '@/lib/authValidation';
 import {createSupabaseServerClient, createSupabaseAdminClient} from '@/lib/supabase/server';
@@ -58,13 +58,13 @@ export async function POST(req: NextRequest) {
   }
 
   if (!isLocalDevHost) {
-    const ipLimit = await checkRateLimit(`admin-login:ip:${ip}`, RATE_LIMITS.LOGIN);
-    if (!ipLimit.allowed) {
+    const ipAllowed = await isRateLimitAllowed(`admin-login:ip:${ip}`, RATE_LIMITS.LOGIN);
+    if (!ipAllowed) {
       return NextResponse.json({ok: false, error: 'Too many attempts. Try again later.'}, {status: 429});
     }
 
-    const emailLimit = await checkRateLimit(`admin-login:email:${email}`, RATE_LIMITS.LOGIN);
-    if (!emailLimit.allowed) {
+    const emailAllowed = await isRateLimitAllowed(`admin-login:email:${email}`, RATE_LIMITS.LOGIN);
+    if (!emailAllowed) {
       return NextResponse.json({ok: false, error: 'Too many attempts. Try again later.'}, {status: 429});
     }
   }
@@ -72,6 +72,10 @@ export async function POST(req: NextRequest) {
   const approvedSuperadmin = getApprovedSuperadminCredentials().find((entry) => entry.email === email);
   if (!requestedCrmRole || isSuperadminRole(requestedCrmRole)) {
     if (!approvedSuperadmin || approvedSuperadmin.password !== parsedPassword) {
+      if (!isLocalDevHost) {
+        await checkRateLimit(`admin-login:ip:${ip}`, RATE_LIMITS.LOGIN);
+        await checkRateLimit(`admin-login:email:${email}`, RATE_LIMITS.LOGIN);
+      }
       return NextResponse.json({ok: false, error: 'Invalid credentials'}, {status: 401});
     }
   }
@@ -85,6 +89,10 @@ export async function POST(req: NextRequest) {
 
     const {data, error} = await supabase.auth.signInWithPassword({email, password: parsedPassword});
     if (error || !data.session) {
+      if (!isLocalDevHost) {
+        await checkRateLimit(`admin-login:ip:${ip}`, RATE_LIMITS.LOGIN);
+        await checkRateLimit(`admin-login:email:${email}`, RATE_LIMITS.LOGIN);
+      }
       return NextResponse.json({ok: false, error: 'Invalid credentials'}, {status: 401});
     }
 

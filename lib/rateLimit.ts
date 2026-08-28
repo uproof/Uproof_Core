@@ -68,6 +68,15 @@ export async function checkRateLimit(
   };
 }
 
+export async function isRateLimitAllowed(identifier: string, config: RateLimitConfig): Promise<boolean> {
+  const now = Date.now();
+  const record = await readRateLimitRecord(identifier);
+  if (process.env.NODE_ENV === 'production' && !remoteRateLimitsEnabled) {
+    return false;
+  }
+  return !record || now > record.resetTime || record.count < config.maxRequests;
+}
+
 export async function clearRateLimit(identifier: string): Promise<void> {
   if (remoteRateLimitsEnabled) {
     const supabase = createSupabaseAdminClient();
