@@ -4,8 +4,6 @@ import {getAdminSession} from '@/lib/adminAuth';
 import {getCrmLeads} from '@/lib/crmLeadsStore';
 import {getCrmUserById} from '@/lib/crmUsersStore';
 import {getRecentCrmUserActivity} from '@/lib/crmUserActivityStore';
-import CrmUserSecurityActions from '../CrmUserSecurityActions';
-import CrmUserDataActions from '../CrmUserDataActions';
 import CrmUserWorkLogActions from '../CrmUserWorkLogActions';
 
 type Props = {params: Promise<{locale: string; id: string}>};
@@ -41,7 +39,7 @@ function formatCallDuration(detail: string) {
     return '—';
   }
 
-  const match = normalized.match(/(?:call\s*duration|duration)\s*[:=]?\s*(\d+)\s*(s|sec|secs|second|seconds|m|min|mins|minute|minutes)?/i);
+  const match = normalized.match(/(?:call\s*duration|duration|call duration)\s*[:=]?\s*(\d+)\s*(s|sec|secs|second|seconds|m|min|mins|minute|minutes|h|hr|hrs|hour|hours)?/i);
   if (!match) {
     return '—';
   }
@@ -55,8 +53,39 @@ function formatCallDuration(detail: string) {
   if (unit.startsWith('s')) {
     return `${amount}s`;
   }
+  if (unit.startsWith('h')) {
+    return `${amount}h`;
+  }
 
   return `${amount}m`;
+}
+
+function extractMinutesFromDetail(detail: string) {
+  const normalized = String(detail || '').trim();
+  if (!normalized) {
+    return 0;
+  }
+
+  const match = normalized.match(/(?:call\s*duration|duration)\s*[:=]?\s*(\d+)\s*(s|sec|secs|second|seconds|m|min|mins|minute|minutes|h|hr|hrs|hour|hours)?/i);
+  if (!match) {
+    return 0;
+  }
+
+  const amount = Number(match[1]);
+  const unit = (match[2] || 'm').toLowerCase();
+  if (unit.startsWith('s')) {
+    return Number((amount / 60).toFixed(1));
+  }
+  if (unit.startsWith('h')) {
+    return Number((amount * 60).toFixed(1));
+  }
+  return Number(amount.toFixed(1));
+}
+
+function parseLeadValue(value?: string | number | null) {
+  const normalized = String(value ?? '').replace(/[^0-9.-]/g, '');
+  const parsed = Number(normalized || 0);
+  return Number.isFinite(parsed) ? parsed : 0;
 }
 
 export default async function AdminCrmUserDashboardPage({params}: Props) {
@@ -98,6 +127,18 @@ export default async function AdminCrmUserDashboardPage({params}: Props) {
   });
   const leadMap = new Map(leadRows.map(({lead, leadCreatedAt}) => [lead.id.trim().toLowerCase(), leadCreatedAt]));
 
+  const totalCallMinutes = activity.reduce((sum, entry) => sum + extractMinutesFromDetail(entry.detail), 0);
+  const totalLeadValue = leads.reduce((sum, lead) => sum + parseLeadValue(lead.value), 0);
+  const recentActivity = activity[0];
+  const summaryTiles = [
+    {label: 'Assigned leads', value: String(leads.length), hint: 'Current lead count'},
+    {label: 'Call minutes', value: `${totalCallMinutes.toFixed(1)}m`, hint: 'Tracked call time'},
+    {label: 'Total activity', value: String(activity.length), hint: 'Logged actions'},
+    {label: 'Last activity', value: recentActivity ? formatRelativeTime(recentActivity.createdAt) : '—', hint: recentActivity ? recentActivity.action : 'No activity yet'},
+    {label: 'Last lead', value: recentActivity && recentActivity.leadId ? recentActivity.leadId : '—', hint: recentActivity ? 'Lead touched' : 'No lead linked'},
+    {label: 'Lead value', value: totalLeadValue ? `€${totalLeadValue.toLocaleString()}` : '€0', hint: 'Assigned pipeline value'},
+  ];
+
   return (
     <div className="px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -111,18 +152,14 @@ export default async function AdminCrmUserDashboardPage({params}: Props) {
         </Link>
       </div>
 
-      <div className="mb-6 rounded-2xl border border-sky-100 bg-white p-5 shadow-sm">
-        <div className="mb-3">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-600">Access controls</p>
-          <p className="mt-1 text-sm text-slate-600">Revoke access here. Download data and delete the account in the section below.</p>
-        </div>
-        <CrmUserSecurityActions locale={locale} userId={user.id} userName={user.name} />
-      </div>
-
-      <div className="mb-6 rounded-2xl border border-sky-100 bg-white p-5 shadow-sm">
-        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-600">Data export</p>
-        <p className="mt-1 text-sm text-slate-600">Download a snapshot of this sales user&apos;s profile, activity, and assigned lead status before deletion.</p>
-        <CrmUserDataActions locale={locale} userId={user.id} userName={user.name} userEmail={user.email} />
+      <div className="mb-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {summaryTiles.map((tile) => (
+          <div key={tile.label} className="rounded-2xl border border-sky-100 bg-white p-5 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{tile.label}</p>
+            <p className="mt-3 text-3xl font-bold text-slate-900">{tile.value}</p>
+            <p className="mt-2 text-sm text-slate-500">{tile.hint}</p>
+          </div>
+        ))}
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">

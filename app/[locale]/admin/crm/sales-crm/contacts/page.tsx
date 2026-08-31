@@ -19,6 +19,7 @@ export default async function SalesCrmContactsPage({params}: {params: Promise<{l
   const contacts = leads
     .filter((lead) => lead.email || lead.phone)
     .map((lead) => ({
+      leadId: lead.id,
       customer: lead.customer || lead.company || 'Unknown client',
       company: lead.company || '—',
       email: lead.email || '—',
@@ -58,8 +59,12 @@ export default async function SalesCrmContactsPage({params}: {params: Promise<{l
                 </tr>
               ) : (
                 contacts.map((contact) => (
-                  <tr key={`${contact.customer}-${contact.email}-${contact.phone}`} className="hover:bg-slate-50">
-                    <td className="px-4 py-3 text-sm font-medium text-slate-900">{contact.customer}</td>
+                  <tr key={`${contact.leadId}-${contact.customer}-${contact.email}-${contact.phone}`} className="hover:bg-slate-50">
+                    <td className="px-4 py-3 text-sm font-medium text-slate-900">
+                      <Link href={`/${locale}/admin/crm/leads/${encodeURIComponent(contact.leadId)}`} className="text-sky-700 underline-offset-2 hover:underline">
+                        {contact.customer}
+                      </Link>
+                    </td>
                     <td className="px-4 py-3 text-sm text-slate-600">{contact.company}</td>
                     <td className="px-4 py-3 text-sm text-slate-600">{contact.email}</td>
                     <td className="px-4 py-3 text-sm text-slate-600">{contact.phone}</td>
