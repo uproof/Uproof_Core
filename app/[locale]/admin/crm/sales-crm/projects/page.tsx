@@ -1,9 +1,7 @@
 import {redirect} from 'next/navigation';
 import {getAdminSession} from '@/lib/adminAuth';
 
-type Props = {params: Promise<{locale: string}>};
-
-export default async function AdminCrmPage({params}: Props) {
+export default async function SalesCrmProjectsPage({params}: {params: Promise<{locale: string}>}) {
   const {locale} = await params;
   const session = await getAdminSession();
 
@@ -15,5 +13,5 @@ export default async function AdminCrmPage({params}: Props) {
     redirect(`/${locale}/crm`);
   }
 
-  redirect(`/${locale}/admin/crm/sales-crm`);
+  redirect(`/${locale}/admin/project-360`);
 }

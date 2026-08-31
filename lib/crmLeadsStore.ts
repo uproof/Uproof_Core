@@ -216,10 +216,6 @@ function createLeadExternalId() {
 
 export async function addCrmLead(input: NewLeadInput): Promise<CrmLead> {
   const supabase = createSupabaseAdminClient();
-  if (!supabase) {
-    throw new Error('Supabase is required for lead storage');
-  }
-
   const now = nowIso();
   const lead: CrmLead = normalizeLead({
     id: createLeadExternalId(),
@@ -249,6 +245,10 @@ export async function addCrmLead(input: NewLeadInput): Promise<CrmLead> {
     estimatorData: normalizeCrmEstimatorData(input.estimatorData, createEmptyCrmEstimatorData()),
     assignedSalesUserId: null,
   });
+
+  if (!supabase) {
+    throw new Error('Supabase is required for lead storage');
+  }
 
   const {error} = await supabase.from('crm_leads').upsert({
     external_id: lead.id,
@@ -311,6 +311,11 @@ export async function deleteCrmLead(leadId: string): Promise<boolean> {
 }
 
 export async function updateCrmLead(leadId: string, updates: Partial<CrmLead>): Promise<CrmLead | null> {
+  const supabase = createSupabaseAdminClient();
+  if (!supabase) {
+    return null;
+  }
+
   const existingRow = await findCrmLeadRowById(leadId);
   if (!existingRow) {
     return null;
@@ -341,11 +346,6 @@ export async function updateCrmLead(leadId: string, updates: Partial<CrmLead>): 
     updatedAtUtc: nowIso(),
     assignedSalesUserId: existing.assignedSalesUserId || null,
   });
-
-  const supabase = createSupabaseAdminClient();
-  if (!supabase) {
-    return null;
-  }
 
   const {data, error} = await supabase
     .from('crm_leads')

@@ -19,7 +19,6 @@ export default function CrmLoginPage() {
           placeholder: 'Voer CRM-wachtwoord in',
           button: 'Inloggen',
           loading: 'Aan het inloggen…',
-          back: '← Terug naar website',
           forgot: 'Wachtwoord vergeten?',
         }
       : locale === 'en'
@@ -32,7 +31,6 @@ export default function CrmLoginPage() {
             placeholder: 'Enter CRM password',
             button: 'Login',
             loading: 'Logging in…',
-            back: '← Back to website',
             forgot: 'Forgot password?',
           }
         : {
@@ -44,7 +42,6 @@ export default function CrmLoginPage() {
             placeholder: 'Ievadi CRM paroli',
             button: 'Ieiet',
             loading: 'Ielāde…',
-            back: '← Atpakaļ uz vietni',
             forgot: 'Aizmirsi paroli?',
           };
   const [email, setEmail] = useState('');

@@ -25,7 +25,5 @@ export default async function AdminCrmUsersPage({params}: Props) {
     getRecentCrmUserActivity(100),
   ]);
 
-  const salesUsers = crmUsers.filter((user) => user.role === 'sales');
-
-  return <SalesUserManagementAdminClient locale={locale} initialCrmUsers={salesUsers} initialLeads={leads} initialActivity={activity} />;
+  redirect(`/${locale}/admin/crm/sales-crm/sales-users`);
 }

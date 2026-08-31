@@ -15,5 +15,5 @@ export default async function AdminLeadManagementPage({params}: Props) {
     redirect(`/${locale}/crm`);
   }
 
-  redirect(`/${locale}/admin/crm/leads`);
+  redirect(`/${locale}/admin/crm/sales-crm`);
 }

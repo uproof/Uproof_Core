@@ -2,6 +2,7 @@ import {NextRequest, NextResponse} from 'next/server';
 import {getAdminSession} from '@/lib/adminAuth';
 import {logCrmAudit} from '@/lib/crmAudit';
 import {checkRateLimit, RATE_LIMITS} from '@/lib/rateLimit';
+import {canPerform} from '@/lib/permissions';
 import {z} from 'zod';
 
 const auditActionSchema = z.object({
@@ -15,6 +16,10 @@ export async function POST(req: NextRequest) {
   const session = await getAdminSession();
   if (!session) {
     return NextResponse.json({ok: false, error: 'Unauthorized'}, {status: 401});
+  }
+
+  if (!canPerform(session.role, 'viewAuditLog')) {
+    return NextResponse.json({ok: false, error: 'Forbidden'}, {status: 403});
   }
 
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';

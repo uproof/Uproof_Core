@@ -6,6 +6,7 @@ import {createSupabaseAdminClient} from '@/lib/supabase/server';
 import {
   getCrmLeadStatusSnapshot,
   getCrmUserActivitySnapshot,
+  archiveCrmUser,
   changeCrmUserPassword,
   disableCrmUser,
   deleteCrmUser,
@@ -244,8 +245,8 @@ export async function POST(req: NextRequest, {params}: {params: Promise<{id: str
       return NextResponse.json({ok: true, user: {id: user.id, isActive: user.isActive}});
     }
     case 'archive-account': {
-      const deleted = await deleteCrmUser(target.id);
-      if (!deleted) {
+      const archived = await archiveCrmUser(target.id);
+      if (!archived) {
         return NextResponse.json({ok: false, error: 'CRM user not found'}, {status: 404});
       }
       await recordAuditLog({
@@ -255,10 +256,10 @@ export async function POST(req: NextRequest, {params}: {params: Promise<{id: str
         action: 'crm_user_archive',
         entityType: 'crm_user',
         entityId: target.id,
-        detail: reason || 'Account deleted',
+        detail: reason || 'Account archived',
         success: true,
       });
-      return NextResponse.json({ok: true, deleted: true});
+      return NextResponse.json({ok: true, archived: true, user: {id: archived.id, isActive: archived.isActive, archivedAt: archived.archivedAt}});
     }
     case 'set-password': {
       if (!newPassword) {

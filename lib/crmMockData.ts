@@ -69,12 +69,5 @@ export type CrmQuote = {
   acceptUrl?: string;
 };
 
-export const crmStats: Array<{label: string; value: string; delta: string; tone: string}> = [];
-
-export const crmLeads: CrmLead[] = [];
-
-export const crmCustomers: CrmCustomer[] = [];
-
-export const crmProjects: CrmProject[] = [];
-
-export const crmQuotes: CrmQuote[] = [];
+// Production CRM data is stored via the Supabase-backed stores in lib/*.ts.
+// This module intentionally keeps only shared type definitions and no mock dataset exports.

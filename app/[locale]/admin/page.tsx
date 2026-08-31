@@ -2,8 +2,6 @@ import {redirect} from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
-  HomeIcon,
-  UserGroupIcon,
   ClipboardDocumentListIcon,
   FolderOpenIcon,
 } from '@heroicons/react/24/outline';
@@ -36,24 +34,14 @@ export default async function AdminDashboard({params}: {params: Promise<{locale:
 
   const tiles: DashboardTile[] = [
     {
-      href: `/${locale}/admin/crm/leads`,
-      title: 'Sales lead management',
-      description: 'Add, delete, and assign leads',
-      action: 'Open Lead Management',
+      href: `/${locale}/admin/crm/sales-crm`,
+      title: 'Sales CRM',
+      description: 'Manage sales users, lead board, contacts, overview, and connected project workflows',
+      action: 'Open Sales CRM',
       accent: 'border-sky-100',
       iconBg: 'bg-sky-100 group-hover:bg-sky-200',
       iconText: 'text-sky-700',
       icon: ClipboardDocumentListIcon,
-    },
-    {
-      href: `/${locale}/admin/crm/users`,
-      title: 'Sales team management',
-      description: 'Create, delete, and manage sales users with individual logs and dashboard access',
-      action: 'Open User Management',
-      accent: 'border-indigo-100',
-      iconBg: 'bg-indigo-100 group-hover:bg-indigo-200',
-      iconText: 'text-indigo-700',
-      icon: UserGroupIcon,
     },
     {
       href: `/${locale}/admin/project-360`,
@@ -89,16 +77,7 @@ export default async function AdminDashboard({params}: {params: Promise<{locale:
               <div className="order-2">
                 <NotificationBell locale={locale} />
               </div>
-              <Link
-                href={`https://uproof.eu/${locale}`}
-                target="_blank"
-                rel="noreferrer"
-                className="order-3 text-sm text-gray-600 hover:text-gray-900 flex items-center gap-2"
-              >
-                <HomeIcon className="w-5 h-5" />
-                <span className="hidden sm:inline">View Website</span>
-              </Link>
-              <div className="order-4">
+              <div className="order-3">
                 <AdminLogout locale={locale} email={session.email} securityHref={`/${locale}/admin/settings/security`} />
               </div>
             </div>
@@ -123,12 +102,6 @@ export default async function AdminDashboard({params}: {params: Promise<{locale:
                     <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-colors ${tile.iconBg}`}>
                       <Icon className={`h-7 w-7 ${tile.iconText}`} />
                     </div>
-                    <span className="flex items-center gap-1 text-sm font-semibold text-green-600">
-                      <svg className="h-4 w-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      Active
-                    </span>
                   </div>
 
                   <div className="flex flex-1 flex-col">
