@@ -160,8 +160,8 @@ type Props = {
 export default function LeadManagementClient({locale, lead, signedAttachments, showWorkLog = false, accessScope = 'sales'}: Props) {
   const isLv = locale === 'lv';
   const isSalesScope = accessScope === 'sales';
-  const backHref = `/${locale}/${accessScope === 'admin' ? 'admin/crm/leads' : 'crm'}`;
   const router = useRouter();
+  const parentRouteHref = accessScope === 'sales' ? `/${locale}/admin/crm/sales-crm` : `/${locale}/admin`;
   const tabIdRef = useRef(typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`);
   const liveChannelRef = useRef<BroadcastChannel | null>(null);
   const [version, setVersion] = useState(lead.updatedAtUtc);
@@ -432,6 +432,14 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
     }
   };
 
+  const handlePreviousPage = () => {
+    if (typeof window !== 'undefined' && window.history.length > 1) {
+      router.back();
+      return;
+    }
+    router.push(parentRouteHref);
+  };
+
   const handleEmailClient = () => {
     window.open('https://mail.google.com/mail/u/0/#inbox', 'crm-gmail-inbox', 'popup,width=980,height=760');
   };
@@ -446,15 +454,12 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <Link href={backHref} className="inline-flex h-11 min-w-[150px] items-center justify-center gap-2 rounded-xl border border-sky-200 bg-white px-4 text-sm font-semibold text-sky-700 transition hover:bg-sky-50 sm:justify-start">
-            <ArrowLeftIcon className="h-4 w-4" /> {isLv ? 'Atpakaļ uz līdiem' : 'Back to leads'}
+          <button type="button" onClick={handlePreviousPage} className="inline-flex h-11 min-w-[150px] items-center justify-center gap-2 rounded-xl border border-sky-200 bg-white px-4 text-sm font-semibold text-sky-700 transition hover:bg-sky-50 sm:justify-start">
+            <ArrowLeftIcon className="h-4 w-4" /> {isLv ? 'Atpakaļ' : 'Back'}
+          </button>
+          <Link href={parentRouteHref} className="inline-flex h-11 min-w-[150px] items-center justify-center gap-2 rounded-xl border border-sky-200 bg-white px-4 text-sm font-semibold text-sky-700 transition hover:bg-sky-50 sm:justify-start">
+            {accessScope === 'sales' ? (isLv ? 'Atpakaļ uz Sales CRM' : 'Back to Sales CRM') : (isLv ? 'Atpakaļ uz CMS' : 'Back to CMS')}
           </Link>
-          <button type="button" onClick={handleSave} className="inline-flex h-11 min-w-[150px] items-center justify-center gap-2 rounded-xl bg-sky-500 px-4 text-sm font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:bg-sky-300 sm:self-end" disabled={saveState === 'saving'}>
-            <PencilSquareIcon className="h-4 w-4" /> {isLv ? 'Saglabāt izmaiņas' : 'Save changes'}
-          </button>
-          <button type="button" onClick={handleCreateQuote} className="inline-flex h-11 min-w-[150px] items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-white px-4 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50 disabled:cursor-not-allowed disabled:opacity-60" disabled={quoteState === 'creating'}>
-            {isLv ? 'Izveidot tāmes melnrakstu' : 'Create quote draft'}
-          </button>
         </div>
       </div>
 
