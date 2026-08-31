@@ -114,20 +114,28 @@ export async function getCrmProjects(options: CrmProjectsOptions = {}): Promise<
     ...(options.assignedSalesUserId ? {assignedSalesUserId: options.assignedSalesUserId} : {}),
     ...(typeof options.limit === 'number' ? {limit: options.limit} : {}),
   });
-  return leads.map((lead) => ({
-    id: lead.id,
-    leadId: lead.id,
-    title: lead.projectAddress || lead.address || lead.customer,
-    location: lead.projectAddress || lead.address || lead.customer,
-    owner: lead.owner,
-    phase: lead.status.replaceAll('_', ' '),
-    budget: lead.value,
-    dueDate: lead.nextAction,
-    estimatorData: normalizeCrmEstimatorData(lead.estimatorData, createEmptyCrmEstimatorData()),
-  }));
+
+  return leads
+    .filter((lead) => String(lead.status || '').trim().toUpperCase() === 'ACCEPTED')
+    .map((lead) => ({
+      id: lead.id,
+      leadId: lead.id,
+      title: lead.projectAddress || lead.address || lead.customer,
+      location: lead.projectAddress || lead.address || lead.customer,
+      owner: lead.owner,
+      phase: lead.status.replaceAll('_', ' '),
+      budget: lead.value,
+      dueDate: lead.nextAction,
+      estimatorData: normalizeCrmEstimatorData(lead.estimatorData, createEmptyCrmEstimatorData()),
+    }));
 }
 
 export async function upsertProjectFromLead(lead: CrmLead): Promise<void> {
+  const normalizedStatus = String(lead.status || '').trim().toUpperCase();
+  if (normalizedStatus !== 'ACCEPTED') {
+    return;
+  }
+
   const supabase = createSupabaseAdminClient();
   if (!supabase) {
     throw new Error('Supabase is required for project storage');

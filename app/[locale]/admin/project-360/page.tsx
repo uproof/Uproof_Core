@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import {redirect} from 'next/navigation';
 import {getAdminSession} from '@/lib/adminAuth';
+import {getCrmProjects} from '@/lib/crmProjectsStore';
 import {getProject360SheetConfig, loadProject360Sheets} from '@/lib/googleSheets';
 
 type Props = {params: Promise<{locale: string}>};
@@ -44,7 +45,10 @@ export default async function AdminProject360Page({params}: Props) {
   }
 
   const config = getProject360SheetConfig();
-  const sheets = config ? await loadProject360Sheets(config) : [];
+  const [sheets, projects] = await Promise.all([
+    config ? loadProject360Sheets(config) : [],
+    getCrmProjects({limit: 500}),
+  ]);
   const summaries = sheets.map((sheet) => getSheetSummary(sheet.title, sheet.sheetName, sheet.description, sheet.rows));
   const totalRows = summaries.reduce((total, sheet) => total + sheet.dataRowCount, 0);
   const connectedSheets = summaries.filter((sheet) => sheet.rowCount > 0).length;
@@ -82,9 +86,32 @@ export default async function AdminProject360Page({params}: Props) {
 
       {!config ? (
         <div className="mt-6 rounded-2xl border border-dashed border-emerald-200 bg-white px-5 py-4 text-sm text-slate-600 shadow-sm">
-          Set <span className="font-semibold text-slate-900">GOOGLE_SHEETS_API_KEY</span> and <span className="font-semibold text-slate-900">PROJECT_360_SPREADSHEET_ID</span> in the CRM env file to connect the dashboard.
+          Google Sheets is not configured yet, so the Project 360 view is using accepted CRM leads as the project source.
           <div className="mt-2 text-xs text-slate-500">
             Optional ranges: <span className="font-mono">PROJECT_360_OCR_RANGE</span>, <span className="font-mono">PROJECT_360_ESTIMATOR_RANGE</span>, <span className="font-mono">PROJECT_360_FILES_RANGE</span>.
+          </div>
+        </div>
+      ) : null}
+
+      {projects.length > 0 ? (
+        <div className="mt-6 rounded-3xl border border-emerald-100 bg-white p-5 shadow-sm">
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <h3 className="text-lg font-semibold text-slate-900">Accepted CRM projects</h3>
+            <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700">{projects.length} projects</span>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {projects.map((project) => (
+              <Link key={project.id} href={`/${locale}/admin/crm/leads/${encodeURIComponent(project.leadId)}`} className="rounded-2xl border border-emerald-100 bg-emerald-50 p-4 transition hover:bg-emerald-100">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">{project.phase}</p>
+                <h4 className="mt-2 text-xl font-bold text-slate-900">{project.title}</h4>
+                <p className="mt-2 text-sm text-slate-600">{project.location}</p>
+                <div className="mt-4 flex items-center justify-between text-sm text-slate-700">
+                  <span>Owner: {project.owner || 'Unassigned'}</span>
+                  <span>{project.budget || '€0'}</span>
+                </div>
+                <p className="mt-2 text-xs text-slate-500">Due: {project.dueDate || '—'}</p>
+              </Link>
+            ))}
           </div>
         </div>
       ) : null}
