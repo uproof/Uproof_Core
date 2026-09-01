@@ -13,7 +13,7 @@ function rgbaFromColor(color?: {r: number; g: number; b: number; a?: number}) {
   return `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a ?? 1})`;
 }
 
-function renderCell(value: string | undefined, index: number, isHeader = false, cellStyle?: {backgroundColor?: {r: number; g: number; b: number; a?: number}; textColor?: {r: number; g: number; b: number; a?: number}; bold?: boolean; horizontalAlignment?: string; verticalAlignment?: string}) {
+function renderCell(value: string | undefined, index: number, isHeader = false, cellStyle?: {backgroundColor?: {r: number; g: number; b: number; a?: number}; textColor?: {r: number; g: number; b: number; a?: number}; bold?: boolean; horizontalAlignment?: string; verticalAlignment?: string}, width = 110) {
   const background = rgbaFromColor(cellStyle?.backgroundColor);
   const text = rgbaFromColor(cellStyle?.textColor);
 
@@ -21,15 +21,19 @@ function renderCell(value: string | undefined, index: number, isHeader = false, 
     <td
       key={index}
       className={[
-        'min-w-[120px] border border-slate-300 px-3 py-2 align-top text-sm leading-relaxed',
+        'border border-slate-300 px-[3px] py-[1px] align-top text-[11px] leading-[1.2] tracking-normal',
         'whitespace-nowrap',
       ].join(' ')}
       style={{
+        width: `${width}px`,
+        minWidth: `${width}px`,
+        maxWidth: `${width}px`,
         backgroundColor: background ?? (isHeader ? '#eef3ff' : '#ffffff'),
         color: text ?? '#1f2937',
         fontWeight: cellStyle?.bold || isHeader ? 700 : 400,
         textAlign: cellStyle?.horizontalAlignment === 'RIGHT' ? 'right' : cellStyle?.horizontalAlignment === 'CENTER' ? 'center' : 'left',
         verticalAlign: cellStyle?.verticalAlignment === 'MIDDLE' ? 'middle' : 'top',
+        borderColor: '#d5d9e0',
       }}
     >
       {value || '—'}
@@ -90,11 +94,16 @@ export default async function AdminFinancialsPage({params}: Props) {
 
               <div className="w-full overflow-auto bg-white" style={{maxHeight: '44rem', overflowX: 'auto', overflowY: 'auto'}}>
                 {sheet.rows.length > 0 ? (
-                  <table className="w-full min-w-[1200px] border-collapse border-spacing-0 table-fixed" style={{borderCollapse: 'separate'}}>
+                  <table className="border-spacing-0" style={{borderCollapse: 'collapse', tableLayout: 'fixed', width: 'max-content', minWidth: '100%'}}>
+                    <colgroup>
+                      {(sheet.columnWidths && sheet.columnWidths.length > 0 ? sheet.columnWidths : Array.from({length: Math.max(...sheet.rows.map((row) => row.length), 1)}, () => 110)).map((width, columnIndex) => (
+                        <col key={`${sheet.title}-col-${columnIndex}`} style={{width: `${Math.max(70, width)}px`, minWidth: `${Math.max(70, width)}px`}} />
+                      ))}
+                    </colgroup>
                     <tbody>
                       {sheet.rows.slice(0, 60).map((row, rowIndex) => (
                         <tr key={`${sheet.title}-${rowIndex}`}>
-                          {row.map((cell, cellIndex) => renderCell(cell, cellIndex, rowIndex === 0, sheet.cellMetadata?.[rowIndex]?.[cellIndex]))}
+                          {row.map((cell, cellIndex) => renderCell(cell, cellIndex, rowIndex === 0, sheet.cellMetadata?.[rowIndex]?.[cellIndex], Math.max(70, sheet.columnWidths?.[cellIndex] ?? 110)))}
                         </tr>
                       ))}
                     </tbody>

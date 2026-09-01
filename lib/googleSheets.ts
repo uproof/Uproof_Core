@@ -18,6 +18,7 @@ export type GoogleSheetTable = {
   range: string;
   rows: string[][];
   cellMetadata?: GoogleSheetCell[][];
+  columnWidths?: number[];
 };
 
 export type Project360SheetConfig = {
@@ -146,18 +147,23 @@ async function fetchSheetValues(spreadsheetId: string, apiKey: string, range: st
     const gridData = response.data.sheets?.[0]?.data?.[0];
     const rowData = gridData?.rowData ?? [];
     const cells = rowData.map((row) => (row.values ?? []).map((cell) => parseCellValue(cell as any)));
+    const columnWidths = (gridData?.columnMetadata ?? []).map((meta) => Math.max(48, Math.round((meta.pixelSize ?? 100) * 0.96)));
 
     if (cells.length > 0) {
       return {
         rows: cells.map((row) => row.map((cell) => cell.value)),
         cellMetadata: cells,
+        columnWidths,
       };
     }
 
     const valuesResponse = await sheets.spreadsheets.values.get({spreadsheetId, range});
+    const rows = valuesResponse.data.values ?? [];
+    const fallbackWidths = Array.from({length: Math.max(1, ...rows.map((row) => row.length))}, () => 110);
     return {
-      rows: valuesResponse.data.values ?? [],
-      cellMetadata: (valuesResponse.data.values ?? []).map((row) => row.map((value) => ({value}))),
+      rows,
+      cellMetadata: rows.map((row) => row.map((value) => ({value}))),
+      columnWidths: fallbackWidths,
     };
   }
 
@@ -175,7 +181,12 @@ async function fetchSheetValues(spreadsheetId: string, apiKey: string, range: st
 
   const data = await response.json().catch(() => null) as {values?: string[][]} | null;
   const rows = Array.isArray(data?.values) ? data.values : [];
-  return {rows, cellMetadata: rows.map((row) => row.map((value) => ({value})))};
+  const fallbackWidths = Array.from({length: Math.max(1, ...rows.map((row) => row.length))}, () => 110);
+  return {
+    rows,
+    cellMetadata: rows.map((row) => row.map((value) => ({value}))),
+    columnWidths: fallbackWidths,
+  };
 }
 
 export async function loadProject360Sheets(config: Project360SheetConfig): Promise<GoogleSheetTable[]> {
@@ -183,9 +194,9 @@ export async function loadProject360Sheets(config: Project360SheetConfig): Promi
     config.tables.map(async (table) => {
       try {
         const data = await fetchSheetValues(config.spreadsheetId, config.apiKey, table.range);
-        return {...table, rows: data.rows, cellMetadata: data.cellMetadata};
+        return {...table, rows: data.rows, cellMetadata: data.cellMetadata, columnWidths: data.columnWidths};
       } catch {
-        return {...table, rows: [], cellMetadata: []};
+        return {...table, rows: [], cellMetadata: [], columnWidths: []};
       }
     })
   );
