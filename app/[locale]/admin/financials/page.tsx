@@ -5,8 +5,19 @@ import {getFinancialsSheetConfig, loadProject360Sheets} from '@/lib/googleSheets
 
 type Props = {params: Promise<{locale: string}>};
 
-function renderCell(value: string | undefined, index: number) {
-  return <td key={index} className="border-b border-violet-100 px-3 py-2 align-top text-sm text-slate-700">{value || '—'}</td>;
+function renderCell(value: string | undefined, index: number, isHeader = false) {
+  return (
+    <td
+      key={index}
+      className={[
+        'min-w-[120px] border border-slate-300 bg-white px-3 py-2 align-top text-sm leading-relaxed',
+        isHeader ? 'bg-[#eaf1ff] font-semibold text-slate-800' : 'text-slate-700',
+        'whitespace-nowrap',
+      ].join(' ')}
+    >
+      {value || '—'}
+    </td>
+  );
 }
 
 export default async function AdminFinancialsPage({params}: Props) {
@@ -38,24 +49,6 @@ export default async function AdminFinancialsPage({params}: Props) {
         </Link>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <div className="rounded-2xl border border-violet-100 bg-white p-4 shadow-sm">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-600">Status</p>
-          <p className="mt-2 text-2xl font-bold text-slate-900">{config ? 'Connected' : 'Not configured'}</p>
-          <p className="mt-1 text-sm text-slate-600">Requires a valid Google Sheets API key and spreadsheet ID.</p>
-        </div>
-        <div className="rounded-2xl border border-violet-100 bg-white p-4 shadow-sm">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-600">Sheets</p>
-          <p className="mt-2 text-2xl font-bold text-slate-900">{sheets.length}</p>
-          <p className="mt-1 text-sm text-slate-600">Financial tabs loaded from the configured spreadsheet.</p>
-        </div>
-        <div className="rounded-2xl border border-violet-100 bg-white p-4 shadow-sm">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-600">Rows</p>
-          <p className="mt-2 text-2xl font-bold text-slate-900">{totalRows}</p>
-          <p className="mt-1 text-sm text-slate-600">Rows returned from the financial ranges.</p>
-        </div>
-      </div>
-
       {!config ? (
         <div className="mt-6 rounded-2xl border border-dashed border-violet-200 bg-white px-5 py-4 text-sm text-slate-600 shadow-sm">
           Financials is not connected yet. Add the following values to your environment and restart the app:
@@ -68,28 +61,28 @@ export default async function AdminFinancialsPage({params}: Props) {
         </div>
       ) : null}
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-2">
+      <div className="mt-6 w-full">
         {sheets.length > 0 ? (
           sheets.map((sheet) => (
-            <section key={sheet.title} className="overflow-hidden rounded-3xl border border-violet-100 bg-white shadow-sm">
-              <div className="border-b border-violet-100 bg-violet-50 px-5 py-4">
+            <section key={sheet.title} className="w-full overflow-hidden rounded-3xl border border-slate-200 bg-[#f6f7fb] shadow-sm">
+              <div className="border-b border-slate-200 bg-[#f7f1ff] px-5 py-4">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-violet-600">{sheet.sheetName}</p>
                 <h3 className="mt-1 text-lg font-semibold text-slate-900">{sheet.title}</h3>
                 <p className="mt-1 text-sm text-slate-600">{sheet.description}</p>
                 <div className="mt-3 flex flex-wrap gap-2 text-xs font-medium text-slate-600">
-                  <span className="rounded-full bg-white px-2.5 py-1 ring-1 ring-violet-100">{sheet.rows.length} rows</span>
-                  <span className="rounded-full bg-white px-2.5 py-1 ring-1 ring-violet-100">{sheet.rows[0]?.length ?? 0} columns</span>
-                  <span className="rounded-full bg-white px-2.5 py-1 ring-1 ring-violet-100">Range: {sheet.range}</span>
+                  <span className="rounded-full bg-white px-2.5 py-1 ring-1 ring-slate-200">{sheet.rows.length} rows</span>
+                  <span className="rounded-full bg-white px-2.5 py-1 ring-1 ring-slate-200">{sheet.rows[0]?.length ?? 0} columns</span>
+                  <span className="rounded-full bg-white px-2.5 py-1 ring-1 ring-slate-200">Range: {sheet.range}</span>
                 </div>
               </div>
 
-              <div className="max-h-[40rem] overflow-auto">
+              <div className="w-full overflow-auto bg-[#f8f9fc]" style={{maxHeight: '44rem', overflowX: 'auto', overflowY: 'auto'}}>
                 {sheet.rows.length > 0 ? (
-                  <table className="min-w-full border-collapse">
+                  <table className="w-full min-w-[1200px] border-collapse table-fixed">
                     <tbody>
-                      {sheet.rows.slice(0, 30).map((row, rowIndex) => (
-                        <tr key={`${sheet.title}-${rowIndex}`} className={rowIndex === 0 ? 'bg-slate-50 font-semibold text-slate-900' : ''}>
-                          {row.map((cell, cellIndex) => renderCell(cell, cellIndex))}
+                      {sheet.rows.slice(0, 60).map((row, rowIndex) => (
+                        <tr key={`${sheet.title}-${rowIndex}`} className={rowIndex === 0 ? 'bg-[#edf3ff]' : rowIndex % 2 === 0 ? 'bg-white' : 'bg-slate-50/80'}>
+                          {row.map((cell, cellIndex) => renderCell(cell, cellIndex, rowIndex === 0))}
                         </tr>
                       ))}
                     </tbody>
@@ -101,7 +94,7 @@ export default async function AdminFinancialsPage({params}: Props) {
             </section>
           ))
         ) : (
-          <div className="rounded-3xl border border-violet-100 bg-white p-6 text-sm text-slate-600 shadow-sm">
+          <div className="rounded-3xl border border-slate-200 bg-white p-6 text-sm text-slate-600 shadow-sm">
             No financial Google Sheet is currently configured. The page will render the sheet automatically once the Financials spreadsheet and API key are added.
           </div>
         )}
