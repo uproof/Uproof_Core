@@ -60,7 +60,7 @@ export default async function AdminDashboard({params}: {params: Promise<{locale:
       icon: FolderOpenIcon,
     },
     {
-      title: 'Add HR',
+      title: 'HR',
       description: 'HR requests and employee onboarding will be enabled here once the workflow is ready.',
       action: 'Coming soon',
       accent: 'border-slate-200',
@@ -97,16 +97,6 @@ export default async function AdminDashboard({params}: {params: Promise<{locale:
       iconBg: 'bg-cyan-100',
       iconText: 'text-cyan-700',
       icon: ArchiveBoxIcon,
-      disabled: true,
-    },
-    {
-      title: 'New',
-      description: 'Additional operational modules will be activated here as they become available.',
-      action: 'Inactive',
-      accent: 'border-gray-200',
-      iconBg: 'bg-gray-100',
-      iconText: 'text-gray-500',
-      icon: BriefcaseIcon,
       disabled: true,
     },
   ];
