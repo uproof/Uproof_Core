@@ -51,6 +51,28 @@ export function getProject360SheetConfig(): Project360SheetConfig | null {
   };
 }
 
+export function getFinancialsSheetConfig(): Project360SheetConfig | null {
+  const spreadsheetId = (process.env.FINANCIALS_SPREADSHEET_ID || process.env.PROJECT_360_SPREADSHEET_ID || '').trim();
+  const apiKey = (process.env.GOOGLE_SHEETS_API_KEY || '').trim();
+
+  if (!spreadsheetId || !apiKey) {
+    return null;
+  }
+
+  return {
+    spreadsheetId,
+    apiKey,
+    tables: [
+      {
+        title: 'Financial overview',
+        description: 'Connected financial dashboard sheet',
+        sheetName: process.env.FINANCIALS_SHEET_NAME || 'Financials',
+        range: process.env.FINANCIALS_RANGE || 'Financials!A1:Z200',
+      },
+    ],
+  };
+}
+
 async function fetchSheetValues(spreadsheetId: string, apiKey: string, range: string) {
   const url = new URL(`https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(spreadsheetId)}/values/${encodeURIComponent(range)}`);
   url.searchParams.set('key', apiKey);
