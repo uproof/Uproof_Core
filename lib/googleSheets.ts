@@ -1,3 +1,7 @@
+import {cookies} from 'next/headers';
+import {google} from 'googleapis';
+import {createGoogleOAuthClient, gmailTokenCookie, unprotectGoogleTokens} from '@/lib/googleGmail';
+
 export type GoogleSheetTable = {
   title: string;
   description: string;
@@ -17,11 +21,24 @@ export type Project360SheetConfig = {
   }>;
 };
 
+async function getGoogleSheetsAuthClient() {
+  const protectedTokens = (await cookies()).get(gmailTokenCookie)?.value;
+  const tokens = protectedTokens ? unprotectGoogleTokens(protectedTokens) : null;
+  if (!tokens) {
+    return null;
+  }
+
+  const redirectUri = process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/api/auth/google/callback';
+  const client = createGoogleOAuthClient(new URL(redirectUri).origin);
+  client.setCredentials(tokens as Record<string, unknown>);
+  return client;
+}
+
 export function getProject360SheetConfig(): Project360SheetConfig | null {
   const spreadsheetId = (process.env.PROJECT_360_SPREADSHEET_ID || '').trim();
   const apiKey = (process.env.GOOGLE_SHEETS_API_KEY || '').trim();
 
-  if (!spreadsheetId || !apiKey) {
+  if (!spreadsheetId) {
     return null;
   }
 
@@ -55,7 +72,7 @@ export function getFinancialsSheetConfig(): Project360SheetConfig | null {
   const spreadsheetId = (process.env.FINANCIALS_SPREADSHEET_ID || process.env.PROJECT_360_SPREADSHEET_ID || '').trim();
   const apiKey = (process.env.GOOGLE_SHEETS_API_KEY || '').trim();
 
-  if (!spreadsheetId || !apiKey) {
+  if (!spreadsheetId) {
     return null;
   }
 
@@ -74,6 +91,17 @@ export function getFinancialsSheetConfig(): Project360SheetConfig | null {
 }
 
 async function fetchSheetValues(spreadsheetId: string, apiKey: string, range: string) {
+  const authClient = await getGoogleSheetsAuthClient();
+  if (authClient) {
+    const sheets = google.sheets({version: 'v4', auth: authClient});
+    const response = await sheets.spreadsheets.values.get({spreadsheetId, range});
+    return response.data.values ?? [];
+  }
+
+  if (!apiKey) {
+    return [];
+  }
+
   const url = new URL(`https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(spreadsheetId)}/values/${encodeURIComponent(range)}`);
   url.searchParams.set('key', apiKey);
 

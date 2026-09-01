@@ -2,6 +2,8 @@ import crypto from 'crypto';
 import {google} from 'googleapis';
 
 const GMAIL_SCOPE = 'https://www.googleapis.com/auth/gmail.readonly';
+const SHEETS_SCOPE = 'https://www.googleapis.com/auth/spreadsheets.readonly';
+const GOOGLE_SCOPES = [GMAIL_SCOPE, SHEETS_SCOPE];
 const GMAIL_TOKEN_COOKIE = 'crm_gmail_tokens';
 const GMAIL_STATE_COOKIE = 'crm_gmail_oauth_state';
 
@@ -31,7 +33,7 @@ export function createGoogleAuthorizationUrl(client: ReturnType<typeof createGoo
   return client.generateAuthUrl({
     access_type: 'offline',
     prompt: 'consent',
-    scope: [GMAIL_SCOPE],
+    scope: GOOGLE_SCOPES,
     include_granted_scopes: true,
     state,
   });
