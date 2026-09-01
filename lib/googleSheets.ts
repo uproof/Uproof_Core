@@ -2,12 +2,22 @@ import {cookies} from 'next/headers';
 import {google} from 'googleapis';
 import {createGoogleOAuthClient, gmailTokenCookie, unprotectGoogleTokens} from '@/lib/googleGmail';
 
+export type GoogleSheetCell = {
+  value: string;
+  backgroundColor?: {r: number; g: number; b: number; a?: number};
+  textColor?: {r: number; g: number; b: number; a?: number};
+  bold?: boolean;
+  horizontalAlignment?: string;
+  verticalAlignment?: string;
+};
+
 export type GoogleSheetTable = {
   title: string;
   description: string;
   sheetName: string;
   range: string;
   rows: string[][];
+  cellMetadata?: GoogleSheetCell[][];
 };
 
 export type Project360SheetConfig = {
@@ -90,16 +100,69 @@ export function getFinancialsSheetConfig(): Project360SheetConfig | null {
   };
 }
 
+function normalizeColor(color?: {r?: number; g?: number; b?: number; a?: number}) {
+  if (!color) {
+    return undefined;
+  }
+
+  const red = Math.max(0, Math.min(255, Math.round((color.r ?? 0) * 255)));
+  const green = Math.max(0, Math.min(255, Math.round((color.g ?? 0) * 255)));
+  const blue = Math.max(0, Math.min(255, Math.round((color.b ?? 0) * 255)));
+
+  return {r: red, g: green, b: blue, a: color.a ?? 1};
+}
+
+function parseCellValue(cell: {formattedValue?: string | null; effectiveValue?: {stringValue?: string | null; numberValue?: number | null}; userEnteredFormat?: {backgroundColor?: {red?: number; green?: number; blue?: number; alpha?: number}; textFormat?: {foregroundColor?: {red?: number; green?: number; blue?: number; alpha?: number}; bold?: boolean}; horizontalAlignment?: string; verticalAlignment?: string}}) {
+  const formattedValue = cell.formattedValue ?? cell.effectiveValue?.stringValue ?? (cell.effectiveValue && typeof cell.effectiveValue.numberValue === 'number' ? String(cell.effectiveValue.numberValue) : '');
+  const backgroundColor = normalizeColor(cell.userEnteredFormat?.backgroundColor ? {
+    r: cell.userEnteredFormat.backgroundColor.red ?? 0,
+    g: cell.userEnteredFormat.backgroundColor.green ?? 0,
+    b: cell.userEnteredFormat.backgroundColor.blue ?? 0,
+    a: cell.userEnteredFormat.backgroundColor.alpha ?? 1,
+  } : undefined);
+
+  const textColor = normalizeColor(cell.userEnteredFormat?.textFormat?.foregroundColor ? {
+    r: cell.userEnteredFormat.textFormat.foregroundColor.red ?? 0,
+    g: cell.userEnteredFormat.textFormat.foregroundColor.green ?? 0,
+    b: cell.userEnteredFormat.textFormat.foregroundColor.blue ?? 0,
+    a: cell.userEnteredFormat.textFormat.foregroundColor.alpha ?? 1,
+  } : undefined);
+
+  return {
+    value: formattedValue,
+    backgroundColor,
+    textColor,
+    bold: Boolean(cell.userEnteredFormat?.textFormat?.bold),
+    horizontalAlignment: cell.userEnteredFormat?.horizontalAlignment,
+    verticalAlignment: cell.userEnteredFormat?.verticalAlignment,
+  } satisfies GoogleSheetCell;
+}
+
 async function fetchSheetValues(spreadsheetId: string, apiKey: string, range: string) {
   const authClient = await getGoogleSheetsAuthClient();
   if (authClient) {
     const sheets = google.sheets({version: 'v4', auth: authClient});
-    const response = await sheets.spreadsheets.values.get({spreadsheetId, range});
-    return response.data.values ?? [];
+    const response = await sheets.spreadsheets.get({spreadsheetId, ranges: [range], includeGridData: true});
+    const gridData = response.data.sheets?.[0]?.data?.[0];
+    const rowData = gridData?.rowData ?? [];
+    const cells = rowData.map((row) => (row.values ?? []).map((cell) => parseCellValue(cell as any)));
+
+    if (cells.length > 0) {
+      return {
+        rows: cells.map((row) => row.map((cell) => cell.value)),
+        cellMetadata: cells,
+      };
+    }
+
+    const valuesResponse = await sheets.spreadsheets.values.get({spreadsheetId, range});
+    return {
+      rows: valuesResponse.data.values ?? [],
+      cellMetadata: (valuesResponse.data.values ?? []).map((row) => row.map((value) => ({value}))),
+    };
   }
 
   if (!apiKey) {
-    return [];
+    return {rows: [], cellMetadata: []};
   }
 
   const url = new URL(`https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(spreadsheetId)}/values/${encodeURIComponent(range)}`);
@@ -111,17 +174,18 @@ async function fetchSheetValues(spreadsheetId: string, apiKey: string, range: st
   }
 
   const data = await response.json().catch(() => null) as {values?: string[][]} | null;
-  return Array.isArray(data?.values) ? data.values : [];
+  const rows = Array.isArray(data?.values) ? data.values : [];
+  return {rows, cellMetadata: rows.map((row) => row.map((value) => ({value})))};
 }
 
 export async function loadProject360Sheets(config: Project360SheetConfig): Promise<GoogleSheetTable[]> {
   const tables = await Promise.all(
     config.tables.map(async (table) => {
       try {
-        const rows = await fetchSheetValues(config.spreadsheetId, config.apiKey, table.range);
-        return {...table, rows};
+        const data = await fetchSheetValues(config.spreadsheetId, config.apiKey, table.range);
+        return {...table, rows: data.rows, cellMetadata: data.cellMetadata};
       } catch {
-        return {...table, rows: []};
+        return {...table, rows: [], cellMetadata: []};
       }
     })
   );
