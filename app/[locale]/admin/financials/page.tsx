@@ -13,7 +13,16 @@ function rgbaFromColor(color?: {r: number; g: number; b: number; a?: number}) {
   return `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a ?? 1})`;
 }
 
-function renderCell(value: string | undefined, index: number, isHeader = false, cellStyle?: {backgroundColor?: {r: number; g: number; b: number; a?: number}; textColor?: {r: number; g: number; b: number; a?: number}; bold?: boolean; horizontalAlignment?: string; verticalAlignment?: string}, width = 110) {
+function normalizeFinancialRows(rows: string[][]) {
+  return rows
+    .map((row) => row.filter((cell) => {
+      const value = String(cell ?? '').trim();
+      return value.length > 0 && value !== '—';
+    }))
+    .filter((row) => row.length > 0);
+}
+
+function renderCell(value: string | undefined, index: number, isHeader = false, cellStyle?: {backgroundColor?: {r: number; g: number; b: number; a?: number}; textColor?: {r: number; g: number; b: number; a?: number}; bold?: boolean; horizontalAlignment?: string; verticalAlignment?: string}) {
   const background = rgbaFromColor(cellStyle?.backgroundColor);
   const text = rgbaFromColor(cellStyle?.textColor);
 
@@ -21,13 +30,10 @@ function renderCell(value: string | undefined, index: number, isHeader = false, 
     <td
       key={index}
       className={[
-        'border border-slate-300 px-[3px] py-[1px] align-top text-[11px] leading-[1.2] tracking-normal',
+        'border border-slate-300 px-2 py-1 align-top text-[11px] leading-[1.2] tracking-normal',
         'whitespace-nowrap',
       ].join(' ')}
       style={{
-        width: `${width}px`,
-        minWidth: `${width}px`,
-        maxWidth: `${width}px`,
         backgroundColor: background ?? (isHeader ? '#eef3ff' : '#ffffff'),
         color: text ?? '#1f2937',
         fontWeight: cellStyle?.bold || isHeader ? 700 : 400,
@@ -84,36 +90,41 @@ export default async function AdminFinancialsPage({params}: Props) {
 
       <div className="mt-6 w-full">
         {sheets.length > 0 ? (
-          sheets.map((sheet) => (
-            <section key={sheet.title} className="w-full overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-              <div className="border-b border-slate-200 bg-[#f7f1ff] px-5 py-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-violet-600">{sheet.sheetName}</p>
-                <h3 className="mt-1 text-lg font-semibold text-slate-900">{sheet.title}</h3>
-                <p className="mt-1 text-sm text-slate-600">{sheet.description}</p>
-              </div>
+          sheets.map((sheet) => {
+            const visibleRows = normalizeFinancialRows(sheet.rows).slice(0, 60);
+            const firstRow = visibleRows[0] ?? [];
 
-              <div className="w-full overflow-auto bg-white" style={{maxHeight: '44rem', overflowX: 'auto', overflowY: 'auto'}}>
-                {sheet.rows.length > 0 ? (
-                  <table className="border-spacing-0" style={{borderCollapse: 'collapse', tableLayout: 'fixed', width: 'max-content', minWidth: '100%'}}>
-                    <colgroup>
-                      {(sheet.columnWidths && sheet.columnWidths.length > 0 ? sheet.columnWidths : Array.from({length: Math.max(...sheet.rows.map((row) => row.length), 1)}, () => 110)).map((width, columnIndex) => (
-                        <col key={`${sheet.title}-col-${columnIndex}`} style={{width: `${Math.max(70, width)}px`, minWidth: `${Math.max(70, width)}px`}} />
-                      ))}
-                    </colgroup>
-                    <tbody>
-                      {sheet.rows.slice(0, 60).map((row, rowIndex) => (
-                        <tr key={`${sheet.title}-${rowIndex}`}>
-                          {row.map((cell, cellIndex) => renderCell(cell, cellIndex, rowIndex === 0, sheet.cellMetadata?.[rowIndex]?.[cellIndex], Math.max(70, sheet.columnWidths?.[cellIndex] ?? 110)))}
+            return (
+              <section key={sheet.title} className="w-full overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+                <div className="border-b border-slate-200 bg-[#f7f1ff] px-5 py-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-violet-600">{sheet.sheetName}</p>
+                  <h3 className="mt-1 text-lg font-semibold text-slate-900">{sheet.title}</h3>
+                  <p className="mt-1 text-sm text-slate-600">{sheet.description}</p>
+                </div>
+
+                <div className="w-full overflow-auto bg-white" style={{maxHeight: '44rem', overflowX: 'auto', overflowY: 'auto'}}>
+                  {visibleRows.length > 0 ? (
+                    <table className="w-full border-collapse border-spacing-0" style={{borderCollapse: 'separate'}}>
+                      <thead>
+                        <tr>
+                          {firstRow.map((cell, cellIndex) => renderCell(cell, cellIndex, true, sheet.cellMetadata?.[0]?.[cellIndex]))}
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                ) : (
-                  <div className="px-5 py-6 text-sm text-slate-500">No data returned for this sheet. Check the spreadsheet ID, sheet name, or range.</div>
-                )}
-              </div>
-            </section>
-          ))
+                      </thead>
+                      <tbody>
+                        {visibleRows.slice(1).map((row, rowIndex) => (
+                          <tr key={`${sheet.title}-row-${rowIndex}`}>
+                            {row.map((cell, cellIndex) => renderCell(cell, cellIndex, false, sheet.cellMetadata?.[rowIndex + 1]?.[cellIndex]))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  ) : (
+                    <div className="px-5 py-6 text-sm text-slate-500">No non-empty financial data was returned for this sheet.</div>
+                  )}
+                </div>
+              </section>
+            );
+          })
         ) : (
           <div className="rounded-3xl border border-slate-200 bg-white p-6 text-sm text-slate-600 shadow-sm">
             No financial Google Sheet is currently configured. The page will render the sheet automatically once the Financials spreadsheet and API key are added.
