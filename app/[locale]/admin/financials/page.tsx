@@ -23,6 +23,15 @@ function SummaryCard({label, value}: {label: string; value: string}) {
 }
 
 function DataTable({title, headers, rows}: {title: string; headers: string[]; rows: Array<Array<string | number>>}) {
+  const totalColumnIndexes = new Set(
+    headers.reduce<number[]>((indexes, header, index) => {
+      if (header.toLowerCase().includes('total')) {
+        indexes.push(index);
+      }
+      return indexes;
+    }, []),
+  );
+
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
       <h3 className="mb-3 text-lg font-semibold text-slate-900">{title}</h3>
@@ -30,8 +39,13 @@ function DataTable({title, headers, rows}: {title: string; headers: string[]; ro
         <table className="min-w-full border-collapse text-left text-sm">
           <thead>
             <tr className="border-b border-slate-200 bg-slate-50">
-              {headers.map((header) => (
-                <th key={header} className="px-3 py-2 font-semibold text-slate-700">{header}</th>
+              {headers.map((header, headerIndex) => (
+                <th
+                  key={header}
+                  className={`px-3 py-2 text-slate-700 ${totalColumnIndexes.has(headerIndex) ? 'font-bold text-slate-900' : 'font-semibold'}`}
+                >
+                  {header}
+                </th>
               ))}
             </tr>
           </thead>
@@ -39,9 +53,19 @@ function DataTable({title, headers, rows}: {title: string; headers: string[]; ro
             {rows.map((row, rowIndex) => (
               <tr key={`${title}-${rowIndex}`} className="border-b border-slate-100 last:border-b-0">
                 {row.map((cell, cellIndex) => (
-                  <td key={`${title}-${rowIndex}-${cellIndex}`} className="px-3 py-2 align-top text-slate-700">
+                  (() => {
+                    const isTotalRow = String(row[0] ?? '').trim().toLowerCase().includes('total');
+                    const isTotalCell = isTotalRow || totalColumnIndexes.has(cellIndex);
+
+                    return (
+                  <td
+                    key={`${title}-${rowIndex}-${cellIndex}`}
+                    className={`px-3 py-2 align-top text-slate-700 ${isTotalCell ? 'font-bold text-slate-900' : ''}`}
+                  >
                     {typeof cell === 'number' ? (cellIndex === 0 ? formatNumber(cell) : formatCurrency(cell)) : cell}
                   </td>
+                    );
+                  })()
                 ))}
               </tr>
             ))}
@@ -87,7 +111,9 @@ export default async function AdminFinancialsPage({params}: Props) {
   const config = getFinancialsSheetConfig();
   const dashboardData: FinancialDashboardData | null = config ? await loadFinancialDashboardFromEnv() : null;
 
-  const monthlyExpensesRows = dashboardData ? dashboardData.monthlyExpensesByCategory.map((row) => {
+  const monthlyExpensesRows = dashboardData ? dashboardData.monthlyExpensesByCategory
+    .filter((row) => row.month.trim().toLowerCase() !== 'total by category')
+    .map((row) => {
     const materialTotal = getMaterialCategoriesTotals(row);
     return [
       row.month,
@@ -109,7 +135,7 @@ export default async function AdminFinancialsPage({params}: Props) {
       row.categories.wages,
       materialTotal + row.categories.wages,
     ];
-  }) : [];
+    }) : [];
 
   const monthlyExpensesTotals = dashboardData ? {
     month: 'Total by category',
@@ -223,20 +249,6 @@ export default async function AdminFinancialsPage({params}: Props) {
             headers={['Month', 'Wood', 'Vehicle Parts', 'Tools', 'Services', 'Roof Accessories', 'Rental Equipment', 'Other', 'Metals', 'Membranes & Sealants', 'Gutters', 'Fuel', 'Fasteners', 'Equipment', 'Consumables', 'Materials Total', 'Wages', 'Total Costs']}
             rows={[...monthlyExpensesRows, monthlyExpensesTotalRow]}
           />
-
-          <div className="grid gap-6 xl:grid-cols-2">
-            <DataTable
-              title="Project Cost Breakdown"
-              headers={['Project', 'Items (without VAT)', 'Wages', 'Total Project Cost']}
-              rows={dashboardData.projectCostBreakdown.map((row) => [row.project, row.items, row.wages, row.totalProjectCost])}
-            />
-
-            <DataTable
-              title="Vendor Expenses"
-              headers={['Vendor', 'Total Amount, without VAT', 'Invoice Count']}
-              rows={dashboardData.vendorExpenses.map((row) => [row.vendor, row.totalAmount, row.invoiceCount])}
-            />
-          </div>
 
           <div className="grid gap-6 xl:grid-cols-2">
             <DataTable
