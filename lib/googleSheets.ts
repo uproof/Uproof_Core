@@ -82,11 +82,10 @@ export type FinancialDashboardData = {
 
 const financialDashboardTableRanges = {
   summary: 'Dashboard!A1:H2',
-  monthlyExpensesByCategory: 'Dashboard!B6:R30',
-  projectCosts: 'Dashboard!B28:C60',
-  monthlyTotalExpenses: 'Dashboard!E28:F60',
-  projectCostBreakdown: 'Dashboard!H28:K60',
-  vendorExpenses: 'Dashboard!N28:P120',
+  monthlyExpensesByCategory: 'Dashboard!B7:Q14',
+  monthlyTotalExpenses: 'Dashboard!E28:F34',
+  projectCostBreakdown: 'Dashboard!H28:K41',
+  vendorExpenses: 'Dashboard!N28:P87',
 } as const;
 
 async function getGoogleSheetsAuthClient() {
@@ -150,7 +149,6 @@ export function getFinancialsSheetConfig(): Project360SheetConfig | null {
     tables: [
       {title: 'summary', description: 'Summary KPIs', sheetName: 'Dashboard', range: financialDashboardTableRanges.summary},
       {title: 'monthlyExpensesByCategory', description: 'Monthly expenses by category', sheetName: 'Dashboard', range: financialDashboardTableRanges.monthlyExpensesByCategory},
-      {title: 'projectCosts', description: 'Project totals', sheetName: 'Dashboard', range: financialDashboardTableRanges.projectCosts},
       {title: 'monthlyTotalExpenses', description: 'Monthly total expenses', sheetName: 'Dashboard', range: financialDashboardTableRanges.monthlyTotalExpenses},
       {title: 'projectCostBreakdown', description: 'Project cost breakdown', sheetName: 'Dashboard', range: financialDashboardTableRanges.projectCostBreakdown},
       {title: 'vendorExpenses', description: 'Vendor expenses', sheetName: 'Dashboard', range: financialDashboardTableRanges.vendorExpenses},
@@ -291,6 +289,30 @@ function isTotalRow(row: string[]): boolean {
   return firstValue === 'kopsumma' || firstValue === 'total' || firstValue === 'sum';
 }
 
+function isMonthLike(value: string): boolean {
+  const normalized = String(value ?? '').trim().toLowerCase().replace(/\s+/g, ' ');
+  if (!normalized || ['project', 'month', 'vendor', 'kopsumma', 'total', 'sum'].includes(normalized)) {
+    return false;
+  }
+
+  const monthNames = [
+    'jan', 'janv', 'janvāris', 'january',
+    'feb', 'febr', 'februāris', 'february',
+    'mar', 'marts', 'march',
+    'apr', 'aprīlis', 'april',
+    'mai', 'maijs', 'may',
+    'jun', 'jūn', 'jūnijs', 'june',
+    'jul', 'jūl', 'jūlijs', 'july',
+    'aug', 'augusts', 'august',
+    'sep', 'sept', 'septembris', 'september',
+    'oct', 'okt', 'oktobris', 'october',
+    'nov', 'novembris', 'november',
+    'dec', 'decembris', 'december',
+  ];
+
+  return monthNames.some((month) => normalized.startsWith(month)) || /^\d{4}$/.test(normalized) || /^\d{4}[-/\s]\d{1,2}$/.test(normalized);
+}
+
 function getSummary(rows: string[][]): FinancialSummary {
   const values = rows[1] ?? [];
   const labels = rows[0] ?? [];
@@ -363,7 +385,7 @@ function parseMonthlyExpensesByCategory(rows: string[][]): MonthlyExpenseEntry[]
     }
 
     const month = String(row[0] ?? '').trim();
-    if (!month || month.toLowerCase() === 'month') {
+    if (!month || month.toLowerCase() === 'month' || !isMonthLike(month)) {
       continue;
     }
 
@@ -395,6 +417,44 @@ function parseMonthlyExpensesByCategory(rows: string[][]): MonthlyExpenseEntry[]
 
     output.push({month, categories});
   }
+
+  const totals: MonthlyExpenseCategories = {
+    wood: 0,
+    wages: 0,
+    vehicleParts: 0,
+    tools: 0,
+    services: 0,
+    roofAccessories: 0,
+    rentalEquipment: 0,
+    other: 0,
+    metals: 0,
+    membranesSealants: 0,
+    gutters: 0,
+    fuel: 0,
+    fasteners: 0,
+    equipment: 0,
+    consumables: 0,
+  };
+
+  for (const entry of output) {
+    totals.wood += entry.categories.wood;
+    totals.wages += entry.categories.wages;
+    totals.vehicleParts += entry.categories.vehicleParts;
+    totals.tools += entry.categories.tools;
+    totals.services += entry.categories.services;
+    totals.roofAccessories += entry.categories.roofAccessories;
+    totals.rentalEquipment += entry.categories.rentalEquipment;
+    totals.other += entry.categories.other;
+    totals.metals += entry.categories.metals;
+    totals.membranesSealants += entry.categories.membranesSealants;
+    totals.gutters += entry.categories.gutters;
+    totals.fuel += entry.categories.fuel;
+    totals.fasteners += entry.categories.fasteners;
+    totals.equipment += entry.categories.equipment;
+    totals.consumables += entry.categories.consumables;
+  }
+
+  output.push({month: 'Total by category', categories: totals});
 
   return output;
 }
@@ -503,7 +563,7 @@ export async function loadFinancialDashboard(config: Project360SheetConfig): Pro
   return {
     summary: getSummary(byTitle.summary ?? []),
     monthlyExpensesByCategory: parseMonthlyExpensesByCategory(byTitle.monthlyExpensesByCategory ?? []),
-    projectCosts: parseProjectCosts(byTitle.projectCosts ?? []),
+    projectCosts: [],
     monthlyTotalExpenses: parseMonthlyTotalExpenses(byTitle.monthlyTotalExpenses ?? []),
     projectCostBreakdown: parseProjectCostBreakdown(byTitle.projectCostBreakdown ?? []),
     vendorExpenses: parseVendorExpenses(byTitle.vendorExpenses ?? []),

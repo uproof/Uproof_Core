@@ -52,6 +52,26 @@ function DataTable({title, headers, rows}: {title: string; headers: string[]; ro
   );
 }
 
+function getMaterialCategoriesTotals(row: {categories: {
+  wood: number;
+  wages: number;
+  vehicleParts: number;
+  tools: number;
+  services: number;
+  roofAccessories: number;
+  rentalEquipment: number;
+  other: number;
+  metals: number;
+  membranesSealants: number;
+  gutters: number;
+  fuel: number;
+  fasteners: number;
+  equipment: number;
+  consumables: number;
+}}) {
+  return row.categories.wood + row.categories.vehicleParts + row.categories.tools + row.categories.services + row.categories.roofAccessories + row.categories.rentalEquipment + row.categories.other + row.categories.metals + row.categories.membranesSealants + row.categories.gutters + row.categories.fuel + row.categories.fasteners + row.categories.equipment + row.categories.consumables;
+}
+
 export default async function AdminFinancialsPage({params}: Props) {
   const {locale} = await params;
   const session = await getAdminSession();
@@ -67,13 +87,106 @@ export default async function AdminFinancialsPage({params}: Props) {
   const config = getFinancialsSheetConfig();
   const dashboardData: FinancialDashboardData | null = config ? await loadFinancialDashboardFromEnv() : null;
 
+  const monthlyExpensesRows = dashboardData ? dashboardData.monthlyExpensesByCategory.map((row) => {
+    const materialTotal = getMaterialCategoriesTotals(row);
+    return [
+      row.month,
+      row.categories.wood,
+      row.categories.vehicleParts,
+      row.categories.tools,
+      row.categories.services,
+      row.categories.roofAccessories,
+      row.categories.rentalEquipment,
+      row.categories.other,
+      row.categories.metals,
+      row.categories.membranesSealants,
+      row.categories.gutters,
+      row.categories.fuel,
+      row.categories.fasteners,
+      row.categories.equipment,
+      row.categories.consumables,
+      materialTotal,
+      row.categories.wages,
+      materialTotal + row.categories.wages,
+    ];
+  }) : [];
+
+  const monthlyExpensesTotals = dashboardData ? {
+    month: 'Total by category',
+    wood: dashboardData.monthlyExpensesByCategory.reduce((sum, row) => sum + row.categories.wood, 0),
+    vehicleParts: dashboardData.monthlyExpensesByCategory.reduce((sum, row) => sum + row.categories.vehicleParts, 0),
+    tools: dashboardData.monthlyExpensesByCategory.reduce((sum, row) => sum + row.categories.tools, 0),
+    services: dashboardData.monthlyExpensesByCategory.reduce((sum, row) => sum + row.categories.services, 0),
+    roofAccessories: dashboardData.monthlyExpensesByCategory.reduce((sum, row) => sum + row.categories.roofAccessories, 0),
+    rentalEquipment: dashboardData.monthlyExpensesByCategory.reduce((sum, row) => sum + row.categories.rentalEquipment, 0),
+    other: dashboardData.monthlyExpensesByCategory.reduce((sum, row) => sum + row.categories.other, 0),
+    metals: dashboardData.monthlyExpensesByCategory.reduce((sum, row) => sum + row.categories.metals, 0),
+    membranesSealants: dashboardData.monthlyExpensesByCategory.reduce((sum, row) => sum + row.categories.membranesSealants, 0),
+    gutters: dashboardData.monthlyExpensesByCategory.reduce((sum, row) => sum + row.categories.gutters, 0),
+    fuel: dashboardData.monthlyExpensesByCategory.reduce((sum, row) => sum + row.categories.fuel, 0),
+    fasteners: dashboardData.monthlyExpensesByCategory.reduce((sum, row) => sum + row.categories.fasteners, 0),
+    equipment: dashboardData.monthlyExpensesByCategory.reduce((sum, row) => sum + row.categories.equipment, 0),
+    consumables: dashboardData.monthlyExpensesByCategory.reduce((sum, row) => sum + row.categories.consumables, 0),
+    wages: dashboardData.monthlyExpensesByCategory.reduce((sum, row) => sum + row.categories.wages, 0),
+  } : null;
+
+  const monthlyExpensesTotalRow = monthlyExpensesTotals ? [
+    monthlyExpensesTotals.month,
+    monthlyExpensesTotals.wood,
+    monthlyExpensesTotals.vehicleParts,
+    monthlyExpensesTotals.tools,
+    monthlyExpensesTotals.services,
+    monthlyExpensesTotals.roofAccessories,
+    monthlyExpensesTotals.rentalEquipment,
+    monthlyExpensesTotals.other,
+    monthlyExpensesTotals.metals,
+    monthlyExpensesTotals.membranesSealants,
+    monthlyExpensesTotals.gutters,
+    monthlyExpensesTotals.fuel,
+    monthlyExpensesTotals.fasteners,
+    monthlyExpensesTotals.equipment,
+    monthlyExpensesTotals.consumables,
+    Object.values({
+      wood: monthlyExpensesTotals.wood,
+      vehicleParts: monthlyExpensesTotals.vehicleParts,
+      tools: monthlyExpensesTotals.tools,
+      services: monthlyExpensesTotals.services,
+      roofAccessories: monthlyExpensesTotals.roofAccessories,
+      rentalEquipment: monthlyExpensesTotals.rentalEquipment,
+      other: monthlyExpensesTotals.other,
+      metals: monthlyExpensesTotals.metals,
+      membranesSealants: monthlyExpensesTotals.membranesSealants,
+      gutters: monthlyExpensesTotals.gutters,
+      fuel: monthlyExpensesTotals.fuel,
+      fasteners: monthlyExpensesTotals.fasteners,
+      equipment: monthlyExpensesTotals.equipment,
+      consumables: monthlyExpensesTotals.consumables,
+    }).reduce((sum, value) => sum + value, 0),
+    monthlyExpensesTotals.wages,
+    Object.values({
+      wood: monthlyExpensesTotals.wood,
+      vehicleParts: monthlyExpensesTotals.vehicleParts,
+      tools: monthlyExpensesTotals.tools,
+      services: monthlyExpensesTotals.services,
+      roofAccessories: monthlyExpensesTotals.roofAccessories,
+      rentalEquipment: monthlyExpensesTotals.rentalEquipment,
+      other: monthlyExpensesTotals.other,
+      metals: monthlyExpensesTotals.metals,
+      membranesSealants: monthlyExpensesTotals.membranesSealants,
+      gutters: monthlyExpensesTotals.gutters,
+      fuel: monthlyExpensesTotals.fuel,
+      fasteners: monthlyExpensesTotals.fasteners,
+      equipment: monthlyExpensesTotals.equipment,
+      consumables: monthlyExpensesTotals.consumables,
+    }).reduce((sum, value) => sum + value, 0) + monthlyExpensesTotals.wages,
+  ] : [];
+
   return (
     <div className="px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-violet-600">Financials</p>
           <h2 className="mt-2 text-3xl font-bold text-slate-900">Live financial dashboard</h2>
-          <p className="mt-1 text-sm text-slate-600">This page reads the Dashboard tab as six independent source tables and exposes their normalized values in the CMS.</p>
         </div>
         <Link href={`/${locale}/admin`} className="inline-flex items-center rounded-xl border border-violet-200 bg-white px-4 py-2 text-sm font-semibold text-violet-700 transition hover:bg-violet-50">
           Back to Dashboard
@@ -107,38 +220,21 @@ export default async function AdminFinancialsPage({params}: Props) {
 
           <DataTable
             title="Monthly Expenses by Category"
-            headers={['Month', 'Wood', 'Wages', 'Vehicle Parts', 'Tools', 'Services', 'Roof Accessories', 'Rental Equipment', 'Other', 'Metals', 'Membranes & Sealants', 'Gutters', 'Fuel', 'Fasteners', 'Equipment', 'Consumables']}
-            rows={dashboardData.monthlyExpensesByCategory.map((row) => [
-              row.month,
-              row.categories.wood,
-              row.categories.wages,
-              row.categories.vehicleParts,
-              row.categories.tools,
-              row.categories.services,
-              row.categories.roofAccessories,
-              row.categories.rentalEquipment,
-              row.categories.other,
-              row.categories.metals,
-              row.categories.membranesSealants,
-              row.categories.gutters,
-              row.categories.fuel,
-              row.categories.fasteners,
-              row.categories.equipment,
-              row.categories.consumables,
-            ])}
+            headers={['Month', 'Wood', 'Vehicle Parts', 'Tools', 'Services', 'Roof Accessories', 'Rental Equipment', 'Other', 'Metals', 'Membranes & Sealants', 'Gutters', 'Fuel', 'Fasteners', 'Equipment', 'Consumables', 'Materials Total', 'Wages', 'Total Costs']}
+            rows={[...monthlyExpensesRows, monthlyExpensesTotalRow]}
           />
 
           <div className="grid gap-6 xl:grid-cols-2">
             <DataTable
-              title="Project Costs"
-              headers={['Project', 'Total Project Cost, without VAT']}
-              rows={dashboardData.projectCosts.map((row) => [row.project, row.totalProjectCost])}
+              title="Project Cost Breakdown"
+              headers={['Project', 'Items (without VAT)', 'Wages', 'Total Project Cost']}
+              rows={dashboardData.projectCostBreakdown.map((row) => [row.project, row.items, row.wages, row.totalProjectCost])}
             />
 
             <DataTable
-              title="Monthly Total Expenses"
-              headers={['Month', 'Total Amount, without VAT']}
-              rows={dashboardData.monthlyTotalExpenses.map((row) => [row.month, row.totalAmount])}
+              title="Vendor Expenses"
+              headers={['Vendor', 'Total Amount, without VAT', 'Invoice Count']}
+              rows={dashboardData.vendorExpenses.map((row) => [row.vendor, row.totalAmount, row.invoiceCount])}
             />
           </div>
 
