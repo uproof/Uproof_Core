@@ -11,6 +11,7 @@ import {logCrmUserActivity} from '@/lib/crmUserActivityStore';
 import {parseEmail, parsePassword} from '@/lib/authValidation';
 import {createSupabaseServerClient, createSupabaseAdminClient} from '@/lib/supabase/server';
 import {SUPABASE_ACCESS_TOKEN_COOKIE, SUPABASE_REFRESH_TOKEN_COOKIE} from '@/lib/supabase/session';
+import {ADMIN_ACTIVITY_COOKIE, SESSION_IDLE_TIMEOUT_SECONDS} from '@/lib/sessionConfig';
 
 function setSupabaseAuthCookies(response: NextResponse, session: {access_token: string; refresh_token: string; expires_at?: number | null}) {
   const maxAge = typeof session.expires_at === 'number' ? Math.max(60, session.expires_at - Math.floor(Date.now() / 1000)) : 60 * 60 * 24;
@@ -129,7 +130,14 @@ export async function POST(req: NextRequest) {
       sameSite: 'strict',
       secure: process.env.NODE_ENV === 'production',
       path: '/',
-      maxAge: 60 * 60 * 24,
+      maxAge: SESSION_IDLE_TIMEOUT_SECONDS,
+    });
+    response.cookies.set(ADMIN_ACTIVITY_COOKIE, 'active', {
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
+      maxAge: SESSION_IDLE_TIMEOUT_SECONDS,
     });
 
     if (!isLocalDevHost) {
@@ -154,7 +162,14 @@ export async function POST(req: NextRequest) {
     sameSite: 'strict',
     secure: process.env.NODE_ENV === 'production',
     path: '/',
-    maxAge: 60 * 60 * 24,
+    maxAge: SESSION_IDLE_TIMEOUT_SECONDS,
+  });
+  response.cookies.set(ADMIN_ACTIVITY_COOKIE, 'active', {
+    httpOnly: true,
+    sameSite: 'strict',
+    secure: process.env.NODE_ENV === 'production',
+    path: '/',
+    maxAge: SESSION_IDLE_TIMEOUT_SECONDS,
   });
 
   if (!isLocalDevHost) {

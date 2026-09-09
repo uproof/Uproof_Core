@@ -1,6 +1,6 @@
 "use client";
 
-import {useMemo, useState} from 'react';
+import {DragEvent, useEffect, useMemo, useState} from 'react';
 import Link from 'next/link';
 import {ArrowTopRightOnSquareIcon, ChatBubbleLeftRightIcon, ClockIcon, UserPlusIcon} from '@heroicons/react/24/outline';
 import Section from '@/components/Section';
@@ -147,6 +147,17 @@ function getPipelineStage(lead: CrmLead): PipelineStageKey {
   return stageByStatus[status] || 'waiting-data';
 }
 
+const STATUS_BY_PIPELINE_STAGE: Record<PipelineStageKey, CrmLead['status']> = {
+  'new-lead': 'NEW_LEAD',
+  'waiting-data': 'WAITING_DATA',
+  estimating: 'ESTIMATING',
+  'estimate-done': 'ESTIMATE_DONE',
+  'estimate-sent': 'ESTIMATE_SENT',
+  accepted: 'ACCEPTED',
+  denied: 'DENIED',
+  frozen: 'FROZEN',
+};
+
 function formatValue(value: string, locale: string) {
   const amount = parseMoney(value);
   if (!amount) return value || '-';
@@ -159,13 +170,22 @@ function formatValue(value: string, locale: string) {
 
 export default function CrmDashboardClient({locale, leads, isSalesView}: Props) {
   const isLv = locale === 'lv';
+  const [boardLeads, setBoardLeads] = useState(leads);
   const [query, setQuery] = useState('');
   const [dateFilter, setDateFilter] = useState<DateFilterKey>('all');
+  const [draggedLeadId, setDraggedLeadId] = useState<string | null>(null);
+  const [dropStage, setDropStage] = useState<PipelineStageKey | null>(null);
+  const [updatingLeadId, setUpdatingLeadId] = useState<string | null>(null);
+  const [dragError, setDragError] = useState('');
+
+  useEffect(() => {
+    setBoardLeads(leads);
+  }, [leads]);
 
   const filteredLeads = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
 
-    return leads
+    return boardLeads
       .filter((lead) => isWithinDateFilter(lead, dateFilter))
       .filter((lead) => {
         if (!normalizedQuery) return true;
@@ -179,7 +199,64 @@ export default function CrmDashboardClient({locale, leads, isSalesView}: Props) 
         }
         return (right.updatedAtUtc || right.updatedAt).localeCompare(left.updatedAtUtc || left.updatedAt);
       });
-  }, [dateFilter, leads, query]);
+  }, [boardLeads, dateFilter, query]);
+
+  const handleDragStart = (event: DragEvent<HTMLAnchorElement>, leadId: string) => {
+    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData('text/plain', leadId);
+    setDraggedLeadId(leadId);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedLeadId(null);
+    setDropStage(null);
+  };
+
+  const handleDrop = async (event: DragEvent<HTMLElement>, stage: PipelineStageKey) => {
+    event.preventDefault();
+    const leadId = event.dataTransfer.getData('text/plain') || draggedLeadId;
+    setDropStage(null);
+    setDraggedLeadId(null);
+
+    if (!leadId) {
+      return;
+    }
+
+    const lead = boardLeads.find((entry) => entry.id === leadId);
+    if (!lead || getPipelineStage(lead) === stage || updatingLeadId) {
+      return;
+    }
+
+    const previousLeads = boardLeads;
+    const nextStatus = STATUS_BY_PIPELINE_STAGE[stage];
+    const optimisticUpdatedAt = new Date().toISOString();
+    setBoardLeads((current) => current.map((entry) => entry.id === leadId
+      ? {...entry, status: nextStatus, updatedAtUtc: optimisticUpdatedAt, updatedAt: optimisticUpdatedAt}
+      : entry));
+    setUpdatingLeadId(leadId);
+
+    try {
+      setDragError('');
+      const response = await fetch(`/api/crm/leads/${encodeURIComponent(leadId)}`, {
+        method: 'PATCH',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({updatedAtUtc: lead.updatedAtUtc, status: nextStatus}),
+      });
+      const data = await response.json();
+      if (!data.ok) {
+        throw new Error(data.error || 'Failed to update lead status');
+      }
+
+      if (data.lead) {
+        setBoardLeads((current) => current.map((entry) => entry.id === leadId ? data.lead : entry));
+      }
+    } catch (error: any) {
+      setBoardLeads(previousLeads);
+      setDragError(error?.message || (isLv ? 'Neizdevās pārvietot līdu.' : 'Failed to move lead'));
+    } finally {
+      setUpdatingLeadId(null);
+    }
+  };
 
   const board = useMemo(() => {
     const initial: Record<PipelineStageKey, CrmLead[]> = {
@@ -269,6 +346,7 @@ export default function CrmDashboardClient({locale, leads, isSalesView}: Props) 
         </aside>
 
         <div className="min-w-0">
+          {dragError ? <p className="mb-3 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700">{dragError}</p> : null}
           <div className="mb-4">
             <div className="rounded-2xl border border-sky-100 bg-white p-3 shadow-sm">
               <div className="grid gap-3 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
@@ -305,7 +383,17 @@ export default function CrmDashboardClient({locale, leads, isSalesView}: Props) 
           const stageLeads = board[stage.key];
 
           return (
-            <section key={stage.key} className="rounded-3xl border border-slate-200 bg-white p-3 shadow-sm">
+            <section
+              key={stage.key}
+              onDragOver={(event) => {
+                event.preventDefault();
+                event.dataTransfer.dropEffect = 'move';
+                setDropStage(stage.key);
+              }}
+              onDragLeave={() => setDropStage((current) => current === stage.key ? null : current)}
+              onDrop={(event) => void handleDrop(event, stage.key)}
+              className={`rounded-3xl border bg-white p-3 shadow-sm transition ${dropStage === stage.key ? 'border-sky-400 ring-2 ring-sky-200' : 'border-slate-200'}`}
+            >
               <div className={`mb-3 flex items-center justify-between rounded-2xl border px-3 py-2 ${stage.toneClass}`}>
                 <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-slate-900">{isLv ? stage.labelLv : stage.labelEn}</h3>
                 <span className="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-slate-700">{stageLeads.length}</span>
@@ -318,7 +406,10 @@ export default function CrmDashboardClient({locale, leads, isSalesView}: Props) 
                       <Link
                         key={lead.id}
                         href={`/${locale}/crm/leads/${lead.id.toLowerCase()}`}
-                        className="block min-h-[220px] w-[320px] shrink-0 rounded-2xl border border-gray-400 bg-gray-200 p-3 shadow-sm transition hover:border-gray-500 hover:bg-gray-300 hover:shadow"
+                        draggable
+                        onDragStart={(event) => handleDragStart(event, lead.id)}
+                        onDragEnd={handleDragEnd}
+                        className={`block min-h-[220px] w-[320px] shrink-0 rounded-2xl border border-gray-400 bg-gray-200 p-3 shadow-sm transition hover:border-gray-500 hover:bg-gray-300 hover:shadow ${draggedLeadId === lead.id ? 'opacity-50' : ''}`}
                       >
                         <div className="mb-2 flex items-center justify-between gap-2">
                           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-600">{lead.id}</p>

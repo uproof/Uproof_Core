@@ -4,6 +4,7 @@ import crypto from 'crypto';
 import {createSupabaseAdminClient} from '@/lib/supabase/server';
 import {getSupabaseAccessToken, resolveSupabaseAdminSession} from '@/lib/supabase/session';
 import {normalizeCrmRole, type CrmRole, isSuperadminRole} from '@/lib/crmRoles';
+import {ADMIN_ACTIVITY_COOKIE, SESSION_IDLE_TIMEOUT_SECONDS} from '@/lib/sessionConfig';
 
 export const ADMIN_SESSION_COOKIE = 'admin_session';
 export const ADMIN_PENDING_SESSION_COOKIE = 'admin_pending_session';
@@ -130,7 +131,14 @@ export async function setAdminCookie(token: string) {
     sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production',
     path: '/',
-    maxAge: 60 * 60 * 24,
+    maxAge: SESSION_IDLE_TIMEOUT_SECONDS,
+  });
+  cookieStore.set(ADMIN_ACTIVITY_COOKIE, 'active', {
+    httpOnly: true,
+    sameSite: 'strict',
+    secure: process.env.NODE_ENV === 'production',
+    path: '/',
+    maxAge: SESSION_IDLE_TIMEOUT_SECONDS,
   });
 }
 
@@ -141,6 +149,7 @@ export async function clearAdminCookie() {
     path: '/',
     maxAge: 0,
   });
+  cookieStore.set(ADMIN_ACTIVITY_COOKIE, '', {httpOnly: true, path: '/', maxAge: 0});
 }
 
 export async function setPendingAdminCookie(token: string) {
@@ -165,6 +174,9 @@ export async function clearPendingAdminCookie() {
 
 export async function isAdminAuthenticated(): Promise<boolean> {
   const cookieStore = await cookies();
+  if (!cookieStore.get(ADMIN_ACTIVITY_COOKIE)?.value) {
+    return false;
+  }
   const token = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
   return verifyToken(token);
 }
@@ -192,6 +204,9 @@ export async function getAdminSession(): Promise<AdminSession | null> {
   const headerStore = await headers();
   const currentIp = headerStore.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
   const token = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
+  if (!cookieStore.get(ADMIN_ACTIVITY_COOKIE)?.value) {
+    return null;
+  }
   const session = decodeToken(token);
   if (!session) {
     const supabaseAccessToken = getSupabaseAccessToken(cookieStore);

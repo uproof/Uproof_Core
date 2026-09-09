@@ -4,7 +4,8 @@ import {NextRequest, NextResponse} from 'next/server';
 import {SUPABASE_ACCESS_TOKEN_COOKIE} from '@/lib/supabase/session';
 import {getCmsRedirectHost, getCrmRedirectHost, isCmsHost, isCrmHost, isInternalAuthPath, isLegacyInternalHost} from '@/lib/internalRouting';
 import {createClient as createSupabaseMiddlewareClient, applySupabaseCookies} from '@/utils/supabase/middleware';
-import {isSuperadminRole} from '@/lib/crmRoles';
+import {isSuperadminRole, normalizeCrmRole, type CrmRole} from '@/lib/crmRoles';
+import {ADMIN_ACTIVITY_COOKIE, SESSION_IDLE_TIMEOUT_SECONDS} from '@/lib/sessionConfig';
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -18,6 +19,18 @@ function redirectToHost(request: NextRequest, hostname: string, pathname?: strin
   url.hostname = hostname;
   if (pathname) url.pathname = pathname;
   const response = NextResponse.redirect(url, 308);
+  if (request.cookies.get('admin_session')?.value && request.cookies.get(ADMIN_ACTIVITY_COOKIE)?.value) {
+    response.cookies.set(ADMIN_ACTIVITY_COOKIE, 'active', {
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
+      maxAge: SESSION_IDLE_TIMEOUT_SECONDS,
+    });
+  } else if (request.cookies.get('admin_session')?.value && !request.cookies.get(ADMIN_ACTIVITY_COOKIE)?.value) {
+    response.cookies.set('admin_session', '', {httpOnly: true, path: '/', maxAge: 0});
+    response.cookies.set(ADMIN_ACTIVITY_COOKIE, '', {httpOnly: true, path: '/', maxAge: 0});
+  }
   return supabaseResponse ? applySupabaseCookies(response, supabaseResponse) : response;
 }
 
@@ -38,7 +51,7 @@ function decodeJwtClaims(token: string) {
   try { return JSON.parse(decodePayload(parts[1])) as Record<string, unknown>; } catch { return null; }
 }
 
-async function getSessionRoleFromCookie(sessionToken: string | undefined, supabaseAccessToken: string | undefined): Promise<'sales' | 'superadmin' | null> {
+async function getSessionRoleFromCookie(sessionToken: string | undefined, supabaseAccessToken: string | undefined): Promise<CrmRole | null> {
   if (!sessionToken) return null;
   const parts = sessionToken.split('.');
   if (parts.length !== 2) return null;
@@ -55,7 +68,8 @@ async function getSessionRoleFromCookie(sessionToken: string | undefined, supaba
 
     const parsed = JSON.parse(decodePayload(payload)) as {role?: unknown; exp?: unknown};
     if (typeof parsed.exp !== 'number' || Date.now() >= parsed.exp) return null;
-    if (parsed.role === 'sales' || parsed.role === 'superadmin') return parsed.role;
+    const tokenRole = typeof parsed.role === 'string' ? normalizeCrmRole(parsed.role) : null;
+    if (tokenRole) return tokenRole;
 
     if (supabaseAccessToken) {
       const claims = decodeJwtClaims(supabaseAccessToken);
@@ -67,7 +81,8 @@ async function getSessionRoleFromCookie(sessionToken: string | undefined, supaba
       const role = metadata && typeof (metadata as Record<string, unknown>).role === 'string'
         ? (metadata as Record<string, unknown>).role
         : null;
-      if (role === 'sales' || role === 'superadmin') return role;
+      const supabaseRole = role ? normalizeCrmRole(role) : null;
+      if (supabaseRole) return supabaseRole;
     }
   } catch {
     return null;
@@ -77,11 +92,30 @@ async function getSessionRoleFromCookie(sessionToken: string | undefined, supaba
 
 export default async function middleware(request: NextRequest) {
   const {supabaseResponse} = createSupabaseMiddlewareClient(request);
-  const wrap = (response: NextResponse) => applySupabaseCookies(response, supabaseResponse);
+  const {nextUrl, cookies} = request;
+  let sessionRole: CrmRole | null = null;
+  const sessionCookie = cookies.get('admin_session')?.value;
+  const activityCookie = cookies.get(ADMIN_ACTIVITY_COOKIE)?.value;
+  const expiredActivitySession = !!sessionCookie && !activityCookie;
+  const wrap = (response: NextResponse) => {
+    if (sessionRole && sessionCookie && activityCookie) {
+      response.cookies.set(ADMIN_ACTIVITY_COOKIE, 'active', {
+        httpOnly: true,
+        sameSite: 'strict',
+        secure: process.env.NODE_ENV === 'production',
+        path: '/',
+        maxAge: SESSION_IDLE_TIMEOUT_SECONDS,
+      });
+    }
+    if (expiredActivitySession) {
+      response.cookies.set('admin_session', '', {httpOnly: true, path: '/', maxAge: 0});
+      response.cookies.set(ADMIN_ACTIVITY_COOKIE, '', {httpOnly: true, path: '/', maxAge: 0});
+    }
+    return applySupabaseCookies(response, supabaseResponse);
+  };
   const json = (body: unknown, status: number) => wrap(NextResponse.json(body, {status}));
   const next = () => wrap(NextResponse.next());
 
-  const {nextUrl, cookies} = request;
   const pathname = nextUrl.pathname;
   const host = (request.headers.get('host') || '').split(':')[0].toLowerCase();
   const crmHost = isCrmHost(host);
@@ -97,10 +131,13 @@ export default async function middleware(request: NextRequest) {
   const isApiCrmPath = /^\/api\/crm(\/|$)/.test(pathname);
   const isApiSecurityPath = /^\/api\/security(\/|$)/.test(pathname);
   const isApiPublicAuthPath = /^\/api\/admin\/(login|logout)(\/|$)/.test(pathname);
-  const sessionRole = await getSessionRoleFromCookie(
+  sessionRole = await getSessionRoleFromCookie(
     cookies.get('admin_session')?.value,
     cookies.get(SUPABASE_ACCESS_TOKEN_COOKIE)?.value,
   );
+  if (expiredActivitySession) {
+    sessionRole = null;
+  }
 
   if (isLegacyInternalHost(host)) return redirectToHost(request, getCmsRedirectHost(host), undefined, supabaseResponse);
   if (!crmHost && !cmsHost && internalPath) return redirectToHost(request, isAdminPath || isAdminLoginPath ? getCmsRedirectHost(host) : getCrmRedirectHost(host), undefined, supabaseResponse);

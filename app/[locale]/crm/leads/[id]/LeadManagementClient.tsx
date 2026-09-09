@@ -2,7 +2,6 @@
 
 import {useEffect, useMemo, useRef, useState} from 'react';
 import {ArrowLeftIcon, PencilSquareIcon, PhoneIcon, EnvelopeIcon, MapPinIcon, CheckCircleIcon} from '@heroicons/react/24/outline';
-import Link from 'next/link';
 import {useRouter} from 'next/navigation';
 import Card from '@/components/Card';
 import Section from '@/components/Section';
@@ -454,12 +453,12 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <button type="button" onClick={handlePreviousPage} className="inline-flex h-11 min-w-[150px] items-center justify-center gap-2 rounded-xl border border-sky-200 bg-white px-4 text-sm font-semibold text-sky-700 transition hover:bg-sky-50 sm:justify-start">
-            <ArrowLeftIcon className="h-4 w-4" /> {isLv ? 'Atpakaļ' : 'Back'}
+          <button type="button" onClick={handlePreviousPage} aria-label={isLv ? 'Atpakaļ' : 'Back'} className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-sky-200 bg-white text-sky-700 transition hover:bg-sky-50">
+            <ArrowLeftIcon className="h-5 w-5" />
           </button>
-          <Link href={parentRouteHref} className="inline-flex h-11 min-w-[150px] items-center justify-center gap-2 rounded-xl border border-sky-200 bg-white px-4 text-sm font-semibold text-sky-700 transition hover:bg-sky-50 sm:justify-start">
-            {accessScope === 'sales' ? (isLv ? 'Atpakaļ uz Sales CRM' : 'Back to Sales CRM') : (isLv ? 'Atpakaļ uz CMS' : 'Back to CMS')}
-          </Link>
+          <button type="button" onClick={handleSave} aria-label={isLv ? 'Saglabāt izmaiņas' : 'Save changes'} className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-sky-500 px-4 text-sm font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:bg-sky-300" disabled={saveState === 'saving'}>
+            <PencilSquareIcon className="h-4 w-4" /> {isLv ? 'Saglabāt izmaiņas' : 'Save changes'}
+          </button>
         </div>
       </div>
 

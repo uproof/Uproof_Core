@@ -7,11 +7,13 @@ import {
   SUPABASE_ACCESS_TOKEN_COOKIE,
   SUPABASE_REFRESH_TOKEN_COOKIE,
 } from '@/lib/supabase/session';
+import {ADMIN_ACTIVITY_COOKIE} from '@/lib/sessionConfig';
 
 export async function POST() {
   const res = NextResponse.json({ok: true});
   res.cookies.set(ADMIN_SESSION_COOKIE, '', {httpOnly: true, path: '/', maxAge: 0});
   res.cookies.set(ADMIN_PENDING_SESSION_COOKIE, '', {httpOnly: true, path: '/', maxAge: 0});
+  res.cookies.set(ADMIN_ACTIVITY_COOKIE, '', {httpOnly: true, path: '/', maxAge: 0});
   res.cookies.set(SUPABASE_ACCESS_TOKEN_COOKIE, '', {httpOnly: true, path: '/', maxAge: 0});
   res.cookies.set(SUPABASE_REFRESH_TOKEN_COOKIE, '', {httpOnly: true, path: '/', maxAge: 0});
   return res;

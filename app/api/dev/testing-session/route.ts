@@ -1,5 +1,6 @@
 import {NextResponse} from 'next/server';
 import {ADMIN_SESSION_COOKIE, getApprovedSuperadminCredentials, signToken} from '@/lib/adminAuth';
+import {ADMIN_ACTIVITY_COOKIE, SESSION_IDLE_TIMEOUT_SECONDS} from '@/lib/sessionConfig';
 
 export async function POST() {
   if (process.env.NODE_ENV === 'production') {
@@ -17,7 +18,14 @@ export async function POST() {
     sameSite: 'strict',
     secure: String(process.env.NODE_ENV) === 'production',
     path: '/',
-    maxAge: 60 * 60 * 24,
+    maxAge: SESSION_IDLE_TIMEOUT_SECONDS,
+  });
+  response.cookies.set(ADMIN_ACTIVITY_COOKIE, 'active', {
+    httpOnly: true,
+    sameSite: 'strict',
+    secure: String(process.env.NODE_ENV) === 'production',
+    path: '/',
+    maxAge: SESSION_IDLE_TIMEOUT_SECONDS,
   });
 
   return response;
