@@ -112,9 +112,30 @@ function EstimatorWorkflow({project, initialData}: {project: CrmProjectRecord; i
     }
     try {
       setMessage('Generating estimate...');
-      const nextRows = createProcessedRows(data);
-      await save(nextRows, 'processed', engineOutputs);
+      const response = await fetch(`/api/crm/leads/${encodeURIComponent(project.leadId)}/estimate`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({estimatorData: data}),
+      });
+      const result = await response.json();
+      if (!response.ok || !result.ok) throw new Error(result.error || 'Estimate could not be generated');
+      
+      // Extract rows from generated output
+      const generatedRows = result.outputs?.customerOffer?.activeLineItems || [];
+      const nextRows = generatedRows.length > 0 
+        ? generatedRows.map((row: Record<string, unknown>) => ({
+            description: String(row.description || ''),
+            quantity: String(row.quantity || ''),
+            unit: String(row.unit || ''),
+            price: String(row.unitPrice || ''),
+            total: String(row.total || row.totalExVat || ''),
+          }))
+        : createProcessedRows(data);
+      
+      const nextOutputs = result.outputs as CrmEstimatorEngineOutputs;
+      await save(nextRows, 'processed', nextOutputs);
       setRows(nextRows);
+      setEngineOutputs(nextOutputs);
       setFinalised(false);
       setMessage('Estimate generated. Review and edit the output rows before finalising.');
     } catch (processError: any) {
