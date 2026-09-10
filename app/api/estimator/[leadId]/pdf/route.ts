@@ -24,6 +24,8 @@ export async function GET(request: NextRequest, {params}: {params: Promise<{lead
       `Project: ${lead.projectAddress || lead.address}`,
       `Estimator status: ${lead.status}`,
       `Estimator data fields: ${Object.values(lead.estimatorData || {}).filter((value) => value !== '' && value !== null && value !== undefined).length}`,
+      `Processing status: ${lead.estimatorData?.processingStatus || 'draft'}`,
+      ...(lead.estimatorData?.processedRows || []).map((row) => `${row.description} | ${row.quantity} ${row.unit} | ${row.price} | ${row.total}`),
       kind === 'f2' ? 'Detailed estimator output' : 'Client offer output',
     ],
     watermark: `${session.email} | ${session.sid} | ${new Date().toISOString()}`,

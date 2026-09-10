@@ -3,7 +3,7 @@
 import {useEffect, useState} from 'react';
 import Link from 'next/link';
 import type {CrmProjectRecord} from '@/lib/crmProjectsStore';
-import type {CrmEstimatorFormData} from '@/lib/crmEstimator';
+import {CRM_ESTIMATOR_BOOLEAN_OPTIONS, CRM_ESTIMATOR_FIELD_DEFINITIONS, CRM_ESTIMATOR_FIELD_SECTIONS, createEmptyCrmEstimatorData, formatEstimatorValue, type CrmEstimatorFormData, type CrmEstimatorOutputRow} from '@/lib/crmEstimator';
 
 type Props = {
   locale: string;
@@ -14,6 +14,11 @@ type Props = {
 type ProjectDocument = {id: string; category: string; file_name: string; mime_type: string; file_size: number; uploaded_at: string; url?: string};
 
 type ModuleProps = {title: string; subtitle: string; children: React.ReactNode; defaultOpen?: boolean};
+
+function displayValue(entry: unknown) {
+  if (entry === null || entry === undefined || entry === '') return '—';
+  return String(entry);
+}
 
 function Module({title, subtitle, children, defaultOpen = false}: ModuleProps) {
   const [open, setOpen] = useState(defaultOpen);
@@ -28,29 +33,6 @@ function Module({title, subtitle, children, defaultOpen = false}: ModuleProps) {
   );
 }
 
-function value(value: unknown) {
-  if (typeof value === 'boolean') return value ? 'Yes' : 'No';
-  if (value === null || value === undefined || value === '') return '—';
-  return String(value);
-}
-
-function estimatorEntries(data: CrmEstimatorFormData) {
-  return [
-    ['Roof problem', data.roofProblem],
-    ['Existing covering', data.existingRoofCovering],
-    ['Roof area', data.existingRoofArea],
-    ['Building type', data.buildingType],
-    ['Desired covering', data.desiredRoofCovering],
-    ['Material', data.materialType],
-    ['Material colour', data.desiredMaterialColor],
-    ['Roof pitch', data.roofPitch],
-    ['Gutter system', data.gutterSystem],
-    ['Insulation', data.insulation],
-    ['Structure condition', data.roofStructureCondition],
-    ['Planned execution', data.plannedExecutionTime],
-  ].filter(([, entry]) => entry !== '' && entry !== null && entry !== undefined);
-}
-
 function projectProgressPercent(status: string, workLogCount: number) {
   const normalized = String(status || '').toLowerCase();
   if (normalized.includes('frozen') || normalized.includes('completed')) return 100;
@@ -58,6 +40,77 @@ function projectProgressPercent(status: string, workLogCount: number) {
   if (normalized.includes('estimate_done') || normalized.includes('project_started')) return 67;
   if (normalized.includes('estimating') || normalized.includes('quote_sent')) return 35;
   return 15;
+}
+
+type ProcessedEstimatorRow = CrmEstimatorOutputRow;
+
+const requiredEstimatorKeys: Array<keyof CrmEstimatorFormData> = ['existingRoofArea', 'buildingType', 'desiredRoofCovering', 'materialType', 'roofPitch'];
+
+function createProcessedRows(data: CrmEstimatorFormData): ProcessedEstimatorRow[] {
+  const area = data.existingRoofArea.trim();
+  const rows = [
+    [data.desiredRoofCovering, area, 'm²'],
+    [data.materialType, area, 'm²'],
+    [data.gutterSystem, data.gutterSystem ? '1' : '', 'kompl.'],
+    [data.insulation, data.insulation ? area : '', 'm²'],
+  ].filter((row) => row[0] && row[1]);
+  return rows.map(([description, quantity, unit]) => ({description, quantity, unit, price: '', total: ''}));
+}
+
+function EstimatorWorkflow({project, initialData, onProcessedRows}: {project: CrmProjectRecord; initialData: CrmEstimatorFormData; onProcessedRows: (rows: ProcessedEstimatorRow[]) => void}) {
+  const [data, setData] = useState<CrmEstimatorFormData>(initialData || createEmptyCrmEstimatorData());
+  const [version, setVersion] = useState(project.updatedAtUtc);
+  const [rows, setRows] = useState<ProcessedEstimatorRow[]>(initialData.processedRows || []);
+  const [finalised, setFinalised] = useState(initialData.processingStatus === 'finalised');
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+
+  const update = <K extends keyof CrmEstimatorFormData>(key: K, value: CrmEstimatorFormData[K]) => setData((current) => ({...current, [key]: value}));
+  const missing = requiredEstimatorKeys.filter((key) => data[key] === '' || data[key] === null || data[key] === undefined);
+
+  const save = async (nextRows = rows, nextStatus: 'draft' | 'processed' | 'finalised' = finalised ? 'finalised' : rows.length > 0 ? 'processed' : 'draft') => {
+    setError('');
+    const response = await fetch(`/api/crm/leads/${encodeURIComponent(project.leadId)}`, {method: 'PATCH', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({updatedAtUtc: version, estimatorData: {...data, processedRows: nextRows, processingStatus: nextStatus}})});
+    const result = await response.json();
+    if (!response.ok || !result.ok) throw new Error(result.error || 'Estimator could not be saved');
+    setVersion(result.lead.updatedAtUtc);
+  };
+
+  const process = async () => {
+    if (missing.length > 0) {
+      setError(`Complete the required estimator fields: ${missing.map((key) => CRM_ESTIMATOR_FIELD_DEFINITIONS.find((definition) => definition.key === key)?.label || key).join(', ')}`);
+      return;
+    }
+    try {
+      const nextRows = createProcessedRows(data);
+      await save(nextRows, 'processed');
+      setRows(nextRows);
+      onProcessedRows(nextRows);
+      setFinalised(false);
+      setMessage('Estimator processed. Review and edit the output rows before finalising.');
+    } catch (processError: any) {
+      setError(processError?.message || 'Estimator could not be processed');
+    }
+  };
+
+  const finalise = async () => {
+    try {
+      await save(rows, 'finalised');
+      onProcessedRows(rows);
+      setFinalised(true);
+      setMessage('Estimator finalised. The documents are ready to download or send.');
+    } catch (finaliseError: any) {
+      setError(finaliseError?.message || 'Estimator could not be finalised');
+    }
+  };
+
+  return <Module title="Estimator data" subtitle="Lead inputs, processing and final outputs">
+    <div className="mb-5 rounded-xl border border-sky-100 bg-sky-50 p-4 text-sm text-slate-700">Inputs already saved on the lead are loaded here. Complete the required cells, then process the estimate to create editable output rows.</div>
+    {CRM_ESTIMATOR_FIELD_SECTIONS.map((section) => <div key={section} className="border-b border-slate-200 py-4 last:border-b-0"><h3 className="text-xs font-bold uppercase tracking-[0.16em] text-sky-700">{section}</h3><div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{CRM_ESTIMATOR_FIELD_DEFINITIONS.filter((definition) => definition.section === section).map((definition) => { const fieldValue = data[definition.key]; const inputId = `project-estimator-${String(definition.key)}`; const isRequired = requiredEstimatorKeys.includes(definition.key); return <label key={definition.key} htmlFor={inputId} className="flex flex-col gap-1 text-sm font-medium text-slate-700"><span>{definition.label}{isRequired ? <span className="text-rose-600"> *</span> : null}</span>{definition.type === 'select' ? <select id={inputId} value={formatEstimatorValue(fieldValue)} onChange={(event) => update(definition.key, event.target.value as never)} className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-slate-900"><option value="">Select</option>{definition.options?.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select> : definition.type === 'boolean' ? <select id={inputId} value={fieldValue === null ? '' : fieldValue ? 'true' : 'false'} onChange={(event) => update(definition.key, event.target.value === 'true' ? true : event.target.value === 'false' ? false : null as never)} className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-slate-900"><option value="">Select</option>{CRM_ESTIMATOR_BOOLEAN_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select> : definition.type === 'number' ? <input id={inputId} type="number" value={fieldValue === null ? '' : String(fieldValue)} onChange={(event) => update(definition.key, event.target.value ? Number(event.target.value) as never : null as never)} className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-slate-900" /> : definition.type === 'textarea' ? <textarea id={inputId} value={formatEstimatorValue(fieldValue)} onChange={(event) => update(definition.key, event.target.value as never)} rows={2} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-900" /> : <input id={inputId} value={formatEstimatorValue(fieldValue)} onChange={(event) => update(definition.key, event.target.value as never)} className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-slate-900" />}</label>; })}</div></div>)}
+    <div className="mt-5 flex flex-wrap items-center gap-3"><button type="button" onClick={() => void process()} className="rounded-lg bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-700">Process estimate</button>{missing.length > 0 ? <span className="text-sm text-amber-700">{missing.length} required field{missing.length === 1 ? '' : 's'} remaining</span> : null}</div>
+    {error ? <p className="mt-3 text-sm text-rose-600">{error}</p> : null}{message ? <p className="mt-3 text-sm text-emerald-700">{message}</p> : null}
+    {rows.length > 0 ? <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4"><div className="flex flex-wrap items-center justify-between gap-3"><div><h3 className="text-sm font-bold text-slate-900">Processed output</h3><p className="mt-1 text-xs text-slate-500">Edit the rows before finalising the client documents.</p></div><button type="button" onClick={() => void finalise()} className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700">{finalised ? 'Finalised' : 'Finalise estimate'}</button></div><div className="mt-4 overflow-x-auto"><table className="min-w-full"><thead><tr>{['Description', 'Quantity', 'Unit', 'Unit price', 'Total'].map((heading) => <th key={heading} className="px-2 py-2 text-left text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">{heading}</th>)}</tr></thead><tbody>{rows.map((row, index) => <tr key={`${row.description}-${index}`}><td className="px-2 py-2"><input value={row.description} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, description: event.target.value} : entry))} className="h-9 min-w-52 rounded border border-slate-200 px-2 text-sm" /></td><td className="px-2 py-2"><input value={row.quantity} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, quantity: event.target.value} : entry))} className="h-9 w-24 rounded border border-slate-200 px-2 text-sm" /></td><td className="px-2 py-2"><input value={row.unit} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, unit: event.target.value} : entry))} className="h-9 w-24 rounded border border-slate-200 px-2 text-sm" /></td><td className="px-2 py-2"><input value={row.price} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, price: event.target.value, total: event.target.value && row.quantity ? String(Number(event.target.value) * Number(row.quantity)) : ''} : entry))} className="h-9 w-28 rounded border border-slate-200 px-2 text-sm" /></td><td className="px-2 py-2"><input value={row.total} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, total: event.target.value} : entry))} className="h-9 w-28 rounded border border-slate-200 px-2 text-sm" /></td></tr>)}</tbody></table></div>{finalised ? <div className="mt-4 flex flex-wrap gap-2"><a href={`/api/estimator/${encodeURIComponent(project.leadId)}/pdf?kind=f2`} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700">Download F2 forma</a><a href={`/api/estimator/${encodeURIComponent(project.leadId)}/pdf?kind=offer`} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700">Download Piedāvājums</a><a href={`mailto:?subject=${encodeURIComponent(`Piedāvājums - ${project.title}`)}`} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700">Send to client email</a></div> : null}</div> : null}
+  </Module>;
 }
 
 function FinancialModule({project}: {project: CrmProjectRecord}) {
@@ -135,13 +188,14 @@ function ProjectDocumentsModule({project, initialDocuments}: {project: CrmProjec
 export default function ProjectFileClient({locale, project, documents}: Props) {
   const percent = projectProgressPercent(project.status, project.workLog.length);
   const estimator = project.estimatorData;
+  const [processedRows, setProcessedRows] = useState<ProcessedEstimatorRow[]>(estimator.processedRows || []);
   const [projectStatus, setProjectStatus] = useState(project.status || project.phase);
   const [projectTitle, setProjectTitle] = useState(project.title);
   const [startDate, setStartDate] = useState(project.createdAtUtc ? project.createdAtUtc.slice(0, 10) : '');
   const [endDate, setEndDate] = useState(project.dueDate || '');
   const [projectOverview, setProjectOverview] = useState(project.note || project.title);
   const [description, setDescription] = useState(project.note || '');
-  const materials = [
+  const materials = processedRows.length > 0 ? processedRows.map((row) => [row.description, `${row.quantity} ${row.unit}`]) : [
     ['Material type', estimator.materialType],
     ['Desired covering', estimator.desiredRoofCovering],
     ['Colour', estimator.desiredMaterialColor],
@@ -175,12 +229,10 @@ export default function ProjectFileClient({locale, project, documents}: Props) {
 
           <FinancialModule project={project} />
 
-          <Module title="Estimator data" subtitle="">
-            <a href={`/${locale}/estimator/${encodeURIComponent(project.leadId)}`} className="mb-4 inline-flex items-center rounded-xl bg-sky-500 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-600">Open Estimator Engine</a><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{estimatorEntries(estimator).map(([label, entry]) => <div key={label} className="rounded-xl border border-slate-200 bg-slate-50 p-3"><p className="text-xs text-slate-500">{label}</p><p className="mt-1 text-sm font-semibold text-slate-900">{value(entry)}</p></div>)}</div><p className="mt-4 text-xs text-slate-500">The estimator engine is the source of truth for estimate inputs and generated estimate PDFs. This project view does not create or overwrite estimator revisions.</p>
-          </Module>
+          <EstimatorWorkflow project={project} initialData={estimator} onProcessedRows={setProcessedRows} />
 
           <Module title="Materials and supply chain" subtitle="">
-            {materials.length > 0 ? <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{materials.map(([label, entry]) => <div key={label} className="rounded-xl border border-slate-200 bg-slate-50 p-3"><p className="text-xs text-slate-500">{label}</p><p className="mt-1 text-sm font-semibold text-slate-900">{value(entry)}</p></div>)}</div> : <p className="text-sm text-slate-500">No estimator material selections have been recorded.</p>}
+            {materials.length > 0 ? <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{materials.map(([label, entry]) => <div key={label} className="rounded-xl border border-slate-200 bg-slate-50 p-3"><p className="text-xs text-slate-500">{label}</p><p className="mt-1 text-sm font-semibold text-slate-900">{displayValue(entry)}</p></div>)}</div> : <p className="text-sm text-slate-500">No estimator material selections have been recorded.</p>}
           </Module>
 
           <Module title="Project management and progress" subtitle="">

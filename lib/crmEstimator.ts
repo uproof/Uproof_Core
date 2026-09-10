@@ -11,6 +11,14 @@ export type CrmEstimatorLegacyRow = {
   notes: string;
 };
 
+export type CrmEstimatorOutputRow = {
+  description: string;
+  quantity: string;
+  unit: string;
+  price: string;
+  total: string;
+};
+
 export type CrmChimneyEntry = {
   workType: string;
   quantity: number | null;
@@ -73,6 +81,8 @@ export type CrmEstimatorFormData = {
   comment3: string;
   plannedExecutionTime: string;
   legacyRows: CrmEstimatorLegacyRow[];
+  processedRows: CrmEstimatorOutputRow[];
+  processingStatus: 'draft' | 'processed' | 'finalised';
 };
 
 export type CrmEstimatorFieldDefinition = {
@@ -269,6 +279,8 @@ export function createEmptyCrmEstimatorData(): CrmEstimatorFormData {
     comment3: '',
     plannedExecutionTime: '',
     legacyRows: [],
+    processedRows: [],
+    processingStatus: 'draft',
   };
 }
 
@@ -454,6 +466,14 @@ export function normalizeCrmEstimatorData(value: unknown, fallback: CrmEstimator
     comment3: normalizeText(candidate.comment3),
     plannedExecutionTime: normalizeText(candidate.plannedExecutionTime),
     legacyRows: normalizeLegacyRows(candidate.legacyRows),
+    processedRows: Array.isArray(candidate.processedRows) ? candidate.processedRows.map((row) => ({
+      description: normalizeText((row as Record<string, unknown>).description),
+      quantity: normalizeText((row as Record<string, unknown>).quantity),
+      unit: normalizeText((row as Record<string, unknown>).unit),
+      price: normalizeText((row as Record<string, unknown>).price),
+      total: normalizeText((row as Record<string, unknown>).total),
+    })) : [],
+    processingStatus: candidate.processingStatus === 'finalised' || candidate.processingStatus === 'processed' ? candidate.processingStatus : 'draft',
   };
 }
 
