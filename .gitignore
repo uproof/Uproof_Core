@@ -2,15 +2,7 @@ node_modules
 .next
 .env*.local
 Izmaksu sadalījums jumta renovācijas darbiem, Jāņupītes iela 3, Dimzukalns, UpRoof.xlsx
-uproof-complete-engine/.DS_Store
-uproof-complete-engine/assets/
-uproof-complete-engine/examples/
-uproof-complete-engine/data/baseline.json
-uproof-complete-engine/package.json
-uproof-complete-engine/cli.mjs
-uproof-complete-engine/test.mjs
-uproof-complete-engine/web.mjs
-uproof-complete-engine/web/
+uproof-complete-engine/
 *.log
 .DS_Store
 dist

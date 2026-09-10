@@ -21,6 +21,18 @@ export type CrmEstimatorOutputRow = {
 
 export type CrmWorkbookInputValue = string | number | boolean | null;
 
+export type CrmEstimatorEngineOutputs = {
+  detailedEstimate?: Record<string, unknown>;
+  costSummary?: Record<string, unknown>;
+  customerOffer?: Record<string, unknown>;
+  f2Estimate?: Record<string, unknown>;
+  workPlan?: Record<string, unknown>;
+  dailyWorkLog?: Record<string, unknown>;
+  materialsToUse?: Record<string, unknown>;
+  mechanismsAndTools?: Record<string, unknown>;
+  cashFlow?: Record<string, unknown>;
+};
+
 export type CrmChimneyEntry = {
   workType: string;
   quantity: number | null;
@@ -86,6 +98,7 @@ export type CrmEstimatorFormData = {
   processedRows: CrmEstimatorOutputRow[];
   processingStatus: 'draft' | 'processed' | 'finalised';
   workbookInputs: Record<string, CrmWorkbookInputValue>;
+  engineOutputs: CrmEstimatorEngineOutputs;
 };
 
 export type CrmEstimatorFieldDefinition = {
@@ -285,6 +298,7 @@ export function createEmptyCrmEstimatorData(): CrmEstimatorFormData {
     processedRows: [],
     processingStatus: 'draft',
     workbookInputs: {},
+    engineOutputs: {},
   };
 }
 
@@ -480,6 +494,9 @@ export function normalizeCrmEstimatorData(value: unknown, fallback: CrmEstimator
     processingStatus: candidate.processingStatus === 'finalised' || candidate.processingStatus === 'processed' ? candidate.processingStatus : 'draft',
     workbookInputs: candidate.workbookInputs && typeof candidate.workbookInputs === 'object' && !Array.isArray(candidate.workbookInputs)
       ? Object.fromEntries(Object.entries(candidate.workbookInputs).filter(([, value]) => value === null || typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean'))
+      : {},
+    engineOutputs: candidate.engineOutputs && typeof candidate.engineOutputs === 'object' && !Array.isArray(candidate.engineOutputs)
+      ? candidate.engineOutputs as CrmEstimatorEngineOutputs
       : {},
   };
 }

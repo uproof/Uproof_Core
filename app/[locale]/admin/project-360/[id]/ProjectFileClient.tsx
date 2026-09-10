@@ -3,7 +3,7 @@
 import {useEffect, useState} from 'react';
 import Link from 'next/link';
 import type {CrmProjectRecord} from '@/lib/crmProjectsStore';
-import {CRM_ESTIMATOR_BOOLEAN_OPTIONS, CRM_ESTIMATOR_FIELD_DEFINITIONS, CRM_ESTIMATOR_FIELD_SECTIONS, createEmptyCrmEstimatorData, formatEstimatorValue, type CrmEstimatorFormData, type CrmEstimatorOutputRow} from '@/lib/crmEstimator';
+import {CRM_ESTIMATOR_BOOLEAN_OPTIONS, CRM_ESTIMATOR_FIELD_DEFINITIONS, CRM_ESTIMATOR_FIELD_SECTIONS, createEmptyCrmEstimatorData, formatEstimatorValue, type CrmEstimatorEngineOutputs, type CrmEstimatorFormData, type CrmEstimatorOutputRow} from '@/lib/crmEstimator';
 
 type Props = {
   locale: string;
@@ -44,9 +44,6 @@ function projectProgressPercent(status: string, workLogCount: number) {
 
 type ProcessedEstimatorRow = CrmEstimatorOutputRow;
 
-type WorkbookDefinition = {key: string; label: string; section: string; unit?: string; type?: string; default?: string | number | boolean | null; advanced?: boolean; description?: string};
-type WorkbookProcessing = {materialPrices: unknown[][]; laborPositions: unknown[][]; sheetMetalDetails: unknown[][]};
-
 const requiredEstimatorKeys: Array<keyof CrmEstimatorFormData> = ['existingRoofArea', 'buildingType', 'desiredRoofCovering', 'materialType', 'roofPitch'];
 
 function createProcessedRows(data: CrmEstimatorFormData): ProcessedEstimatorRow[] {
@@ -60,41 +57,49 @@ function createProcessedRows(data: CrmEstimatorFormData): ProcessedEstimatorRow[
   return rows.map(([description, quantity, unit]) => ({description, quantity, unit, price: '', total: ''}));
 }
 
-function EstimatorWorkflow({project, initialData, onProcessedRows}: {project: CrmProjectRecord; initialData: CrmEstimatorFormData; onProcessedRows: (rows: ProcessedEstimatorRow[]) => void}) {
+function outputRows(value: unknown, key: string) {
+  if (!value || typeof value !== 'object') return [] as Array<Record<string, unknown>>;
+  const rows = (value as Record<string, unknown>)[key];
+  return Array.isArray(rows) ? rows.filter((row): row is Record<string, unknown> => !!row && typeof row === 'object') : [];
+}
+
+function OutputTable({title, rows, nameKey, onChange}: {title: string; rows: Array<Record<string, unknown>>; nameKey: string; onChange: (index: number, key: string, value: string) => void}) {
+  return <div className="rounded-xl border border-slate-200 bg-white p-4"><h3 className="text-sm font-bold text-slate-900">{title}</h3><div className="mt-3 overflow-x-auto"><table className="min-w-full text-sm"><thead><tr>{['Description', 'Quantity', 'Unit', 'Total'].map((heading) => <th key={heading} className="px-2 py-2 text-left text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">{heading}</th>)}</tr></thead><tbody>{rows.length > 0 ? rows.map((row, index) => <tr key={`${title}-${index}`} className="border-t border-slate-100"><td className="px-2 py-2"><input value={String(row[nameKey] ?? row.name ?? row.description ?? '')} onChange={(event) => onChange(index, nameKey, event.target.value)} className="h-9 min-w-64 rounded border border-slate-200 px-2" /></td><td className="px-2 py-2"><input value={String(row.quantity ?? '')} onChange={(event) => onChange(index, 'quantity', event.target.value)} className="h-9 w-28 rounded border border-slate-200 px-2" /></td><td className="px-2 py-2"><input value={String(row.unit ?? '')} onChange={(event) => onChange(index, 'unit', event.target.value)} className="h-9 w-24 rounded border border-slate-200 px-2" /></td><td className="px-2 py-2"><input value={String(row.total ?? row.totalExVat ?? '')} onChange={(event) => onChange(index, row.total !== undefined ? 'total' : 'totalExVat', event.target.value)} className="h-9 w-32 rounded border border-slate-200 px-2" /></td></tr>) : <tr><td colSpan={4} className="px-2 py-4 text-slate-500">Process the estimator to generate output rows.</td></tr>}</tbody></table></div></div>;
+}
+
+function EngineOutputSections({outputs, onChange}: {outputs: CrmEstimatorEngineOutputs; onChange: (output: keyof CrmEstimatorEngineOutputs, index: number, key: string, value: string) => void}) {
+  const materials = outputs.materialsToUse && Array.isArray(outputs.materialsToUse.consolidatedMaterials) ? outputs.materialsToUse.consolidatedMaterials as Array<Record<string, unknown>> : [];
+  const tasks = outputs.workPlan && Array.isArray(outputs.workPlan.tasks) ? outputs.workPlan.tasks as Array<Record<string, unknown>> : [];
+  return <div className="mt-5 space-y-3"><Module title="Piedāvājums" subtitle="Workbook customer offer output"><OutputTable title="Piedāvājums" rows={outputRows(outputs.customerOffer, 'activeLineItems')} nameKey="description" onChange={(index, key, value) => onChange('customerOffer', index, key, value)} /></Module><Module title="F2 forma" subtitle="Workbook formal estimate output"><OutputTable title="F2 forma" rows={outputRows(outputs.f2Estimate, 'activeRows')} nameKey="name" onChange={(index, key, value) => onChange('f2Estimate', index, key, value)} /></Module><Module title="Materials and supply chain" subtitle="Generated from the workbook estimate"><OutputTable title="Materials" rows={materials} nameKey="item" onChange={(index, key, value) => onChange('materialsToUse', index, key, value)} /></Module><Module title="Work Plan" subtitle="Generated workbook schedule"><OutputTable title="Work Plan" rows={tasks} nameKey="position" onChange={(index, key, value) => onChange('workPlan', index, key, value)} /></Module></div>;
+}
+
+function EstimatorWorkflow({project, initialData}: {project: CrmProjectRecord; initialData: CrmEstimatorFormData}) {
   const [data, setData] = useState<CrmEstimatorFormData>(initialData || createEmptyCrmEstimatorData());
   const [version, setVersion] = useState(project.updatedAtUtc);
   const [rows, setRows] = useState<ProcessedEstimatorRow[]>(initialData.processedRows || []);
   const [finalised, setFinalised] = useState(initialData.processingStatus === 'finalised');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const [workbookDefinitions, setWorkbookDefinitions] = useState<WorkbookDefinition[]>([]);
-  const [workbookInputs, setWorkbookInputs] = useState<Record<string, string | number | boolean | null>>(initialData.workbookInputs || {});
-  const [workbookKeysFromCrm, setWorkbookKeysFromCrm] = useState<string[]>([]);
-  const [processing, setProcessing] = useState<WorkbookProcessing | null>(null);
-  const [settingsOpen, setSettingsOpen] = useState(false);
-  const [engineLoading, setEngineLoading] = useState(true);
-  const [engineError, setEngineError] = useState('');
+  const [engineOutputs, setEngineOutputs] = useState<CrmEstimatorEngineOutputs>(initialData.engineOutputs || {});
 
   const update = <K extends keyof CrmEstimatorFormData>(key: K, value: CrmEstimatorFormData[K]) => setData((current) => ({...current, [key]: value}));
   const missing = requiredEstimatorKeys.filter((key) => data[key] === '' || data[key] === null || data[key] === undefined);
 
-  useEffect(() => {
-    fetch(`/api/crm/projects/${encodeURIComponent(project.leadId)}/estimator-engine`, {cache: 'no-store'})
-      .then(async (response) => {
-        const result = await response.json();
-        if (!response.ok || !result.ok) throw new Error(result.error || 'Workbook settings could not be loaded');
-        setWorkbookDefinitions(result.definitions || []);
-        setWorkbookInputs((current) => ({...result.values, ...current}));
-        setWorkbookKeysFromCrm(result.crmKeys || []);
-        setProcessing(result.processing || null);
-      })
-      .catch((loadError: any) => setEngineError(loadError?.message || 'Workbook settings could not be loaded'))
-      .finally(() => setEngineLoading(false));
-  }, [project.leadId]);
+  const updateEngineOutput = (output: keyof CrmEstimatorEngineOutputs, index: number, key: string, value: string) => {
+    setEngineOutputs((current) => {
+      const section = current[output];
+      if (!section || typeof section !== 'object') return current;
+      const rowsKey = output === 'customerOffer' ? 'activeLineItems' : output === 'f2Estimate' ? 'activeRows' : output === 'materialsToUse' ? 'consolidatedMaterials' : 'tasks';
+      const rows = Array.isArray(section[rowsKey]) ? section[rowsKey] as Array<Record<string, unknown>> : [];
+      return {...current, [output]: {...section, [rowsKey]: rows.map((row, rowIndex) => rowIndex === index ? {...row, [key]: value} : row)}};
+    });
+  };
 
-  const save = async (nextRows = rows, nextStatus: 'draft' | 'processed' | 'finalised' = finalised ? 'finalised' : rows.length > 0 ? 'processed' : 'draft') => {
+
+
+  const save = async (nextRows = rows, nextStatus: 'draft' | 'processed' | 'finalised' = finalised ? 'finalised' : rows.length > 0 ? 'processed' : 'draft', nextOutputs = engineOutputs) => {
     setError('');
-    const response = await fetch(`/api/crm/leads/${encodeURIComponent(project.leadId)}`, {method: 'PATCH', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({updatedAtUtc: version, estimatorData: {...data, workbookInputs, processedRows: nextRows, processingStatus: nextStatus}})});
+    const response = await fetch(`/api/crm/leads/${encodeURIComponent(project.leadId)}`, {method: 'PATCH', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({updatedAtUtc: version, estimatorData: {...data, engineOutputs: nextOutputs, processedRows: nextRows, processingStatus: nextStatus}})});
     const result = await response.json();
     if (!response.ok || !result.ok) throw new Error(result.error || 'Estimator could not be saved');
     setVersion(result.lead.updatedAtUtc);
@@ -106,18 +111,12 @@ function EstimatorWorkflow({project, initialData, onProcessedRows}: {project: Cr
       return;
     }
     try {
-      setEngineError('');
-      setMessage('Processing workbook formulas...');
-      const engineResponse = await fetch(`/api/crm/projects/${encodeURIComponent(project.leadId)}/estimator-engine`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({workbookInputs, estimatorData: data})});
-      const engineResult = await engineResponse.json();
-      if (!engineResponse.ok || !engineResult.ok) throw new Error(engineResult.error || 'Workbook estimate could not be calculated');
-      const engineRows = (engineResult.outputs?.detailedEstimate?.activeRows || []).map((row: Record<string, unknown>) => ({description: String(row.material || row.category || ''), quantity: String(row.quantityWithWaste ?? row.quantity ?? ''), unit: String(row.unit || ''), price: String(row.unitPriceExVat ?? ''), total: String(row.totalLaborAndMaterials ?? row.positionTotal ?? '')})).filter((row: ProcessedEstimatorRow) => row.description && (row.quantity !== '0' || row.total !== '0'));
-      const nextRows = engineRows.length > 0 ? engineRows : createProcessedRows(data);
-      await save(nextRows, 'processed');
+      setMessage('Generating estimate...');
+      const nextRows = createProcessedRows(data);
+      await save(nextRows, 'processed', engineOutputs);
       setRows(nextRows);
-      onProcessedRows(nextRows);
       setFinalised(false);
-      setMessage('Workbook estimate processed. Review and edit the output rows before finalising.');
+      setMessage('Estimate generated. Review and edit the output rows before finalising.');
     } catch (processError: any) {
       setError(processError?.message || 'Estimator could not be processed');
     }
@@ -125,8 +124,7 @@ function EstimatorWorkflow({project, initialData, onProcessedRows}: {project: Cr
 
   const finalise = async () => {
     try {
-      await save(rows, 'finalised');
-      onProcessedRows(rows);
+      await save(rows, 'finalised', engineOutputs);
       setFinalised(true);
       setMessage('Estimator finalised. The documents are ready to download or send.');
     } catch (finaliseError: any) {
@@ -134,19 +132,17 @@ function EstimatorWorkflow({project, initialData, onProcessedRows}: {project: Cr
     }
   };
 
-  return <Module title="Estimator data" subtitle="Lead inputs, processing and final outputs">
-    <div className="mb-5 rounded-xl border border-sky-100 bg-sky-50 p-4 text-sm text-slate-700">The estimator has three input windows: CRM lead data, the remaining workbook inputs, and fixed calculation settings. Complete the first two windows, then process the workbook.</div>
-    <div className="rounded-xl border border-slate-200 bg-white p-4"><h3 className="text-sm font-bold text-slate-900">1. CRM lead data points</h3><p className="mt-1 text-xs text-slate-500">Values already collected in Sales CRM.</p>{CRM_ESTIMATOR_FIELD_SECTIONS.map((section) => <div key={section} className="border-b border-slate-200 py-4 last:border-b-0"><h4 className="text-xs font-bold uppercase tracking-[0.16em] text-sky-700">{section}</h4><div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{CRM_ESTIMATOR_FIELD_DEFINITIONS.filter((definition) => definition.section === section).map((definition) => { const fieldValue = data[definition.key]; const inputId = `project-estimator-${String(definition.key)}`; const isRequired = requiredEstimatorKeys.includes(definition.key); return <label key={definition.key} htmlFor={inputId} className="flex flex-col gap-1 text-sm font-medium text-slate-700"><span>{definition.label}{isRequired ? <span className="text-rose-600"> *</span> : null}</span>{definition.type === 'select' ? <select id={inputId} value={formatEstimatorValue(fieldValue)} onChange={(event) => update(definition.key, event.target.value as never)} className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-slate-900"><option value="">Select</option>{definition.options?.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select> : definition.type === 'boolean' ? <select id={inputId} value={fieldValue === null ? '' : fieldValue ? 'true' : 'false'} onChange={(event) => update(definition.key, event.target.value === 'true' ? true : event.target.value === 'false' ? false : null as never)} className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-slate-900"><option value="">Select</option>{CRM_ESTIMATOR_BOOLEAN_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select> : definition.type === 'number' ? <input id={inputId} type="number" value={fieldValue === null ? '' : String(fieldValue)} onChange={(event) => update(definition.key, event.target.value ? Number(event.target.value) as never : null as never)} className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-slate-900" /> : definition.type === 'textarea' ? <textarea id={inputId} value={formatEstimatorValue(fieldValue)} onChange={(event) => update(definition.key, event.target.value as never)} rows={2} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-900" /> : <input id={inputId} value={formatEstimatorValue(fieldValue)} onChange={(event) => update(definition.key, event.target.value as never)} className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-slate-900" />}</label>; })}</div></div>)}</div>
-    <div className="mt-4 rounded-xl border border-slate-200 bg-white p-4"><div className="flex flex-wrap items-center justify-between gap-3"><div><h3 className="text-sm font-bold text-slate-900">2. Remaining workbook inputs</h3><p className="mt-1 text-xs text-slate-500">Loaded from the workbook&apos;s `Ievade` schema and excluding values already represented in CRM.</p></div>{engineLoading ? <span className="text-xs text-slate-500">Loading workbook schema...</span> : null}</div>{engineError ? <p className="mt-3 text-sm text-rose-600">{engineError}</p> : null}<div className="mt-4 space-y-4">{[...new Set(workbookDefinitions.filter((definition) => !workbookKeysFromCrm.includes(definition.key)).map((definition) => definition.section))].map((section) => <div key={section}><h4 className="text-xs font-bold uppercase tracking-[0.16em] text-slate-600">{section}</h4><div className="mt-2 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{workbookDefinitions.filter((definition) => definition.section === section && !workbookKeysFromCrm.includes(definition.key)).map((definition) => <label key={definition.key} className="flex flex-col gap-1 text-sm font-medium text-slate-700"><span>{definition.label}{definition.unit ? <span className="ml-1 text-xs font-normal text-slate-500">({definition.unit})</span> : null}</span><input type={definition.type === 'number' ? 'number' : 'text'} value={workbookInputs[definition.key] === null || workbookInputs[definition.key] === undefined ? '' : String(workbookInputs[definition.key])} onChange={(event) => setWorkbookInputs((current) => ({...current, [definition.key]: definition.type === 'number' ? (event.target.value === '' ? null : Number(event.target.value)) : event.target.value}))} className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-slate-900" /></label>)}</div></div>)}</div></div>
-    <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4"><div className="flex flex-wrap items-center justify-between gap-3"><div><h3 className="text-sm font-bold text-slate-900">3. Adjustments and fixed reference settings</h3><p className="mt-1 text-xs text-slate-600">Materiālu cenas, Ch pozīcijas, Skārda detaļas, and Slīpuma koef from the workbook.</p></div><button type="button" onClick={() => setSettingsOpen((current) => !current)} className="rounded-lg border border-amber-300 bg-white px-3 py-2 text-sm font-semibold text-amber-900">{settingsOpen ? 'Close settings' : 'Open settings'}</button></div>{settingsOpen ? <div className="mt-4 space-y-4"><ReferenceTable title="Materiālu cenas" rows={processing?.materialPrices || []} /><ReferenceTable title="Ch pozīcijas" rows={processing?.laborPositions || []} /><ReferenceTable title="Skārda detaļas" rows={processing?.sheetMetalDetails || []} /><div className="rounded-lg border border-amber-200 bg-white p-3 text-sm text-slate-700"><strong>Slīpuma koef</strong><p className="mt-1">The workbook sheet is empty; the active coefficient input is loaded from <code>Ievade!B4</code> and is calculated from the CRM/workbook input values.</p></div></div> : null}</div>
+  return <>
+  <Module title="Estimator data" subtitle="Lead inputs, processing and final outputs">
+    <div className="mb-5 rounded-xl border border-sky-100 bg-sky-50 p-4 text-sm text-slate-700">Enter or update the CRM lead data points below, then click "Process estimate" to generate the output documents.</div>
+    <div className="rounded-xl border border-slate-200 bg-white p-4"><h3 className="text-sm font-bold text-slate-900">Lead data points</h3><p className="mt-1 text-xs text-slate-500">Values collected in Sales CRM.</p>{CRM_ESTIMATOR_FIELD_SECTIONS.map((section) => <div key={section} className="border-b border-slate-200 py-4 last:border-b-0"><h4 className="text-xs font-bold uppercase tracking-[0.16em] text-sky-700">{section}</h4><div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{CRM_ESTIMATOR_FIELD_DEFINITIONS.filter((definition) => definition.section === section).map((definition) => { const fieldValue = data[definition.key]; const inputId = `project-estimator-${String(definition.key)}`; const isRequired = requiredEstimatorKeys.includes(definition.key); return <label key={definition.key} htmlFor={inputId} className="flex flex-col gap-1 text-sm font-medium text-slate-700"><span>{definition.label}{isRequired ? <span className="text-rose-600"> *</span> : null}</span>{definition.type === 'select' ? <select id={inputId} value={formatEstimatorValue(fieldValue)} onChange={(event) => update(definition.key, event.target.value as never)} className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-slate-900"><option value="">Select</option>{definition.options?.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select> : definition.type === 'boolean' ? <select id={inputId} value={fieldValue === null ? '' : fieldValue ? 'true' : 'false'} onChange={(event) => update(definition.key, event.target.value === 'true' ? true : event.target.value === 'false' ? false : null as never)} className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-slate-900"><option value="">Select</option>{CRM_ESTIMATOR_BOOLEAN_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select> : definition.type === 'number' ? <input id={inputId} type="number" value={fieldValue === null ? '' : String(fieldValue)} onChange={(event) => update(definition.key, event.target.value ? Number(event.target.value) as never : null as never)} className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-slate-900" /> : definition.type === 'textarea' ? <textarea id={inputId} value={formatEstimatorValue(fieldValue)} onChange={(event) => update(definition.key, event.target.value as never)} rows={2} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-900" /> : <input id={inputId} value={formatEstimatorValue(fieldValue)} onChange={(event) => update(definition.key, event.target.value as never)} className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-slate-900" />}</label>; })}</div></div>)}</div>
+
     <div className="mt-5 flex flex-wrap items-center gap-3"><button type="button" onClick={() => void process()} className="rounded-lg bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-700">Process estimate</button>{missing.length > 0 ? <span className="text-sm text-amber-700">{missing.length} required field{missing.length === 1 ? '' : 's'} remaining</span> : null}</div>
     {error ? <p className="mt-3 text-sm text-rose-600">{error}</p> : null}{message ? <p className="mt-3 text-sm text-emerald-700">{message}</p> : null}
     {rows.length > 0 ? <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4"><div className="flex flex-wrap items-center justify-between gap-3"><div><h3 className="text-sm font-bold text-slate-900">Processed output</h3><p className="mt-1 text-xs text-slate-500">Edit the rows before finalising the client documents.</p></div><button type="button" onClick={() => void finalise()} className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700">{finalised ? 'Finalised' : 'Finalise estimate'}</button></div><div className="mt-4 overflow-x-auto"><table className="min-w-full"><thead><tr>{['Description', 'Quantity', 'Unit', 'Unit price', 'Total'].map((heading) => <th key={heading} className="px-2 py-2 text-left text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">{heading}</th>)}</tr></thead><tbody>{rows.map((row, index) => <tr key={`${row.description}-${index}`}><td className="px-2 py-2"><input value={row.description} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, description: event.target.value} : entry))} className="h-9 min-w-52 rounded border border-slate-200 px-2 text-sm" /></td><td className="px-2 py-2"><input value={row.quantity} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, quantity: event.target.value} : entry))} className="h-9 w-24 rounded border border-slate-200 px-2 text-sm" /></td><td className="px-2 py-2"><input value={row.unit} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, unit: event.target.value} : entry))} className="h-9 w-24 rounded border border-slate-200 px-2 text-sm" /></td><td className="px-2 py-2"><input value={row.price} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, price: event.target.value, total: event.target.value && row.quantity ? String(Number(event.target.value) * Number(row.quantity)) : ''} : entry))} className="h-9 w-28 rounded border border-slate-200 px-2 text-sm" /></td><td className="px-2 py-2"><input value={row.total} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, total: event.target.value} : entry))} className="h-9 w-28 rounded border border-slate-200 px-2 text-sm" /></td></tr>)}</tbody></table></div>{finalised ? <div className="mt-4 flex flex-wrap gap-2"><a href={`/api/estimator/${encodeURIComponent(project.leadId)}/pdf?kind=f2`} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700">Download F2 forma</a><a href={`/api/estimator/${encodeURIComponent(project.leadId)}/pdf?kind=offer`} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700">Download Piedāvājums</a><a href={`mailto:?subject=${encodeURIComponent(`Piedāvājums - ${project.title}`)}`} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700">Send to client email</a></div> : null}</div> : null}
-  </Module>;
-}
-
-function ReferenceTable({title, rows}: {title: string; rows: unknown[][]}) {
-  return <div className="rounded-lg border border-slate-200 bg-white p-3"><h4 className="text-sm font-bold text-slate-900">{title}</h4><div className="mt-2 max-h-64 overflow-auto"><table className="min-w-full text-xs"><tbody>{rows.map((row, rowIndex) => <tr key={`${title}-${rowIndex}`} className="border-b border-slate-100 last:border-0">{row.map((cell, cellIndex) => <td key={`${rowIndex}-${cellIndex}`} className="whitespace-nowrap px-2 py-1 text-slate-700">{displayValue(cell)}</td>)}</tr>)}</tbody></table></div></div>;
+  </Module>
+  <EngineOutputSections outputs={engineOutputs} onChange={updateEngineOutput} />
+  </>;
 }
 
 function FinancialModule({project}: {project: CrmProjectRecord}) {
@@ -224,21 +220,12 @@ function ProjectDocumentsModule({project, initialDocuments}: {project: CrmProjec
 export default function ProjectFileClient({locale, project, documents}: Props) {
   const percent = projectProgressPercent(project.status, project.workLog.length);
   const estimator = project.estimatorData;
-  const [processedRows, setProcessedRows] = useState<ProcessedEstimatorRow[]>(estimator.processedRows || []);
   const [projectStatus, setProjectStatus] = useState(project.status || project.phase);
   const [projectTitle, setProjectTitle] = useState(project.title);
   const [startDate, setStartDate] = useState(project.createdAtUtc ? project.createdAtUtc.slice(0, 10) : '');
   const [endDate, setEndDate] = useState(project.dueDate || '');
   const [projectOverview, setProjectOverview] = useState(project.note || project.title);
   const [description, setDescription] = useState(project.note || '');
-  const materials = processedRows.length > 0 ? processedRows.map((row) => [row.description, `${row.quantity} ${row.unit}`]) : [
-    ['Material type', estimator.materialType],
-    ['Desired covering', estimator.desiredRoofCovering],
-    ['Colour', estimator.desiredMaterialColor],
-    ['Roof area', estimator.existingRoofArea],
-    ['Gutter system', estimator.gutterSystem],
-    ['Insulation', estimator.insulation],
-  ].filter(([, entry]) => entry);
 
   return (
     <div className="min-h-screen bg-slate-50 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
@@ -265,11 +252,7 @@ export default function ProjectFileClient({locale, project, documents}: Props) {
 
           <FinancialModule project={project} />
 
-          <EstimatorWorkflow project={project} initialData={estimator} onProcessedRows={setProcessedRows} />
-
-          <Module title="Materials and supply chain" subtitle="">
-            {materials.length > 0 ? <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{materials.map(([label, entry]) => <div key={label} className="rounded-xl border border-slate-200 bg-slate-50 p-3"><p className="text-xs text-slate-500">{label}</p><p className="mt-1 text-sm font-semibold text-slate-900">{displayValue(entry)}</p></div>)}</div> : <p className="text-sm text-slate-500">No estimator material selections have been recorded.</p>}
-          </Module>
+          <EstimatorWorkflow project={project} initialData={estimator} />
 
           <Module title="Project management and progress" subtitle="">
             <div className="grid gap-4 lg:grid-cols-[0.8fr_1.2fr]"><div className="rounded-xl border border-slate-200 bg-slate-50 p-4"><p className="text-xs text-slate-500">Current progress</p><p className="mt-2 text-xl font-bold text-slate-900">{project.progress || project.status}</p><p className="mt-4 text-sm text-slate-600">{project.note || 'No project note recorded.'}</p></div><div>{project.workLog.length > 0 ? <div className="space-y-2">{project.workLog.map((entry) => <div key={`${entry.time}-${entry.title}`} className="rounded-xl border border-slate-200 bg-white p-3"><div className="flex justify-between gap-3"><strong className="text-sm text-slate-900">{entry.title}</strong><span className="text-xs text-slate-500">{entry.time}</span></div><p className="mt-1 text-sm text-slate-600">{entry.detail}</p></div>)}</div> : <p className="text-sm text-slate-500">No planner or work-log entries have been recorded.</p>}</div></div>

@@ -16,6 +16,12 @@ export async function GET(request: NextRequest, {params}: {params: Promise<{lead
   if (!lead) return NextResponse.json({ok: false, error: 'Lead not found'}, {status: 404});
   const kind = querySchema.parse({kind: request.nextUrl.searchParams.get('kind') || 'offer'}).kind;
   const title = kind === 'f2' ? `F2 forma - ${lead.title || lead.customer}` : `Piedāvājums - ${lead.title || lead.customer}`;
+  const savedOutputs = lead.estimatorData.engineOutputs || {};
+  const output = kind === 'f2' ? savedOutputs.f2Estimate : savedOutputs.customerOffer;
+  const outputRows = output && typeof output === 'object'
+    ? ((output as Record<string, unknown>)[kind === 'f2' ? 'activeRows' : 'activeLineItems'] as Array<Record<string, unknown>> || [])
+    : [];
+  const total = output && typeof output === 'object' && 'totals' in output ? JSON.stringify((output as Record<string, unknown>).totals) : '';
   const pdf = createStampedPdfBuffer({
     title,
     lines: [
@@ -25,7 +31,9 @@ export async function GET(request: NextRequest, {params}: {params: Promise<{lead
       `Estimator status: ${lead.status}`,
       `Estimator data fields: ${Object.values(lead.estimatorData || {}).filter((value) => value !== '' && value !== null && value !== undefined).length}`,
       `Processing status: ${lead.estimatorData?.processingStatus || 'draft'}`,
-      ...(lead.estimatorData?.processedRows || []).map((row) => `${row.description} | ${row.quantity} ${row.unit} | ${row.price} | ${row.total}`),
+      `Workbook output rows: ${outputRows.length}`,
+      ...(outputRows.slice(0, 80).map((row) => `${row.description || row.name || ''} | ${row.quantity || ''} ${row.unit || ''} | ${row.totalExVat || row.total || ''}`)),
+      total ? `Totals: ${total}` : '',
       kind === 'f2' ? 'Detailed estimator output' : 'Client offer output',
     ],
     watermark: `${session.email} | ${session.sid} | ${new Date().toISOString()}`,
