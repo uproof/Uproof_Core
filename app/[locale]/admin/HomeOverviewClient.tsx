@@ -1,7 +1,6 @@
 'use client';
 
 import {useMemo, useState} from 'react';
-import Link from 'next/link';
 import type {CrmProjectRecord} from '@/lib/crmProjectsStore';
 
 type Props = {locale: string; projects: CrmProjectRecord[]};
@@ -22,6 +21,9 @@ export default function HomeOverviewClient({locale, projects}: Props) {
   const [date, setDate] = useState(now.toISOString().slice(0, 10));
   const [month, setMonth] = useState(String(now.getMonth()));
   const [year, setYear] = useState(String(now.getFullYear()));
+  const [customKpis, setCustomKpis] = useState<Array<{name: string; value: string}>>([]);
+  const [kpiName, setKpiName] = useState('');
+  const [kpiValue, setKpiValue] = useState('');
 
   const years = Array.from(new Set(projects.map((project) => new Date(dateOf(project)).getFullYear()).filter(Number.isFinite))).sort((left, right) => right - left);
   const visibleProjects = useMemo(() => projects.filter((project) => {
@@ -42,7 +44,7 @@ export default function HomeOverviewClient({locale, projects}: Props) {
   return (
     <>
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <h2 className="text-3xl font-bold text-gray-900">Dashboard</h2>
+        <h2 className="text-3xl font-bold text-gray-900">Monthly overview</h2>
         <div className="flex flex-wrap items-center gap-2">
           {(['date', 'monthly', 'yearly'] as Period[]).map((entry) => <button key={entry} type="button" onClick={() => setPeriod(entry)} className={`rounded-xl px-3 py-2 text-sm font-semibold ${period === entry ? 'bg-sky-100 text-sky-700' : 'border border-slate-200 bg-white text-slate-600'}`}>{entry === 'date' ? 'Date' : entry === 'monthly' ? 'Monthly' : 'Yearly'}</button>)}
           {period === 'date' ? <input type="date" value={date} onChange={(event) => setDate(event.target.value)} className="h-10 rounded-xl border border-slate-200 bg-white px-3 text-sm" /> : null}
@@ -52,12 +54,13 @@ export default function HomeOverviewClient({locale, projects}: Props) {
       </div>
 
       <div className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {[['Sales', `${visibleProjects.length}`], ['Finances', new Intl.NumberFormat(locale === 'lv' ? 'lv-LV' : 'en-GB', {style: 'currency', currency: 'EUR', maximumFractionDigits: 0}).format(value)], ['Expenses', `${active}`], ['Efficiency', visibleProjects.length ? `${Math.round((visibleProjects.length - active) / visibleProjects.length * 100)}%` : '0%']].map(([label, metric]) => <div key={label} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{label}</p><p className="mt-3 text-3xl font-bold text-slate-900">{metric}</p></div>)}
+        {[['Sales', `${visibleProjects.length}`], ['Finance', new Intl.NumberFormat(locale === 'lv' ? 'lv-LV' : 'en-GB', {style: 'currency', currency: 'EUR', maximumFractionDigits: 0}).format(value)], ['Expenses', `${active}`], ['Efficiency', visibleProjects.length ? `${Math.round((visibleProjects.length - active) / visibleProjects.length * 100)}%` : '0%'], ...customKpis.map((kpi) => [kpi.name, kpi.value])].map(([label, metric]) => <div key={label} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{label}</p><p className="mt-3 text-3xl font-bold text-slate-900">{metric}</p></div>)}
       </div>
 
-      <section className="mb-8 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-        <div className="flex items-center justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-[0.2em] text-sky-600">Project overview</p><h2 className="mt-2 text-xl font-bold text-slate-900">Project activity</h2></div><Link href={`/${locale}/admin/project-360`} className="rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">Open Projects</Link></div>
-        <div className="mt-5 grid gap-3 sm:grid-cols-3">{['Scheduled', 'In Progress', 'Completed'].map((stage) => <div key={stage} className="rounded-2xl border border-slate-200 bg-slate-50 p-4"><p className="text-sm font-semibold text-slate-700">{stage}</p><p className="mt-2 text-2xl font-bold text-slate-900">{stages[stage] || 0}</p></div>)}</div>
+      <section className="mb-8 flex flex-wrap items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <button type="button" onClick={() => { if (kpiName.trim()) { setCustomKpis((current) => [...current, {name: kpiName.trim(), value: kpiValue.trim() || '—'}]); setKpiName(''); setKpiValue(''); } }} className="rounded-xl bg-sky-500 px-3 py-2 text-sm font-semibold text-white">Add KPI</button>
+        <input value={kpiName} onChange={(event) => setKpiName(event.target.value)} placeholder="KPI name" className="h-10 rounded-xl border border-slate-200 px-3 text-sm" />
+        <input value={kpiValue} onChange={(event) => setKpiValue(event.target.value)} placeholder="Value" className="h-10 rounded-xl border border-slate-200 px-3 text-sm" />
       </section>
     </>
   );

@@ -12,7 +12,7 @@ export default async function AdminProjectFilePage({params}: Props) {
   if (!session) redirect(`/${locale}/admin/login`);
   if (session.role !== 'superadmin') redirect(`/${locale}/crm`);
 
-  const projects = await getCrmProjects({limit: 500});
+  const projects = await getCrmProjects({limit: 500, includeAll: true});
   const project = projects.find((entry) => entry.id.toLowerCase() === id.toLowerCase());
   if (!project) notFound();
 

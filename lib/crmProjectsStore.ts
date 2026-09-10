@@ -42,6 +42,7 @@ type ProjectRow = {
 type CrmProjectsOptions = {
   assignedSalesUserId?: string;
   limit?: number;
+  includeAll?: boolean;
 };
 
 let projectsTableAvailable: boolean | null = null;
@@ -138,7 +139,7 @@ export async function getCrmProjects(options: CrmProjectsOptions = {}): Promise<
   });
 
   return leads
-    .filter((lead) => String(lead.status || '').trim().toUpperCase() === 'ACCEPTED')
+    .filter((lead) => options.includeAll || String(lead.status || '').trim().toUpperCase() === 'ACCEPTED')
     .map((lead) => ({
       id: lead.id,
       leadId: lead.id,
