@@ -146,9 +146,10 @@ export default function ProjectFileClient({locale, project, documents}: Props) {
   return (
     <div className="min-h-screen bg-slate-50 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-          <Link href={`/${locale}/admin/project-360`} aria-label="Back to projects" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-lg text-slate-700 hover:bg-slate-100">←</Link>
-          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-sky-600">Project file</span>
+        <div className="mb-5 flex flex-wrap items-center gap-2 text-sm">
+          <Link href={`/${locale}/admin/project-360`} className="font-semibold text-sky-700 hover:text-sky-900">Projects</Link>
+          <span className="text-slate-400">/</span>
+          <span className="font-semibold text-slate-700">Project File</span>
         </div>
 
         <div className="grid gap-4 lg:grid-cols-[1.35fr_0.65fr]">

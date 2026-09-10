@@ -354,18 +354,6 @@ export default function SalesUserManagementAdminClient({
   return (
     <div className="px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-sky-500">{labels.title}</p>
-          <h2 className="mt-2 text-3xl font-bold text-slate-900">{labels.subtitle}</h2>
-        </div>
-        <div className="flex gap-2">
-          <Link href={`/${locale}/admin/crm/leads`} className="inline-flex items-center rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-semibold text-sky-700 transition hover:bg-sky-50">
-            {labels.viewLeads}
-          </Link>
-          <Link href={`/${locale}/admin`} className="inline-flex items-center rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-semibold text-sky-700 transition hover:bg-sky-50">
-            {labels.back}
-          </Link>
-        </div>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">

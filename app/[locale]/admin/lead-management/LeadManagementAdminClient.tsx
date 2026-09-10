@@ -285,14 +285,12 @@ export default function LeadManagementAdminClient({locale, readOnly = false, ini
     <div className="px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-sky-500">{labels.title}</p>
           
           {toast ? (
             <div className="fixed right-4 top-4 z-50 w-[min(24rem,calc(100vw-2rem))]">
               <ToastBanner title={toast.title} message={toast.message} tone={toast.tone || 'info'} onClose={() => setToast(null)} />
             </div>
           ) : null}
-          <h2 className="mt-2 text-3xl font-bold text-slate-900">{labels.subtitle}</h2>
         </div>
         <div className="flex gap-2">
           <button

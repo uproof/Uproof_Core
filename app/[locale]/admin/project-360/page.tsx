@@ -23,12 +23,7 @@ export default async function AdminProject360Page({params}: Props) {
   return (
     <div className="px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h2 className="text-3xl font-bold text-slate-900">Projects</h2>
-        </div>
-        <Link href={`/${locale}/admin`} className="inline-flex items-center rounded-xl border border-emerald-200 bg-white px-4 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50">
-          Back to Dashboard
-        </Link>
+        <div className="flex items-center gap-2 text-sm"><Link href={`/${locale}/admin`} className="font-semibold text-sky-700 hover:text-sky-900">Dashboard</Link><span className="text-slate-400">/</span><span className="font-semibold text-slate-700">Projects</span></div>
       </div>
 
       <div className="mt-6">

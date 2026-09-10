@@ -447,6 +447,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
     <Section pad="sm" className="px-0 !py-0">
       <div className="mb-3 flex flex-col gap-3 border-b border-sky-100 pb-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
+          <div className="mb-2 flex items-center gap-2 text-sm"><button type="button" onClick={handlePreviousPage} className="font-semibold text-sky-700 hover:text-sky-900">CRM</button><span className="text-slate-400">/</span><span className="font-semibold text-slate-700">Lead</span></div>
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-sky-500">{isLv ? 'Līda pārvaldība' : 'Lead management'}</p>
           <h2 className="mt-0 text-3xl font-bold tracking-tight text-slate-900">{displayCustomerName}</h2>
           <p className="mt-2 text-sm text-slate-500">{accessScope === 'admin' ? (isLv ? 'CMS / superadmin skats' : 'CMS / superadmin view') : (isLv ? 'CRM pārdošanas skats' : 'CRM sales view')}</p>

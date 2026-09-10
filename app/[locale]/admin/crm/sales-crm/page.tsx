@@ -7,6 +7,7 @@ import {
   ChartBarIcon,
 } from '@heroicons/react/24/outline';
 import {getAdminSession} from '@/lib/adminAuth';
+import WorkspaceBreadcrumbs from '@/components/WorkspaceBreadcrumbs';
 
 type Tile = {
   href: string;
@@ -63,13 +64,7 @@ export default async function SalesCrmHubPage({params}: {params: Promise<{locale
     <div className="min-h-screen bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-600">Sales CRM</p>
-            <h1 className="mt-2 text-3xl font-bold text-slate-900">Sales user and lead management</h1>
-          </div>
-          <Link href={`/${locale}/admin`} className="inline-flex items-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
-            Back to CMS
-          </Link>
+          <WorkspaceBreadcrumbs items={[{label: 'Dashboard', href: `/${locale}/admin`}, {label: 'Sales CRM'}]} backHref={`/${locale}/admin`} />
         </div>
 
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -85,7 +80,6 @@ export default async function SalesCrmHubPage({params}: {params: Promise<{locale
                   </div>
                   <div className="flex flex-1 flex-col">
                     <h2 className="text-xl font-bold text-slate-900">{tile.title}</h2>
-                    <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">{tile.description}</p>
                     <span className="mt-5 inline-flex items-center text-sm font-semibold text-sky-700">
                       {tile.action}
                       <span className="ml-2 transition-transform group-hover:translate-x-1">→</span>

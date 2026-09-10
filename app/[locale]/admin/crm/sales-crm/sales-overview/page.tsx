@@ -2,6 +2,7 @@ import Link from 'next/link';
 import {redirect} from 'next/navigation';
 import {getAdminSession} from '@/lib/adminAuth';
 import {getCrmLeads} from '@/lib/crmLeadsStore';
+import WorkspaceBreadcrumbs from '@/components/WorkspaceBreadcrumbs';
 
 function normalizeStatus(value: string) {
   return String(value || '').trim().toUpperCase().replace(/[_\s]+/g, ' ');
@@ -50,15 +51,7 @@ export default async function SalesCrmOverviewPage({params, searchParams}: {para
 
   return (
     <div className="px-4 py-6 sm:px-6 lg:px-8">
-      <div className="mb-6 flex items-center justify-between gap-4">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-600">Sales CRM</p>
-          <h1 className="mt-2 text-3xl font-bold text-slate-900">Sales overview</h1>
-        </div>
-        <Link href={`/${locale}/admin/crm/sales-crm`} className="inline-flex items-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
-          Back to Sales CRM
-        </Link>
-      </div>
+      <div className="mb-6"><WorkspaceBreadcrumbs items={[{label: 'Dashboard', href: `/${locale}/admin`}, {label: 'Sales CRM', href: `/${locale}/admin/crm/sales-crm`}, {label: 'Sales overview'}]} backHref={`/${locale}/admin/crm/sales-crm`} /></div>
 
       <div className="mb-8 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
         {snapshot.map((entry) => (

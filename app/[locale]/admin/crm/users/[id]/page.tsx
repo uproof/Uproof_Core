@@ -3,6 +3,7 @@ import {notFound, redirect} from 'next/navigation';
 import {getAdminSession} from '@/lib/adminAuth';
 import {getCrmLeads} from '@/lib/crmLeadsStore';
 import {getCrmUserById} from '@/lib/crmUsersStore';
+import WorkspaceBreadcrumbs from '@/components/WorkspaceBreadcrumbs';
 import {getRecentCrmUserActivity} from '@/lib/crmUserActivityStore';
 import CrmUserWorkLogActions from '../CrmUserWorkLogActions';
 
@@ -142,14 +143,7 @@ export default async function AdminCrmUserDashboardPage({params}: Props) {
   return (
     <div className="px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-sky-500">Sales User Dashboard</p>
-          <h2 className="mt-2 text-3xl font-bold text-slate-900">{user.name}</h2>
-          <p className="text-sm text-slate-600">{user.email}</p>
-        </div>
-        <Link href={`/${locale}/admin/crm/users`} className="inline-flex items-center rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-semibold text-sky-700 transition hover:bg-sky-50">
-          Back to User Management
-        </Link>
+        <div><WorkspaceBreadcrumbs items={[{label: 'Dashboard', href: `/${locale}/admin`}, {label: 'Sales CRM', href: `/${locale}/admin/crm/sales-crm`}, {label: 'Sales users', href: `/${locale}/admin/crm/users`}, {label: user.name}]} backHref={`/${locale}/admin/crm/users`} /><p className="mt-2 text-sm text-slate-600">{user.email}</p></div>
       </div>
 
       <div className="mb-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">

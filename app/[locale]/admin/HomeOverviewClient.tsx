@@ -23,7 +23,8 @@ export default function HomeOverviewClient({locale, projects}: Props) {
   const [year, setYear] = useState(String(now.getFullYear()));
   const [customKpis, setCustomKpis] = useState<Array<{name: string; value: string}>>([]);
   const [kpiName, setKpiName] = useState('');
-  const [kpiValue, setKpiValue] = useState('');
+  const [kpiOperation, setKpiOperation] = useState('project_count');
+  const [showKpiForm, setShowKpiForm] = useState(false);
 
   const years = Array.from(new Set(projects.map((project) => new Date(dateOf(project)).getFullYear()).filter(Number.isFinite))).sort((left, right) => right - left);
   const visibleProjects = useMemo(() => projects.filter((project) => {
@@ -57,10 +58,9 @@ export default function HomeOverviewClient({locale, projects}: Props) {
         {[['Sales', `${visibleProjects.length}`], ['Finance', new Intl.NumberFormat(locale === 'lv' ? 'lv-LV' : 'en-GB', {style: 'currency', currency: 'EUR', maximumFractionDigits: 0}).format(value)], ['Expenses', `${active}`], ['Efficiency', visibleProjects.length ? `${Math.round((visibleProjects.length - active) / visibleProjects.length * 100)}%` : '0%'], ...customKpis.map((kpi) => [kpi.name, kpi.value])].map(([label, metric]) => <div key={label} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{label}</p><p className="mt-3 text-3xl font-bold text-slate-900">{metric}</p></div>)}
       </div>
 
-      <section className="mb-8 flex flex-wrap items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-        <button type="button" onClick={() => { if (kpiName.trim()) { setCustomKpis((current) => [...current, {name: kpiName.trim(), value: kpiValue.trim() || '—'}]); setKpiName(''); setKpiValue(''); } }} className="rounded-xl bg-sky-500 px-3 py-2 text-sm font-semibold text-white">Add KPI</button>
-        <input value={kpiName} onChange={(event) => setKpiName(event.target.value)} placeholder="KPI name" className="h-10 rounded-xl border border-slate-200 px-3 text-sm" />
-        <input value={kpiValue} onChange={(event) => setKpiValue(event.target.value)} placeholder="Value" className="h-10 rounded-xl border border-slate-200 px-3 text-sm" />
+      <section className="mb-8 flex items-start gap-3">
+        <button type="button" onClick={() => setShowKpiForm((current) => !current)} className="shrink-0 rounded-lg bg-sky-500 px-3 py-2 text-xs font-semibold text-white">{showKpiForm ? 'Close KPI' : 'Add KPI'}</button>
+        {showKpiForm ? <div className="flex flex-wrap gap-2"><input value={kpiName} onChange={(event) => setKpiName(event.target.value)} placeholder="KPI name" className="h-9 rounded-lg border border-slate-200 px-3 text-sm" /><select value={kpiOperation} onChange={(event) => setKpiOperation(event.target.value)} className="h-9 rounded-lg border border-slate-200 px-3 text-sm"><option value="project_count">Project count</option><option value="project_value">Project value</option><option value="active_projects">Active projects</option><option value="completed_projects">Completed projects</option><option value="crew_count">Crew count</option></select><button type="button" onClick={() => { if (kpiName.trim()) { const operations: Record<string, string> = {project_count: String(visibleProjects.length), project_value: new Intl.NumberFormat(locale === 'lv' ? 'lv-LV' : 'en-GB', {style: 'currency', currency: 'EUR', maximumFractionDigits: 0}).format(value), active_projects: String(active), completed_projects: String(visibleProjects.length - active), crew_count: String(new Set(visibleProjects.map((project) => project.owner).filter(Boolean)).size)}; setCustomKpis((current) => [...current, {name: kpiName.trim(), value: operations[kpiOperation] || '—'}]); setKpiName(''); setShowKpiForm(false); } }} className="h-9 rounded-lg bg-slate-900 px-3 text-xs font-semibold text-white">Save KPI</button></div> : null}
       </section>
     </>
   );

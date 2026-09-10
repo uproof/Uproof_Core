@@ -2,6 +2,7 @@ import Link from 'next/link';
 import {redirect} from 'next/navigation';
 import {getAdminSession} from '@/lib/adminAuth';
 import {getFinancialsSheetConfig, loadFinancialDashboardFromEnv, type FinancialDashboardData} from '@/lib/googleSheets';
+import WorkspaceBreadcrumbs from '@/components/WorkspaceBreadcrumbs';
 
 type Props = {params: Promise<{locale: string}>};
 
@@ -210,13 +211,7 @@ export default async function AdminFinancialsPage({params}: Props) {
   return (
     <div className="px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-violet-600">Financials</p>
-          <h2 className="mt-2 text-3xl font-bold text-slate-900">Live financial dashboard</h2>
-        </div>
-        <Link href={`/${locale}/admin`} className="inline-flex items-center rounded-xl border border-violet-200 bg-white px-4 py-2 text-sm font-semibold text-violet-700 transition hover:bg-violet-50">
-          Back to Dashboard
-        </Link>
+        <WorkspaceBreadcrumbs items={[{label: 'Dashboard', href: `/${locale}/admin`}, {label: 'Financials'}]} backHref={`/${locale}/admin`} />
       </div>
 
       {!config ? (
