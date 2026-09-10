@@ -1,6 +1,6 @@
 'use client';
 
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import Link from 'next/link';
 import type {CrmProjectRecord} from '@/lib/crmProjectsStore';
 import type {CrmEstimatorFormData} from '@/lib/crmEstimator';
@@ -10,6 +10,8 @@ type Props = {
   project: CrmProjectRecord;
   documents: Array<{name: string; url: string}>;
 };
+
+type ProjectDocument = {id: string; category: string; file_name: string; mime_type: string; file_size: number; uploaded_at: string; url?: string};
 
 type ModuleProps = {title: string; subtitle: string; children: React.ReactNode; defaultOpen?: boolean};
 
@@ -80,9 +82,58 @@ function CustomKpiModule() {
   </Module>;
 }
 
+function ProjectDocumentsModule({project, initialDocuments}: {project: CrmProjectRecord; initialDocuments: Array<{name: string; url: string}>}) {
+  const [documents, setDocuments] = useState<ProjectDocument[]>(initialDocuments.map((document, index) => ({id: `legacy-${index}`, category: 'other', file_name: document.name, mime_type: 'application/octet-stream', file_size: 0, uploaded_at: '', url: document.url})));
+  const [category, setCategory] = useState('contract');
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    fetch(`/api/crm/projects/${encodeURIComponent(project.leadId)}/documents`, {cache: 'no-store'})
+      .then((response) => response.json())
+      .then((data) => { if (data.ok) setDocuments(data.documents.map((document: ProjectDocument) => ({...document, url: `/api/crm/projects/${encodeURIComponent(project.leadId)}/documents/${encodeURIComponent(document.id)}`}))); })
+      .catch(() => undefined);
+  }, [project.leadId]);
+
+  const upload = async (file: File) => {
+    setUploading(true);
+    setError('');
+    try {
+      const form = new FormData();
+      form.set('category', category);
+      form.set('file', file);
+      const response = await fetch(`/api/crm/projects/${encodeURIComponent(project.leadId)}/documents`, {method: 'POST', body: form});
+      const data = await response.json();
+      if (!data.ok) throw new Error(data.error || 'Upload failed');
+      setDocuments((current) => [{...data.document, url: `/api/crm/projects/${encodeURIComponent(project.leadId)}/documents/${encodeURIComponent(data.document.id)}`}, ...current]);
+    } catch (uploadError: any) {
+      setError(uploadError?.message || 'Upload failed');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const groups = [
+    ['contract', 'Contract'],
+    ['invoice', 'Invoices'],
+    ['estimate', 'Estimate'],
+    ['certificate', 'Certificate of Acceptance'],
+    ['other', 'Other documents'],
+  ];
+
+  return <Module title="Project documents" subtitle="" defaultOpen>
+    <div className="flex flex-wrap items-center gap-2"><select value={category} onChange={(event) => setCategory(event.target.value)} className="h-10 rounded-xl border border-slate-200 px-3 text-sm">{groups.map(([key, label]) => <option key={key} value={key}>{label}</option>)}</select><label className="inline-flex h-10 cursor-pointer items-center rounded-xl bg-sky-500 px-4 text-sm font-semibold text-white">{uploading ? 'Uploading...' : 'Add document'}<input type="file" className="hidden" disabled={uploading} onChange={(event) => { const file = event.target.files?.[0]; if (file) void upload(file); event.currentTarget.value = ''; }} /></label>{error ? <span className="text-sm text-rose-600">{error}</span> : null}</div>
+    <div className="mt-5 grid gap-4 md:grid-cols-2">{groups.map(([key, label]) => <div key={key} className="rounded-xl border border-slate-200 bg-slate-50 p-4"><h3 className="text-sm font-bold text-slate-900">{label}</h3><div className="mt-3 space-y-2">{documents.filter((document) => document.category === key).map((document) => <div key={document.id} className="flex items-center justify-between gap-3 rounded-lg border border-slate-200 bg-white p-3"><span className="min-w-0 truncate text-sm font-medium text-slate-900">{document.file_name}</span>{document.url ? <a href={document.url} target="_blank" rel="noreferrer" className="shrink-0 text-xs font-semibold text-sky-700">Preview</a> : null}</div>)}{documents.every((document) => document.category !== key) ? <p className="text-sm text-slate-500">No documents</p> : null}</div></div>)}</div>
+  </Module>;
+}
+
 export default function ProjectFileClient({locale, project, documents}: Props) {
   const percent = progressPercent(project.progress, project.status);
   const estimator = project.estimatorData;
+  const [projectStatus, setProjectStatus] = useState(project.status || project.phase);
+  const [projectTitle, setProjectTitle] = useState(project.title);
+  const [startDate, setStartDate] = useState(project.createdAtUtc ? project.createdAtUtc.slice(0, 10) : '');
+  const [endDate, setEndDate] = useState(project.dueDate || '');
   const materials = [
     ['Material type', estimator.materialType],
     ['Desired covering', estimator.desiredRoofCovering],
@@ -110,7 +161,8 @@ export default function ProjectFileClient({locale, project, documents}: Props) {
 
         <div className="mt-5 space-y-3">
           <Module title="Client and project overview" subtitle="" defaultOpen>
-            <div className="grid gap-4 md:grid-cols-2"><div className="rounded-xl border border-slate-200 bg-slate-50 p-4"><h2 className="text-sm font-bold text-slate-900">Client data</h2><dl className="mt-3 space-y-2 text-sm">{[['Customer', project.customer], ['Company', project.company], ['Location', project.location], ['Owner', project.owner]].map(([label, entry]) => <div key={label} className="flex justify-between gap-3 border-b border-slate-200 pb-2"><dt className="text-slate-500">{label}</dt><dd className="text-right font-medium text-slate-900">{entry || '—'}</dd></div>)}</dl></div><div className="rounded-xl border border-slate-200 bg-slate-50 p-4"><h2 className="text-sm font-bold text-slate-900">Brigade / crew</h2><p className="mt-3 text-sm text-slate-600">Crew allocation is shown only in the project overview. No crew assignment has been recorded for this project yet.</p><div className="mt-4 rounded-lg bg-white p-3 text-sm"><span className="text-slate-500">Responsible owner</span><strong className="mt-1 block text-slate-900">{project.owner || 'Unassigned'}</strong></div></div></div>
+            <div className="grid gap-4 md:grid-cols-2"><div className="rounded-xl border border-slate-200 bg-slate-50 p-4"><h2 className="text-sm font-bold text-slate-900">Client data</h2><div className="mt-3 space-y-3">{[['Full name / company', project.customer + (project.company ? ` / ${project.company}` : '')], ['Legal address', project.location], ['ID No.', '—'], ['Primary contact', project.owner]].map(([label, entry]) => <label key={label} className="block text-sm"><span className="text-xs text-slate-500">{label}</span><input value={entry || ''} readOnly className="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-2 text-sm text-slate-900" /></label>)}</div></div><div className="rounded-xl border border-slate-200 bg-slate-50 p-4"><h2 className="text-sm font-bold text-slate-900">Project data</h2><div className="mt-3 space-y-3"><label className="block text-sm"><span className="text-xs text-slate-500">Project name</span><input value={projectTitle} onChange={(event) => setProjectTitle(event.target.value)} className="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-2 text-sm text-slate-900" /></label><label className="block text-sm"><span className="text-xs text-slate-500">Status</span><select value={projectStatus} onChange={(event) => setProjectStatus(event.target.value)} className="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-2 text-sm text-slate-900"><option>In Progress</option><option>Scheduled</option><option>Completed</option></select></label><label className="block text-sm"><span className="text-xs text-slate-500">Start date</span><input type="date" value={startDate} onChange={(event) => setStartDate(event.target.value)} className="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-2 text-sm text-slate-900" /></label><label className="block text-sm"><span className="text-xs text-slate-500">End date</span><input type="date" value={endDate} onChange={(event) => setEndDate(event.target.value)} className="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-2 text-sm text-slate-900" /></label><label className="block text-sm"><span className="text-xs text-slate-500">Commercial source</span><input value="Sales CRM — Won" readOnly className="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-slate-100 px-2 text-sm text-slate-700" /></label></div></div></div>
+            <div className="mt-4 rounded-xl border border-sky-100 bg-sky-50 p-4 text-sm text-slate-700"><strong>Sales boundary:</strong> commercial/client information is inherited when the opportunity becomes Won. The salesperson cannot edit the frozen commercial record from this operational workspace.</div>
           </Module>
 
           <FinancialModule project={project} />
@@ -127,9 +179,7 @@ export default function ProjectFileClient({locale, project, documents}: Props) {
             <div className="grid gap-4 lg:grid-cols-[0.8fr_1.2fr]"><div className="rounded-xl border border-slate-200 bg-slate-50 p-4"><p className="text-xs text-slate-500">Current progress</p><p className="mt-2 text-xl font-bold text-slate-900">{project.progress || project.status}</p><p className="mt-4 text-sm text-slate-600">{project.note || 'No project note recorded.'}</p></div><div>{project.workLog.length > 0 ? <div className="space-y-2">{project.workLog.map((entry) => <div key={`${entry.time}-${entry.title}`} className="rounded-xl border border-slate-200 bg-white p-3"><div className="flex justify-between gap-3"><strong className="text-sm text-slate-900">{entry.title}</strong><span className="text-xs text-slate-500">{entry.time}</span></div><p className="mt-1 text-sm text-slate-600">{entry.detail}</p></div>)}</div> : <p className="text-sm text-slate-500">No planner or work-log entries have been recorded.</p>}</div></div>
           </Module>
 
-          <Module title="Uploaded project documents" subtitle="">
-            {documents.length > 0 ? <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{documents.map((document) => <a key={document.name} href={document.url} className="rounded-xl border border-slate-200 bg-slate-50 p-3 transition hover:border-sky-300 hover:bg-sky-50"><p className="text-sm font-semibold text-slate-900">{document.name}</p><p className="mt-1 text-xs text-sky-700">Open uploaded file</p></a>)}</div> : <p className="text-sm text-slate-500">No uploaded project documents have been recorded.</p>}
-          </Module>
+          <ProjectDocumentsModule project={project} initialDocuments={documents} />
 
           <CustomKpiModule />
         </div>
