@@ -1,0 +1,3204 @@
+[
+  {
+    "key": "attalumsLidzObjektamKm",
+    "cell": "B2",
+    "label": "Attālums līdz objektam, km",
+    "group": "conditions",
+    "section": "APSTĀKĻI",
+    "field": "value",
+    "unit": "km",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 3,
+    "description": "Attālums līdz objektam, km.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "attalumsLidzObjektamKm"
+  },
+  {
+    "key": "betonaDakstiniMonierZandaLux",
+    "cell": "D2",
+    "label": "Betona dakstiņi Monier Zanda Lux",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "value",
+    "unit": "m2",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 17,
+    "description": "Betona dakstiņi Monier Zanda Lux.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "betonaDakstiniMonierZandaLuxValue"
+  },
+  {
+    "key": "teknesM",
+    "cell": "G2",
+    "label": "Teknes, m",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "value",
+    "unit": "m",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 2,
+    "description": "Teknes, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "teknesMValue"
+  },
+  {
+    "key": "teknesMDiameterMm",
+    "cell": "H2",
+    "label": "Teknes, m",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "diameterMm",
+    "unit": "mm",
+    "type": "number",
+    "default": 125,
+    "advanced": false,
+    "references": 1,
+    "description": "Diameter used for teknes, m.",
+    "validation": {
+      "min": 1
+    },
+    "legacyKey": "teknesMDiameterMm"
+  },
+  {
+    "key": "sniegaBarjerasApalasM",
+    "cell": "J2",
+    "label": "Sniega barjeras apaļās, m",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "unit": "m",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 4,
+    "description": "Sniega barjeras apaļās, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "sniegaBarjerasApalasM"
+  },
+  {
+    "key": "skurstnaParmuresana1M2PerimeterM",
+    "cell": "L2",
+    "label": "Skurstņa pārmūrēšana 1, m2",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "unit": "m",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Geometry input for Skurstņa pārmūrēšana 1, m2; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstnaParmuresana1M2PerimeterM"
+  },
+  {
+    "key": "skurstnaParmuresana1M2HeightM",
+    "cell": "M2",
+    "label": "Skurstņa pārmūrēšana 1, m2",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "unit": "m",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Geometry input for Skurstņa pārmūrēšana 1, m2; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstnaParmuresana1M2HeightM"
+  },
+  {
+    "key": "jumtaLogs1Count",
+    "cell": "P2",
+    "label": "Jumta logs 1",
+    "group": "roofWindows",
+    "section": "JUMTA LOGI",
+    "field": "count",
+    "unit": "pcs",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 6,
+    "description": "Jumta logs 1.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "jumtaLogs1Count"
+  },
+  {
+    "key": "jumtaLogs1WindowKitPrice",
+    "cell": "Q2",
+    "label": "Jumta logs 1",
+    "group": "roofWindows",
+    "section": "JUMTA LOGI",
+    "field": "windowKitPrice",
+    "unit": "EUR_ex_VAT",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Unit price without VAT for jumta logs 1.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "jumtaLogs1WindowKitPrice"
+  },
+  {
+    "key": "jumtaLogs1DiffusionFramePrice",
+    "cell": "R2",
+    "label": "Jumta logs 1",
+    "group": "roofWindows",
+    "section": "JUMTA LOGI",
+    "field": "diffusionFramePrice",
+    "unit": "EUR_ex_VAT",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Unit price without VAT for jumta logs 1.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "jumtaLogs1DiffusionFramePrice"
+  },
+  {
+    "key": "cilvekuSkaitsObjektaCount",
+    "cell": "B3",
+    "label": "Cilvēku skaits objektā",
+    "group": "conditions",
+    "section": "APSTĀKĻI",
+    "field": "count",
+    "unit": "pcs",
+    "type": "number",
+    "default": 2,
+    "advanced": false,
+    "references": 51,
+    "description": "Cilvēku skaits objektā.",
+    "validation": {
+      "min": 1,
+      "integer": true
+    },
+    "legacyKey": "cilvekuSkaitsObjekta"
+  },
+  {
+    "key": "malaDakstini",
+    "cell": "D3",
+    "label": "Māla dakstiņi",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "value",
+    "unit": "m2",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 17,
+    "description": "Māla dakstiņi.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "malaDakstiniValue"
+  },
+  {
+    "key": "notecesGb",
+    "cell": "G3",
+    "label": "Noteces gb",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Noteces gb.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "notecesGbValue"
+  },
+  {
+    "key": "skurstnaParmuresana2M2PerimeterM",
+    "cell": "L3",
+    "label": "Skurstņa pārmūrēšana 2, m2",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "unit": "m",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Geometry input for Skurstņa pārmūrēšana 2, m2; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstnaParmuresana2M2PerimeterM"
+  },
+  {
+    "key": "skurstnaParmuresana2M2HeightM",
+    "cell": "M3",
+    "label": "Skurstņa pārmūrēšana 2, m2",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "unit": "m",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Geometry input for Skurstņa pārmūrēšana 2, m2; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstnaParmuresana2M2HeightM"
+  },
+  {
+    "key": "jumtaLogs2Count",
+    "cell": "P3",
+    "label": "Jumta logs 2",
+    "group": "roofWindows",
+    "section": "JUMTA LOGI",
+    "field": "count",
+    "unit": "pcs",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 5,
+    "description": "Jumta logs 2.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "jumtaLogs2Count"
+  },
+  {
+    "key": "jumtaLogs2WindowKitPrice",
+    "cell": "Q3",
+    "label": "Jumta logs 2",
+    "group": "roofWindows",
+    "section": "JUMTA LOGI",
+    "field": "windowKitPrice",
+    "unit": "EUR_ex_VAT",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Unit price without VAT for jumta logs 2.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "jumtaLogs2WindowKitPrice"
+  },
+  {
+    "key": "jumtaLogs2DiffusionFramePrice",
+    "cell": "R3",
+    "label": "Jumta logs 2",
+    "group": "roofWindows",
+    "section": "JUMTA LOGI",
+    "field": "diffusionFramePrice",
+    "unit": "EUR_ex_VAT",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Unit price without VAT for jumta logs 2.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "jumtaLogs2DiffusionFramePrice"
+  },
+  {
+    "key": "slipumaKoefCoefficient",
+    "cell": "B4",
+    "label": "Slīpuma koef",
+    "group": "conditions",
+    "section": "APSTĀKĻI",
+    "field": "coefficient",
+    "unit": "ratio",
+    "type": "number",
+    "default": 1,
+    "advanced": false,
+    "references": 1,
+    "description": "Slīpuma koef.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "slipumaKoef"
+  },
+  {
+    "key": "slidosoKlemmeruProporcijaGaramValcprofilaLoksnemRatio",
+    "cell": "D4",
+    "label": "Slīdošo klemmeru proporcija garām valcprofila loksnēm",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "ratio",
+    "unit": "ratio",
+    "type": "number",
+    "default": 0,
+    "advanced": true,
+    "references": 1,
+    "description": "Advanced legacy parameter. Multiplies the normal standing-seam clip quantity to calculate sliding clips for long sheets; source workbook left this input unlabeled.",
+    "validation": {
+      "min": 0,
+      "max": 1
+    }
+  },
+  {
+    "key": "notecesM",
+    "cell": "G4",
+    "label": "Noteces, m",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "value",
+    "unit": "m",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Noteces, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "notecesMValue"
+  },
+  {
+    "key": "notecesMDiameterMm",
+    "cell": "H4",
+    "label": "Noteces, m",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "diameterMm",
+    "unit": "mm",
+    "type": "number",
+    "default": 100,
+    "advanced": false,
+    "references": 1,
+    "description": "Diameter used for noteces, m.",
+    "validation": {
+      "min": 1
+    },
+    "legacyKey": "notecesMDiameterMm"
+  },
+  {
+    "key": "jumtaNozogojumsM3mPosmi",
+    "cell": "J4",
+    "label": "Jumta nožogojums, m (3m posmi)",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "unit": "m",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 3,
+    "description": "Jumta nožogojums, m (3m posmi).",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "jumtaNozogojumsM3mPosmi"
+  },
+  {
+    "key": "skurstnaParmuresana3M2PerimeterM",
+    "cell": "L4",
+    "label": "Skurstņa pārmūrēšana 3, m2",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Geometry input for Skurstņa pārmūrēšana 3, m2; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstnaParmuresana3M2PerimeterM"
+  },
+  {
+    "key": "skurstnaParmuresana3M2HeightM",
+    "cell": "M4",
+    "label": "Skurstņa pārmūrēšana 3, m2",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Geometry input for Skurstņa pārmūrēšana 3, m2; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstnaParmuresana3M2HeightM"
+  },
+  {
+    "key": "jumtaLoguPieslegumuKopgarumsM",
+    "cell": "P4",
+    "label": "Jumta logu pieslēgumu kopgarums, m",
+    "group": "roofWindows",
+    "section": "JUMTA LOGI",
+    "field": "value",
+    "unit": "m",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Jumta logu pieslēgumu kopgarums, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "jumtaLoguPieslegumuKopgarumsMCount"
+  },
+  {
+    "key": "komandejumaPiemaksasKoefCoefficient",
+    "cell": "B5",
+    "label": "Komandējuma piemaksas koef",
+    "group": "conditions",
+    "section": "APSTĀKĻI",
+    "field": "coefficient",
+    "unit": "ratio",
+    "type": "number",
+    "default": 1,
+    "advanced": false,
+    "references": 1,
+    "description": "Komandējuma piemaksas koef.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "komandejumaPiemaksasKoef"
+  },
+  {
+    "key": "latojumaPlatiba",
+    "cell": "D5",
+    "label": "Latojuma platība",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "value",
+    "unit": "m2",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 9,
+    "description": "Latojuma platība.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "latojumaPlatibaValue"
+  },
+  {
+    "key": "augsejieLikumi",
+    "cell": "G5",
+    "label": "Augšējie līkumi",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Augšējie līkumi.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "augsejieLikumiValue"
+  },
+  {
+    "key": "jumtaLaipas3m",
+    "cell": "J5",
+    "label": "Jumta laipas, 3m",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Jumta laipas, 3m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "jumtaLaipas3m"
+  },
+  {
+    "key": "skurstnaParmuresana4M2PerimeterM",
+    "cell": "L5",
+    "label": "Skurstņa pārmūrēšana 4, m2",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Geometry input for Skurstņa pārmūrēšana 4, m2; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstnaParmuresana4M2PerimeterM"
+  },
+  {
+    "key": "skurstnaParmuresana4M2HeightM",
+    "cell": "M5",
+    "label": "Skurstņa pārmūrēšana 4, m2",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Geometry input for Skurstņa pārmūrēšana 4, m2; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstnaParmuresana4M2HeightM"
+  },
+  {
+    "key": "jumtaLoguPieslegumuSkaitsCount",
+    "cell": "P5",
+    "label": "Jumta logu pieslēgumu skaits",
+    "group": "roofWindows",
+    "section": "JUMTA LOGI",
+    "field": "count",
+    "unit": "pcs",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 5,
+    "description": "Jumta logu pieslēgumu skaits.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "jumtaLoguPieslegumuSkaitsCount"
+  },
+  {
+    "key": "komandejumaIzmitinasanaDienas",
+    "cell": "B6",
+    "label": "Komandējuma izmitināšana, dienas",
+    "group": "conditions",
+    "section": "APSTĀKĻI",
+    "field": "value",
+    "unit": "days",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Komandējuma izmitināšana, dienas.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "komandejumaIzmitinasanaDienas"
+  },
+  {
+    "key": "jumtaSlipums",
+    "cell": "D6",
+    "label": "Jumta slīpums",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "value",
+    "unit": "degrees",
+    "type": "number",
+    "default": 20,
+    "advanced": false,
+    "references": 1,
+    "description": "Jumta slīpums.",
+    "validation": {
+      "min": 0,
+      "max": 90
+    },
+    "legacyKey": "jumtaSlipumsValue"
+  },
+  {
+    "key": "apaksejieLikumi",
+    "cell": "G6",
+    "label": "Apakšējie līkumi",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Apakšējie līkumi.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "apaksejieLikumiValue"
+  },
+  {
+    "key": "jumtaLaipas14m",
+    "cell": "J6",
+    "label": "Jumta laipas, 1.4m",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Jumta laipas, 1.4m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "jumtaLaipas14m"
+  },
+  {
+    "key": "skurstnaParmuresana5M2PerimeterM",
+    "cell": "L6",
+    "label": "Skurstņa pārmūrēšana 5, m2",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Geometry input for Skurstņa pārmūrēšana 5, m2; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstnaParmuresana5M2PerimeterM"
+  },
+  {
+    "key": "skurstnaParmuresana5M2HeightM",
+    "cell": "M6",
+    "label": "Skurstņa pārmūrēšana 5, m2",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Geometry input for Skurstņa pārmūrēšana 5, m2; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstnaParmuresana5M2HeightM"
+  },
+  {
+    "key": "komandejumaIzmitinasanaCilvekuSkaits",
+    "cell": "B7",
+    "label": "Komandējuma izmitināšana, cilvēku skaits",
+    "group": "conditions",
+    "section": "APSTĀKĻI",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Komandējuma izmitināšana, cilvēku skaits.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "komandejumaIzmitinasanaCilvekuSkaits"
+  },
+  {
+    "key": "membranaRukki145",
+    "cell": "D7",
+    "label": "Membrāna Rukki 145",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "value",
+    "unit": "m2",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 3,
+    "description": "Membrāna Rukki 145.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "membranaRukki145Value"
+  },
+  {
+    "key": "ieksejieSturi",
+    "cell": "G7",
+    "label": "Iekšējie stūri",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Iekšējie stūri.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "ieksejieSturiValue"
+  },
+  {
+    "key": "jumtaLaipas06m",
+    "cell": "J7",
+    "label": "Jumta laipas, 0.6m",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Jumta laipas, 0.6m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "jumtaLaipas06m"
+  },
+  {
+    "key": "skurstnaParmuresana6M2PerimeterM",
+    "cell": "L7",
+    "label": "Skurstņa pārmūrēšana 6, m2",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Geometry input for Skurstņa pārmūrēšana 6, m2; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstnaParmuresana6M2PerimeterM"
+  },
+  {
+    "key": "skurstnaParmuresana6M2HeightM",
+    "cell": "M7",
+    "label": "Skurstņa pārmūrēšana 6, m2",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Geometry input for Skurstņa pārmūrēšana 6, m2; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstnaParmuresana6M2HeightM"
+  },
+  {
+    "key": "buvdarbuVaditajsUnDokumentacijaMenesi",
+    "cell": "B8",
+    "label": "Būvdarbu vadītājs un dokumentācija, mēneši",
+    "group": "conditions",
+    "section": "APSTĀKĻI",
+    "field": "value",
+    "unit": "months",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Būvdarbu vadītājs un dokumentācija, mēneši.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "buvdarbuVaditajsUnDokumentacijaMenesi"
+  },
+  {
+    "key": "ventilejamaDzegaM",
+    "cell": "D8",
+    "label": "Ventilējama dzega, m",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "value",
+    "unit": "m",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 6,
+    "description": "Ventilējama dzega, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "ventilejamaDzegaMValue"
+  },
+  {
+    "key": "arejieSturi",
+    "cell": "G8",
+    "label": "Ārējie stūrī",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Ārējie stūrī.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "arejieSturiValue"
+  },
+  {
+    "key": "drosibasTroseM",
+    "cell": "J8",
+    "label": "Drošības trose, m",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Drošības trose, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "drosibasTroseM"
+  },
+  {
+    "key": "skurstenaApmesana1PerimeterM",
+    "cell": "L8",
+    "label": "Skursteņa apmešana 1",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Geometry input for Skursteņa apmešana 1; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaApmesana1PerimeterM"
+  },
+  {
+    "key": "skurstenaApmesana1HeightM",
+    "cell": "M8",
+    "label": "Skursteņa apmešana 1",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 2,
+    "description": "Geometry input for Skursteņa apmešana 1; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaApmesana1HeightM"
+  },
+  {
+    "key": "apdrosinasanasPercent",
+    "cell": "B9",
+    "label": "Apdrošināšanas %",
+    "group": "conditions",
+    "section": "APSTĀKĻI",
+    "field": "value",
+    "unit": "percent",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Apdrošināšanas %.",
+    "validation": {
+      "min": 0,
+      "max": 100
+    },
+    "legacyKey": "apdrosinasanas"
+  },
+  {
+    "key": "neventilejamaDzegaM",
+    "cell": "D9",
+    "label": "Neventilējama dzega, m",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "value",
+    "unit": "m",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 5,
+    "description": "Neventilējama dzega, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "neventilejamaDzegaMValue"
+  },
+  {
+    "key": "teknesGali",
+    "cell": "G9",
+    "label": "Teknes Gali",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Teknes Gali.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "teknesGaliValue"
+  },
+  {
+    "key": "drosibasTrosesPosmiGb",
+    "cell": "J9",
+    "label": "Drošības troses posmi, gb",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Drošības troses posmi, gb.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "drosibasTrosesPosmiGb"
+  },
+  {
+    "key": "skurstenaApmesana2PerimeterM",
+    "cell": "L9",
+    "label": "Skursteņa apmešana 2",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Geometry input for Skursteņa apmešana 2; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaApmesana2PerimeterM"
+  },
+  {
+    "key": "skurstenaApmesana2HeightM",
+    "cell": "M9",
+    "label": "Skursteņa apmešana 2",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 2,
+    "description": "Geometry input for Skursteņa apmešana 2; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaApmesana2HeightM"
+  },
+  {
+    "key": "jumtaLoguPieslegumuPapildapjomsMembranasLatojumaAprekinam",
+    "cell": "P9",
+    "label": "Jumta logu pieslēgumu papildapjoms membrānas/latojuma aprēķinam",
+    "group": "roofWindows",
+    "section": "JUMTA LOGI",
+    "field": "value",
+    "unit": "m_or_equivalent",
+    "type": "number",
+    "default": null,
+    "advanced": true,
+    "references": 1,
+    "description": "Advanced legacy parameter used by the source workbook as the 'Logu pieslēgumi' additional quantity in the membrane/lathing calculation; source workbook left this cell unlabeled.",
+    "validation": {
+      "min": 0
+    }
+  },
+  {
+    "key": "ventilejamaKoreM",
+    "cell": "D10",
+    "label": "Ventilējama kore, m",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "value",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 7,
+    "description": "Ventilējama kore, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "ventilejamaKoreMValue"
+  },
+  {
+    "key": "jumtaKapnes12m400mm",
+    "cell": "J10",
+    "label": "Jumta kāpnes 1.2m 400mm",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 3,
+    "description": "Jumta kāpnes 1.2m 400mm.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "jumtaKapnes12m400mm"
+  },
+  {
+    "key": "skurstenaApmesana3PerimeterM",
+    "cell": "L10",
+    "label": "Skursteņa apmešana 3",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Geometry input for Skursteņa apmešana 3; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaApmesana3PerimeterM"
+  },
+  {
+    "key": "skurstenaApmesana3HeightM",
+    "cell": "M10",
+    "label": "Skursteņa apmešana 3",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 2,
+    "description": "Geometry input for Skursteņa apmešana 3; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaApmesana3HeightM"
+  },
+  {
+    "key": "siferaDemontaza12kgM2M2",
+    "cell": "B11",
+    "label": "Šīfera demontāža 12kg/m2, m2",
+    "group": "demolition",
+    "section": "DEMONTĀŽA",
+    "field": "value",
+    "unit": "m2",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 7,
+    "description": "Šīfera demontāža 12kg/m2, m2.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "siferaDemontaza12kgM2M2"
+  },
+  {
+    "key": "skruvejamaKoreM",
+    "cell": "D11",
+    "label": "Skrūvējama kore, m",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "value",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 6,
+    "description": "Skrūvējama kore, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skruvejamaKoreMValue"
+  },
+  {
+    "key": "attalumsStarpSparemMSpacingM",
+    "cell": "G11",
+    "label": "Attālums starp spārēm, m",
+    "group": "lathing",
+    "section": "LATOJUMS",
+    "field": "spacingM",
+    "unit": "m",
+    "type": "number",
+    "default": 0.6,
+    "advanced": false,
+    "references": 4,
+    "description": "Attālums starp spārēm, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "attalumsStarpSparemMValue"
+  },
+  {
+    "key": "jumtaKapnes27m400mm",
+    "cell": "J11",
+    "label": "Jumta kāpnes 2.7m 400mm",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 3,
+    "description": "Jumta kāpnes 2.7m 400mm.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "jumtaKapnes27m400mm"
+  },
+  {
+    "key": "skurstenaApmesana4PerimeterM",
+    "cell": "L11",
+    "label": "Skursteņa apmešana 4",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Geometry input for Skursteņa apmešana 4; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaApmesana4PerimeterM"
+  },
+  {
+    "key": "skurstenaApmesana4HeightM",
+    "cell": "M11",
+    "label": "Skursteņa apmešana 4",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 2,
+    "description": "Geometry input for Skursteņa apmešana 4; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaApmesana4HeightM"
+  },
+  {
+    "key": "valcprofilaDemontazaM2",
+    "cell": "B12",
+    "label": "Valcprofila demontāža, m2",
+    "group": "demolition",
+    "section": "DEMONTĀŽA",
+    "field": "value",
+    "unit": "m2",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 5,
+    "description": "Valcprofila demontāža, m2.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "valcprofilaDemontazaM2"
+  },
+  {
+    "key": "vejmalaDakstina",
+    "cell": "D12",
+    "label": "Vējmala Dakstiņa",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "value",
+    "unit": "m",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 3,
+    "description": "Vējmala Dakstiņa.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "vejmalaDakstinaValue"
+  },
+  {
+    "key": "starplatasBiezumsMThicknessM",
+    "cell": "G12",
+    "label": "Starplatas biezums, m",
+    "group": "lathing",
+    "section": "LATOJUMS",
+    "field": "thicknessM",
+    "unit": "m",
+    "type": "number",
+    "default": 0.05,
+    "advanced": false,
+    "references": 1,
+    "description": "Starplatas biezums, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "starplatasBiezumsMValue"
+  },
+  {
+    "key": "starplatasBiezumsMWidthM",
+    "cell": "H12",
+    "label": "Starplatas biezums, m",
+    "group": "lathing",
+    "section": "LATOJUMS",
+    "field": "widthM",
+    "unit": "m",
+    "type": "number",
+    "default": 0.05,
+    "advanced": true,
+    "references": 1,
+    "description": "Starplatas biezums, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "starplatasBiezumsMDiameterMm"
+  },
+  {
+    "key": "jumtaKapnes33m400mm",
+    "cell": "J12",
+    "label": "Jumta kāpnes 3.3m 400mm",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 3,
+    "description": "Jumta kāpnes 3.3m 400mm.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "jumtaKapnes33m400mm"
+  },
+  {
+    "key": "skurstenaApmesana5PerimeterM",
+    "cell": "L12",
+    "label": "Skursteņa apmešana 5",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Geometry input for Skursteņa apmešana 5; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaApmesana5PerimeterM"
+  },
+  {
+    "key": "skurstenaApmesana5HeightM",
+    "cell": "M12",
+    "label": "Skursteņa apmešana 5",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 2,
+    "description": "Geometry input for Skursteņa apmešana 5; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaApmesana5HeightM"
+  },
+  {
+    "key": "skardaLoksnuDemontazaM2",
+    "cell": "B13",
+    "label": "Skārda loksņu demontāža, m2",
+    "group": "demolition",
+    "section": "DEMONTĀŽA",
+    "field": "value",
+    "unit": "m2",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 5,
+    "description": "Skārda loksņu demontāža, m2.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skardaLoksnuDemontazaM2"
+  },
+  {
+    "key": "vejmala2",
+    "cell": "D13",
+    "label": "Vējmala 2",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "value",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 3,
+    "description": "Vējmala 2.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "vejmala2Value"
+  },
+  {
+    "key": "skerslatasBiezumsMThicknessM",
+    "cell": "G13",
+    "label": "Šķērslatas biezums, m",
+    "group": "lathing",
+    "section": "LATOJUMS",
+    "field": "thicknessM",
+    "unit": "m",
+    "type": "number",
+    "default": 0.05,
+    "advanced": false,
+    "references": 1,
+    "description": "Šķērslatas biezums, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skerslatasBiezumsMValue"
+  },
+  {
+    "key": "skerslatasBiezumsMWidthM",
+    "cell": "H13",
+    "label": "Šķērslatas biezums, m",
+    "group": "lathing",
+    "section": "LATOJUMS",
+    "field": "widthM",
+    "unit": "m",
+    "type": "number",
+    "default": 0.05,
+    "advanced": true,
+    "references": 2,
+    "description": "Šķērslatas biezums, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skerslatasBiezumsMDiameterMm"
+  },
+  {
+    "key": "sienasKapnesM",
+    "cell": "J13",
+    "label": "Sienas kāpnes, m",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Sienas kāpnes, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "sienasKapnesM"
+  },
+  {
+    "key": "skurstenaApdareArSkardu1LengthM",
+    "cell": "L13",
+    "label": "Skursteņa apdare ar skārdu 1",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "lengthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Geometry input for Skursteņa apdare ar skārdu 1; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaApdareArSkardu1PerimeterM"
+  },
+  {
+    "key": "skurstenaApdareArSkardu1WidthM",
+    "cell": "M13",
+    "label": "Skursteņa apdare ar skārdu 1",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "widthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 3,
+    "description": "Geometry input for Skursteņa apdare ar skārdu 1; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaApdareArSkardu1HeightM"
+  },
+  {
+    "key": "sindeluDemontazaM2",
+    "cell": "B14",
+    "label": "Šindeļu demontāža, m2",
+    "group": "demolition",
+    "section": "DEMONTĀŽA",
+    "field": "value",
+    "unit": "m2",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 5,
+    "description": "Šindeļu demontāža, m2.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "sindeluDemontazaM2"
+  },
+  {
+    "key": "vejmala3",
+    "cell": "D14",
+    "label": "Vējmala 3",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "value",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 3,
+    "description": "Vējmala 3.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "vejmala3Value"
+  },
+  {
+    "key": "latojumaSpraugaMmCalculationParameterM",
+    "cell": "H14",
+    "label": "Latojuma sprauga, mm",
+    "group": "lathing",
+    "section": "LATOJUMS",
+    "field": "calculationParameterM",
+    "unit": "m",
+    "type": "number",
+    "default": 0.15,
+    "advanced": true,
+    "references": 1,
+    "description": "Advanced secondary lathing parameter (0.15 m in the source workbook) used in the cross-lathing material quantity formula. The visible label only names the lathing gap, so this supporting parameter is kept separate.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "latojumaSpraugaMmDiameterMm"
+  },
+  {
+    "key": "ugunsizturigaJumtaBeninuLuka1",
+    "cell": "J14",
+    "label": "Ugunsizturīga jumta/bēniņu lūka 1",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 4,
+    "description": "Ugunsizturīga jumta/bēniņu lūka 1.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "ugunsizturigaJumtaBeninuLuka1"
+  },
+  {
+    "key": "skurstenaApdareArSkardu2LengthM",
+    "cell": "L14",
+    "label": "Skursteņa apdare ar skārdu 2",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "lengthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Geometry input for Skursteņa apdare ar skārdu 2; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaApdareArSkardu2PerimeterM"
+  },
+  {
+    "key": "skurstenaApdareArSkardu2WidthM",
+    "cell": "M14",
+    "label": "Skursteņa apdare ar skārdu 2",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "widthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 3,
+    "description": "Geometry input for Skursteņa apdare ar skārdu 2; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaApdareArSkardu2HeightM"
+  },
+  {
+    "key": "dakstinuDemontaza50kgM2M2",
+    "cell": "B15",
+    "label": "Dakstiņu demontāža 50kg/m2, m2",
+    "group": "demolition",
+    "section": "DEMONTĀŽA",
+    "field": "value",
+    "unit": "m2",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 5,
+    "description": "Dakstiņu demontāža 50kg/m2, m2.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "dakstinuDemontaza50kgM2M2"
+  },
+  {
+    "key": "vejmala4",
+    "cell": "D15",
+    "label": "Vējmala 4",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "value",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 3,
+    "description": "Vējmala 4.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "vejmala4Value"
+  },
+  {
+    "key": "limenojamaPlatibaM2AreaM2",
+    "cell": "G15",
+    "label": "Līmeņojamā platība, m2",
+    "group": "lathing",
+    "section": "LATOJUMS",
+    "field": "areaM2",
+    "unit": "m2",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 5,
+    "description": "Līmeņojamā platība, m2.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "limenojamaPlatibaM2Value"
+  },
+  {
+    "key": "zibensNovedejs",
+    "cell": "J15",
+    "label": "Zibens novedējs ",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "unit": null,
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 3,
+    "description": "Zibens novedējs .",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "zibensNovedejs"
+  },
+  {
+    "key": "skurstenaApdareArSkardu3LengthM",
+    "cell": "L15",
+    "label": "Skursteņa apdare ar skārdu 3",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "lengthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Geometry input for Skursteņa apdare ar skārdu 3; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaApdareArSkardu3PerimeterM"
+  },
+  {
+    "key": "skurstenaApdareArSkardu3WidthM",
+    "cell": "M15",
+    "label": "Skursteņa apdare ar skārdu 3",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "widthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 3,
+    "description": "Geometry input for Skursteņa apdare ar skārdu 3; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaApdareArSkardu3HeightM"
+  },
+  {
+    "key": "latojumaDemontazaM2",
+    "cell": "B16",
+    "label": "Latojuma demontāža, m2",
+    "group": "demolition",
+    "section": "DEMONTĀŽA",
+    "field": "value",
+    "unit": "m2",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 3,
+    "description": "Latojuma demontāža, m2.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "latojumaDemontazaM2"
+  },
+  {
+    "key": "satekneM",
+    "cell": "D16",
+    "label": "Satekne, m",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "value",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 3,
+    "description": "Satekne, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "satekneMValue"
+  },
+  {
+    "key": "skurstenaApdareArSkardu4LengthM",
+    "cell": "L16",
+    "label": "Skursteņa apdare ar skārdu 4",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "lengthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Geometry input for Skursteņa apdare ar skārdu 4; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaApdareArSkardu4PerimeterM"
+  },
+  {
+    "key": "skurstenaApdareArSkardu4WidthM",
+    "cell": "M16",
+    "label": "Skursteņa apdare ar skārdu 4",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "widthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 3,
+    "description": "Geometry input for Skursteņa apdare ar skārdu 4; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaApdareArSkardu4HeightM"
+  },
+  {
+    "key": "jumtaKonstrukcijasDemontazaM2",
+    "cell": "B17",
+    "label": "Jumta konstrukcijas demontāža, m2",
+    "group": "demolition",
+    "section": "DEMONTĀŽA",
+    "field": "value",
+    "unit": "m2",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 4,
+    "description": "Jumta konstrukcijas demontāža, m2.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "jumtaKonstrukcijasDemontazaM2"
+  },
+  {
+    "key": "skurstenaPieslegumuSkaits",
+    "cell": "D17",
+    "label": "Skursteņa pieslēgumu skaits",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 6,
+    "description": "Skursteņa pieslēgumu skaits.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaPieslegumuSkaitsValue"
+  },
+  {
+    "key": "parocUltra150mmAreaM2",
+    "cell": "G17",
+    "label": "Paroc Ultra 150mm",
+    "group": "insulation",
+    "section": "SILTINĀJUMS",
+    "field": "areaM2",
+    "unit": "m2",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 6,
+    "description": "Paroc Ultra 150mm.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "parocUltra150mmValue"
+  },
+  {
+    "key": "skurstenaApdareArSkardu5LengthM",
+    "cell": "L17",
+    "label": "Skursteņa apdare ar skārdu 5",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "lengthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Geometry input for Skursteņa apdare ar skārdu 5; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaApdareArSkardu5PerimeterM"
+  },
+  {
+    "key": "skurstenaApdareArSkardu5WidthM",
+    "cell": "M17",
+    "label": "Skursteņa apdare ar skārdu 5",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "widthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 3,
+    "description": "Geometry input for Skursteņa apdare ar skārdu 5; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaApdareArSkardu5HeightM"
+  },
+  {
+    "key": "noteksistemasDemontazaM",
+    "cell": "B18",
+    "label": "Noteksistēmas demontāža, m",
+    "group": "demolition",
+    "section": "DEMONTĀŽA",
+    "field": "value",
+    "unit": "m",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 2,
+    "description": "Noteksistēmas demontāža, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "noteksistemasDemontazaM"
+  },
+  {
+    "key": "skurstenaPieslegumuKopgarumsM",
+    "cell": "D18",
+    "label": "Skursteņa pieslēgumu kopgarums, m",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "value",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 2,
+    "description": "Skursteņa pieslēgumu kopgarums, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaPieslegumuKopgarumsMValue"
+  },
+  {
+    "key": "parocUltra200mmAreaM2",
+    "cell": "G18",
+    "label": "Paroc Ultra 200mm",
+    "group": "insulation",
+    "section": "SILTINĀJUMS",
+    "field": "areaM2",
+    "unit": "m2",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 6,
+    "description": "Paroc Ultra 200mm.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "parocUltra200mmValue"
+  },
+  {
+    "key": "skurstenaApdareArSkardu6LengthM",
+    "cell": "L18",
+    "label": "Skursteņa apdare ar skārdu 6",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "lengthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Geometry input for Skursteņa apdare ar skārdu 6; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaApdareArSkardu6PerimeterM"
+  },
+  {
+    "key": "skurstenaApdareArSkardu6WidthM",
+    "cell": "M18",
+    "label": "Skursteņa apdare ar skārdu 6",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "widthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 3,
+    "description": "Geometry input for Skursteņa apdare ar skārdu 6; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaApdareArSkardu6HeightM"
+  },
+  {
+    "key": "ventilejamsSienasPieslegums",
+    "cell": "D19",
+    "label": "Ventilējams sienas pieslēgums",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "value",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 13,
+    "description": "Ventilējams sienas pieslēgums.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "ventilejamsSienasPieslegumsValue"
+  },
+  {
+    "key": "tvaikaBarjeraM2AreaM2",
+    "cell": "G19",
+    "label": "Tvaika barjera, m2",
+    "group": "insulation",
+    "section": "SILTINĀJUMS",
+    "field": "areaM2",
+    "unit": "m2",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 2,
+    "description": "Tvaika barjera, m2.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "tvaikaBarjeraM2Value"
+  },
+  {
+    "key": "skurstenaApdareArSkardu7LengthM",
+    "cell": "L19",
+    "label": "Skursteņa apdare ar skārdu 7",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "lengthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Geometry input for Skursteņa apdare ar skārdu 7; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaApdareArSkardu7PerimeterM"
+  },
+  {
+    "key": "skurstenaApdareArSkardu7WidthM",
+    "cell": "M19",
+    "label": "Skursteņa apdare ar skārdu 7",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "widthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 3,
+    "description": "Geometry input for Skursteņa apdare ar skārdu 7; surface/cladding area is calculated by the workbook from the supplied dimensions where applicable.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaApdareArSkardu7HeightM"
+  },
+  {
+    "key": "bioTualeteMen",
+    "cell": "B20",
+    "label": "Bio tualete, mēn",
+    "group": "siteSetup",
+    "section": "OBJEKTA IEKĀRTOŠANA",
+    "field": "value",
+    "unit": "months",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Bio tualete, mēn.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "bioTualeteMen"
+  },
+  {
+    "key": "sienasPieslegums",
+    "cell": "D20",
+    "label": "Sienas pieslēgums",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "value",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Sienas pieslēgums.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "sienasPieslegumsValue"
+  },
+  {
+    "key": "beramvateParocBLT3VolumeM3",
+    "cell": "H20",
+    "label": "Beramvate Paroc BLT3",
+    "group": "insulation",
+    "section": "SILTINĀJUMS",
+    "field": "volumeM3",
+    "unit": "m3",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 3,
+    "description": "Beramvate Paroc BLT3.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "beramvateParocBlt3DiameterMm"
+  },
+  {
+    "key": "buvgruzuKonteiners8m3Gb",
+    "cell": "B21",
+    "label": "Būvgružu konteiners 8m3, gb",
+    "group": "siteSetup",
+    "section": "OBJEKTA IEKĀRTOŠANA",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Būvgružu konteiners 8m3, gb.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "buvgruzuKonteiners8m3Gb"
+  },
+  {
+    "key": "parapets1M",
+    "cell": "D21",
+    "label": "Parapets 1, m",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "value",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 6,
+    "description": "Parapets 1, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "parapets1MValue"
+  },
+  {
+    "key": "beninuLaipasIzbuve80cmPlatums55cmAugstumsMLengthM",
+    "cell": "G21",
+    "label": "Bēniņu laipas izbūve 80cm platums, 55cm augstums, m",
+    "group": "insulation",
+    "section": "SILTINĀJUMS",
+    "field": "lengthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Bēniņu laipas izbūve 80cm platums, 55cm augstums, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "beninuLaipasIzbuve80cmPlatums55cmAugstumsMValue"
+  },
+  {
+    "key": "skurstenaJumtins1BezEkranaLengthM",
+    "cell": "L21",
+    "label": "Skursteņa jumtiņš 1 bez ekrāna",
+    "group": "chimneyCaps",
+    "section": "SKURSTEŅU JUMTIŅI",
+    "field": "lengthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Plan dimension for Skursteņa jumtiņš 1 bez ekrāna; cap area is calculated automatically from length × width.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaJumtins1BezEkranaPerimeterM"
+  },
+  {
+    "key": "skurstenaJumtins1BezEkranaWidthM",
+    "cell": "M21",
+    "label": "Skursteņa jumtiņš 1 bez ekrāna",
+    "group": "chimneyCaps",
+    "section": "SKURSTEŅU JUMTIŅI",
+    "field": "widthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Plan dimension for Skursteņa jumtiņš 1 bez ekrāna; cap area is calculated automatically from length × width.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaJumtins1BezEkranaHeightM"
+  },
+  {
+    "key": "nozogojumaGarumsM",
+    "cell": "B22",
+    "label": "Nožogojuma garums, m",
+    "group": "siteSetup",
+    "section": "OBJEKTA IEKĀRTOŠANA",
+    "field": "value",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 3,
+    "description": "Nožogojuma garums, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "nozogojumaGarumsM"
+  },
+  {
+    "key": "parapets2M",
+    "cell": "D22",
+    "label": "Parapets 2, m",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "value",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 7,
+    "description": "Parapets 2, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "parapets2MValue"
+  },
+  {
+    "key": "skurstenaJumtins2BezEkranaLengthM",
+    "cell": "L22",
+    "label": "Skursteņa jumtiņš 2 bez ekrāna",
+    "group": "chimneyCaps",
+    "section": "SKURSTEŅU JUMTIŅI",
+    "field": "lengthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Plan dimension for Skursteņa jumtiņš 2 bez ekrāna; cap area is calculated automatically from length × width.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaJumtins2BezEkranaPerimeterM"
+  },
+  {
+    "key": "skurstenaJumtins2BezEkranaWidthM",
+    "cell": "M22",
+    "label": "Skursteņa jumtiņš 2 bez ekrāna",
+    "group": "chimneyCaps",
+    "section": "SKURSTEŅU JUMTIŅI",
+    "field": "widthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Plan dimension for Skursteņa jumtiņš 2 bez ekrāna; cap area is calculated automatically from length × width.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaJumtins2BezEkranaHeightM"
+  },
+  {
+    "key": "nozogojumaNomasLaiksDienas",
+    "cell": "B23",
+    "label": "Nožogojuma nomas laiks, dienas",
+    "group": "siteSetup",
+    "section": "OBJEKTA IEKĀRTOŠANA",
+    "field": "value",
+    "unit": "days",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Nožogojuma nomas laiks, dienas.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "nozogojumaNomasLaiksDienas"
+  },
+  {
+    "key": "parapets3M",
+    "cell": "D23",
+    "label": "Parapets 3, m",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "value",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 7,
+    "description": "Parapets 3, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "parapets3MValue"
+  },
+  {
+    "key": "spare1Gb6mCount",
+    "cell": "G23",
+    "label": "Spāre 1, gb (6m)",
+    "group": "structure",
+    "section": "KONSTRUKCIJAS",
+    "field": "count",
+    "unit": "pcs",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Spāre 1, gb (6m).",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "spare1Gb6mValue"
+  },
+  {
+    "key": "skurstenaJumtins3BezEkranaLengthM",
+    "cell": "L23",
+    "label": "Skursteņa jumtiņš 3 bez ekrāna",
+    "group": "chimneyCaps",
+    "section": "SKURSTEŅU JUMTIŅI",
+    "field": "lengthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Plan dimension for Skursteņa jumtiņš 3 bez ekrāna; cap area is calculated automatically from length × width.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaJumtins3BezEkranaPerimeterM"
+  },
+  {
+    "key": "skurstenaJumtins3BezEkranaWidthM",
+    "cell": "M23",
+    "label": "Skursteņa jumtiņš 3 bez ekrāna",
+    "group": "chimneyCaps",
+    "section": "SKURSTEŅU JUMTIŅI",
+    "field": "widthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Plan dimension for Skursteņa jumtiņš 3 bez ekrāna; cap area is calculated automatically from length × width.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaJumtins3BezEkranaHeightM"
+  },
+  {
+    "key": "materialuNovietnesParklajs120gM24x6m",
+    "cell": "B24",
+    "label": "Materiālu novietnes Pārklājs 120g/m2, 4x6m\n",
+    "group": "siteSetup",
+    "section": "OBJEKTA IEKĀRTOŠANA",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Materiālu novietnes Pārklājs 120g/m2, 4x6m\n.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "materialuNovietnesParklajs120gM24x6m"
+  },
+  {
+    "key": "jumtaLukaOvala45x60Gb",
+    "cell": "D24",
+    "label": "Jumta lūka ovāla 45x60, gb",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 3,
+    "description": "Jumta lūka ovāla 45x60, gb.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "jumtaLukaOvala45x60GbValue"
+  },
+  {
+    "key": "spare2Gb6mCount",
+    "cell": "G24",
+    "label": "Spāre 2, gb (6m)",
+    "group": "structure",
+    "section": "KONSTRUKCIJAS",
+    "field": "count",
+    "unit": "pcs",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Spāre 2, gb (6m).",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "spare2Gb6mValue"
+  },
+  {
+    "key": "skurstenaJumtins4BezEkranaLengthM",
+    "cell": "L24",
+    "label": "Skursteņa jumtiņš 4 bez ekrāna",
+    "group": "chimneyCaps",
+    "section": "SKURSTEŅU JUMTIŅI",
+    "field": "lengthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Plan dimension for Skursteņa jumtiņš 4 bez ekrāna; cap area is calculated automatically from length × width.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaJumtins4BezEkranaPerimeterM"
+  },
+  {
+    "key": "skurstenaJumtins4BezEkranaWidthM",
+    "cell": "M24",
+    "label": "Skursteņa jumtiņš 4 bez ekrāna",
+    "group": "chimneyCaps",
+    "section": "SKURSTEŅU JUMTIŅI",
+    "field": "widthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Plan dimension for Skursteņa jumtiņš 4 bez ekrāna; cap area is calculated automatically from length × width.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaJumtins4BezEkranaHeightM"
+  },
+  {
+    "key": "sastatnesKopejaPlatibaM2",
+    "cell": "B25",
+    "label": "Sastatnes kopējā platība, m2",
+    "group": "siteSetup",
+    "section": "OBJEKTA IEKĀRTOŠANA",
+    "field": "value",
+    "unit": "m2",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 7,
+    "description": "Sastatnes kopējā platība, m2.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "sastatnesKopejaPlatibaM2"
+  },
+  {
+    "key": "ventilacijasIzvadsSkarda",
+    "cell": "D25",
+    "label": "Ventilācijas izvads skārda",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 5,
+    "description": "Ventilācijas izvads skārda.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "ventilacijasIzvadsSkardaValue"
+  },
+  {
+    "key": "murlata1MLengthM",
+    "cell": "G25",
+    "label": "Mūrlata 1, m",
+    "group": "structure",
+    "section": "KONSTRUKCIJAS",
+    "field": "lengthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 3,
+    "description": "Mūrlata 1, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "murlata1MValue"
+  },
+  {
+    "key": "skurstenaJumtins1ArEkranuLengthM",
+    "cell": "L25",
+    "label": "Skursteņa jumtiņš 1 ar ekrānu",
+    "group": "chimneyCaps",
+    "section": "SKURSTEŅU JUMTIŅI",
+    "field": "lengthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Plan dimension for Skursteņa jumtiņš 1 ar ekrānu; cap area is calculated automatically from length × width.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaJumtins1ArEkranuPerimeterM"
+  },
+  {
+    "key": "skurstenaJumtins1ArEkranuWidthM",
+    "cell": "M25",
+    "label": "Skursteņa jumtiņš 1 ar ekrānu",
+    "group": "chimneyCaps",
+    "section": "SKURSTEŅU JUMTIŅI",
+    "field": "widthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Plan dimension for Skursteņa jumtiņš 1 ar ekrānu; cap area is calculated automatically from length × width.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaJumtins1ArEkranuHeightM"
+  },
+  {
+    "key": "sastatnesNomasPeriodsMen",
+    "cell": "B26",
+    "label": "Sastatnes nomas periods, mēn",
+    "group": "siteSetup",
+    "section": "OBJEKTA IEKĀRTOŠANA",
+    "field": "value",
+    "unit": "months",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Sastatnes nomas periods, mēn.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "sastatnesNomasPeriodsMen"
+  },
+  {
+    "key": "ventilacijasIzvadsPlastmasas",
+    "cell": "D26",
+    "label": "Ventilācijas izvads plastmasas",
+    "group": "roof",
+    "section": "JUMTA SEGUMS / SKĀRDS",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 5,
+    "description": "Ventilācijas izvads plastmasas.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "ventilacijasIzvadsPlastmasasValue"
+  },
+  {
+    "key": "murlata2MLengthM",
+    "cell": "G26",
+    "label": "Mūrlata 2, m",
+    "group": "structure",
+    "section": "KONSTRUKCIJAS",
+    "field": "lengthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 3,
+    "description": "Mūrlata 2, m.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "murlata2MValue"
+  },
+  {
+    "key": "skurstenaJumtins2ArEkranuLengthM",
+    "cell": "L26",
+    "label": "Skursteņa jumtiņš 2 ar ekrānu",
+    "group": "chimneyCaps",
+    "section": "SKURSTEŅU JUMTIŅI",
+    "field": "lengthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Plan dimension for Skursteņa jumtiņš 2 ar ekrānu; cap area is calculated automatically from length × width.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaJumtins2ArEkranuPerimeterM"
+  },
+  {
+    "key": "skurstenaJumtins2ArEkranuWidthM",
+    "cell": "M26",
+    "label": "Skursteņa jumtiņš 2 ar ekrānu",
+    "group": "chimneyCaps",
+    "section": "SKURSTEŅU JUMTIŅI",
+    "field": "widthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Plan dimension for Skursteņa jumtiņš 2 ar ekrānu; cap area is calculated automatically from length × width.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaJumtins2ArEkranuHeightM"
+  },
+  {
+    "key": "darbaGaldsGb",
+    "cell": "B27",
+    "label": "Darba galds, gb",
+    "group": "siteSetup",
+    "section": "OBJEKTA IEKĀRTOŠANA",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Darba galds, gb.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "darbaGaldsGb"
+  },
+  {
+    "key": "jumtaKopnes1GbCount",
+    "cell": "G27",
+    "label": "Jumta kopnes 1, gb",
+    "group": "structure",
+    "section": "KONSTRUKCIJAS",
+    "field": "count",
+    "unit": "pcs",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Jumta kopnes 1, gb.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "jumtaKopnes1GbValue"
+  },
+  {
+    "key": "skurstenaJumtins3ArEkranuLengthM",
+    "cell": "L27",
+    "label": "Skursteņa jumtiņš 3 ar ekrānu",
+    "group": "chimneyCaps",
+    "section": "SKURSTEŅU JUMTIŅI",
+    "field": "lengthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Plan dimension for Skursteņa jumtiņš 3 ar ekrānu; cap area is calculated automatically from length × width.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaJumtins3ArEkranuPerimeterM"
+  },
+  {
+    "key": "skurstenaJumtins3ArEkranuWidthM",
+    "cell": "M27",
+    "label": "Skursteņa jumtiņš 3 ar ekrānu",
+    "group": "chimneyCaps",
+    "section": "SKURSTEŅU JUMTIŅI",
+    "field": "widthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Plan dimension for Skursteņa jumtiņš 3 ar ekrānu; cap area is calculated automatically from length × width.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "skurstenaJumtins3ArEkranuHeightM"
+  },
+  {
+    "key": "apgaismojumsGb",
+    "cell": "B28",
+    "label": "Apgaismojums, gb",
+    "group": "siteSetup",
+    "section": "OBJEKTA IEKĀRTOŠANA",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Apgaismojums, gb.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "apgaismojumsGb"
+  },
+  {
+    "key": "jumtaKopnes2GbCount",
+    "cell": "G28",
+    "label": "Jumta kopnes 2, gb",
+    "group": "structure",
+    "section": "KONSTRUKCIJAS",
+    "field": "count",
+    "unit": "pcs",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Jumta kopnes 2, gb.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "jumtaKopnes2GbValue"
+  },
+  {
+    "key": "ugunsdrosibasInventarsGb",
+    "cell": "B29",
+    "label": "Ugunsdrošības inventārs gb",
+    "group": "siteSetup",
+    "section": "OBJEKTA IEKĀRTOŠANA",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Ugunsdrošības inventārs gb.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "ugunsdrosibasInventarsGb"
+  },
+  {
+    "key": "proteze150x5015mGbCount",
+    "cell": "G29",
+    "label": "Protēze 150x50, 1.5m, gb",
+    "group": "structure",
+    "section": "KONSTRUKCIJAS",
+    "field": "count",
+    "unit": "pcs",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Protēze 150x50, 1.5m, gb.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "proteze150x5015mGbValue"
+  },
+  {
+    "key": "sniegaUnLedusKausesanasSistemasKomplekts1SystemLengthM",
+    "cell": "L29",
+    "label": "Sniega un ledus kausēšanas sistēmas komplekts 1",
+    "group": "snowMelting",
+    "section": "SNIEGA/LEDUS KAUSĒŠANAS SISTĒMA",
+    "field": "systemLengthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Sniega un ledus kausēšanas sistēmas komplekts 1.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "sniegaUnLedusKausesanasSistemasKomplekts1PerimeterM"
+  },
+  {
+    "key": "sniegaUnLedusKausesanasSistemasKomplekts1PriceOrQuantity",
+    "cell": "M29",
+    "label": "Sniega un ledus kausēšanas sistēmas komplekts 1",
+    "group": "snowMelting",
+    "section": "SNIEGA/LEDUS KAUSĒŠANAS SISTĒMA",
+    "field": "priceOrQuantity",
+    "unit": "EUR_ex_VAT",
+    "type": "number",
+    "default": null,
+    "advanced": true,
+    "references": 1,
+    "description": "Sniega un ledus kausēšanas sistēmas komplekts 1.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "sniegaUnLedusKausesanasSistemasKomplekts1HeightM"
+  },
+  {
+    "key": "buvtafele",
+    "cell": "B30",
+    "label": "Būvtāfele",
+    "group": "siteSetup",
+    "section": "OBJEKTA IEKĀRTOŠANA",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Būvtāfele.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "buvtafele"
+  },
+  {
+    "key": "sniegaUnLedusKausesanasSistemasKomplekts2SystemLengthM",
+    "cell": "L30",
+    "label": "Sniega un ledus kausēšanas sistēmas komplekts 2",
+    "group": "snowMelting",
+    "section": "SNIEGA/LEDUS KAUSĒŠANAS SISTĒMA",
+    "field": "systemLengthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Sniega un ledus kausēšanas sistēmas komplekts 2.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "sniegaUnLedusKausesanasSistemasKomplekts2PerimeterM"
+  },
+  {
+    "key": "sniegaUnLedusKausesanasSistemasKomplekts2PriceOrQuantity",
+    "cell": "M30",
+    "label": "Sniega un ledus kausēšanas sistēmas komplekts 2",
+    "group": "snowMelting",
+    "section": "SNIEGA/LEDUS KAUSĒŠANAS SISTĒMA",
+    "field": "priceOrQuantity",
+    "unit": "EUR_ex_VAT",
+    "type": "number",
+    "default": null,
+    "advanced": true,
+    "references": 1,
+    "description": "Sniega un ledus kausēšanas sistēmas komplekts 2.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "sniegaUnLedusKausesanasSistemasKomplekts2HeightM"
+  },
+  {
+    "key": "iebrauktuvesSagatvosanaGumijasPaklajiGb",
+    "cell": "B31",
+    "label": "Iebrauktuves sagatvošana, Gumijas paklāji gb",
+    "group": "siteSetup",
+    "section": "OBJEKTA IEKĀRTOŠANA",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Iebrauktuves sagatvošana, Gumijas paklāji gb.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "iebrauktuvesSagatvosanaGumijasPaklajiGb"
+  },
+  {
+    "key": "vejaKasteDekorativiDeliGarumsPlatibaLengthM",
+    "cell": "G31",
+    "label": "Vēja kaste dekoratīvi dēļi, garums/platība",
+    "group": "windBox",
+    "section": "VĒJA KASTE / KRĀSOŠANA",
+    "field": "lengthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 8,
+    "description": "Vēja kaste dekoratīvi dēļi, garums/platība.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "vejaKasteDekorativiDeliGarumsPlatibaValue"
+  },
+  {
+    "key": "vejaKasteDekorativiDeliGarumsPlatibaWidthM",
+    "cell": "H31",
+    "label": "Vēja kaste dekoratīvi dēļi, garums/platība",
+    "group": "windBox",
+    "section": "VĒJA KASTE / KRĀSOŠANA",
+    "field": "widthM",
+    "unit": "m",
+    "type": "number",
+    "default": 0.4,
+    "advanced": false,
+    "references": 2,
+    "description": "Vēja kaste dekoratīvi dēļi, garums/platība.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "vejaKasteDekorativiDeliGarumsPlatibaDiameterMm"
+  },
+  {
+    "key": "sniegaUnLedusKausesanasSistemasKomplekts3SystemLengthM",
+    "cell": "L31",
+    "label": "Sniega un ledus kausēšanas sistēmas komplekts 3",
+    "group": "snowMelting",
+    "section": "SNIEGA/LEDUS KAUSĒŠANAS SISTĒMA",
+    "field": "systemLengthM",
+    "unit": "m",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 4,
+    "description": "Sniega un ledus kausēšanas sistēmas komplekts 3.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "sniegaUnLedusKausesanasSistemasKomplekts3PerimeterM"
+  },
+  {
+    "key": "sniegaUnLedusKausesanasSistemasKomplekts3PriceOrQuantity",
+    "cell": "M31",
+    "label": "Sniega un ledus kausēšanas sistēmas komplekts 3",
+    "group": "snowMelting",
+    "section": "SNIEGA/LEDUS KAUSĒŠANAS SISTĒMA",
+    "field": "priceOrQuantity",
+    "unit": "EUR_ex_VAT",
+    "type": "number",
+    "default": null,
+    "advanced": true,
+    "references": 1,
+    "description": "Sniega un ledus kausēšanas sistēmas komplekts 3.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "sniegaUnLedusKausesanasSistemasKomplekts3HeightM"
+  },
+  {
+    "key": "iebrauktuvesSagatvosanaGumijasPaklajiNomasLaiks",
+    "cell": "B32",
+    "label": "Iebrauktuves sagatvošana, Gumijas paklāji, nomas laiks",
+    "group": "siteSetup",
+    "section": "OBJEKTA IEKĀRTOŠANA",
+    "field": "value",
+    "unit": "days",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Iebrauktuves sagatvošana, Gumijas paklāji, nomas laiks.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "iebrauktuvesSagatvosanaGumijasPaklajiNomasLaiks"
+  },
+  {
+    "key": "elektrokomponentuInstalacijaKplPriceOrQuantity",
+    "cell": "M32",
+    "label": "Elektrokomponentu instalācija. kpl",
+    "group": "snowMelting",
+    "section": "SNIEGA/LEDUS KAUSĒŠANAS SISTĒMA",
+    "field": "priceOrQuantity",
+    "unit": "pcs",
+    "type": "number",
+    "default": null,
+    "advanced": true,
+    "references": 1,
+    "description": "Elektrokomponentu instalācija. kpl.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "elektrokomponentuInstalacijaKplHeightM"
+  },
+  {
+    "key": "aizsargajamoKokuSkaits",
+    "cell": "B33",
+    "label": "Aizsargājamo koku skaits",
+    "group": "siteSetup",
+    "section": "OBJEKTA IEKĀRTOŠANA",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 2,
+    "description": "Aizsargājamo koku skaits.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "aizsargajamoKokuSkaits"
+  },
+  {
+    "key": "kokaFasadesKrasosana2KartasAreaM2",
+    "cell": "G33",
+    "label": "Koka fasādes krāsošana 2 kārtas",
+    "group": "windBox",
+    "section": "VĒJA KASTE / KRĀSOŠANA",
+    "field": "areaM2",
+    "unit": "m2",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Koka fasādes krāsošana 2 kārtas.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "kokaFasadesKrasosana2KartasValue"
+  },
+  {
+    "key": "kokaFasadesKrasosana2KartasCoatCount",
+    "cell": "H33",
+    "label": "Koka fasādes krāsošana 2 kārtas",
+    "group": "windBox",
+    "section": "VĒJA KASTE / KRĀSOŠANA",
+    "field": "coatCount",
+    "unit": "count",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Koka fasādes krāsošana 2 kārtas.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "kokaFasadesKrasosana2KartasDiameterMm"
+  },
+  {
+    "key": "kokaFasadesKrasosana2Kartas",
+    "cell": "I33",
+    "label": "Koka fasādes krāsošana 2 kārtas",
+    "group": "windBox",
+    "section": "VĒJA KASTE / KRĀSOŠANA",
+    "field": "value",
+    "unit": null,
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 6,
+    "description": "Koka fasādes krāsošana 2 kārtas.",
+    "validation": {
+      "min": 0
+    }
+  },
+  {
+    "key": "parvietojamsKonteinersStradniekiemUnInventaram6x24m1GabNomasIlgumsMen",
+    "cell": "B34",
+    "label": "Pārvietojams konteiners strādniekiem un inventāram 6x2.4m, 1 gab nomas ilgums mēn",
+    "group": "siteSetup",
+    "section": "OBJEKTA IEKĀRTOŠANA",
+    "field": "value",
+    "unit": "months",
+    "type": "number",
+    "default": 0,
+    "advanced": false,
+    "references": 1,
+    "description": "Pārvietojams konteiners strādniekiem un inventāram 6x2.4m, 1 gab nomas ilgums mēn.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "parvietojamsKonteinersStradniekiemUnInventaram6x24m1GabNomasIlgumsMen"
+  },
+  {
+    "key": "vejaKastesKrasosana2KartasAreaM2",
+    "cell": "G34",
+    "label": "Vēja kastes krāsošana 2 kārtas",
+    "group": "windBox",
+    "section": "VĒJA KASTE / KRĀSOŠANA",
+    "field": "areaM2",
+    "unit": "m2",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Vēja kastes krāsošana 2 kārtas.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "vejaKastesKrasosana2KartasValue"
+  },
+  {
+    "key": "vejaKastesKrasosana2KartasCoatCount",
+    "cell": "H34",
+    "label": "Vēja kastes krāsošana 2 kārtas",
+    "group": "windBox",
+    "section": "VĒJA KASTE / KRĀSOŠANA",
+    "field": "coatCount",
+    "unit": "count",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Vēja kastes krāsošana 2 kārtas.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "vejaKastesKrasosana2KartasDiameterMm"
+  },
+  {
+    "key": "vejaKastesKrasosana2Kartas",
+    "cell": "I34",
+    "label": "Vēja kastes krāsošana 2 kārtas",
+    "group": "windBox",
+    "section": "VĒJA KASTE / KRĀSOŠANA",
+    "field": "value",
+    "unit": null,
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 6,
+    "description": "Vēja kastes krāsošana 2 kārtas.",
+    "validation": {
+      "min": 0
+    }
+  },
+  {
+    "key": "aizsardzibasZimesGb",
+    "cell": "B35",
+    "label": "Aizsardzības zīmes, gb",
+    "group": "siteSetup",
+    "section": "OBJEKTA IEKĀRTOŠANA",
+    "field": "value",
+    "unit": "pcs",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Aizsardzības zīmes, gb.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "aizsardzibasZimesGb"
+  },
+  {
+    "key": "muraFasadesKrasosana2KartasAreaM2",
+    "cell": "G35",
+    "label": "Mūra fasādes krāsošana 2 kārtas",
+    "group": "windBox",
+    "section": "VĒJA KASTE / KRĀSOŠANA",
+    "field": "areaM2",
+    "unit": "m2",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Mūra fasādes krāsošana 2 kārtas.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "muraFasadesKrasosana2KartasValue"
+  },
+  {
+    "key": "muraFasadesKrasosana2KartasCoatCount",
+    "cell": "H35",
+    "label": "Mūra fasādes krāsošana 2 kārtas",
+    "group": "windBox",
+    "section": "VĒJA KASTE / KRĀSOŠANA",
+    "field": "coatCount",
+    "unit": "count",
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 1,
+    "description": "Mūra fasādes krāsošana 2 kārtas.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "muraFasadesKrasosana2KartasDiameterMm"
+  },
+  {
+    "key": "muraFasadesKrasosana2Kartas",
+    "cell": "I35",
+    "label": "Mūra fasādes krāsošana 2 kārtas",
+    "group": "windBox",
+    "section": "VĒJA KASTE / KRĀSOŠANA",
+    "field": "value",
+    "unit": null,
+    "type": "number",
+    "default": null,
+    "advanced": false,
+    "references": 6,
+    "description": "Mūra fasādes krāsošana 2 kārtas.",
+    "validation": {
+      "min": 0
+    }
+  },
+  {
+    "key": "muraGruntesanaCoatCount",
+    "cell": "H36",
+    "label": "Mūra gruntēšana",
+    "group": "windBox",
+    "section": "VĒJA KASTE / KRĀSOŠANA",
+    "field": "coatCount",
+    "unit": "count",
+    "type": "number",
+    "default": null,
+    "advanced": true,
+    "references": 2,
+    "description": "Mūra gruntēšana.",
+    "validation": {
+      "min": 0
+    },
+    "legacyKey": "muraGruntesanaDiameterMm"
+  },
+  {
+    "key": "muraGruntesanaAreaM2",
+    "cell": "I36",
+    "label": "Mūra gruntēšana",
+    "group": "windBox",
+    "section": "VĒJA KASTE / KRĀSOŠANA",
+    "field": "areaM2",
+    "unit": "m2",
+    "type": "number",
+    "default": null,
+    "advanced": true,
+    "references": 2,
+    "description": "Mūra gruntēšana.",
+    "validation": {
+      "min": 0
+    }
+  }
+]

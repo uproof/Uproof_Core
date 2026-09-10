@@ -1,0 +1,103 @@
+[
+  {
+    "sheet": "Piedāvājums",
+    "type": "chart",
+    "name": "Offer cost chart",
+    "anchor": {
+      "row": 65,
+      "column": 1
+    },
+    "generatedFrom": "outputs.customerOffer.chart",
+    "description": "Original workbook chart uses descriptions B8:B54 and totals F8:F54. Program returns the chart dataset so UI/PDF can render it natively."
+  },
+  {
+    "sheet": "Piedāvājums",
+    "type": "image",
+    "file": "assets/workbook/image3.jpg",
+    "anchor": {
+      "row": 100,
+      "column": 1
+    }
+  },
+  {
+    "sheet": "Piedāvājums",
+    "type": "image",
+    "file": "assets/workbook/image4.png",
+    "anchor": {
+      "row": 100,
+      "column": 2
+    }
+  },
+  {
+    "sheet": "Piedāvājums",
+    "type": "image",
+    "file": "assets/workbook/image8.jpg",
+    "anchor": {
+      "row": 121,
+      "column": 1
+    }
+  },
+  {
+    "sheet": "Piedāvājums",
+    "type": "image",
+    "file": "assets/workbook/image2.jpg",
+    "anchor": {
+      "row": 121,
+      "column": 3
+    }
+  },
+  {
+    "sheet": "Piedāvājums",
+    "type": "image",
+    "file": "assets/workbook/image1.jpg",
+    "anchor": {
+      "row": 142,
+      "column": 1
+    }
+  },
+  {
+    "sheet": "Piedāvājums",
+    "type": "image",
+    "file": "assets/workbook/image7.jpg",
+    "anchor": {
+      "row": 144,
+      "column": 2
+    }
+  },
+  {
+    "sheet": "Piedāvājums",
+    "type": "image",
+    "file": "assets/workbook/image10.jpg",
+    "anchor": {
+      "row": 163,
+      "column": 1
+    }
+  },
+  {
+    "sheet": "Piedāvājums",
+    "type": "image",
+    "file": "assets/workbook/image9.jpg",
+    "anchor": {
+      "row": 163,
+      "column": 3
+    }
+  },
+  {
+    "sheet": "Piedāvājums",
+    "type": "logo",
+    "file": "assets/workbook/image11.png",
+    "anchor": {
+      "row": 4,
+      "column": 4
+    }
+  },
+  {
+    "sheet": "F2 forma",
+    "type": "logo",
+    "file": "assets/workbook/image11.png",
+    "anchor": {
+      "row": 1,
+      "column": 1
+    }
+  }
+]

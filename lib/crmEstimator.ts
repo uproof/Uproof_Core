@@ -19,6 +19,8 @@ export type CrmEstimatorOutputRow = {
   total: string;
 };
 
+export type CrmWorkbookInputValue = string | number | boolean | null;
+
 export type CrmChimneyEntry = {
   workType: string;
   quantity: number | null;
@@ -83,6 +85,7 @@ export type CrmEstimatorFormData = {
   legacyRows: CrmEstimatorLegacyRow[];
   processedRows: CrmEstimatorOutputRow[];
   processingStatus: 'draft' | 'processed' | 'finalised';
+  workbookInputs: Record<string, CrmWorkbookInputValue>;
 };
 
 export type CrmEstimatorFieldDefinition = {
@@ -281,6 +284,7 @@ export function createEmptyCrmEstimatorData(): CrmEstimatorFormData {
     legacyRows: [],
     processedRows: [],
     processingStatus: 'draft',
+    workbookInputs: {},
   };
 }
 
@@ -474,6 +478,9 @@ export function normalizeCrmEstimatorData(value: unknown, fallback: CrmEstimator
       total: normalizeText((row as Record<string, unknown>).total),
     })) : [],
     processingStatus: candidate.processingStatus === 'finalised' || candidate.processingStatus === 'processed' ? candidate.processingStatus : 'draft',
+    workbookInputs: candidate.workbookInputs && typeof candidate.workbookInputs === 'object' && !Array.isArray(candidate.workbookInputs)
+      ? Object.fromEntries(Object.entries(candidate.workbookInputs).filter(([, value]) => value === null || typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean'))
+      : {},
   };
 }
 

@@ -1,0 +1,2108 @@
+[
+  {
+    "key": "attalumsLidzObjektamKm",
+    "label": "Attālums līdz objektam, km",
+    "cell": "B2",
+    "group": "conditions",
+    "section": "APSTĀKĻI",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "betonaDakstiniMonierZandaLuxValue",
+    "label": "Betona dakstiņi Monier Zanda Lux",
+    "cell": "D2",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "betonaDakstiniMonierZandaLuxWidth",
+    "label": "Betona dakstiņi Monier Zanda Lux",
+    "cell": "E2",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "width",
+    "default": null
+  },
+  {
+    "key": "teknesMValue",
+    "label": "Teknes, m",
+    "cell": "G2",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "teknesMDiameterMm",
+    "label": "Teknes, m",
+    "cell": "H2",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "diameterMm",
+    "default": 125
+  },
+  {
+    "key": "sniegaBarjerasApalasM",
+    "label": "Sniega barjeras apaļās, m",
+    "cell": "J2",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "skurstnaParmuresana1M2PerimeterM",
+    "label": "Skurstņa pārmūrēšana 1, m2",
+    "cell": "L2",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": 0
+  },
+  {
+    "key": "skurstnaParmuresana1M2HeightM",
+    "label": "Skurstņa pārmūrēšana 1, m2",
+    "cell": "M2",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": 0
+  },
+  {
+    "key": "jumtaLogs1Count",
+    "label": "Jumta logs 1",
+    "cell": "P2",
+    "group": "roofWindows",
+    "section": "JUMTA LOGI",
+    "field": "count",
+    "default": 0
+  },
+  {
+    "key": "jumtaLogs1WindowKitPrice",
+    "label": "Jumta logs 1",
+    "cell": "Q2",
+    "group": "roofWindows",
+    "section": "JUMTA LOGI",
+    "field": "windowKitPrice",
+    "default": 0
+  },
+  {
+    "key": "jumtaLogs1DiffusionFramePrice",
+    "label": "Jumta logs 1",
+    "cell": "R2",
+    "group": "roofWindows",
+    "section": "JUMTA LOGI",
+    "field": "diffusionFramePrice",
+    "default": 0
+  },
+  {
+    "key": "cilvekuSkaitsObjekta",
+    "label": "Cilvēku skaits objektā",
+    "cell": "B3",
+    "group": "conditions",
+    "section": "APSTĀKĻI",
+    "field": "value",
+    "default": 2
+  },
+  {
+    "key": "malaDakstiniValue",
+    "label": "Māla dakstiņi",
+    "cell": "D3",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "malaDakstiniWidth",
+    "label": "Māla dakstiņi",
+    "cell": "E3",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "width",
+    "default": null
+  },
+  {
+    "key": "notecesGbValue",
+    "label": "Noteces gb",
+    "cell": "G3",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "notecesGbDiameterMm",
+    "label": "Noteces gb",
+    "cell": "H3",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "diameterMm",
+    "default": null
+  },
+  {
+    "key": "sniegaBarjerasSkardaM",
+    "label": "Sniega barjeras skārda, m",
+    "cell": "J3",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "skurstnaParmuresana2M2PerimeterM",
+    "label": "Skurstņa pārmūrēšana 2, m2",
+    "cell": "L3",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": 0
+  },
+  {
+    "key": "skurstnaParmuresana2M2HeightM",
+    "label": "Skurstņa pārmūrēšana 2, m2",
+    "cell": "M3",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": 0
+  },
+  {
+    "key": "jumtaLogs2Count",
+    "label": "Jumta logs 2",
+    "cell": "P3",
+    "group": "roofWindows",
+    "section": "JUMTA LOGI",
+    "field": "count",
+    "default": null
+  },
+  {
+    "key": "jumtaLogs2WindowKitPrice",
+    "label": "Jumta logs 2",
+    "cell": "Q3",
+    "group": "roofWindows",
+    "section": "JUMTA LOGI",
+    "field": "windowKitPrice",
+    "default": null
+  },
+  {
+    "key": "jumtaLogs2DiffusionFramePrice",
+    "label": "Jumta logs 2",
+    "cell": "R3",
+    "group": "roofWindows",
+    "section": "JUMTA LOGI",
+    "field": "diffusionFramePrice",
+    "default": null
+  },
+  {
+    "key": "slipumaKoef",
+    "label": "Slīpuma koef",
+    "cell": "B4",
+    "group": "conditions",
+    "section": "APSTĀKĻI",
+    "field": "value",
+    "default": 1
+  },
+  {
+    "key": "notecesMValue",
+    "label": "Noteces, m",
+    "cell": "G4",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "notecesMDiameterMm",
+    "label": "Noteces, m",
+    "cell": "H4",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "diameterMm",
+    "default": 100
+  },
+  {
+    "key": "jumtaNozogojumsM3mPosmi",
+    "label": "Jumta nožogojums, m (3m posmi)",
+    "cell": "J4",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "skurstnaParmuresana3M2PerimeterM",
+    "label": "Skurstņa pārmūrēšana 3, m2",
+    "cell": "L4",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "skurstnaParmuresana3M2HeightM",
+    "label": "Skurstņa pārmūrēšana 3, m2",
+    "cell": "M4",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "jumtaLoguPieslegumuKopgarumsMCount",
+    "label": "Jumta logu pieslēgumu kopgarums, m",
+    "cell": "P4",
+    "group": "roofWindows",
+    "section": "JUMTA LOGI",
+    "field": "count",
+    "default": 0
+  },
+  {
+    "key": "jumtaLoguPieslegumuKopgarumsMWindowKitPrice",
+    "label": "Jumta logu pieslēgumu kopgarums, m",
+    "cell": "Q4",
+    "group": "roofWindows",
+    "section": "JUMTA LOGI",
+    "field": "windowKitPrice",
+    "default": null
+  },
+  {
+    "key": "jumtaLoguPieslegumuKopgarumsMDiffusionFramePrice",
+    "label": "Jumta logu pieslēgumu kopgarums, m",
+    "cell": "R4",
+    "group": "roofWindows",
+    "section": "JUMTA LOGI",
+    "field": "diffusionFramePrice",
+    "default": null
+  },
+  {
+    "key": "komandejumaPiemaksasKoef",
+    "label": "Komandējuma piemaksas koef",
+    "cell": "B5",
+    "group": "conditions",
+    "section": "APSTĀKĻI",
+    "field": "value",
+    "default": 1
+  },
+  {
+    "key": "latojumaPlatibaValue",
+    "label": "Latojuma platība",
+    "cell": "D5",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "latojumaPlatibaWidth",
+    "label": "Latojuma platība",
+    "cell": "E5",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "width",
+    "default": 0
+  },
+  {
+    "key": "augsejieLikumiValue",
+    "label": "Augšējie līkumi",
+    "cell": "G5",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "augsejieLikumiDiameterMm",
+    "label": "Augšējie līkumi",
+    "cell": "H5",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "diameterMm",
+    "default": null
+  },
+  {
+    "key": "jumtaLaipas3m",
+    "label": "Jumta laipas, 3m",
+    "cell": "J5",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "skurstnaParmuresana4M2PerimeterM",
+    "label": "Skurstņa pārmūrēšana 4, m2",
+    "cell": "L5",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "skurstnaParmuresana4M2HeightM",
+    "label": "Skurstņa pārmūrēšana 4, m2",
+    "cell": "M5",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "jumtaLoguPieslegumuSkaitsCount",
+    "label": "Jumta logu pieslēgumu skaits",
+    "cell": "P5",
+    "group": "roofWindows",
+    "section": "JUMTA LOGI",
+    "field": "count",
+    "default": 0
+  },
+  {
+    "key": "jumtaLoguPieslegumuSkaitsWindowKitPrice",
+    "label": "Jumta logu pieslēgumu skaits",
+    "cell": "Q5",
+    "group": "roofWindows",
+    "section": "JUMTA LOGI",
+    "field": "windowKitPrice",
+    "default": null
+  },
+  {
+    "key": "jumtaLoguPieslegumuSkaitsDiffusionFramePrice",
+    "label": "Jumta logu pieslēgumu skaits",
+    "cell": "R5",
+    "group": "roofWindows",
+    "section": "JUMTA LOGI",
+    "field": "diffusionFramePrice",
+    "default": null
+  },
+  {
+    "key": "komandejumaIzmitinasanaDienas",
+    "label": "Komandējuma izmitināšana, dienas",
+    "cell": "B6",
+    "group": "conditions",
+    "section": "APSTĀKĻI",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "jumtaSlipumsValue",
+    "label": "Jumta slīpums",
+    "cell": "D6",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "value",
+    "default": 20
+  },
+  {
+    "key": "jumtaSlipumsWidth",
+    "label": "Jumta slīpums",
+    "cell": "E6",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "width",
+    "default": null
+  },
+  {
+    "key": "apaksejieLikumiValue",
+    "label": "Apakšējie līkumi",
+    "cell": "G6",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "apaksejieLikumiDiameterMm",
+    "label": "Apakšējie līkumi",
+    "cell": "H6",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "diameterMm",
+    "default": null
+  },
+  {
+    "key": "jumtaLaipas14m",
+    "label": "Jumta laipas, 1.4m",
+    "cell": "J6",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "skurstnaParmuresana5M2PerimeterM",
+    "label": "Skurstņa pārmūrēšana 5, m2",
+    "cell": "L6",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "skurstnaParmuresana5M2HeightM",
+    "label": "Skurstņa pārmūrēšana 5, m2",
+    "cell": "M6",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "komandejumaIzmitinasanaCilvekuSkaits",
+    "label": "Komandējuma izmitināšana, cilvēku skaits",
+    "cell": "B7",
+    "group": "conditions",
+    "section": "APSTĀKĻI",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "membranaRukki145Value",
+    "label": "Membrāna Rukki 145",
+    "cell": "D7",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "membranaRukki145Width",
+    "label": "Membrāna Rukki 145",
+    "cell": "E7",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "width",
+    "default": null
+  },
+  {
+    "key": "ieksejieSturiValue",
+    "label": "Iekšējie stūri",
+    "cell": "G7",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "ieksejieSturiDiameterMm",
+    "label": "Iekšējie stūri",
+    "cell": "H7",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "diameterMm",
+    "default": null
+  },
+  {
+    "key": "jumtaLaipas06m",
+    "label": "Jumta laipas, 0.6m",
+    "cell": "J7",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "skurstnaParmuresana6M2PerimeterM",
+    "label": "Skurstņa pārmūrēšana 6, m2",
+    "cell": "L7",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "skurstnaParmuresana6M2HeightM",
+    "label": "Skurstņa pārmūrēšana 6, m2",
+    "cell": "M7",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "buvdarbuVaditajsUnDokumentacijaMenesi",
+    "label": "Būvdarbu vadītājs un dokumentācija, mēneši",
+    "cell": "B8",
+    "group": "conditions",
+    "section": "APSTĀKĻI",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "ventilejamaDzegaMValue",
+    "label": "Ventilējama dzega, m",
+    "cell": "D8",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "ventilejamaDzegaMWidth",
+    "label": "Ventilējama dzega, m",
+    "cell": "E8",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "width",
+    "default": null
+  },
+  {
+    "key": "arejieSturiValue",
+    "label": "Ārējie stūrī",
+    "cell": "G8",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "arejieSturiDiameterMm",
+    "label": "Ārējie stūrī",
+    "cell": "H8",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "diameterMm",
+    "default": null
+  },
+  {
+    "key": "drosibasTroseM",
+    "label": "Drošības trose, m",
+    "cell": "J8",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "skurstenaApmesana1PerimeterM",
+    "label": "Skursteņa apmešana 1",
+    "cell": "L8",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "skurstenaApmesana1HeightM",
+    "label": "Skursteņa apmešana 1",
+    "cell": "M8",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "apdrosinasanas",
+    "label": "Apdrošināšanas %",
+    "cell": "B9",
+    "group": "conditions",
+    "section": "APSTĀKĻI",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "neventilejamaDzegaMValue",
+    "label": "Neventilējama dzega, m",
+    "cell": "D9",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "neventilejamaDzegaMWidth",
+    "label": "Neventilējama dzega, m",
+    "cell": "E9",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "width",
+    "default": null
+  },
+  {
+    "key": "teknesGaliValue",
+    "label": "Teknes Gali",
+    "cell": "G9",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "teknesGaliDiameterMm",
+    "label": "Teknes Gali",
+    "cell": "H9",
+    "group": "gutters",
+    "section": "TEKNES",
+    "field": "diameterMm",
+    "default": null
+  },
+  {
+    "key": "drosibasTrosesPosmiGb",
+    "label": "Drošības troses posmi, gb",
+    "cell": "J9",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "skurstenaApmesana2PerimeterM",
+    "label": "Skursteņa apmešana 2",
+    "cell": "L9",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "skurstenaApmesana2HeightM",
+    "label": "Skursteņa apmešana 2",
+    "cell": "M9",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "ventilejamaKoreMValue",
+    "label": "Ventilējama kore, m",
+    "cell": "D10",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "ventilejamaKoreMWidth",
+    "label": "Ventilējama kore, m",
+    "cell": "E10",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "width",
+    "default": null
+  },
+  {
+    "key": "jumtaKapnes12m400mm",
+    "label": "Jumta kāpnes 1.2m 400mm",
+    "cell": "J10",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "skurstenaApmesana3PerimeterM",
+    "label": "Skursteņa apmešana 3",
+    "cell": "L10",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "skurstenaApmesana3HeightM",
+    "label": "Skursteņa apmešana 3",
+    "cell": "M10",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "siferaDemontaza12kgM2M2",
+    "label": "Šīfera demontāža 12kg/m2, m2",
+    "cell": "B11",
+    "group": "conditions",
+    "section": "DEMONTĀŽA",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "skruvejamaKoreMValue",
+    "label": "Skrūvējama kore, m",
+    "cell": "D11",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "skruvejamaKoreMWidth",
+    "label": "Skrūvējama kore, m",
+    "cell": "E11",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "width",
+    "default": null
+  },
+  {
+    "key": "attalumsStarpSparemMValue",
+    "label": "Attālums starp spārēm, m",
+    "cell": "G11",
+    "group": "gutters",
+    "section": "LATOJUMS",
+    "field": "value",
+    "default": 0.6
+  },
+  {
+    "key": "attalumsStarpSparemMDiameterMm",
+    "label": "Attālums starp spārēm, m",
+    "cell": "H11",
+    "group": "gutters",
+    "section": "LATOJUMS",
+    "field": "diameterMm",
+    "default": null
+  },
+  {
+    "key": "jumtaKapnes27m400mm",
+    "label": "Jumta kāpnes 2.7m 400mm",
+    "cell": "J11",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "skurstenaApmesana4PerimeterM",
+    "label": "Skursteņa apmešana 4",
+    "cell": "L11",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "skurstenaApmesana4HeightM",
+    "label": "Skursteņa apmešana 4",
+    "cell": "M11",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "valcprofilaDemontazaM2",
+    "label": "Valcprofila demontāža, m2",
+    "cell": "B12",
+    "group": "conditions",
+    "section": "DEMONTĀŽA",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "vejmalaDakstinaValue",
+    "label": "Vējmala Dakstiņa",
+    "cell": "D12",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "vejmalaDakstinaWidth",
+    "label": "Vējmala Dakstiņa",
+    "cell": "E12",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "width",
+    "default": 200
+  },
+  {
+    "key": "starplatasBiezumsMValue",
+    "label": "Starplatas biezums, m",
+    "cell": "G12",
+    "group": "gutters",
+    "section": "LATOJUMS",
+    "field": "value",
+    "default": 0.05
+  },
+  {
+    "key": "starplatasBiezumsMDiameterMm",
+    "label": "Starplatas biezums, m",
+    "cell": "H12",
+    "group": "gutters",
+    "section": "LATOJUMS",
+    "field": "diameterMm",
+    "default": 0.05
+  },
+  {
+    "key": "jumtaKapnes33m400mm",
+    "label": "Jumta kāpnes 3.3m 400mm",
+    "cell": "J12",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "skurstenaApmesana5PerimeterM",
+    "label": "Skursteņa apmešana 5",
+    "cell": "L12",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "skurstenaApmesana5HeightM",
+    "label": "Skursteņa apmešana 5",
+    "cell": "M12",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "skardaLoksnuDemontazaM2",
+    "label": "Skārda loksņu demontāža, m2",
+    "cell": "B13",
+    "group": "conditions",
+    "section": "DEMONTĀŽA",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "vejmala2Value",
+    "label": "Vējmala 2",
+    "cell": "D13",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "vejmala2Width",
+    "label": "Vējmala 2",
+    "cell": "E13",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "width",
+    "default": 300
+  },
+  {
+    "key": "skerslatasBiezumsMValue",
+    "label": "Šķērslatas biezums, m",
+    "cell": "G13",
+    "group": "gutters",
+    "section": "LATOJUMS",
+    "field": "value",
+    "default": 0.05
+  },
+  {
+    "key": "skerslatasBiezumsMDiameterMm",
+    "label": "Šķērslatas biezums, m",
+    "cell": "H13",
+    "group": "gutters",
+    "section": "LATOJUMS",
+    "field": "diameterMm",
+    "default": 0.05
+  },
+  {
+    "key": "sienasKapnesM",
+    "label": "Sienas kāpnes, m",
+    "cell": "J13",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "skurstenaApdareArSkardu1PerimeterM",
+    "label": "Skursteņa apdare ar skārdu 1",
+    "cell": "L13",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "skurstenaApdareArSkardu1HeightM",
+    "label": "Skursteņa apdare ar skārdu 1",
+    "cell": "M13",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "sindeluDemontazaM2",
+    "label": "Šindeļu demontāža, m2",
+    "cell": "B14",
+    "group": "conditions",
+    "section": "DEMONTĀŽA",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "vejmala3Value",
+    "label": "Vējmala 3",
+    "cell": "D14",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "vejmala3Width",
+    "label": "Vējmala 3",
+    "cell": "E14",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "width",
+    "default": null
+  },
+  {
+    "key": "latojumaSpraugaMmValue",
+    "label": "Latojuma sprauga, mm",
+    "cell": "G14",
+    "group": "gutters",
+    "section": "LATOJUMS",
+    "field": "value",
+    "default": 310
+  },
+  {
+    "key": "latojumaSpraugaMmDiameterMm",
+    "label": "Latojuma sprauga, mm",
+    "cell": "H14",
+    "group": "gutters",
+    "section": "LATOJUMS",
+    "field": "diameterMm",
+    "default": 0.15
+  },
+  {
+    "key": "ugunsizturigaJumtaBeninuLuka1",
+    "label": "Ugunsizturīga jumta/bēniņu lūka 1",
+    "cell": "J14",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "skurstenaApdareArSkardu2PerimeterM",
+    "label": "Skursteņa apdare ar skārdu 2",
+    "cell": "L14",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "skurstenaApdareArSkardu2HeightM",
+    "label": "Skursteņa apdare ar skārdu 2",
+    "cell": "M14",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "dakstinuDemontaza50kgM2M2",
+    "label": "Dakstiņu demontāža 50kg/m2, m2",
+    "cell": "B15",
+    "group": "conditions",
+    "section": "DEMONTĀŽA",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "vejmala4Value",
+    "label": "Vējmala 4",
+    "cell": "D15",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "vejmala4Width",
+    "label": "Vējmala 4",
+    "cell": "E15",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "width",
+    "default": null
+  },
+  {
+    "key": "limenojamaPlatibaM2Value",
+    "label": "Līmeņojamā platība, m2",
+    "cell": "G15",
+    "group": "gutters",
+    "section": "LATOJUMS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "limenojamaPlatibaM2DiameterMm",
+    "label": "Līmeņojamā platība, m2",
+    "cell": "H15",
+    "group": "gutters",
+    "section": "LATOJUMS",
+    "field": "diameterMm",
+    "default": null
+  },
+  {
+    "key": "zibensNovedejs",
+    "label": "Zibens novedējs",
+    "cell": "J15",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "skurstenaApdareArSkardu3PerimeterM",
+    "label": "Skursteņa apdare ar skārdu 3",
+    "cell": "L15",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "skurstenaApdareArSkardu3HeightM",
+    "label": "Skursteņa apdare ar skārdu 3",
+    "cell": "M15",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "latojumaDemontazaM2",
+    "label": "Latojuma demontāža, m2",
+    "cell": "B16",
+    "group": "conditions",
+    "section": "DEMONTĀŽA",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "satekneMValue",
+    "label": "Satekne, m",
+    "cell": "D16",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "satekneMWidth",
+    "label": "Satekne, m",
+    "cell": "E16",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "width",
+    "default": null
+  },
+  {
+    "key": "skurstenaApdareArSkardu4PerimeterM",
+    "label": "Skursteņa apdare ar skārdu 4",
+    "cell": "L16",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "skurstenaApdareArSkardu4HeightM",
+    "label": "Skursteņa apdare ar skārdu 4",
+    "cell": "M16",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "jumtaKonstrukcijasDemontazaM2",
+    "label": "Jumta konstrukcijas demontāža, m2",
+    "cell": "B17",
+    "group": "conditions",
+    "section": "DEMONTĀŽA",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "skurstenaPieslegumuSkaitsValue",
+    "label": "Skursteņa pieslēgumu skaits",
+    "cell": "D17",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "skurstenaPieslegumuSkaitsWidth",
+    "label": "Skursteņa pieslēgumu skaits",
+    "cell": "E17",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "width",
+    "default": null
+  },
+  {
+    "key": "parocUltra150mmValue",
+    "label": "Paroc Ultra 150mm",
+    "cell": "G17",
+    "group": "gutters",
+    "section": "SILTINĀJUMS",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "parocUltra150mmDiameterMm",
+    "label": "Paroc Ultra 150mm",
+    "cell": "H17",
+    "group": "gutters",
+    "section": "SILTINĀJUMS",
+    "field": "diameterMm",
+    "default": null
+  },
+  {
+    "key": "skurstenaApdareArSkardu5PerimeterM",
+    "label": "Skursteņa apdare ar skārdu 5",
+    "cell": "L17",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "skurstenaApdareArSkardu5HeightM",
+    "label": "Skursteņa apdare ar skārdu 5",
+    "cell": "M17",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "noteksistemasDemontazaM",
+    "label": "Noteksistēmas demontāža, m",
+    "cell": "B18",
+    "group": "conditions",
+    "section": "DEMONTĀŽA",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "skurstenaPieslegumuKopgarumsMValue",
+    "label": "Skursteņa pieslēgumu kopgarums, m",
+    "cell": "D18",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "skurstenaPieslegumuKopgarumsMWidth",
+    "label": "Skursteņa pieslēgumu kopgarums, m",
+    "cell": "E18",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "width",
+    "default": null
+  },
+  {
+    "key": "parocUltra200mmValue",
+    "label": "Paroc Ultra 200mm",
+    "cell": "G18",
+    "group": "gutters",
+    "section": "SILTINĀJUMS",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "parocUltra200mmDiameterMm",
+    "label": "Paroc Ultra 200mm",
+    "cell": "H18",
+    "group": "gutters",
+    "section": "SILTINĀJUMS",
+    "field": "diameterMm",
+    "default": null
+  },
+  {
+    "key": "skurstenaApdareArSkardu6PerimeterM",
+    "label": "Skursteņa apdare ar skārdu 6",
+    "cell": "L18",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "skurstenaApdareArSkardu6HeightM",
+    "label": "Skursteņa apdare ar skārdu 6",
+    "cell": "M18",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "ventilejamsSienasPieslegumsValue",
+    "label": "Ventilējams sienas pieslēgums",
+    "cell": "D19",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "ventilejamsSienasPieslegumsWidth",
+    "label": "Ventilējams sienas pieslēgums",
+    "cell": "E19",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "width",
+    "default": null
+  },
+  {
+    "key": "tvaikaBarjeraM2Value",
+    "label": "Tvaika barjera, m2",
+    "cell": "G19",
+    "group": "gutters",
+    "section": "SILTINĀJUMS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "tvaikaBarjeraM2DiameterMm",
+    "label": "Tvaika barjera, m2",
+    "cell": "H19",
+    "group": "gutters",
+    "section": "SILTINĀJUMS",
+    "field": "diameterMm",
+    "default": null
+  },
+  {
+    "key": "skurstenaApdareArSkardu7PerimeterM",
+    "label": "Skursteņa apdare ar skārdu 7",
+    "cell": "L19",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "skurstenaApdareArSkardu7HeightM",
+    "label": "Skursteņa apdare ar skārdu 7",
+    "cell": "M19",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "bioTualeteMen",
+    "label": "Bio tualete, mēn",
+    "cell": "B20",
+    "group": "conditions",
+    "section": "Objekta iekārtošana",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "sienasPieslegumsValue",
+    "label": "Sienas pieslēgums",
+    "cell": "D20",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "sienasPieslegumsWidth",
+    "label": "Sienas pieslēgums",
+    "cell": "E20",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "width",
+    "default": null
+  },
+  {
+    "key": "beramvateParocBlt3Value",
+    "label": "Beramvate Paroc BLT3",
+    "cell": "G20",
+    "group": "gutters",
+    "section": "SILTINĀJUMS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "beramvateParocBlt3DiameterMm",
+    "label": "Beramvate Paroc BLT3",
+    "cell": "H20",
+    "group": "gutters",
+    "section": "SILTINĀJUMS",
+    "field": "diameterMm",
+    "default": 0
+  },
+  {
+    "key": "buvgruzuKonteiners8m3Gb",
+    "label": "Būvgružu konteiners 8m3, gb",
+    "cell": "B21",
+    "group": "conditions",
+    "section": "Objekta iekārtošana",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "parapets1MValue",
+    "label": "Parapets 1, m",
+    "cell": "D21",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "parapets1MWidth",
+    "label": "Parapets 1, m",
+    "cell": "E21",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "width",
+    "default": null
+  },
+  {
+    "key": "beninuLaipasIzbuve80cmPlatums55cmAugstumsMValue",
+    "label": "Bēniņu laipas izbūve 80cm platums, 55cm augstums, m",
+    "cell": "G21",
+    "group": "gutters",
+    "section": "SILTINĀJUMS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "beninuLaipasIzbuve80cmPlatums55cmAugstumsMDiameterMm",
+    "label": "Bēniņu laipas izbūve 80cm platums, 55cm augstums, m",
+    "cell": "H21",
+    "group": "gutters",
+    "section": "SILTINĀJUMS",
+    "field": "diameterMm",
+    "default": null
+  },
+  {
+    "key": "skurstenaJumtins1BezEkranaPerimeterM",
+    "label": "Skursteņa jumtiņš 1 bez ekrāna",
+    "cell": "L21",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "skurstenaJumtins1BezEkranaHeightM",
+    "label": "Skursteņa jumtiņš 1 bez ekrāna",
+    "cell": "M21",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "nozogojumaGarumsM",
+    "label": "Nožogojuma garums, m",
+    "cell": "B22",
+    "group": "conditions",
+    "section": "Objekta iekārtošana",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "parapets2MValue",
+    "label": "Parapets 2, m",
+    "cell": "D22",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "parapets2MWidth",
+    "label": "Parapets 2, m",
+    "cell": "E22",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "width",
+    "default": null
+  },
+  {
+    "key": "skurstenaJumtins2BezEkranaPerimeterM",
+    "label": "Skursteņa jumtiņš 2 bez ekrāna",
+    "cell": "L22",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "skurstenaJumtins2BezEkranaHeightM",
+    "label": "Skursteņa jumtiņš 2 bez ekrāna",
+    "cell": "M22",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "nozogojumaNomasLaiksDienas",
+    "label": "Nožogojuma nomas laiks, dienas",
+    "cell": "B23",
+    "group": "conditions",
+    "section": "Objekta iekārtošana",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "parapets3MValue",
+    "label": "Parapets 3, m",
+    "cell": "D23",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "parapets3MWidth",
+    "label": "Parapets 3, m",
+    "cell": "E23",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "width",
+    "default": null
+  },
+  {
+    "key": "spare1Gb6mValue",
+    "label": "Spāre 1, gb (6m)",
+    "cell": "G23",
+    "group": "gutters",
+    "section": "KONSTRUKCIJAS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "spare1Gb6mDiameterMm",
+    "label": "Spāre 1, gb (6m)",
+    "cell": "H23",
+    "group": "gutters",
+    "section": "KONSTRUKCIJAS",
+    "field": "diameterMm",
+    "default": "150x50"
+  },
+  {
+    "key": "skurstenaJumtins3BezEkranaPerimeterM",
+    "label": "Skursteņa jumtiņš 3 bez ekrāna",
+    "cell": "L23",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "skurstenaJumtins3BezEkranaHeightM",
+    "label": "Skursteņa jumtiņš 3 bez ekrāna",
+    "cell": "M23",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "materialuNovietnesParklajs120gM24x6m",
+    "label": "Materiālu novietnes Pārklājs 120g/m2, 4x6m",
+    "cell": "B24",
+    "group": "conditions",
+    "section": "Objekta iekārtošana",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "jumtaLukaOvala45x60GbValue",
+    "label": "Jumta lūka ovāla 45x60, gb",
+    "cell": "D24",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "jumtaLukaOvala45x60GbWidth",
+    "label": "Jumta lūka ovāla 45x60, gb",
+    "cell": "E24",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "width",
+    "default": null
+  },
+  {
+    "key": "spare2Gb6mValue",
+    "label": "Spāre 2, gb (6m)",
+    "cell": "G24",
+    "group": "gutters",
+    "section": "KONSTRUKCIJAS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "spare2Gb6mDiameterMm",
+    "label": "Spāre 2, gb (6m)",
+    "cell": "H24",
+    "group": "gutters",
+    "section": "KONSTRUKCIJAS",
+    "field": "diameterMm",
+    "default": "200x50"
+  },
+  {
+    "key": "skurstenaJumtins4BezEkranaPerimeterM",
+    "label": "Skursteņa jumtiņš 4 bez ekrāna",
+    "cell": "L24",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "skurstenaJumtins4BezEkranaHeightM",
+    "label": "Skursteņa jumtiņš 4 bez ekrāna",
+    "cell": "M24",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "sastatnesKopejaPlatibaM2",
+    "label": "Sastatnes kopējā platība, m2",
+    "cell": "B25",
+    "group": "conditions",
+    "section": "Objekta iekārtošana",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "ventilacijasIzvadsSkardaValue",
+    "label": "Ventilācijas izvads skārda",
+    "cell": "D25",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "ventilacijasIzvadsSkardaWidth",
+    "label": "Ventilācijas izvads skārda",
+    "cell": "E25",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "width",
+    "default": null
+  },
+  {
+    "key": "murlata1MValue",
+    "label": "Mūrlata 1, m",
+    "cell": "G25",
+    "group": "gutters",
+    "section": "KONSTRUKCIJAS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "murlata1MDiameterMm",
+    "label": "Mūrlata 1, m",
+    "cell": "H25",
+    "group": "gutters",
+    "section": "KONSTRUKCIJAS",
+    "field": "diameterMm",
+    "default": 150
+  },
+  {
+    "key": "skurstenaJumtins1ArEkranuPerimeterM",
+    "label": "Skursteņa jumtiņš 1 ar ekrānu",
+    "cell": "L25",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "skurstenaJumtins1ArEkranuHeightM",
+    "label": "Skursteņa jumtiņš 1 ar ekrānu",
+    "cell": "M25",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "sastatnesNomasPeriodsMen",
+    "label": "Sastatnes nomas periods, mēn",
+    "cell": "B26",
+    "group": "conditions",
+    "section": "Objekta iekārtošana",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "ventilacijasIzvadsPlastmasasValue",
+    "label": "Ventilācijas izvads plastmasas",
+    "cell": "D26",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "ventilacijasIzvadsPlastmasasWidth",
+    "label": "Ventilācijas izvads plastmasas",
+    "cell": "E26",
+    "group": "roof",
+    "section": "SKĀRDS",
+    "field": "width",
+    "default": null
+  },
+  {
+    "key": "murlata2MValue",
+    "label": "Mūrlata 2, m",
+    "cell": "G26",
+    "group": "gutters",
+    "section": "KONSTRUKCIJAS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "murlata2MDiameterMm",
+    "label": "Mūrlata 2, m",
+    "cell": "H26",
+    "group": "gutters",
+    "section": "KONSTRUKCIJAS",
+    "field": "diameterMm",
+    "default": 100
+  },
+  {
+    "key": "skurstenaJumtins2ArEkranuPerimeterM",
+    "label": "Skursteņa jumtiņš 2 ar ekrānu",
+    "cell": "L26",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "skurstenaJumtins2ArEkranuHeightM",
+    "label": "Skursteņa jumtiņš 2 ar ekrānu",
+    "cell": "M26",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "darbaGaldsGb",
+    "label": "Darba galds, gb",
+    "cell": "B27",
+    "group": "conditions",
+    "section": "Objekta iekārtošana",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "jumtaKopnes1GbValue",
+    "label": "Jumta kopnes 1, gb",
+    "cell": "G27",
+    "group": "gutters",
+    "section": "KONSTRUKCIJAS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "jumtaKopnes1GbDiameterMm",
+    "label": "Jumta kopnes 1, gb",
+    "cell": "H27",
+    "group": "gutters",
+    "section": "KONSTRUKCIJAS",
+    "field": "diameterMm",
+    "default": null
+  },
+  {
+    "key": "skurstenaJumtins3ArEkranuPerimeterM",
+    "label": "Skursteņa jumtiņš 3 ar ekrānu",
+    "cell": "L27",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "skurstenaJumtins3ArEkranuHeightM",
+    "label": "Skursteņa jumtiņš 3 ar ekrānu",
+    "cell": "M27",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "apgaismojumsGb",
+    "label": "Apgaismojums, gb",
+    "cell": "B28",
+    "group": "conditions",
+    "section": "Objekta iekārtošana",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "jumtaKopnes2GbValue",
+    "label": "Jumta kopnes 2, gb",
+    "cell": "G28",
+    "group": "gutters",
+    "section": "KONSTRUKCIJAS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "jumtaKopnes2GbDiameterMm",
+    "label": "Jumta kopnes 2, gb",
+    "cell": "H28",
+    "group": "gutters",
+    "section": "KONSTRUKCIJAS",
+    "field": "diameterMm",
+    "default": null
+  },
+  {
+    "key": "ugunsdrosibasInventarsGb",
+    "label": "Ugunsdrošības inventārs gb",
+    "cell": "B29",
+    "group": "conditions",
+    "section": "Objekta iekārtošana",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "proteze150x5015mGbValue",
+    "label": "Protēze 150x50, 1.5m, gb",
+    "cell": "G29",
+    "group": "gutters",
+    "section": "KONSTRUKCIJAS",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "proteze150x5015mGbDiameterMm",
+    "label": "Protēze 150x50, 1.5m, gb",
+    "cell": "H29",
+    "group": "gutters",
+    "section": "KONSTRUKCIJAS",
+    "field": "diameterMm",
+    "default": null
+  },
+  {
+    "key": "sniegaUnLedusKausesanasSistemasKomplekts1PerimeterM",
+    "label": "Sniega un ledus kausēšanas sistēmas komplekts 1",
+    "cell": "L29",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "sniegaUnLedusKausesanasSistemasKomplekts1HeightM",
+    "label": "Sniega un ledus kausēšanas sistēmas komplekts 1",
+    "cell": "M29",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "sniegaUnLedusKausesanasSistemasKomplekts1AreaM2",
+    "label": "Sniega un ledus kausēšanas sistēmas komplekts 1",
+    "cell": "N29",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "areaM2",
+    "default": null
+  },
+  {
+    "key": "buvtafele",
+    "label": "Būvtāfele",
+    "cell": "B30",
+    "group": "conditions",
+    "section": "Objekta iekārtošana",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "platibaM2",
+    "label": "platība, m2",
+    "cell": "J30",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "sniegaUnLedusKausesanasSistemasKomplekts2PerimeterM",
+    "label": "Sniega un ledus kausēšanas sistēmas komplekts 2",
+    "cell": "L30",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "sniegaUnLedusKausesanasSistemasKomplekts2HeightM",
+    "label": "Sniega un ledus kausēšanas sistēmas komplekts 2",
+    "cell": "M30",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "sniegaUnLedusKausesanasSistemasKomplekts2AreaM2",
+    "label": "Sniega un ledus kausēšanas sistēmas komplekts 2",
+    "cell": "N30",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "areaM2",
+    "default": null
+  },
+  {
+    "key": "iebrauktuvesSagatvosanaGumijasPaklajiGb",
+    "label": "Iebrauktuves sagatvošana, Gumijas paklāji gb",
+    "cell": "B31",
+    "group": "conditions",
+    "section": "Objekta iekārtošana",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "vejaKasteDekorativiDeliGarumsPlatibaValue",
+    "label": "Vēja kaste dekoratīvi dēļi, garums/platība",
+    "cell": "G31",
+    "group": "gutters",
+    "section": "VĒJA KASTE",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "vejaKasteDekorativiDeliGarumsPlatibaDiameterMm",
+    "label": "Vēja kaste dekoratīvi dēļi, garums/platība",
+    "cell": "H31",
+    "group": "gutters",
+    "section": "VĒJA KASTE",
+    "field": "diameterMm",
+    "default": 0.4
+  },
+  {
+    "key": "sniegaUnLedusKausesanasSistemasKomplekts3PerimeterM",
+    "label": "Sniega un ledus kausēšanas sistēmas komplekts 3",
+    "cell": "L31",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "sniegaUnLedusKausesanasSistemasKomplekts3HeightM",
+    "label": "Sniega un ledus kausēšanas sistēmas komplekts 3",
+    "cell": "M31",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "sniegaUnLedusKausesanasSistemasKomplekts3AreaM2",
+    "label": "Sniega un ledus kausēšanas sistēmas komplekts 3",
+    "cell": "N31",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "areaM2",
+    "default": null
+  },
+  {
+    "key": "iebrauktuvesSagatvosanaGumijasPaklajiNomasLaiks",
+    "label": "Iebrauktuves sagatvošana, Gumijas paklāji, nomas laiks",
+    "cell": "B32",
+    "group": "conditions",
+    "section": "Objekta iekārtošana",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "krasosanaValue",
+    "label": "Krāsošana",
+    "cell": "G32",
+    "group": "gutters",
+    "section": "VĒJA KASTE",
+    "field": "value",
+    "default": "tīrīšana, m2"
+  },
+  {
+    "key": "krasosanaDiameterMm",
+    "label": "Krāsošana",
+    "cell": "H32",
+    "group": "gutters",
+    "section": "VĒJA KASTE",
+    "field": "diameterMm",
+    "default": "kārtas, skaits"
+  },
+  {
+    "key": "platibaM22",
+    "label": "platība, m2",
+    "cell": "J32",
+    "group": "safety",
+    "section": "DROŠĪBA",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "elektrokomponentuInstalacijaKplPerimeterM",
+    "label": "Elektrokomponentu instalācija. kpl",
+    "cell": "L32",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "perimeterM",
+    "default": null
+  },
+  {
+    "key": "elektrokomponentuInstalacijaKplHeightM",
+    "label": "Elektrokomponentu instalācija. kpl",
+    "cell": "M32",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "heightM",
+    "default": null
+  },
+  {
+    "key": "elektrokomponentuInstalacijaKplAreaM2",
+    "label": "Elektrokomponentu instalācija. kpl",
+    "cell": "N32",
+    "group": "chimneys",
+    "section": "SKURSTEŅI",
+    "field": "areaM2",
+    "default": null
+  },
+  {
+    "key": "aizsargajamoKokuSkaits",
+    "label": "Aizsargājamo koku skaits",
+    "cell": "B33",
+    "group": "conditions",
+    "section": "Objekta iekārtošana",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "kokaFasadesKrasosana2KartasValue",
+    "label": "Koka fasādes krāsošana 2 kārtas",
+    "cell": "G33",
+    "group": "gutters",
+    "section": "VĒJA KASTE",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "kokaFasadesKrasosana2KartasDiameterMm",
+    "label": "Koka fasādes krāsošana 2 kārtas",
+    "cell": "H33",
+    "group": "gutters",
+    "section": "VĒJA KASTE",
+    "field": "diameterMm",
+    "default": null
+  },
+  {
+    "key": "parvietojamsKonteinersStradniekiemUnInventaram6x24m1GabNomasIlgumsMen",
+    "label": "Pārvietojams konteiners strādniekiem un inventāram 6x2.4m, 1 gab nomas ilgums mēn",
+    "cell": "B34",
+    "group": "conditions",
+    "section": "Objekta iekārtošana",
+    "field": "value",
+    "default": 0
+  },
+  {
+    "key": "vejaKastesKrasosana2KartasValue",
+    "label": "Vēja kastes krāsošana 2 kārtas",
+    "cell": "G34",
+    "group": "gutters",
+    "section": "VĒJA KASTE",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "vejaKastesKrasosana2KartasDiameterMm",
+    "label": "Vēja kastes krāsošana 2 kārtas",
+    "cell": "H34",
+    "group": "gutters",
+    "section": "VĒJA KASTE",
+    "field": "diameterMm",
+    "default": null
+  },
+  {
+    "key": "aizsardzibasZimesGb",
+    "label": "Aizsardzības zīmes, gb",
+    "cell": "B35",
+    "group": "conditions",
+    "section": "Objekta iekārtošana",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "muraFasadesKrasosana2KartasValue",
+    "label": "Mūra fasādes krāsošana 2 kārtas",
+    "cell": "G35",
+    "group": "gutters",
+    "section": "VĒJA KASTE",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "muraFasadesKrasosana2KartasDiameterMm",
+    "label": "Mūra fasādes krāsošana 2 kārtas",
+    "cell": "H35",
+    "group": "gutters",
+    "section": "VĒJA KASTE",
+    "field": "diameterMm",
+    "default": null
+  },
+  {
+    "key": "sastatnesTunelisIelasPuseGarumsM",
+    "label": "Sastatnes tunelis ielas pusē, garums, m",
+    "cell": "B36",
+    "group": "conditions",
+    "section": "Objekta iekārtošana",
+    "field": "value",
+    "default": null
+  },
+  {
+    "key": "muraGruntesanaValue",
+    "label": "Mūra gruntēšana",
+    "cell": "G36",
+    "group": "gutters",
+    "section": "VĒJA KASTE",
+    "field": "value",
+    "default": "X"
+  },
+  {
+    "key": "muraGruntesanaDiameterMm",
+    "label": "Mūra gruntēšana",
+    "cell": "H36",
+    "group": "gutters",
+    "section": "VĒJA KASTE",
+    "field": "diameterMm",
+    "default": null
+  },
+  {
+    "key": "celtniecibasLiftsNomasDienas",
+    "label": "Celtniecības lifts, nomas dienas",
+    "cell": "B37",
+    "group": "conditions",
+    "section": "Objekta iekārtošana",
+    "field": "value",
+    "default": null
+  }
+]

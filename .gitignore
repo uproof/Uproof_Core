@@ -1,6 +1,7 @@
 node_modules
 .next
 .env*.local
+Izmaksu sadalījums jumta renovācijas darbiem, Jāņupītes iela 3, Dimzukalns, UpRoof.xlsx
 *.log
 .DS_Store
 dist
