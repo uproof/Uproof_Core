@@ -69,7 +69,6 @@ export default function AdminSecurityControls({locale, userId, email}: Props) {
       <div className="rounded-3xl border border-sky-100 bg-white p-5 shadow-sm">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-500">{isLv ? 'Superadmin profile' : 'Superadmin profile'}</p>
         <h3 className="mt-2 text-2xl font-bold text-slate-900">{email}</h3>
-        <p className="mt-1 text-sm text-slate-600">{isLv ? 'Šie ir apstiprinātie superadmini CMS pārvaldībai.' : 'These are the approved superadmin accounts for CMS management.'}</p>
         <p className="mt-2 text-xs text-slate-500">{isLv ? 'Parole netiek rādīta. To var tikai nomainīt vai atiestatīt.' : 'The password is never displayed. It can only be changed or reset.'}</p>
 
         <div className="mt-5 space-y-3">

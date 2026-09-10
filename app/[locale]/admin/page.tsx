@@ -14,6 +14,8 @@ import LanguageSwitcher from '@/components/LanguageSwitcher';
 import {getAdminSession} from '@/lib/adminAuth';
 import AdminLogout from '@/components/AdminLogout';
 import NotificationBell from '@/components/NotificationBell';
+import {getCrmProjects} from '@/lib/crmProjectsStore';
+import HomeOverviewClient from './HomeOverviewClient';
 
 type DashboardTile = {
   href?: string;
@@ -37,6 +39,8 @@ export default async function AdminDashboard({params}: {params: Promise<{locale:
   if (session.role !== 'superadmin') {
     redirect(`/${locale}/crm`);
   }
+
+  const projects = await getCrmProjects({limit: 500});
 
   const tiles: DashboardTile[] = [
     {
@@ -113,7 +117,6 @@ export default async function AdminDashboard({params}: {params: Promise<{locale:
               </div>
               <div>
                 <h1 className="text-xl sm:text-2xl font-bold text-gray-900">UpRoof Operations</h1>
-                <p className="text-xs sm:text-sm text-gray-600">Internal CRM and project operations</p>
               </div>
             </div>
             <div className="flex flex-wrap items-center gap-2 sm:gap-4 w-full sm:w-auto">
@@ -133,10 +136,7 @@ export default async function AdminDashboard({params}: {params: Promise<{locale:
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Dashboard</h2>
-          <p className="text-gray-600">Manage sales operations. Project 360 modules will be added here.</p>
-        </div>
+        <HomeOverviewClient locale={locale} projects={projects} />
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 auto-rows-fr items-stretch">
           {tiles.map((tile) => {

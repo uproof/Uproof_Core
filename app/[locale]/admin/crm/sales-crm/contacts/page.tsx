@@ -33,7 +33,6 @@ export default async function SalesCrmContactsPage({params}: {params: Promise<{l
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-violet-600">Sales CRM</p>
           <h1 className="mt-2 text-3xl font-bold text-slate-900">Contacts</h1>
-          <p className="mt-2 text-sm text-slate-600">Client email and phone list for quick follow-up and outreach.</p>
         </div>
         <Link href={`/${locale}/admin/crm/sales-crm`} className="inline-flex items-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
           Back to Sales CRM

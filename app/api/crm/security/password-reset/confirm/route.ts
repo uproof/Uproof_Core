@@ -3,6 +3,8 @@ import {NextRequest, NextResponse} from 'next/server';
 import {createSupabaseAdminClient} from '@/lib/supabase/server';
 import {consumePasswordResetToken} from '@/lib/crmUsersStore';
 import {validatePasswordPolicy} from '@/lib/secretVault';
+import {isCrmHost} from '@/lib/internalRouting';
+import {checkRateLimit, RATE_LIMITS} from '@/lib/rateLimit';
 import {z} from 'zod';
 
 const confirmResetSchema = z.object({
@@ -37,6 +39,16 @@ async function recordAuditLog(entry: {
 }
 
 export async function POST(req: NextRequest) {
+  if (!isCrmHost(req.nextUrl.hostname)) {
+    return NextResponse.json({ok: false, error: 'Password reset must use the CRM host'}, {status: 403});
+  }
+
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+  const limiter = await checkRateLimit(`crm-password-reset-confirm:${ip}`, RATE_LIMITS.LOGIN);
+  if (!limiter.allowed) {
+    return NextResponse.json({ok: false, error: 'Too many password reset attempts'}, {status: 429});
+  }
+
   const json = await req.json().catch(() => ({}));
   const validation = confirmResetSchema.safeParse(json);
 

@@ -9,7 +9,7 @@ const requestResetSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
-  if (process.env.NODE_ENV === 'production' && !isCrmHost(req.nextUrl.hostname)) {
+  if (!isCrmHost(req.nextUrl.hostname)) {
     return NextResponse.json({ok: false, error: 'Forbidden'}, {status: 403});
   }
 

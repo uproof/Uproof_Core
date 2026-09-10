@@ -499,7 +499,6 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
               className="mt-2 h-11 w-full rounded-2xl border border-sky-200 bg-white px-4 text-base font-semibold text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
             />
           </label>
-          <p className="mt-2 text-sm text-slate-600">{accessScope === 'admin' ? (isLv ? 'Superadmins var rediģēt klienta datus.' : 'Superadmin can edit customer data.') : (isLv ? 'Klienta profils pārdevējiem ir tikai skatāms.' : 'Customer profile is view-only for sales users.')}</p>
 
           <div className="mt-5 space-y-3 text-sm text-slate-700">
             <div className="flex items-center gap-3 rounded-2xl border border-gray-300 bg-gray-200 px-4 py-3 shadow-sm">
@@ -681,7 +680,6 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
           <Card variant="outlined" hover={false} className="border-sky-100 bg-white">
             <div className="mb-4">
               <div className="text-sm font-semibold text-sky-500">{isLv ? 'Estimator forma' : 'Estimator form'}</div>
-              <p className="mt-1 text-sm text-slate-600">{isLv ? 'Fiksēti lauki ar izvēlnēm un skaitliskiem ievadlaukiem.' : 'Fixed fields with select and numeric inputs.'}</p>
             </div>
 
             <div className="overflow-hidden rounded-2xl border border-slate-200/70 bg-slate-50/40">
@@ -871,7 +869,6 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
               <div className="mb-4 flex items-center justify-between gap-3">
                 <div>
                   <div className="text-sm font-semibold text-sky-500">{isLv ? 'Veiktie darbi šim līdam' : 'Work done on this lead'}</div>
-                  <p className="mt-1 text-sm text-slate-600">{isLv ? 'Šī sadaļa redzama tikai CMS / superadmin.' : 'This section is visible only in CMS / superadmin.'}</p>
                 </div>
                 {accessScope === 'admin' ? (
                   <button

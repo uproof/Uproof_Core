@@ -54,7 +54,6 @@ export default async function SalesCrmOverviewPage({params, searchParams}: {para
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-600">Sales CRM</p>
           <h1 className="mt-2 text-3xl font-bold text-slate-900">Sales overview</h1>
-          <p className="mt-2 text-sm text-slate-600">Deal values and lead status totals across the current sales pipeline.</p>
         </div>
         <Link href={`/${locale}/admin/crm/sales-crm`} className="inline-flex items-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
           Back to Sales CRM

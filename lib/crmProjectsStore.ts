@@ -7,12 +7,23 @@ import {createEmptyCrmEstimatorData, normalizeCrmEstimatorData, stringifyEstimat
 export type CrmProjectRecord = {
   id: string;
   leadId: string;
+  customer: string;
+  company: string;
   title: string;
   location: string;
   owner: string;
   phase: string;
+  status: string;
+  progress: string;
   budget: string;
   dueDate: string;
+  createdAtUtc: string;
+  updatedAtUtc: string;
+  note: string;
+  activityUpdate: string;
+  nextAction: string;
+  attachments: string[];
+  workLog: CrmLead['workLog'];
   estimatorData: CrmLead['estimatorData'];
 };
 
@@ -99,12 +110,23 @@ function mapRow(row: ProjectRow): CrmProjectRecord {
   return {
     id: row.id,
     leadId: row.lead_id,
+    customer: row.title,
+    company: '',
     title: row.title,
     location: row.location,
     owner: row.owner,
     phase: row.phase,
+    status: row.phase,
+    progress: row.phase,
     budget: row.budget,
     dueDate: row.due_date,
+    createdAtUtc: '',
+    updatedAtUtc: '',
+    note: '',
+    activityUpdate: '',
+    nextAction: row.due_date,
+    attachments: [],
+    workLog: [],
     estimatorData,
   };
 }
@@ -120,12 +142,23 @@ export async function getCrmProjects(options: CrmProjectsOptions = {}): Promise<
     .map((lead) => ({
       id: lead.id,
       leadId: lead.id,
+      customer: lead.customer,
+      company: lead.company,
       title: lead.projectAddress || lead.address || lead.customer,
       location: lead.projectAddress || lead.address || lead.customer,
       owner: lead.owner,
       phase: lead.status.replaceAll('_', ' '),
+      status: lead.status,
+      progress: lead.progress,
       budget: lead.value,
       dueDate: lead.nextAction,
+      createdAtUtc: lead.createdAtUtc || lead.createdAt || '',
+      updatedAtUtc: lead.updatedAtUtc || lead.updatedAt || '',
+      note: lead.note,
+      activityUpdate: lead.activityUpdate,
+      nextAction: lead.nextAction,
+      attachments: lead.attachments || [],
+      workLog: lead.workLog || [],
       estimatorData: normalizeCrmEstimatorData(lead.estimatorData, createEmptyCrmEstimatorData()),
     }));
 }

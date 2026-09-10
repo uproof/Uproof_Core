@@ -66,7 +66,6 @@ export default async function SalesCrmHubPage({params}: {params: Promise<{locale
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-600">Sales CRM</p>
             <h1 className="mt-2 text-3xl font-bold text-slate-900">Sales user and lead management</h1>
-            <p className="mt-2 text-sm text-slate-600">One CRM hub for all sales-user operations, lead activity, and contact data.</p>
           </div>
           <Link href={`/${locale}/admin`} className="inline-flex items-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
             Back to CMS

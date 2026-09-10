@@ -131,6 +131,8 @@ export default async function middleware(request: NextRequest) {
   const isApiCrmPath = /^\/api\/crm(\/|$)/.test(pathname);
   const isApiSecurityPath = /^\/api\/security(\/|$)/.test(pathname);
   const isApiPublicAuthPath = /^\/api\/admin\/(login|logout)(\/|$)/.test(pathname);
+  const isPublicQuoteAcceptPath = request.method === 'POST' && /^\/api\/crm\/quotes\/[^/]+\/accept$/.test(pathname);
+  const isPublicPasswordResetPath = /^\/api\/crm\/security\/password-reset\/(request|confirm)$/.test(pathname);
   sessionRole = await getSessionRoleFromCookie(
     cookies.get('admin_session')?.value,
     cookies.get(SUPABASE_ACCESS_TOKEN_COOKIE)?.value,
@@ -188,7 +190,7 @@ export default async function middleware(request: NextRequest) {
     if (sessionRole !== 'superadmin') return json({ok: false, error: 'Forbidden'}, 403);
   }
   if (isApiCrmPath || isApiSecurityPath) {
-    if (!sessionRole) return json({ok: false, error: 'Unauthorized'}, 401);
+    if (!sessionRole && !isPublicQuoteAcceptPath && !isPublicPasswordResetPath) return json({ok: false, error: 'Unauthorized'}, 401);
   }
   if (isApiAdminPath || isApiCrmPath || isApiSecurityPath) return next();
 
