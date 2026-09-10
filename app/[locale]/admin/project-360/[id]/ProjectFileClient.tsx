@@ -51,18 +51,19 @@ function estimatorEntries(data: CrmEstimatorFormData) {
   ].filter(([, entry]) => entry !== '' && entry !== null && entry !== undefined);
 }
 
-function progressPercent(progress: string, status: string) {
-  const normalized = `${progress} ${status}`.toLowerCase();
-  if (normalized.includes('won') || normalized.includes('completed')) return 100;
-  if (normalized.includes('progress')) return 67;
-  if (normalized.includes('estimating')) return 35;
+function projectProgressPercent(status: string, workLogCount: number) {
+  const normalized = String(status || '').toLowerCase();
+  if (normalized.includes('frozen') || normalized.includes('completed')) return 100;
+  if (workLogCount > 0) return Math.min(95, 35 + workLogCount * 10);
+  if (normalized.includes('estimate_done') || normalized.includes('project_started')) return 67;
+  if (normalized.includes('estimating') || normalized.includes('quote_sent')) return 35;
   return 15;
 }
 
 function FinancialModule({project}: {project: CrmProjectRecord}) {
   const [open, setOpen] = useState<'payments' | 'invoices' | 'cash' | 'profit' | null>(null);
   const toggle = (key: 'payments' | 'invoices' | 'cash' | 'profit') => setOpen((current) => current === key ? null : key);
-  return <Module title="Financials" subtitle="" defaultOpen>
+  return <Module title="Financials" subtitle="">
     <div className="grid gap-3 md:grid-cols-4">{[['payments', 'Payment Stages'], ['invoices', 'Invoices'], ['cash', 'Cash Flow'], ['profit', 'Profitability']].map(([key, label]) => <button key={key} type="button" onClick={() => toggle(key as 'payments' | 'invoices' | 'cash' | 'profit')} className={`rounded-xl border p-4 text-left ${open === key ? 'border-sky-300 bg-sky-50' : 'border-slate-200 bg-slate-50'}`}><span className="text-xs text-slate-500">{label}</span><strong className="mt-2 block text-sm text-slate-900">{key === 'profit' ? project.budget || '—' : key === 'invoices' ? 'Not recorded' : key === 'cash' ? 'Not recorded' : 'Not recorded'}</strong></button>)}</div>
     {open === 'payments' ? <div className="mt-4 overflow-x-auto"><table className="min-w-full divide-y divide-slate-200"><thead><tr>{['Stage', 'Contract amount', 'Paid', 'Balance', 'Due date'].map((heading) => <th key={heading} className="px-3 py-2 text-left text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">{heading}</th>)}</tr></thead><tbody><tr>{['Stage 1', 'Not recorded', 'Not recorded', 'Not recorded', 'Not recorded'].map((entry) => <td key={entry} className="px-3 py-3 text-sm text-slate-700">{entry}</td>)}</tr></tbody></table></div> : null}
     {open === 'invoices' ? <div className="mt-4 rounded-xl border border-dashed border-slate-300 p-4 text-sm text-slate-500">No project invoices are recorded. Upload or connect invoices through the project document workflow.</div> : null}
@@ -95,17 +96,21 @@ function ProjectDocumentsModule({project, initialDocuments}: {project: CrmProjec
       .catch(() => undefined);
   }, [project.leadId]);
 
-  const upload = async (file: File) => {
+  const upload = async (files: File[]) => {
     setUploading(true);
     setError('');
     try {
-      const form = new FormData();
-      form.set('category', category);
-      form.set('file', file);
-      const response = await fetch(`/api/crm/projects/${encodeURIComponent(project.leadId)}/documents`, {method: 'POST', body: form});
-      const data = await response.json();
-      if (!data.ok) throw new Error(data.error || 'Upload failed');
-      setDocuments((current) => [{...data.document, url: `/api/crm/projects/${encodeURIComponent(project.leadId)}/documents/${encodeURIComponent(data.document.id)}`}, ...current]);
+      const uploaded: ProjectDocument[] = [];
+      for (const file of files) {
+        const form = new FormData();
+        form.set('category', category);
+        form.set('file', file);
+        const response = await fetch(`/api/crm/projects/${encodeURIComponent(project.leadId)}/documents`, {method: 'POST', body: form});
+        const data = await response.json();
+        if (!data.ok) throw new Error(data.error || `Upload failed for ${file.name}`);
+        uploaded.push({...data.document, url: `/api/crm/projects/${encodeURIComponent(project.leadId)}/documents/${encodeURIComponent(data.document.id)}`});
+      }
+      setDocuments((current) => [...uploaded, ...current]);
     } catch (uploadError: any) {
       setError(uploadError?.message || 'Upload failed');
     } finally {
@@ -121,19 +126,21 @@ function ProjectDocumentsModule({project, initialDocuments}: {project: CrmProjec
     ['other', 'Other documents'],
   ];
 
-  return <Module title="Project documents" subtitle="" defaultOpen>
-    <div className="flex flex-wrap items-center gap-2"><select value={category} onChange={(event) => setCategory(event.target.value)} className="h-10 rounded-xl border border-slate-200 px-3 text-sm">{groups.map(([key, label]) => <option key={key} value={key}>{label}</option>)}</select><label className="inline-flex h-10 cursor-pointer items-center rounded-xl bg-sky-500 px-4 text-sm font-semibold text-white">{uploading ? 'Uploading...' : 'Add document'}<input type="file" className="hidden" disabled={uploading} onChange={(event) => { const file = event.target.files?.[0]; if (file) void upload(file); event.currentTarget.value = ''; }} /></label>{error ? <span className="text-sm text-rose-600">{error}</span> : null}</div>
+  return <Module title="Project documents" subtitle="">
+    <div className="flex flex-wrap items-center gap-2"><select value={category} onChange={(event) => setCategory(event.target.value)} className="h-10 rounded-xl border border-slate-200 px-3 text-sm">{groups.map(([key, label]) => <option key={key} value={key}>{label}</option>)}</select><label className="inline-flex h-10 cursor-pointer items-center rounded-xl bg-sky-500 px-4 text-sm font-semibold text-white">{uploading ? 'Uploading...' : 'Add document'}<input type="file" multiple className="hidden" disabled={uploading} onChange={(event) => { const files = Array.from(event.target.files || []); if (files.length > 0) void upload(files); event.currentTarget.value = ''; }} /></label>{error ? <span className="text-sm text-rose-600">{error}</span> : null}</div>
     <div className="mt-5 grid gap-4 md:grid-cols-2">{groups.map(([key, label]) => <div key={key} className="rounded-xl border border-slate-200 bg-slate-50 p-4"><h3 className="text-sm font-bold text-slate-900">{label}</h3><div className="mt-3 space-y-2">{documents.filter((document) => document.category === key).map((document) => <div key={document.id} className="flex items-center justify-between gap-3 rounded-lg border border-slate-200 bg-white p-3"><span className="min-w-0 truncate text-sm font-medium text-slate-900">{document.file_name}</span>{document.url ? <a href={document.url} target="_blank" rel="noreferrer" className="shrink-0 text-xs font-semibold text-sky-700">Preview</a> : null}</div>)}{documents.every((document) => document.category !== key) ? <p className="text-sm text-slate-500">No documents</p> : null}</div></div>)}</div>
   </Module>;
 }
 
 export default function ProjectFileClient({locale, project, documents}: Props) {
-  const percent = progressPercent(project.progress, project.status);
+  const percent = projectProgressPercent(project.status, project.workLog.length);
   const estimator = project.estimatorData;
   const [projectStatus, setProjectStatus] = useState(project.status || project.phase);
   const [projectTitle, setProjectTitle] = useState(project.title);
   const [startDate, setStartDate] = useState(project.createdAtUtc ? project.createdAtUtc.slice(0, 10) : '');
   const [endDate, setEndDate] = useState(project.dueDate || '');
+  const [projectOverview, setProjectOverview] = useState(project.note || project.title);
+  const [description, setDescription] = useState(project.note || '');
   const materials = [
     ['Material type', estimator.materialType],
     ['Desired covering', estimator.desiredRoofCovering],
@@ -155,21 +162,21 @@ export default function ProjectFileClient({locale, project, documents}: Props) {
         <div className="grid gap-4 lg:grid-cols-[1.35fr_0.65fr]">
           <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex flex-wrap items-start justify-between gap-4"><div><p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-600">{project.id}</p><h1 className="mt-2 text-2xl font-bold text-slate-900">{project.title}</h1><p className="mt-2 text-sm text-slate-600">{project.customer}{project.company ? ` · ${project.company}` : ''}</p></div><span className="rounded-full bg-sky-100 px-3 py-1 text-xs font-bold text-sky-700">{project.phase}</span></div>
+            <div className="mt-5 grid gap-3 md:grid-cols-2"><label className="block text-sm"><span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Overview</span><input value={projectOverview} onChange={(event) => setProjectOverview(event.target.value)} className="mt-1 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900" /></label><label className="block text-sm"><span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Description</span><textarea value={description} onChange={(event) => setDescription(event.target.value)} rows={2} className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" /></label></div>
             <div className="mt-5 grid gap-3 sm:grid-cols-4">{[['Client', project.customer], ['Location', project.location], ['Owner', project.owner], ['Value', project.budget]].map(([label, entry]) => <div key={label} className="rounded-xl border border-slate-200 bg-slate-50 p-3"><p className="text-xs text-slate-500">{label}</p><p className="mt-1 text-sm font-semibold text-slate-900">{entry || '—'}</p></div>)}</div>
           </section>
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Project progress</p><p className="mt-3 text-3xl font-bold text-slate-900">{percent}%</p><div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full bg-sky-500" style={{width: `${percent}%`}} /></div><div className="mt-4 grid grid-cols-2 gap-3 text-sm"><div><span className="text-slate-500">Activity</span><strong className="mt-1 block text-slate-900">{project.activityUpdate || '—'}</strong></div><div><span className="text-slate-500">Next action</span><strong className="mt-1 block text-slate-900">{project.nextAction || '—'}</strong></div></div></section>
+          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Project work progress</p><p className="mt-3 text-3xl font-bold text-slate-900">{percent}%</p><div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full bg-sky-500" style={{width: `${percent}%`}} /></div><div className="mt-4 grid grid-cols-2 gap-3 text-sm"><div><span className="text-slate-500">Project phase</span><strong className="mt-1 block text-slate-900">{project.phase}</strong></div><div><span className="text-slate-500">Work entries</span><strong className="mt-1 block text-slate-900">{project.workLog.length}</strong></div></div></section>
         </div>
 
         <div className="mt-5 space-y-3">
-          <Module title="Client and project overview" subtitle="" defaultOpen>
+          <Module title="Client and project overview" subtitle="">
             <div className="grid gap-4 md:grid-cols-2"><div className="rounded-xl border border-slate-200 bg-slate-50 p-4"><h2 className="text-sm font-bold text-slate-900">Client data</h2><div className="mt-3 space-y-3">{[['Full name / company', project.customer + (project.company ? ` / ${project.company}` : '')], ['Legal address', project.location], ['ID No.', '—'], ['Primary contact', project.owner]].map(([label, entry]) => <label key={label} className="block text-sm"><span className="text-xs text-slate-500">{label}</span><input value={entry || ''} readOnly className="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-2 text-sm text-slate-900" /></label>)}</div></div><div className="rounded-xl border border-slate-200 bg-slate-50 p-4"><h2 className="text-sm font-bold text-slate-900">Project data</h2><div className="mt-3 space-y-3"><label className="block text-sm"><span className="text-xs text-slate-500">Project name</span><input value={projectTitle} onChange={(event) => setProjectTitle(event.target.value)} className="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-2 text-sm text-slate-900" /></label><label className="block text-sm"><span className="text-xs text-slate-500">Status</span><select value={projectStatus} onChange={(event) => setProjectStatus(event.target.value)} className="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-2 text-sm text-slate-900"><option>In Progress</option><option>Scheduled</option><option>Completed</option></select></label><label className="block text-sm"><span className="text-xs text-slate-500">Start date</span><input type="date" value={startDate} onChange={(event) => setStartDate(event.target.value)} className="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-2 text-sm text-slate-900" /></label><label className="block text-sm"><span className="text-xs text-slate-500">End date</span><input type="date" value={endDate} onChange={(event) => setEndDate(event.target.value)} className="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-2 text-sm text-slate-900" /></label><label className="block text-sm"><span className="text-xs text-slate-500">Commercial source</span><input value="Sales CRM — Won" readOnly className="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-slate-100 px-2 text-sm text-slate-700" /></label></div></div></div>
-            <div className="mt-4 rounded-xl border border-sky-100 bg-sky-50 p-4 text-sm text-slate-700"><strong>Sales boundary:</strong> commercial/client information is inherited when the opportunity becomes Won. The salesperson cannot edit the frozen commercial record from this operational workspace.</div>
           </Module>
 
           <FinancialModule project={project} />
 
           <Module title="Estimator data" subtitle="">
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{estimatorEntries(estimator).map(([label, entry]) => <div key={label} className="rounded-xl border border-slate-200 bg-slate-50 p-3"><p className="text-xs text-slate-500">{label}</p><p className="mt-1 text-sm font-semibold text-slate-900">{value(entry)}</p></div>)}</div><p className="mt-4 text-xs text-slate-500">The estimator engine is the source of truth for estimate inputs and generated estimate PDFs. This project view does not create or overwrite estimator revisions.</p>
+            <a href={`/${locale}/estimator/${encodeURIComponent(project.leadId)}`} className="mb-4 inline-flex items-center rounded-xl bg-sky-500 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-600">Open Estimator Engine</a><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{estimatorEntries(estimator).map(([label, entry]) => <div key={label} className="rounded-xl border border-slate-200 bg-slate-50 p-3"><p className="text-xs text-slate-500">{label}</p><p className="mt-1 text-sm font-semibold text-slate-900">{value(entry)}</p></div>)}</div><p className="mt-4 text-xs text-slate-500">The estimator engine is the source of truth for estimate inputs and generated estimate PDFs. This project view does not create or overwrite estimator revisions.</p>
           </Module>
 
           <Module title="Materials and supply chain" subtitle="">

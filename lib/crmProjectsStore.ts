@@ -138,7 +138,7 @@ export async function getCrmProjects(options: CrmProjectsOptions = {}): Promise<
     ...(typeof options.limit === 'number' ? {limit: options.limit} : {}),
   });
 
-  return leads
+  const projects = leads
     .filter((lead) => options.includeAll || String(lead.status || '').trim().toUpperCase() === 'ACCEPTED')
     .map((lead) => ({
       id: lead.id,
@@ -162,6 +162,8 @@ export async function getCrmProjects(options: CrmProjectsOptions = {}): Promise<
       workLog: lead.workLog || [],
       estimatorData: normalizeCrmEstimatorData(lead.estimatorData, createEmptyCrmEstimatorData()),
     }));
+
+  return projects;
 }
 
 export async function upsertProjectFromLead(lead: CrmLead): Promise<void> {
