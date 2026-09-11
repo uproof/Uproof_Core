@@ -26,6 +26,7 @@ export type CrmEstimatorEngineOutputs = {
   costSummary?: Record<string, unknown>;
   customerOffer?: Record<string, unknown>;
   f2Estimate?: Record<string, unknown>;
+  settings?: Record<string, unknown>;
   workPlan?: Record<string, unknown>;
   dailyWorkLog?: Record<string, unknown>;
   materialsToUse?: Record<string, unknown>;
@@ -117,13 +118,13 @@ export const CRM_ESTIMATOR_BOOLEAN_OPTIONS: CrmEstimatorSelectOption[] = [
 ];
 
 export const CRM_ESTIMATOR_FIELD_DEFINITIONS: CrmEstimatorFieldDefinition[] = [
-  {section: 'Roof basics', key: 'roofProblem', label: 'Esošā problēma ar jumtu', type: 'select', options: [
+  {section: 'Jumta pamatdati', key: 'roofProblem', label: 'Esošā problēma ar jumtu', type: 'select', options: [
     {label: 'Jumts tek vairākās vietās', value: 'Jumts tek vairākās vietās'},
     {label: 'Jumts tek vienā vietā', value: 'Jumts tek vienā vietā'},
     {label: 'Jumts nolietojies', value: 'Jumts nolietojies'},
     {label: 'vecs', value: 'vecs'},
   ]},
-  {section: 'Roof basics', key: 'existingRoofCovering', label: 'Esošais jumta segums', type: 'select', options: [
+  {section: 'Jumta pamatdati', key: 'existingRoofCovering', label: 'Esošais jumta segums', type: 'select', options: [
     {label: 'Šīferis', value: 'Šīferis'},
     {label: 'Bitumena šindelis', value: 'Bitumena šindelis'},
     {label: 'Valcprofils', value: 'Valcprofils'},
@@ -132,14 +133,14 @@ export const CRM_ESTIMATOR_FIELD_DEFINITIONS: CrmEstimatorFieldDefinition[] = [
     {label: 'Lubiņi', value: 'Lubiņi'},
     {label: 'Cits / vairāki', value: 'Cits / vairāki'},
   ]},
-  {section: 'Roof basics', key: 'existingRoofArea', label: 'Aptuvenā platība, ja ir zināms', type: 'text', placeholder: '180 m2'},
-  {section: 'Roof basics', key: 'buildingType', label: 'Ēkas tips', type: 'select', options: [
+  {section: 'Jumta pamatdati', key: 'existingRoofArea', label: 'Aptuvenā platība, ja ir zināms', type: 'text', placeholder: '180 m2'},
+  {section: 'Jumta pamatdati', key: 'buildingType', label: 'Ēkas tips', type: 'select', options: [
     {label: 'Privātmāja', value: 'Privātmāja'},
     {label: 'Dzīvokļu ēka', value: 'Dzīvokļu ēka'},
     {label: 'Cits', value: 'Cits'},
     {label: 'Industriālā ēka', value: 'Industriālā ēka'},
   ]},
-  {section: 'Roof basics', key: 'desiredRoofCovering', label: 'Vēlamais jumta segums', type: 'select', options: [
+  {section: 'Jumta pamatdati', key: 'desiredRoofCovering', label: 'Vēlamais jumta segums', type: 'select', options: [
     {label: 'Metāla- Valcprofila', value: 'Metāla- Valcprofila'},
     {label: 'Bezasbesta šīferis', value: 'Bezasbesta šīferis'},
     {label: 'Betona dakstiņi', value: 'Betona dakstiņi'},

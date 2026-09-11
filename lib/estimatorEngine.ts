@@ -14,12 +14,15 @@ export type EstimatorLineItem = {
   quantity: number;
   unitPrice: number;
   unitLabor: number;
+  laborHours?: number;
+  mechanisms?: number;
   totalMaterial: number;
   totalLabor: number;
   total: number;
 };
 
 export type PiedāvājumsRow = {
+  position: number;
   description: string;
   specification: string;
   unit: string;
@@ -35,8 +38,10 @@ export type F2EstimateRow = {
   quantity: number;
   unitPrice: number;
   unitLabor: number;
+  laborHours?: number;
   totalMaterial: number;
   totalLabor: number;
+  mechanisms?: number;
   overhead: number;
   profit: number;
   total: number;
@@ -69,6 +74,12 @@ export type EstimatorOutput = {
       totalIncVat: number;
     };
   };
+  settings?: {
+    slopeCoefficient: number;
+    materialPrices: Array<{name: string; unit: string; priceExVat: number; vatRate: number; supplier: string}>;
+    workRates: Array<{category: string; description: string; unit: string; hoursPerUnit: number; rate: number; markup: number}>;
+    sheetMetalDetails: Array<{name: string; width: number; priceRukki: number; priceZn: number}>;
+  };
   materials: Array<{
     item: string;
     unit: string;
@@ -81,7 +92,9 @@ export type EstimatorOutput = {
     task: string;
     hours: number;
     crew: number;
+    date?: string;
   }>;
+  dailyPlan?: Array<{day: number; date: string; tasks: string; crew: number; hours: number; completed: boolean; comments: string}>;
 };
 
 /**
@@ -131,7 +144,26 @@ export const ESTIMATOR_REFERENCE_DATA = {
     vat: 0.21,          // 21% VAT
     safetyAllowance: 0.30, // 30% safety/contingency
   },
+  slopeCoefficients: {0: 1, 5: 1.004, 10: 1.015, 15: 1.035, 20: 1.064, 25: 1.103, 30: 1.155, 35: 1.221, 40: 1.305, 45: 1.414, 50: 1.556, 55: 1.743, 60: 2},
+  sheetMetalDetails: [
+    {name: 'Apakšlāsne', width: 0.24, priceRukki: 5.4, priceZn: 4.44},
+    {name: 'Kaitēku siets', width: 0.13, priceRukki: 2.04, priceZn: 1.7},
+    {name: 'Lāsene', width: 0.35, priceRukki: 7.85, priceZn: 6.1},
+    {name: 'Ventilējama kore', width: 0.25, priceRukki: 6.75, priceZn: 5.5},
+  ],
 };
+
+function numeric(value: string | number | null | undefined, fallback = 0) {
+  const parsed = typeof value === 'number' ? value : Number.parseFloat(String(value ?? '').replace(',', '.'));
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
+function slopeCoefficient(value: string) {
+  const angle = numeric(value.replace(/[^0-9,.]/g, ''), 0);
+  const keys = Object.keys(ESTIMATOR_REFERENCE_DATA.slopeCoefficients).map(Number);
+  const nearest = keys.reduce((best, key) => Math.abs(key - angle) < Math.abs(best - angle) ? key : best, keys[0]);
+  return ESTIMATOR_REFERENCE_DATA.slopeCoefficients[nearest as keyof typeof ESTIMATOR_REFERENCE_DATA.slopeCoefficients];
+}
 
 /**
  * Generate base estimate line items from CRM data
@@ -141,15 +173,17 @@ export function generateBaseLineItems(data: CrmEstimatorFormData): EstimatorLine
   let rowNum = 1;
 
   // Parse roof area
-  const roofArea = parseFloat(data.existingRoofArea || '0') || 0;
+  const roofArea = numeric(data.existingRoofArea);
   if (roofArea <= 0) return [];
+  const area = roofArea * slopeCoefficient(data.roofPitch);
+  const add = (item: Omit<EstimatorLineItem, 'row'>) => items.push({...item, row: rowNum++});
 
   // Demolition work
   if (data.roofProblem) {
     items.push({
       row: rowNum++,
       category: 'Demontāžas darbi',
-      description: `Existing roof removal - ${data.existingRoofCovering || 'Unknown'}`,
+      description: `Esošā jumta seguma demontāža - ${data.existingRoofCovering || 'nav norādīts'}`,
       unit: 'm²',
       quantity: roofArea,
       unitPrice: 4.50,
@@ -167,7 +201,7 @@ export function generateBaseLineItems(data: CrmEstimatorFormData): EstimatorLine
     items.push({
       row: rowNum++,
       category: 'Jumta siltumizolācija',
-      description: `Thermal insulation ${data.insulationThickness || '150'}mm - Paroc Ultra`,
+      description: `Jumta siltumizolācija ${data.insulationThickness || '150'} mm - Paroc Ultra`,
       unit: 'm²',
       quantity: insulationArea,
       unitPrice: 8.74,
@@ -182,7 +216,7 @@ export function generateBaseLineItems(data: CrmEstimatorFormData): EstimatorLine
   items.push({
     row: rowNum++,
     category: 'Tvaika barjera',
-    description: 'Vapor barrier membrane 200µm',
+    description: 'Tvaika barjeras plēve 200mkr',
     unit: 'm²',
     quantity: roofArea,
     unitPrice: 2.99,
@@ -196,7 +230,7 @@ export function generateBaseLineItems(data: CrmEstimatorFormData): EstimatorLine
   items.push({
     row: rowNum++,
     category: 'Difūzijas membrāna',
-    description: 'Diffusion membrane Rukki 145 with installation',
+    description: 'Difūzijas membrāna Rukki 145 ar ieklāšanu',
     unit: 'm²',
     quantity: roofArea,
     unitPrice: 3.57,
@@ -210,7 +244,7 @@ export function generateBaseLineItems(data: CrmEstimatorFormData): EstimatorLine
   items.push({
     row: rowNum++,
     category: 'Latojuma montāža',
-    description: 'Wooden lathing 25x50mm and 25x100mm with nails',
+    description: 'Jumta latojums 25x50 mm un 25x100 mm ar stiprinājumiem',
     unit: 'm²',
     quantity: roofArea,
     unitPrice: 9.22,
@@ -226,7 +260,7 @@ export function generateBaseLineItems(data: CrmEstimatorFormData): EstimatorLine
     items.push({
       row: rowNum++,
       category: 'Noteksistēma',
-      description: 'Drainage system - gutters D125mm, downspouts D100mm with all fittings',
+      description: 'Teknes D125 mm un notekcaurules D100 mm ar komplektējošiem elementiem',
       unit: 'm',
       quantity: gutterLength,
       unitPrice: 21.13,
@@ -241,7 +275,7 @@ export function generateBaseLineItems(data: CrmEstimatorFormData): EstimatorLine
   items.push({
     row: rowNum++,
     category: 'Valcprofila segums',
-    description: `Metal roofing - ${data.desiredRoofCovering || 'Rukki PurMat'} ${data.desiredMaterialColor || 'RR23'}`,
+    description: `Valcprofila jumta segums - ${data.desiredRoofCovering || 'Rukki PurMat'} ${data.desiredMaterialColor || ''}`,
     unit: 'm²',
     quantity: roofArea,
     unitPrice: 13.53,
@@ -256,7 +290,7 @@ export function generateBaseLineItems(data: CrmEstimatorFormData): EstimatorLine
     items.push({
       row: rowNum++,
       category: 'Vēja kaste',
-      description: 'Wind box renovation with wood frame and finishing boards',
+      description: 'Vēja kastes izbūve ar karkasu un apdares dēļiem',
       unit: 'm²',
       quantity: roofArea * 0.15, // Estimate 15% of roof area
       unitPrice: 11.08,
@@ -272,7 +306,7 @@ export function generateBaseLineItems(data: CrmEstimatorFormData): EstimatorLine
     items.push({
       row: rowNum++,
       category: 'Drošības sistēmas',
-      description: 'Snow barriers installation',
+      description: 'Sniega barjeru montāža',
       unit: 'm²',
       quantity: roofArea,
       unitPrice: 5.5,
@@ -286,8 +320,8 @@ export function generateBaseLineItems(data: CrmEstimatorFormData): EstimatorLine
   // Material handling and waste management
   items.push({
     row: rowNum++,
-    category: 'Peldes darbi',
-    description: 'Material handling, waste disposal, and site management',
+    category: 'Būvobjekta darbi',
+    description: 'Materiālu piegāde, būvgružu utilizācija un objekta iekārtošana',
     unit: 'kpl',
     quantity: 1,
     unitPrice: Math.max(500, roofArea * 3),
@@ -326,12 +360,13 @@ export function generateEstimatorOutput(data: CrmEstimatorFormData): EstimatorOu
   const totals = calculateTotals(items);
 
   // Piedāvājums rows (simplified for customer)
-  const piedāvājumsRows: PiedāvājumsRow[] = items.map((item) => ({
+  const piedāvājumsRows: PiedāvājumsRow[] = items.map((item, index) => ({
+    position: index + 1,
     description: item.description,
     specification: item.category,
     unit: item.unit,
     quantity: item.quantity,
-    unitPrice: (item.total / item.quantity).toFixed(2) as unknown as number,
+    unitPrice: parseFloat((item.total / item.quantity).toFixed(2)),
     total: parseFloat(item.total.toFixed(2)),
   }));
 
@@ -341,13 +376,13 @@ export function generateEstimatorOutput(data: CrmEstimatorFormData): EstimatorOu
     description: item.description,
     unit: item.unit,
     quantity: item.quantity,
-    unitPrice: (item.totalMaterial / item.quantity).toFixed(2) as unknown as number,
-    unitLabor: (item.totalLabor / item.quantity).toFixed(2) as unknown as number,
+    unitPrice: parseFloat((item.totalMaterial / item.quantity).toFixed(2)),
+    unitLabor: parseFloat((item.totalLabor / item.quantity).toFixed(2)),
+    laborHours: parseFloat((item.laborHours ?? item.quantity * 0.2).toFixed(2)),
     totalMaterial: parseFloat(item.totalMaterial.toFixed(2)),
     totalLabor: parseFloat(item.totalLabor.toFixed(2)),
-    overhead: parseFloat(
-      ((item.total * ESTIMATOR_REFERENCE_DATA.overheadMargins.overhead) / item.quantity).toFixed(2),
-    ),
+    mechanisms: parseFloat((item.mechanisms ?? 0).toFixed(2)),
+    overhead: parseFloat(((item.total * ESTIMATOR_REFERENCE_DATA.overheadMargins.overhead) / item.quantity).toFixed(2)),
     profit: parseFloat(
       ((item.total * ESTIMATOR_REFERENCE_DATA.overheadMargins.profit) / item.quantity).toFixed(2),
     ),
@@ -361,20 +396,21 @@ export function generateEstimatorOutput(data: CrmEstimatorFormData): EstimatorOu
       item: item.description,
       unit: item.unit,
       quantity: item.quantity,
-      unitPrice: (item.totalMaterial / item.quantity).toFixed(2) as unknown as number,
+      unitPrice: parseFloat((item.totalMaterial / item.quantity).toFixed(2)),
       total: parseFloat(item.totalMaterial.toFixed(2)),
     }));
 
   // Work plan (simplified)
   const workPlan = [
-    { day: 1, task: 'Site preparation and safety measures', hours: 4, crew: 2 },
-    { day: 2, task: 'Existing roof demolition', hours: 6, crew: 3 },
-    { day: 3, task: 'Structural repairs and lathing', hours: 8, crew: 3 },
-    { day: 4, task: 'Insulation and vapor barrier installation', hours: 8, crew: 2 },
-    { day: 5, task: 'Metal roofing installation', hours: 8, crew: 3 },
-    { day: 6, task: 'Drainage system and wind box installation', hours: 6, crew: 2 },
-    { day: 7, task: 'Final inspection and cleanup', hours: 4, crew: 2 },
+    {day: 1, task: 'Būvobjekta iekārtošana un drošības pasākumi', hours: 4, crew: 2},
+    {day: 2, task: 'Esošā jumta seguma demontāža', hours: 6, crew: 3},
+    {day: 3, task: 'Jumta konstrukciju pārbaude un latojums', hours: 8, crew: 3},
+    {day: 4, task: 'Siltināšana un tvaika barjeras ieklāšana', hours: 8, crew: 2},
+    {day: 5, task: 'Difūzijas membrāna un valcprofila segums', hours: 8, crew: 3},
+    {day: 6, task: 'Teknes, skārda detaļas un vēja kastes', hours: 6, crew: 2},
+    {day: 7, task: 'Pārbaude, utilizācija un objekta nodošana', hours: 4, crew: 2},
   ];
+  const dailyPlan = workPlan.map((item) => ({day: item.day, date: '', tasks: item.task, crew: item.crew, hours: item.hours, completed: false, comments: ''}));
 
   return {
     piedāvājums: {
@@ -391,7 +427,7 @@ export function generateEstimatorOutput(data: CrmEstimatorFormData): EstimatorOu
       },
     },
     f2Forma: {
-      title: `Lokālā tāme - Jumta renovācija`,
+      title: 'Lokālā tāme Nr.1',
       rows: f2Rows,
       summary: {
         directCosts: parseFloat(totals.materials.toFixed(2)),
@@ -403,7 +439,20 @@ export function generateEstimatorOutput(data: CrmEstimatorFormData): EstimatorOu
         totalIncVat: parseFloat(totals.total.toFixed(2)),
       },
     },
+    settings: {
+      slopeCoefficient: slopeCoefficient(data.roofPitch),
+      materialPrices: [
+        {name: 'Valcprofils Rukki', unit: 'm²', priceExVat: 11.4, vatRate: 0.21, supplier: 'Lebens'},
+        {name: 'Valcprofils ZN', unit: 'm²', priceExVat: 7.1, vatRate: 0.21, supplier: 'C95'},
+        {name: 'Teknes apaļās 125 ZN', unit: 'm', priceExVat: 2.99, vatRate: 0.21, supplier: 'C95'},
+        {name: 'Klemmeri', unit: 'gb', priceExVat: 0.045, vatRate: 0.21, supplier: 'AVR'},
+        {name: 'Kokmateriāli', unit: 'm³', priceExVat: 330, vatRate: 0.21, supplier: 'Kokmateriāli'},
+      ],
+      workRates: Object.entries(ESTIMATOR_REFERENCE_DATA.laborRates).map(([category, value]) => ({category, description: value.description, unit: 'h', hoursPerUnit: 0.2, rate: value.rate, markup: ESTIMATOR_REFERENCE_DATA.laborMarkup.standard})),
+      sheetMetalDetails: ESTIMATOR_REFERENCE_DATA.sheetMetalDetails,
+    },
     materials,
     workPlan,
+    dailyPlan,
   };
 }

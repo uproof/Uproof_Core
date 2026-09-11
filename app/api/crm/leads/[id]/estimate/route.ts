@@ -48,6 +48,7 @@ export async function POST(request: NextRequest, {params}: {params: Promise<{id:
       outputs: {
         piedāvājums: {
           activeLineItems: output.piedāvājums.rows.map((row) => ({
+            position: row.position,
             description: row.description,
             quantity: `${row.quantity}`,
             unit: row.unit,
@@ -59,11 +60,17 @@ export async function POST(request: NextRequest, {params}: {params: Promise<{id:
         },
         f2Estimate: {
           activeRows: output.f2Forma.rows.map((row) => ({
+            row: row.row,
             name: row.description,
             description: row.description,
             quantity: `${row.quantity}`,
             unit: row.unit,
             unitPriceExVat: `${row.unitPrice}`,
+            laborHours: `${row.laborHours}`,
+            laborRate: '18.00',
+            laborTotal: `${row.totalLabor}`,
+            materialTotal: `${row.totalMaterial}`,
+            mechanisms: `${row.mechanisms}`,
             totalLaborAndMaterials: `${row.total}`,
             total: `${row.total}`,
           })),
@@ -86,6 +93,10 @@ export async function POST(request: NextRequest, {params}: {params: Promise<{id:
         workPlan: {
           tasks: output.workPlan,
         },
+        dailyWorkLog: {
+          tasks: output.dailyPlan,
+        },
+        settings: output.settings,
       },
       detailedEstimate: {
         activeRows: output.f2Forma.rows.map((row) => ({
