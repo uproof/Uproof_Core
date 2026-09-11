@@ -85,6 +85,20 @@ function OutputTable({title, rows, nameKey, onChange, columns: _columns}: {title
   return <div className="overflow-x-auto border border-slate-200 bg-white"><table className="min-w-full text-sm"><thead><tr><th className="border border-slate-200 px-2 py-2 text-left">Apraksts</th><th className="border border-slate-200 px-2 py-2 text-left">Daudzums</th><th className="border border-slate-200 px-2 py-2 text-left">Mērvienība</th><th className="border border-slate-200 px-2 py-2 text-left">Kopā EUR</th></tr></thead><tbody>{rows.length > 0 ? rows.map((row, index) => <tr key={`${title}-${index}`}><td className="border border-slate-200 px-2 py-1"><EditableText value={row[nameKey] ?? row.name ?? row.description ?? row.item ?? row.task ?? row.tasks} onChange={(value) => onChange(index, nameKey, value)} className="w-full" /></td><td className="border border-slate-200 px-2 py-1">{String(row.quantity ?? row.hours ?? '')}</td><td className="border border-slate-200 px-2 py-1">{String(row.unit ?? '')}</td><td className="border border-slate-200 px-2 py-1 text-right">{eur(row.total ?? row.totalExVat ?? row.totalLaborAndMaterials)}</td></tr>) : <tr><td colSpan={4} className="px-2 py-4 text-slate-500">Nospiediet “Apstrādāt tāmi”, lai ģenerētu pozīcijas.</td></tr>}</tbody></table></div>;
 }
 
+function ReferenceTable({rows, fields, settingsKey, onChange}: {rows: Array<Record<string, unknown>>; fields: Array<{key: string; label: string}>; settingsKey: string; onChange: (index: number, key: string, value: string) => void}) {
+  return <div className="overflow-x-auto border border-slate-300 bg-white"><table className="min-w-full border-collapse text-sm"><thead className="bg-slate-100"><tr>{fields.map((field) => <th key={field.key} className="border border-slate-300 px-2 py-2 text-left text-xs font-bold text-slate-700">{field.label}</th>)}</tr></thead><tbody>{rows.map((row, index) => <tr key={`${settingsKey}-${index}`} className="odd:bg-white even:bg-slate-50">{fields.map((field) => <td key={field.key} className="border border-slate-200 px-2 py-1"><EditableText value={row[field.key]} onChange={(value) => onChange(index, `${settingsKey}.${field.key}`, value)} className={field.key === 'name' || field.key === 'position' || field.key === 'description' || field.key === 'supplier' ? 'min-w-56' : 'w-28'} /></td>)}</tr>)}</tbody></table></div>;
+}
+
+function ReferenceSettingsPanels({outputs, onChange}: {outputs: CrmEstimatorEngineOutputs; onChange: (output: keyof CrmEstimatorEngineOutputs, index: number, key: string, value: string) => void}) {
+  const settings = outputs.settings || {};
+  const materials = (settings.materialPrices as Array<Record<string, unknown>> | undefined) || [];
+  const workRates = (settings.workRates as Array<Record<string, unknown>> | undefined) || [];
+  const sheetDetails = (settings.sheetMetalDetails as Array<Record<string, unknown>> | undefined) || [];
+  const slopes = (settings.slopeCoefficients as Array<Record<string, unknown>> | undefined) || [];
+  const edit = (index: number, key: string, value: string) => onChange('settings', index, key, value);
+  return <div className="space-y-3"><Module title="Materiālu cenas - pilns katalogs" subtitle="Visas šūnas ir rediģējamas; cena ar PVN tiek izmantota piedāvājuma aprēķinā"><ReferenceTable rows={materials} settingsKey="materialPrices" fields={[{key: 'name', label: 'Pozīcija'}, {key: 'unit', label: 'Mērvienība'}, {key: 'priceExVat', label: 'Cena/vienība bez PVN'}, {key: 'vatRate', label: 'PVN likme'}, {key: 'priceWithVat', label: 'Cena ar PVN'}, {key: 'supplier', label: 'Piegādātājs'}]} onChange={edit} /></Module><Module title="Ch pozīcijas - pilns katalogs" subtitle="Darba norma un uzcenojums tiek izmantoti F2 darba aprēķinos"><ReferenceTable rows={workRates} settingsKey="workRates" fields={[{key: 'category', label: 'Kategorija'}, {key: 'description', label: 'Pozīcija'}, {key: 'unit', label: 'Mērvienība'}, {key: 'hoursPerUnit', label: 'h/vienību'}, {key: 'rate', label: 'Stundas likme'}, {key: 'markup', label: 'Uzcenojums'}]} onChange={edit} /></Module><Module title="Skārda detaļas - pilns katalogs" subtitle="Detaļu formulas un locīšanas izmaksas"><ReferenceTable rows={sheetDetails} settingsKey="sheetMetalDetails" fields={[{key: 'category', label: 'Dzega'}, {key: 'name', label: 'Nosaukums'}, {key: 'layoutWidth', label: 'Izklājuma platums'}, {key: 'foldCount', label: 'Locījumu skaits'}, {key: 'rukkiPrice', label: 'Rukki'}, {key: 'zincPrice', label: 'Zn'}, {key: 'perforatedPrice', label: 'Perforēts'}, {key: 'rukki06Price', label: 'Rukki 0.6'}, {key: 'foldingPricePerFold', label: 'Locīšana'}]} onChange={edit} /></Module><Module title="Slīpuma koeficienti" subtitle="Šūnas tiek izmantotas, lai 2D platību pārvērstu faktiskajā jumta plaknes platībā"><ReferenceTable rows={slopes} settingsKey="slopeCoefficients" fields={[{key: 'angle', label: 'Leņķis (°)'}, {key: 'multiplier', label: 'Reizināt 2D laukumu ar'}]} onChange={edit} /></Module></div>;
+}
+
 function WorkbookOutputSections({outputs, leadId, onChange}: {outputs: CrmEstimatorEngineOutputs; leadId: string; onChange: (output: keyof CrmEstimatorEngineOutputs, index: number, key: string, value: string) => void}) {
   const offerRows = outputRows(outputs.customerOffer, 'activeLineItems');
   const f2Rows = outputRows(outputs.f2Estimate, 'activeRows');
@@ -125,7 +139,17 @@ function EstimatorWorkflow({project, initialData}: {project: CrmProjectRecord; i
       const rowsKey = output === 'customerOffer' ? 'activeLineItems' : output === 'f2Estimate' ? 'activeRows' : output === 'materialsToUse' ? 'consolidatedMaterials' : output === 'settings' ? inferredSettingsKey : 'tasks';
       const fieldKey = output === 'settings' && settingsField ? settingsField : key;
       const rows = Array.isArray(section[rowsKey]) ? section[rowsKey] as Array<Record<string, unknown>> : [];
-      return {...current, [output]: {...section, [rowsKey]: rows.map((row, rowIndex) => rowIndex === index ? {...row, [fieldKey]: value} : row)}};
+      const nextRows = rows.map((row, rowIndex) => {
+        if (rowIndex !== index) return row;
+        const nextRow = {...row, [fieldKey]: value};
+        if (output === 'settings' && rowsKey === 'materialPrices' && (fieldKey === 'priceExVat' || fieldKey === 'vatRate')) {
+          const price = Number(nextRow.priceExVat);
+          const vat = Number(nextRow.vatRate);
+          nextRow.priceWithVat = Number.isFinite(price) && Number.isFinite(vat) ? (price * vat).toFixed(4) : nextRow.priceWithVat;
+        }
+        return nextRow;
+      });
+      return {...current, [output]: {...section, [rowsKey]: nextRows}};
     });
   };
 
@@ -149,7 +173,7 @@ function EstimatorWorkflow({project, initialData}: {project: CrmProjectRecord; i
       const response = await fetch(`/api/crm/leads/${encodeURIComponent(project.leadId)}/estimate`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({estimatorData: data}),
+        body: JSON.stringify({estimatorData: {...data, engineOutputs}}),
       });
       const result = await response.json();
       if (!response.ok || !result.ok) throw new Error(result.error || 'Estimate could not be generated');
@@ -211,6 +235,7 @@ function EstimatorWorkflow({project, initialData}: {project: CrmProjectRecord; i
     {rows.length > 0 ? <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4"><div className="flex flex-wrap items-center justify-between gap-3"><div><h3 className="text-sm font-bold text-slate-900">Processed output</h3><p className="mt-1 text-xs text-slate-500">Edit the rows before finalising the client documents.</p></div><button type="button" onClick={() => void finalise()} className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700">{finalised ? 'Finalised' : 'Finalise estimate'}</button></div><div className="mt-4 overflow-x-auto"><table className="min-w-full"><thead><tr>{['Description', 'Quantity', 'Unit', 'Unit price', 'Total'].map((heading) => <th key={heading} className="px-2 py-2 text-left text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">{heading}</th>)}</tr></thead><tbody>{rows.map((row, index) => <tr key={`${row.description}-${index}`}><td className="px-2 py-2"><input value={row.description} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, description: event.target.value} : entry))} className="h-9 min-w-52 rounded border border-slate-200 px-2 text-sm" /></td><td className="px-2 py-2"><input value={row.quantity} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, quantity: event.target.value} : entry))} className="h-9 w-24 rounded border border-slate-200 px-2 text-sm" /></td><td className="px-2 py-2"><input value={row.unit} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, unit: event.target.value} : entry))} className="h-9 w-24 rounded border border-slate-200 px-2 text-sm" /></td><td className="px-2 py-2"><input value={row.price} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, price: event.target.value, total: event.target.value && row.quantity ? String(Number(event.target.value) * Number(row.quantity)) : ''} : entry))} className="h-9 w-28 rounded border border-slate-200 px-2 text-sm" /></td><td className="px-2 py-2"><input value={row.total} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, total: event.target.value} : entry))} className="h-9 w-28 rounded border border-slate-200 px-2 text-sm" /></td></tr>)}</tbody></table></div>{finalised ? <div className="mt-4 flex flex-wrap gap-2"><a href={`/api/estimator/${encodeURIComponent(project.leadId)}/pdf?kind=f2`} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700">Download F2 forma</a><a href={`/api/estimator/${encodeURIComponent(project.leadId)}/pdf?kind=offer`} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700">Download Piedāvājums</a><a href={`mailto:?subject=${encodeURIComponent(`Piedāvājums - ${project.title}`)}`} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700">Send to client email</a></div> : null}</div> : null}
   </Module>
   <WorkbookOutputSections leadId={project.leadId} outputs={engineOutputs} onChange={updateEngineOutput} />
+  <ReferenceSettingsPanels outputs={engineOutputs} onChange={updateEngineOutput} />
   </>;
 }
 

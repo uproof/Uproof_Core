@@ -5,6 +5,13 @@
  */
 
 import type { CrmEstimatorFormData } from './crmEstimator';
+import {
+  MATERIAL_PRICE_REFERENCES,
+  SHEET_DETAIL_REFERENCES,
+  SLOPE_COEFFICIENT_REFERENCES,
+  WORK_POSITION_REFERENCES,
+  calculateSlopeAdjustedArea,
+} from './estimatorReferenceData';
 
 export type EstimatorLineItem = {
   row: number;
@@ -76,9 +83,10 @@ export type EstimatorOutput = {
   };
   settings?: {
     slopeCoefficient: number;
-    materialPrices: Array<{name: string; unit: string; priceExVat: number; vatRate: number; supplier: string}>;
-    workRates: Array<{category: string; description: string; unit: string; hoursPerUnit: number; rate: number; markup: number}>;
-    sheetMetalDetails: Array<{name: string; width: number; priceRukki: number; priceZn: number}>;
+    materialPrices: Array<Record<string, unknown>>;
+    workRates: Array<Record<string, unknown>>;
+    sheetMetalDetails: Array<Record<string, unknown>>;
+    slopeCoefficients?: Array<{angle: number; multiplier: number}>;
   };
   materials: Array<{
     item: string;
@@ -160,9 +168,33 @@ function numeric(value: string | number | null | undefined, fallback = 0) {
 
 function slopeCoefficient(value: string) {
   const angle = numeric(value.replace(/[^0-9,.]/g, ''), 0);
-  const keys = Object.keys(ESTIMATOR_REFERENCE_DATA.slopeCoefficients).map(Number);
-  const nearest = keys.reduce((best, key) => Math.abs(key - angle) < Math.abs(best - angle) ? key : best, keys[0]);
-  return ESTIMATOR_REFERENCE_DATA.slopeCoefficients[nearest as keyof typeof ESTIMATOR_REFERENCE_DATA.slopeCoefficients];
+  return calculateSlopeAdjustedArea(1, angle, SLOPE_COEFFICIENT_REFERENCES);
+}
+
+function referenceSettings(data: CrmEstimatorFormData): NonNullable<EstimatorOutput['settings']> {
+  const saved = data.engineOutputs?.settings;
+  const savedSettings = saved && typeof saved === 'object' ? saved as Record<string, unknown> : {};
+  const materialPrices: NonNullable<EstimatorOutput['settings']>['materialPrices'] = Array.isArray(savedSettings.materialPrices)
+    ? savedSettings.materialPrices as NonNullable<EstimatorOutput['settings']>['materialPrices']
+    : MATERIAL_PRICE_REFERENCES.map((item) => ({name: item.position, unit: item.unit || '', priceExVat: item.priceWithoutVat, vatRate: item.vatMultiplier, priceWithVat: item.priceWithoutVat * item.vatMultiplier, supplier: item.supplier || ''}));
+  const workRates: NonNullable<EstimatorOutput['settings']>['workRates'] = Array.isArray(savedSettings.workRates)
+    ? savedSettings.workRates as NonNullable<EstimatorOutput['settings']>['workRates']
+    : WORK_POSITION_REFERENCES.map((item) => ({category: item.category, description: item.description || item.position, unit: item.unit, hoursPerUnit: item.hoursPerUnit, rate: item.hourlyRate, markup: item.markup}));
+  const sheetMetalDetails: NonNullable<EstimatorOutput['settings']>['sheetMetalDetails'] = Array.isArray(savedSettings.sheetMetalDetails)
+    ? savedSettings.sheetMetalDetails as NonNullable<EstimatorOutput['settings']>['sheetMetalDetails']
+    : SHEET_DETAIL_REFERENCES;
+  const slopeCoefficients = (Array.isArray(savedSettings.slopeCoefficients) ? savedSettings.slopeCoefficients : SLOPE_COEFFICIENT_REFERENCES.map((item) => ({angle: item.angleDegrees, multiplier: item.areaMultiplier}))) as Array<{angle: number; multiplier: number}>;
+  return {materialPrices, workRates, sheetMetalDetails, slopeCoefficients, slopeCoefficient: numeric(String(savedSettings.slopeCoefficient ?? ''), slopeCoefficient(data.roofPitch))};
+}
+
+function referencePrice(settings: ReturnType<typeof referenceSettings>, name: string, fallback: number) {
+  const match = settings.materialPrices.find((item) => String((item as Record<string, unknown>).name || '').toLowerCase().includes(name.toLowerCase()));
+  return numeric(String((match as Record<string, unknown> | undefined)?.priceExVat ?? ''), fallback);
+}
+
+function referenceRate(settings: ReturnType<typeof referenceSettings>, name: string, fallback: number) {
+  const match = settings.workRates.find((item) => String((item as Record<string, unknown>).description || '').toLowerCase().includes(name.toLowerCase()));
+  return numeric(String((match as Record<string, unknown> | undefined)?.rate ?? ''), fallback);
 }
 
 /**
@@ -175,7 +207,8 @@ export function generateBaseLineItems(data: CrmEstimatorFormData): EstimatorLine
   // Parse roof area
   const roofArea = numeric(data.existingRoofArea);
   if (roofArea <= 0) return [];
-  const area = roofArea * slopeCoefficient(data.roofPitch);
+  const settings = referenceSettings(data);
+  const area = roofArea * settings.slopeCoefficient;
   const add = (item: Omit<EstimatorLineItem, 'row'>) => items.push({...item, row: rowNum++});
 
   // Demolition work
@@ -186,11 +219,11 @@ export function generateBaseLineItems(data: CrmEstimatorFormData): EstimatorLine
       description: `Esošā jumta seguma demontāža - ${data.existingRoofCovering || 'nav norādīts'}`,
       unit: 'm²',
       quantity: roofArea,
-      unitPrice: 4.50,
+      unitPrice: referencePrice(settings, 'Būvgružu', 4.50),
       unitLabor: 0.5,
-      totalMaterial: roofArea * 4.50,
-      totalLabor: roofArea * 0.5,
-      total: roofArea * 5.0,
+      totalMaterial: roofArea * referencePrice(settings, 'Būvgružu', 4.50),
+      totalLabor: roofArea * referenceRate(settings, 'demontāža', 0.5),
+      total: roofArea * (referencePrice(settings, 'Būvgružu', 4.50) + referenceRate(settings, 'demontāža', 0.5)),
     });
   }
 
@@ -358,6 +391,7 @@ export function calculateTotals(
 export function generateEstimatorOutput(data: CrmEstimatorFormData): EstimatorOutput {
   const items = generateBaseLineItems(data);
   const totals = calculateTotals(items);
+  const settings = referenceSettings(data);
 
   // Piedāvājums rows (simplified for customer)
   const piedāvājumsRows: PiedāvājumsRow[] = items.map((item, index) => ({
@@ -440,16 +474,11 @@ export function generateEstimatorOutput(data: CrmEstimatorFormData): EstimatorOu
       },
     },
     settings: {
-      slopeCoefficient: slopeCoefficient(data.roofPitch),
-      materialPrices: [
-        {name: 'Valcprofils Rukki', unit: 'm²', priceExVat: 11.4, vatRate: 0.21, supplier: 'Lebens'},
-        {name: 'Valcprofils ZN', unit: 'm²', priceExVat: 7.1, vatRate: 0.21, supplier: 'C95'},
-        {name: 'Teknes apaļās 125 ZN', unit: 'm', priceExVat: 2.99, vatRate: 0.21, supplier: 'C95'},
-        {name: 'Klemmeri', unit: 'gb', priceExVat: 0.045, vatRate: 0.21, supplier: 'AVR'},
-        {name: 'Kokmateriāli', unit: 'm³', priceExVat: 330, vatRate: 0.21, supplier: 'Kokmateriāli'},
-      ],
-      workRates: Object.entries(ESTIMATOR_REFERENCE_DATA.laborRates).map(([category, value]) => ({category, description: value.description, unit: 'h', hoursPerUnit: 0.2, rate: value.rate, markup: ESTIMATOR_REFERENCE_DATA.laborMarkup.standard})),
-      sheetMetalDetails: ESTIMATOR_REFERENCE_DATA.sheetMetalDetails,
+      slopeCoefficient: settings.slopeCoefficient,
+      materialPrices: settings.materialPrices,
+      workRates: settings.workRates,
+      sheetMetalDetails: settings.sheetMetalDetails,
+      slopeCoefficients: settings.slopeCoefficients as Array<{angle: number; multiplier: number}>,
     },
     materials,
     workPlan,

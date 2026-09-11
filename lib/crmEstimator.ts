@@ -19,6 +19,25 @@ export type CrmEstimatorOutputRow = {
   total: string;
 };
 
+export type CrmEstimatorDetailRow = {
+  category: string;
+  name: string;
+  specification: string;
+  quantity: string;
+  reserve: string;
+  unit: string;
+  notes: string;
+};
+
+export type CrmEstimatorSummaryRow = {
+  category: string;
+  constructionElement: string;
+  measurement: string;
+  quantity: string;
+  unit: string;
+  notes: string;
+};
+
 export type CrmWorkbookInputValue = string | number | boolean | null;
 
 export type CrmEstimatorEngineOutputs = {
@@ -31,6 +50,8 @@ export type CrmEstimatorEngineOutputs = {
   dailyWorkLog?: Record<string, unknown>;
   materialsToUse?: Record<string, unknown>;
   mechanismsAndTools?: Record<string, unknown>;
+  crewProgress?: Record<string, unknown>;
+  projectOutputs?: Record<string, unknown>;
   cashFlow?: Record<string, unknown>;
 };
 
@@ -99,6 +120,8 @@ export type CrmEstimatorFormData = {
   processedRows: CrmEstimatorOutputRow[];
   processingStatus: 'draft' | 'processed' | 'finalised';
   workbookInputs: Record<string, CrmWorkbookInputValue>;
+  tameInputs: CrmEstimatorDetailRow[];
+  summaryInputs: CrmEstimatorSummaryRow[];
   engineOutputs: CrmEstimatorEngineOutputs;
 };
 
@@ -299,6 +322,8 @@ export function createEmptyCrmEstimatorData(): CrmEstimatorFormData {
     processedRows: [],
     processingStatus: 'draft',
     workbookInputs: {},
+    tameInputs: [],
+    summaryInputs: [],
     engineOutputs: {},
   };
 }
@@ -392,6 +417,20 @@ function normalizeChimneyEntries(
   }
 
   return fromLegacy;
+}
+
+function normalizeDetailRows(value: unknown): CrmEstimatorDetailRow[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter((row): row is Record<string, unknown> => !!row && typeof row === 'object').map((row) => ({
+    category: normalizeText(row.category), name: normalizeText(row.name), specification: normalizeText(row.specification), quantity: normalizeText(row.quantity), reserve: normalizeText(row.reserve) || '1', unit: normalizeText(row.unit), notes: normalizeText(row.notes),
+  }));
+}
+
+function normalizeSummaryRows(value: unknown): CrmEstimatorSummaryRow[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter((row): row is Record<string, unknown> => !!row && typeof row === 'object').map((row) => ({
+    category: normalizeText(row.category), constructionElement: normalizeText(row.constructionElement), measurement: normalizeText(row.measurement), quantity: normalizeText(row.quantity), unit: normalizeText(row.unit), notes: normalizeText(row.notes),
+  }));
 }
 
 export function formatEstimatorValue(value: unknown): string {
@@ -496,6 +535,8 @@ export function normalizeCrmEstimatorData(value: unknown, fallback: CrmEstimator
     workbookInputs: candidate.workbookInputs && typeof candidate.workbookInputs === 'object' && !Array.isArray(candidate.workbookInputs)
       ? Object.fromEntries(Object.entries(candidate.workbookInputs).filter(([, value]) => value === null || typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean'))
       : {},
+    tameInputs: normalizeDetailRows(candidate.tameInputs),
+    summaryInputs: normalizeSummaryRows(candidate.summaryInputs),
     engineOutputs: candidate.engineOutputs && typeof candidate.engineOutputs === 'object' && !Array.isArray(candidate.engineOutputs)
       ? candidate.engineOutputs as CrmEstimatorEngineOutputs
       : {},

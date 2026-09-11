@@ -97,6 +97,21 @@ export async function POST(request: NextRequest, {params}: {params: Promise<{id:
           tasks: output.dailyPlan,
         },
         settings: output.settings,
+        projectOutputs: {
+          tameInputs: estimatorData.tameInputs,
+          summaryInputs: estimatorData.summaryInputs,
+          workPlan: output.workPlan,
+          dailyPlan: output.dailyPlan,
+          materials: output.materials,
+        },
+        mechanismsAndTools: {
+          rows: output.f2Forma.rows.map((row) => ({name: row.description, quantity: row.mechanisms || 0, unit: 'kpl'})),
+        },
+        crewProgress: {
+          planned: output.dailyPlan,
+          actual: [],
+          variance: [],
+        },
       },
       detailedEstimate: {
         activeRows: output.f2Forma.rows.map((row) => ({
