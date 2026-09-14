@@ -195,6 +195,16 @@ export const SLOPE_COEFFICIENT_REFERENCES: SlopeCoefficientReference[] = [
   [0, 1], [5, 1.004], [10, 1.015], [15, 1.035], [20, 1.064], [25, 1.103], [30, 1.155], [35, 1.221], [40, 1.305], [45, 1.414], [50, 1.556], [55, 1.743], [60, 2],
 ].map(([angleDegrees, areaMultiplier]) => ({angleDegrees, areaMultiplier}));
 
+export function createDefaultEstimatorSettings() {
+  return {
+    materialPrices: MATERIAL_PRICE_REFERENCES.map((item) => ({name: item.position, unit: item.unit || '', priceExVat: item.priceWithoutVat, vatRate: item.vatMultiplier, priceWithVat: item.priceWithoutVat * item.vatMultiplier, supplier: item.supplier || ''})),
+    workRates: WORK_POSITION_REFERENCES.map((item) => ({category: item.category, description: item.description || item.position, unit: item.unit, hoursPerUnit: item.hoursPerUnit, rate: item.hourlyRate, markup: item.markup})),
+    sheetMetalDetails: SHEET_DETAIL_REFERENCES.map((item) => ({...item})),
+    slopeCoefficients: SLOPE_COEFFICIENT_REFERENCES.map((item) => ({angle: item.angleDegrees, multiplier: item.areaMultiplier})),
+    slopeCoefficient: 1,
+  };
+}
+
 export type SlopeCoefficientReference = {
   angleDegrees: number;
   areaMultiplier: number;

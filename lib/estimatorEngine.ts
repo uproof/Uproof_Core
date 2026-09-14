@@ -364,6 +364,27 @@ export function generateBaseLineItems(data: CrmEstimatorFormData): EstimatorLine
     total: Math.max(500, roofArea * 3),
   });
 
+  for (const tameRow of data.tameRows || []) {
+    const quantity = numeric(tameRow.quantityWithReserve || tameRow.quantity);
+    if (!tameRow.name || quantity <= 0) continue;
+    const material = numeric(tameRow.materialTotal);
+    const labor = numeric(tameRow.laborTotalWithMarkup || tameRow.laborTotal);
+    items.push({
+      row: rowNum++,
+      category: tameRow.category || 'Tāme',
+      description: tameRow.name,
+      unit: tameRow.unit || 'kpl',
+      quantity,
+      unitPrice: quantity ? material / quantity : 0,
+      unitLabor: quantity ? labor / quantity : 0,
+      laborHours: numeric(tameRow.laborHoursWithMarkup || tameRow.workHours),
+      mechanisms: numeric(tameRow.mechanisms),
+      totalMaterial: material,
+      totalLabor: labor,
+      total: material + labor,
+    });
+  }
+
   return items;
 }
 

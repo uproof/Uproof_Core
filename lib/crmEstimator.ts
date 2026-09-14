@@ -36,7 +36,86 @@ export type CrmEstimatorSummaryRow = {
   quantity: string;
   unit: string;
   notes: string;
+  materialTotal: string;
+  materialUnitPrice: string;
+  workHours: string;
+  hourlyRate: string;
+  laborTotal: string;
+  laborUnitPrice: string;
+  total: string;
+  totalPerUnit: string;
 };
+
+export type CrmEstimatorIevadeRow = {
+  section: string;
+  name: string;
+  quantity: string;
+  unit: string;
+  width: string;
+  length: string;
+  diameter: string;
+  notes: string;
+};
+
+export type CrmEstimatorTameRow = {
+  category: string;
+  name: string;
+  specification: string;
+  quantity: string;
+  reserve: string;
+  quantityWithReserve: string;
+  unit: string;
+  materialUnitPrice: string;
+  materialTotal: string;
+  hoursPerUnit: string;
+  workUnit: string;
+  workHours: string;
+  hourlyRate: string;
+  laborUnitPrice: string;
+  laborTotal: string;
+  laborHoursWithMarkup: string;
+  laborTotalWithMarkup: string;
+  totalWorkMaterials: string;
+  positionMaterials: string;
+  positionWork: string;
+  positionDuration: string;
+  positionTotal: string;
+  mechanisms: string;
+};
+
+function numericInput(value: string, fallback = 0) {
+  const parsed = Number(String(value || '').replace(',', '.'));
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
+export function calculateEstimatorTameRow(row: CrmEstimatorTameRow): CrmEstimatorTameRow {
+  const quantity = numericInput(row.quantity);
+  const reserve = numericInput(row.reserve, 1);
+  const materialPrice = numericInput(row.materialUnitPrice);
+  const hoursPerUnit = numericInput(row.hoursPerUnit);
+  const hourlyRate = numericInput(row.hourlyRate, 18);
+  const markup = 1.7;
+  const quantityWithReserve = quantity * reserve;
+  const materialTotal = materialPrice * quantityWithReserve;
+  const workHours = hoursPerUnit * quantity;
+  const laborUnitPrice = hoursPerUnit * hourlyRate;
+  const laborTotal = workHours * hourlyRate;
+  const laborHoursWithMarkup = hoursPerUnit * markup;
+  const laborTotalWithMarkup = laborHoursWithMarkup * quantity * hourlyRate;
+  const totalWorkMaterials = materialTotal + laborTotalWithMarkup;
+  return {...row, quantityWithReserve: quantityWithReserve.toFixed(3), materialTotal: materialTotal.toFixed(2), workHours: workHours.toFixed(2), laborUnitPrice: laborUnitPrice.toFixed(2), laborTotal: laborTotal.toFixed(2), laborHoursWithMarkup: laborHoursWithMarkup.toFixed(2), laborTotalWithMarkup: laborTotalWithMarkup.toFixed(2), totalWorkMaterials: totalWorkMaterials.toFixed(2), positionMaterials: materialTotal.toFixed(2), positionWork: laborTotalWithMarkup.toFixed(2), positionDuration: laborHoursWithMarkup.toFixed(2), positionTotal: totalWorkMaterials.toFixed(2)};
+}
+
+export function calculateEstimatorSummaryRow(row: CrmEstimatorSummaryRow): CrmEstimatorSummaryRow {
+  const quantity = numericInput(row.quantity);
+  const materialUnitPrice = numericInput(row.materialUnitPrice);
+  const workHours = numericInput(row.workHours);
+  const hourlyRate = numericInput(row.hourlyRate, 18);
+  const materialTotal = quantity * materialUnitPrice;
+  const laborTotal = workHours * hourlyRate;
+  const total = materialTotal + laborTotal;
+  return {...row, materialTotal: materialTotal.toFixed(2), laborTotal: laborTotal.toFixed(2), laborUnitPrice: quantity ? (laborTotal / quantity).toFixed(2) : '0.00', total: total.toFixed(2), totalPerUnit: quantity ? (total / quantity).toFixed(2) : '0.00'};
+}
 
 export type CrmWorkbookInputValue = string | number | boolean | null;
 
@@ -122,6 +201,8 @@ export type CrmEstimatorFormData = {
   workbookInputs: Record<string, CrmWorkbookInputValue>;
   tameInputs: CrmEstimatorDetailRow[];
   summaryInputs: CrmEstimatorSummaryRow[];
+  ievaInputs: CrmEstimatorIevadeRow[];
+  tameRows: CrmEstimatorTameRow[];
   engineOutputs: CrmEstimatorEngineOutputs;
 };
 
@@ -324,6 +405,8 @@ export function createEmptyCrmEstimatorData(): CrmEstimatorFormData {
     workbookInputs: {},
     tameInputs: [],
     summaryInputs: [],
+    ievaInputs: createDefaultIevadeRows(),
+    tameRows: [],
     engineOutputs: {},
   };
 }
@@ -429,8 +512,25 @@ function normalizeDetailRows(value: unknown): CrmEstimatorDetailRow[] {
 function normalizeSummaryRows(value: unknown): CrmEstimatorSummaryRow[] {
   if (!Array.isArray(value)) return [];
   return value.filter((row): row is Record<string, unknown> => !!row && typeof row === 'object').map((row) => ({
-    category: normalizeText(row.category), constructionElement: normalizeText(row.constructionElement), measurement: normalizeText(row.measurement), quantity: normalizeText(row.quantity), unit: normalizeText(row.unit), notes: normalizeText(row.notes),
+    category: normalizeText(row.category), constructionElement: normalizeText(row.constructionElement), measurement: normalizeText(row.measurement), quantity: normalizeText(row.quantity), unit: normalizeText(row.unit), notes: normalizeText(row.notes), materialTotal: normalizeText(row.materialTotal), materialUnitPrice: normalizeText(row.materialUnitPrice), workHours: normalizeText(row.workHours), hourlyRate: normalizeText(row.hourlyRate), laborTotal: normalizeText(row.laborTotal), laborUnitPrice: normalizeText(row.laborUnitPrice), total: normalizeText(row.total), totalPerUnit: normalizeText(row.totalPerUnit),
   }));
+}
+
+function normalizeIevadeRows(value: unknown): CrmEstimatorIevadeRow[] {
+  if (!Array.isArray(value)) return createDefaultIevadeRows();
+  return value.filter((row): row is Record<string, unknown> => !!row && typeof row === 'object').map((row) => ({section: normalizeText(row.section), name: normalizeText(row.name), quantity: normalizeText(row.quantity), unit: normalizeText(row.unit), width: normalizeText(row.width), length: normalizeText(row.length), diameter: normalizeText(row.diameter), notes: normalizeText(row.notes)}));
+}
+
+function normalizeTameRows(value: unknown): CrmEstimatorTameRow[] {
+  if (!Array.isArray(value)) return [];
+  const keys: Array<keyof CrmEstimatorTameRow> = ['category', 'name', 'specification', 'quantity', 'reserve', 'quantityWithReserve', 'unit', 'materialUnitPrice', 'materialTotal', 'hoursPerUnit', 'workUnit', 'workHours', 'hourlyRate', 'laborUnitPrice', 'laborTotal', 'laborHoursWithMarkup', 'laborTotalWithMarkup', 'totalWorkMaterials', 'positionMaterials', 'positionWork', 'positionDuration', 'positionTotal', 'mechanisms'];
+  return value.filter((row): row is Record<string, unknown> => !!row && typeof row === 'object').map((row) => Object.fromEntries(keys.map((key) => [key, normalizeText(row[key])])) as CrmEstimatorTameRow);
+}
+
+export function createDefaultIevadeRows(): CrmEstimatorIevadeRow[] {
+  return [
+    ['APSTĀKĻI', 'Daudzums', '', '', '', '', ''], ['SKĀRDS', 'Skārds Zn 0.5mm', '0', 'm²', '', '', '', ''], ['SKĀRDS', 'Rukki Purmat 0.5mm', '0', 'm²', '', '', '', ''], ['SKĀRDS', 'Slīdošie klemmeri, plakne virs 6.5m', '0', '%', '', '', '', ''], ['TEKNES', 'Teknes', '0', 'm', '', '', '125', ''], ['TEKNES', 'Noteces', '0', 'gb', '', '', '100', ''], ['TEKNES', 'Noteces, m', '0', 'm', '', '', '100', ''], ['DROŠĪBA', 'Sniega barjeras apaļās', '0', 'm', '', '', '', ''], ['DROŠĪBA', 'Jumta nožogojums', '0', 'm', '', '', '', ''], ['DROŠĪBA', 'Jumta laipas 3m', '0', 'gb', '', '', '', ''], ['SKURSTEŅI', 'Skursteņa pārmūrēšana', '0', 'm²', '', '', '', ''], ['SKURSTEŅI', 'Skursteņa apmešana', '0', 'm²', '', '', '', ''], ['SKURSTEŅI', 'Skursteņa apdare ar skārdu', '0', 'm²', '', '', '', ''], ['JUMTA LOGI', 'Jumta logs', '0', 'gb', '', '', '', ''], ['JUMTA LOGI', 'Jumta logu pieslēgumu kopgarums', '0', 'm', '', '', '', ''], ['LATOJUMS', 'Latojuma platība', '0', 'm²', '', '', '0.1', ''], ['LATOJUMS', 'Attālums starp spārēm', '0.6', 'm', '', '', '', ''], ['SILTINĀJUMS', 'Paroc Ultra 150mm', '0', 'm²', '', '', '', ''], ['SILTINĀJUMS', 'Paroc Ultra 200mm', '0', 'm²', '', '', '', ''], ['SILTINĀJUMS', 'Tvaika barjera', '0', 'm²', '', '', '', ''], ['DEMONTĀŽA', 'Šīfera demontāža 12kg/m²', '0', 'm²', '', '', '', ''], ['DEMONTĀŽA', 'Valcprofila demontāža', '0', 'm²', '', '', '', ''], ['OBJEKTA IEKĀRTOŠANA', 'Būvgružu konteiners 8m³', '0', 'gb', '', '', '', ''], ['OBJEKTA IEKĀRTOŠANA', 'Sastatnes kopējā platība', '0', 'm²', '', '', '', ''], ['OBJEKTA IEKĀRTOŠANA', 'Attālums līdz objektam', '0', 'km', '', '', '', ''],
+  ].map(([section, name, quantity, unit, width, length, diameter, notes]) => ({section, name, quantity, unit, width, length, diameter, notes}));
 }
 
 export function formatEstimatorValue(value: unknown): string {
@@ -537,6 +637,8 @@ export function normalizeCrmEstimatorData(value: unknown, fallback: CrmEstimator
       : {},
     tameInputs: normalizeDetailRows(candidate.tameInputs),
     summaryInputs: normalizeSummaryRows(candidate.summaryInputs),
+    ievaInputs: normalizeIevadeRows(candidate.ievaInputs),
+    tameRows: normalizeTameRows(candidate.tameRows),
     engineOutputs: candidate.engineOutputs && typeof candidate.engineOutputs === 'object' && !Array.isArray(candidate.engineOutputs)
       ? candidate.engineOutputs as CrmEstimatorEngineOutputs
       : {},

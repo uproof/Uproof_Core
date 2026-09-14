@@ -3,6 +3,7 @@ import {getAdminSession} from '@/lib/adminAuth';
 import {getCrmLeadById} from '@/lib/crmLeadsStore';
 import {canPerform} from '@/lib/permissions';
 import {generateEstimatorOutput} from '@/lib/estimatorEngine';
+import {getEstimatorSettings} from '@/lib/estimatorSettingsStore';
 import {normalizeCrmEstimatorData} from '@/lib/crmEstimator';
 import {z} from 'zod';
 
@@ -27,6 +28,8 @@ export async function POST(request: NextRequest, {params}: {params: Promise<{id:
   try {
     const body = bodySchema.parse(await request.json());
     const estimatorData = normalizeCrmEstimatorData(body.estimatorData || lead.estimatorData);
+    const universalSettings = await getEstimatorSettings();
+    estimatorData.engineOutputs = {...estimatorData.engineOutputs, settings: universalSettings};
 
     // Validate required fields
     const missingFields = ['existingRoofArea', 'buildingType', 'desiredRoofCovering', 'materialType', 'roofPitch']

@@ -22,6 +22,7 @@ function displayValue(entry: unknown) {
 
 function Module({title, subtitle, children, defaultOpen = false}: ModuleProps) {
   const [open, setOpen] = useState(defaultOpen);
+  if (['Materiālu cenas', 'Ch pozīcijas', 'Skārda detaļas', 'Slīpuma koeficients'].includes(title)) return null;
   return (
     <section id={title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-')} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
       <button type="button" onClick={() => setOpen((current) => !current)} className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left hover:bg-slate-50">
@@ -89,14 +90,14 @@ function ReferenceTable({rows, fields, settingsKey, onChange}: {rows: Array<Reco
   return <div className="overflow-x-auto border border-slate-300 bg-white"><table className="min-w-full border-collapse text-sm"><thead className="bg-slate-100"><tr>{fields.map((field) => <th key={field.key} className="border border-slate-300 px-2 py-2 text-left text-xs font-bold text-slate-700">{field.label}</th>)}</tr></thead><tbody>{rows.map((row, index) => <tr key={`${settingsKey}-${index}`} className="odd:bg-white even:bg-slate-50">{fields.map((field) => <td key={field.key} className="border border-slate-200 px-2 py-1"><EditableText value={row[field.key]} onChange={(value) => onChange(index, `${settingsKey}.${field.key}`, value)} className={field.key === 'name' || field.key === 'position' || field.key === 'description' || field.key === 'supplier' ? 'min-w-56' : 'w-28'} /></td>)}</tr>)}</tbody></table></div>;
 }
 
-function ReferenceSettingsPanels({outputs, onChange}: {outputs: CrmEstimatorEngineOutputs; onChange: (output: keyof CrmEstimatorEngineOutputs, index: number, key: string, value: string) => void}) {
+function ReferenceSettingsPanels({outputs, onChange, onSave}: {outputs: CrmEstimatorEngineOutputs; onChange: (output: keyof CrmEstimatorEngineOutputs, index: number, key: string, value: string) => void; onSave: () => void}) {
   const settings = outputs.settings || {};
   const materials = (settings.materialPrices as Array<Record<string, unknown>> | undefined) || [];
   const workRates = (settings.workRates as Array<Record<string, unknown>> | undefined) || [];
   const sheetDetails = (settings.sheetMetalDetails as Array<Record<string, unknown>> | undefined) || [];
   const slopes = (settings.slopeCoefficients as Array<Record<string, unknown>> | undefined) || [];
   const edit = (index: number, key: string, value: string) => onChange('settings', index, key, value);
-  return <div className="space-y-3"><Module title="Materiālu cenas - pilns katalogs" subtitle="Visas šūnas ir rediģējamas; cena ar PVN tiek izmantota piedāvājuma aprēķinā"><ReferenceTable rows={materials} settingsKey="materialPrices" fields={[{key: 'name', label: 'Pozīcija'}, {key: 'unit', label: 'Mērvienība'}, {key: 'priceExVat', label: 'Cena/vienība bez PVN'}, {key: 'vatRate', label: 'PVN likme'}, {key: 'priceWithVat', label: 'Cena ar PVN'}, {key: 'supplier', label: 'Piegādātājs'}]} onChange={edit} /></Module><Module title="Ch pozīcijas - pilns katalogs" subtitle="Darba norma un uzcenojums tiek izmantoti F2 darba aprēķinos"><ReferenceTable rows={workRates} settingsKey="workRates" fields={[{key: 'category', label: 'Kategorija'}, {key: 'description', label: 'Pozīcija'}, {key: 'unit', label: 'Mērvienība'}, {key: 'hoursPerUnit', label: 'h/vienību'}, {key: 'rate', label: 'Stundas likme'}, {key: 'markup', label: 'Uzcenojums'}]} onChange={edit} /></Module><Module title="Skārda detaļas - pilns katalogs" subtitle="Detaļu formulas un locīšanas izmaksas"><ReferenceTable rows={sheetDetails} settingsKey="sheetMetalDetails" fields={[{key: 'category', label: 'Dzega'}, {key: 'name', label: 'Nosaukums'}, {key: 'layoutWidth', label: 'Izklājuma platums'}, {key: 'foldCount', label: 'Locījumu skaits'}, {key: 'rukkiPrice', label: 'Rukki'}, {key: 'zincPrice', label: 'Zn'}, {key: 'perforatedPrice', label: 'Perforēts'}, {key: 'rukki06Price', label: 'Rukki 0.6'}, {key: 'foldingPricePerFold', label: 'Locīšana'}]} onChange={edit} /></Module><Module title="Slīpuma koeficienti" subtitle="Šūnas tiek izmantotas, lai 2D platību pārvērstu faktiskajā jumta plaknes platībā"><ReferenceTable rows={slopes} settingsKey="slopeCoefficients" fields={[{key: 'angle', label: 'Leņķis (°)'}, {key: 'multiplier', label: 'Reizināt 2D laukumu ar'}]} onChange={edit} /></Module></div>;
+  return <div className="space-y-3"><div className="flex justify-end"><button type="button" onClick={onSave} className="rounded-lg bg-emerald-700 px-3 py-2 text-sm font-semibold text-white">Saglabāt universālos iestatījumus</button></div><Module title="Materiālu cenas - pilns katalogs" subtitle="Visas šūnas ir rediģējamas; cena ar PVN tiek izmantota piedāvājuma aprēķinā"><ReferenceTable rows={materials} settingsKey="materialPrices" fields={[{key: 'name', label: 'Pozīcija'}, {key: 'unit', label: 'Mērvienība'}, {key: 'priceExVat', label: 'Cena/vienība bez PVN'}, {key: 'vatRate', label: 'PVN likme'}, {key: 'priceWithVat', label: 'Cena ar PVN'}, {key: 'supplier', label: 'Piegādātājs'}]} onChange={edit} /></Module><Module title="Ch pozīcijas - pilns katalogs" subtitle="Darba norma un uzcenojums tiek izmantoti F2 darba aprēķinos"><ReferenceTable rows={workRates} settingsKey="workRates" fields={[{key: 'category', label: 'Kategorija'}, {key: 'description', label: 'Pozīcija'}, {key: 'unit', label: 'Mērvienība'}, {key: 'hoursPerUnit', label: 'h/vienību'}, {key: 'rate', label: 'Stundas likme'}, {key: 'markup', label: 'Uzcenojums'}]} onChange={edit} /></Module><Module title="Skārda detaļas - pilns katalogs" subtitle="Detaļu formulas un locīšanas izmaksas"><ReferenceTable rows={sheetDetails} settingsKey="sheetMetalDetails" fields={[{key: 'category', label: 'Dzega'}, {key: 'name', label: 'Nosaukums'}, {key: 'layoutWidth', label: 'Izklājuma platums'}, {key: 'foldCount', label: 'Locījumu skaits'}, {key: 'rukkiPrice', label: 'Rukki'}, {key: 'zincPrice', label: 'Zn'}, {key: 'perforatedPrice', label: 'Perforēts'}, {key: 'rukki06Price', label: 'Rukki 0.6'}, {key: 'foldingPricePerFold', label: 'Locīšana'}]} onChange={edit} /></Module><Module title="Slīpuma koeficienti" subtitle="Šūnas tiek izmantotas, lai 2D platību pārvērstu faktiskajā jumta plaknes platībā"><ReferenceTable rows={slopes} settingsKey="slopeCoefficients" fields={[{key: 'angle', label: 'Leņķis (°)'}, {key: 'multiplier', label: 'Reizināt 2D laukumu ar'}]} onChange={edit} /></Module></div>;
 }
 
 function WorkbookOutputSections({outputs, leadId, onChange}: {outputs: CrmEstimatorEngineOutputs; leadId: string; onChange: (output: keyof CrmEstimatorEngineOutputs, index: number, key: string, value: string) => void}) {
@@ -126,6 +127,12 @@ function EstimatorWorkflow({project, initialData}: {project: CrmProjectRecord; i
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [engineOutputs, setEngineOutputs] = useState<CrmEstimatorEngineOutputs>(initialData.engineOutputs || {});
+
+  useEffect(() => {
+    fetch('/api/estimator/settings', {cache: 'no-store'}).then((response) => response.json()).then((result) => {
+      if (result.ok) setEngineOutputs((current) => ({...current, settings: result.settings}));
+    }).catch(() => undefined);
+  }, []);
 
   const update = <K extends keyof CrmEstimatorFormData>(key: K, value: CrmEstimatorFormData[K]) => setData((current) => ({...current, [key]: value}));
   const missing = requiredEstimatorKeys.filter((key) => data[key] === '' || data[key] === null || data[key] === undefined);
@@ -161,6 +168,14 @@ function EstimatorWorkflow({project, initialData}: {project: CrmProjectRecord; i
     const result = await response.json();
     if (!response.ok || !result.ok) throw new Error(result.error || 'Estimator could not be saved');
     setVersion(result.lead.updatedAtUtc);
+  };
+
+  const saveUniversalSettings = async () => {
+    const response = await fetch('/api/estimator/settings', {method: 'PATCH', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({settings: engineOutputs.settings})});
+    const result = await response.json();
+    if (!response.ok || !result.ok) throw new Error(result.error || 'Neizdevās saglabāt universālos iestatījumus');
+    setEngineOutputs((current) => ({...current, settings: result.settings}));
+    setMessage('Universālie iestatījumi saglabāti');
   };
 
   const process = async () => {
@@ -235,7 +250,7 @@ function EstimatorWorkflow({project, initialData}: {project: CrmProjectRecord; i
     {rows.length > 0 ? <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4"><div className="flex flex-wrap items-center justify-between gap-3"><div><h3 className="text-sm font-bold text-slate-900">Processed output</h3><p className="mt-1 text-xs text-slate-500">Edit the rows before finalising the client documents.</p></div><button type="button" onClick={() => void finalise()} className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700">{finalised ? 'Finalised' : 'Finalise estimate'}</button></div><div className="mt-4 overflow-x-auto"><table className="min-w-full"><thead><tr>{['Description', 'Quantity', 'Unit', 'Unit price', 'Total'].map((heading) => <th key={heading} className="px-2 py-2 text-left text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">{heading}</th>)}</tr></thead><tbody>{rows.map((row, index) => <tr key={`${row.description}-${index}`}><td className="px-2 py-2"><input value={row.description} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, description: event.target.value} : entry))} className="h-9 min-w-52 rounded border border-slate-200 px-2 text-sm" /></td><td className="px-2 py-2"><input value={row.quantity} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, quantity: event.target.value} : entry))} className="h-9 w-24 rounded border border-slate-200 px-2 text-sm" /></td><td className="px-2 py-2"><input value={row.unit} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, unit: event.target.value} : entry))} className="h-9 w-24 rounded border border-slate-200 px-2 text-sm" /></td><td className="px-2 py-2"><input value={row.price} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, price: event.target.value, total: event.target.value && row.quantity ? String(Number(event.target.value) * Number(row.quantity)) : ''} : entry))} className="h-9 w-28 rounded border border-slate-200 px-2 text-sm" /></td><td className="px-2 py-2"><input value={row.total} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, total: event.target.value} : entry))} className="h-9 w-28 rounded border border-slate-200 px-2 text-sm" /></td></tr>)}</tbody></table></div>{finalised ? <div className="mt-4 flex flex-wrap gap-2"><a href={`/api/estimator/${encodeURIComponent(project.leadId)}/pdf?kind=f2`} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700">Download F2 forma</a><a href={`/api/estimator/${encodeURIComponent(project.leadId)}/pdf?kind=offer`} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700">Download Piedāvājums</a><a href={`mailto:?subject=${encodeURIComponent(`Piedāvājums - ${project.title}`)}`} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700">Send to client email</a></div> : null}</div> : null}
   </Module>
   <WorkbookOutputSections leadId={project.leadId} outputs={engineOutputs} onChange={updateEngineOutput} />
-  <ReferenceSettingsPanels outputs={engineOutputs} onChange={updateEngineOutput} />
+  <ReferenceSettingsPanels outputs={engineOutputs} onChange={updateEngineOutput} onSave={() => void saveUniversalSettings()} />
   </>;
 }
 
