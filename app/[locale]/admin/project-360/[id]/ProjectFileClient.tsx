@@ -3,7 +3,7 @@
 import {useEffect, useState} from 'react';
 import Link from 'next/link';
 import type {CrmProjectRecord} from '@/lib/crmProjectsStore';
-import {CRM_ESTIMATOR_BOOLEAN_OPTIONS, CRM_ESTIMATOR_FIELD_DEFINITIONS, CRM_ESTIMATOR_FIELD_SECTIONS, createEmptyCrmEstimatorData, formatEstimatorValue, type CrmEstimatorEngineOutputs, type CrmEstimatorFormData, type CrmEstimatorOutputRow} from '@/lib/crmEstimator';
+import {CRM_ESTIMATOR_BOOLEAN_OPTIONS, CRM_ESTIMATOR_FIELD_DEFINITIONS, CRM_ESTIMATOR_FIELD_SECTIONS, calculateEstimatorTameRow, createEmptyCrmEstimatorData, formatEstimatorValue, type CrmEstimatorEngineOutputs, type CrmEstimatorFormData, type CrmEstimatorOutputRow, type CrmEstimatorTameRow} from '@/lib/crmEstimator';
 
 type Props = {
   locale: string;
@@ -44,6 +44,12 @@ function projectProgressPercent(status: string, workLogCount: number) {
 }
 
 type ProcessedEstimatorRow = CrmEstimatorOutputRow;
+
+function TameInputModule({rows, onChange, onAdd}: {rows: CrmEstimatorTameRow[]; onChange: (index: number, key: keyof CrmEstimatorTameRow, value: string) => void; onAdd: () => void}) {
+  const fields: Array<keyof CrmEstimatorTameRow> = ['category', 'name', 'specification', 'quantity', 'reserve', 'quantityWithReserve', 'unit', 'materialUnitPrice', 'materialTotal', 'hoursPerUnit', 'workHours', 'hourlyRate', 'laborUnitPrice', 'laborTotal', 'laborHoursWithMarkup', 'laborTotalWithMarkup', 'totalWorkMaterials', 'positionMaterials', 'positionWork', 'positionDuration', 'positionTotal', 'mechanisms'];
+  const labels = ['Kategorija', 'Nosaukums', 'Precizējums', 'Daudzums', 'Rezerve', 'Daudzums ar rezervi', 'Mērv.', 'Cena bez PVN', 'Materiāli kopā', 'h/vienība', 'Darba ilgums', 'Likme EUR/h', 'Darba samaksa vienība', 'Darba samaksa kopā', 'Darba ilgums ar uzcenojumu', 'Darba samaksa ar uzcenojumu', 'Kopā darbs+materiāli', 'Pozīcijas materiāli', 'Pozīcijas darbs', 'Pozīcijas ilgums', 'Pozīcija kopā', 'Mehānismi'];
+  return <Module title="Tāme" subtitle="Otrā ievades lapa: detalizētas pozīcijas un workbook aprēķini" defaultOpen><div className="overflow-x-auto"><table className="min-w-[2400px] w-full text-xs"><thead><tr>{labels.map((label) => <th key={label} className="border border-slate-300 bg-slate-100 px-2 py-2 text-left">{label}</th>)}</tr></thead><tbody>{rows.map((row, index) => <tr key={index}>{fields.map((field) => <td key={field} className="border border-slate-200 p-1"><input value={row[field]} readOnly={!['category', 'name', 'specification', 'quantity', 'reserve', 'unit', 'materialUnitPrice', 'hoursPerUnit', 'hourlyRate', 'mechanisms'].includes(field)} onChange={(event) => onChange(index, field, event.target.value)} className="h-8 w-28 border-0 bg-transparent px-1" /></td>)}</tr>)}</tbody></table></div><button type="button" onClick={onAdd} className="mt-3 rounded-lg bg-slate-800 px-3 py-2 text-sm font-semibold text-white">Pievienot Tāmes pozīciju</button></Module>;
+}
 
 const requiredEstimatorKeys: Array<keyof CrmEstimatorFormData> = ['existingRoofArea', 'buildingType', 'desiredRoofCovering', 'materialType', 'roofPitch'];
 
@@ -108,7 +114,7 @@ function WorkbookOutputSections({outputs, leadId, onChange}: {outputs: CrmEstima
   const dailyTasks = outputRows(outputs.dailyWorkLog, 'tasks');
   const offerTotals = outputs.customerOffer?.totals as Record<string, unknown> | undefined;
   const f2Totals = outputs.f2Estimate?.totals as Record<string, unknown> | undefined;
-  const downloads = [['offer', 'Piedāvājums'], ['f2', 'F2 forma'], ['materials', 'Materiāli'], ['work-plan', 'Darbu plāns'], ['daily-plan', 'Dienas plāns']];
+  const downloads = [['offer', 'Piedāvājums'], ['f2', 'F2 forma'], ['materials', 'Materiāli'], ['work-plan', 'Darbu plāns'], ['daily-plan', 'Dienas plāns'], ['mechanisms', 'Mehānismi']];
   return <div className="mt-5 space-y-3"><div className="flex flex-wrap gap-2">{downloads.map(([kind, label]) => <a key={kind} href={`/api/estimator/${encodeURIComponent(leadId)}/pdf?kind=${kind}`} className="rounded-lg bg-sky-700 px-3 py-2 text-xs font-semibold text-white hover:bg-sky-800">Lejupielādēt {label} PDF</a>)}</div><Module title="Piedāvājums" subtitle="MATERIĀLU UN IZMAKSU SARAKSTS"><div className="border-b border-slate-300 px-3 py-4"><h2 className="text-xl font-semibold tracking-wide text-slate-700">MATERIĀLU UN IZMAKSU SARAKSTS</h2><p className="mt-1 text-sm text-slate-500">UpRoof.EU · SIA UpLift · būvkomersanta reģistrācijas Nr. 18223</p></div><OfferTable rows={offerRows} onChange={(index, key, value) => onChange('customerOffer', index, key, value)} /><div className="grid gap-4 border-t border-slate-300 p-4 text-sm sm:grid-cols-2"><div><p>Darba devēja VSAOI: {eur(offerTotals?.employerTax)}</p><p>Virsizdevumi: {eur(offerTotals?.overhead)}</p><p>Atlaide: {eur(offerTotals?.discount)}</p></div><div className="text-right"><p>Starpsumma: {eur(offerTotals?.subtotal)}</p><p>PVN: {eur(offerTotals?.vat)}</p><p className="text-lg font-bold">Gala summa: {eur(offerTotals?.total)}</p></div></div><div className="border-t border-slate-300 p-4 text-sm text-slate-600">10 GADU GARANTIJA JUMTA RENOVĀCIJAS UN BŪVĒŠANAS DARBIEM UN 50 GADU GARANTIJA MATERIĀLIEM</div></Module><Module title="F2 forma" subtitle="Lokālā tāme Nr.1"><div className="border-b border-black px-3 py-4"><h2 className="text-lg font-bold">Lokālā tāme Nr.1</h2><p className="text-sm text-slate-600">Jumta renovācija · tāme sastādīta pēc projekta datiem</p></div><F2Table rows={f2Rows} onChange={(index, key, value) => onChange('f2Estimate', index, key, value)} /><div className="flex justify-end border-t border-black p-4 text-sm"><div className="space-y-1 text-right"><p>Tiešās izmaksas: {eur(f2Totals?.directCosts)}</p><p>Virsizdevumi: {eur(f2Totals?.overhead)}</p><p>Peļņa: {eur(f2Totals?.profit)}</p><p>Darba devēja soc. nodoklis: {eur(f2Totals?.employerTax)}</p><p>Pavisam kopā bez PVN: {eur(f2Totals?.subtotalExVat)}</p><p>PVN 21%: {eur(f2Totals?.vat)}</p><p className="text-lg font-bold">Kopā ar PVN: {eur(f2Totals?.totalIncVat)}</p></div></div></Module><Module title="Materiālu cenas" subtitle="Rediģējami cenu iestatījumi"><OutputTable title="Materiālu cenas" rows={(outputs.settings?.materialPrices as Array<Record<string, unknown>> | undefined) || materials} nameKey="name" onChange={(index, key, value) => onChange('settings', index, key, value)} /></Module><Module title="Ch pozīcijas" subtitle="Darba likmes un uzcenojums"><OutputTable title="Ch pozīcijas" rows={(outputs.settings?.workRates as Array<Record<string, unknown>> | undefined) || []} nameKey="category" onChange={(index, key, value) => onChange('settings', index, key, value)} /></Module><Module title="Skārda detaļas" subtitle="Skārda detaļu aprēķina cenas"><OutputTable title="Skārda detaļas" rows={(outputs.settings?.sheetMetalDetails as Array<Record<string, unknown>> | undefined) || []} nameKey="name" onChange={(index, key, value) => onChange('settings', index, key, value)} /></Module><Module title="Slīpuma koeficients" subtitle="Jumta slīpuma reizinātājs"><div className="p-4 text-sm text-slate-700">Aktīvais koeficients: <strong>{String(outputs.settings?.slopeCoefficient ?? '1.000')}</strong></div></Module><Module title="Darbu plāns" subtitle="Kopējais darbu grafiks"><OutputTable title="Darbu plāns" rows={tasks} nameKey="task" onChange={(index, key, value) => onChange('workPlan', index, key, value)} /></Module><Module title="Dienas plāns" subtitle="Darbu izpildes uzskaite"><OutputTable title="Dienas plāns" rows={dailyTasks} nameKey="tasks" onChange={(index, key, value) => onChange('dailyWorkLog', index, key, value)} /></Module></div>;
 }
 
@@ -121,6 +127,7 @@ function EngineOutputSections({outputs, leadId, onChange}: {outputs: CrmEstimato
 
 function EstimatorWorkflow({project, initialData}: {project: CrmProjectRecord; initialData: CrmEstimatorFormData}) {
   const [data, setData] = useState<CrmEstimatorFormData>(initialData || createEmptyCrmEstimatorData());
+  const [tameRows, setTameRows] = useState<CrmEstimatorTameRow[]>(initialData.tameRows || []);
   const [version, setVersion] = useState(project.updatedAtUtc);
   const [rows, setRows] = useState<ProcessedEstimatorRow[]>(initialData.processedRows || []);
   const [finalised, setFinalised] = useState(initialData.processingStatus === 'finalised');
@@ -162,9 +169,9 @@ function EstimatorWorkflow({project, initialData}: {project: CrmProjectRecord; i
 
 
 
-  const save = async (nextRows = rows, nextStatus: 'draft' | 'processed' | 'finalised' = finalised ? 'finalised' : rows.length > 0 ? 'processed' : 'draft', nextOutputs = engineOutputs) => {
+  const save = async (nextRows = rows, nextStatus: 'draft' | 'processed' | 'finalised' = finalised ? 'finalised' : rows.length > 0 ? 'processed' : 'draft', nextOutputs = engineOutputs, nextTameRows = tameRows) => {
     setError('');
-    const response = await fetch(`/api/crm/leads/${encodeURIComponent(project.leadId)}`, {method: 'PATCH', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({updatedAtUtc: version, estimatorData: {...data, engineOutputs: nextOutputs, processedRows: nextRows, processingStatus: nextStatus}})});
+    const response = await fetch(`/api/crm/leads/${encodeURIComponent(project.leadId)}`, {method: 'PATCH', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({updatedAtUtc: version, estimatorData: {...data, tameRows: nextTameRows, engineOutputs: nextOutputs, processedRows: nextRows, processingStatus: nextStatus}})});
     const result = await response.json();
     if (!response.ok || !result.ok) throw new Error(result.error || 'Estimator could not be saved');
     setVersion(result.lead.updatedAtUtc);
@@ -188,7 +195,7 @@ function EstimatorWorkflow({project, initialData}: {project: CrmProjectRecord; i
       const response = await fetch(`/api/crm/leads/${encodeURIComponent(project.leadId)}/estimate`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({estimatorData: {...data, engineOutputs}}),
+        body: JSON.stringify({estimatorData: {...data, tameRows, engineOutputs}}),
       });
       const result = await response.json();
       if (!response.ok || !result.ok) throw new Error(result.error || 'Estimate could not be generated');
@@ -206,7 +213,7 @@ function EstimatorWorkflow({project, initialData}: {project: CrmProjectRecord; i
         : createProcessedRows(data);
       
       const nextOutputs = result.outputs as CrmEstimatorEngineOutputs;
-      await save(nextRows, 'processed', nextOutputs);
+      await save(nextRows, 'processed', nextOutputs, tameRows);
       setRows(nextRows);
       setEngineOutputs(nextOutputs);
       setFinalised(false);
@@ -215,6 +222,9 @@ function EstimatorWorkflow({project, initialData}: {project: CrmProjectRecord; i
       setError(processError?.message || 'Estimator could not be processed');
     }
   };
+
+  const addTameRow = () => setTameRows((current) => [...current, calculateEstimatorTameRow({category: '', name: '', specification: '', quantity: '', reserve: '1', quantityWithReserve: '', unit: 'm²', materialUnitPrice: '', materialTotal: '', hoursPerUnit: '', workUnit: 'h', workHours: '', hourlyRate: '18', laborUnitPrice: '', laborTotal: '', laborHoursWithMarkup: '', laborTotalWithMarkup: '', totalWorkMaterials: '', positionMaterials: '', positionWork: '', positionDuration: '', positionTotal: '', mechanisms: ''})]);
+  const updateTameRow = (index: number, key: keyof CrmEstimatorTameRow, value: string) => setTameRows((current) => current.map((row, rowIndex) => rowIndex === index ? calculateEstimatorTameRow({...row, [key]: value}) : row));
 
   const finalise = async () => {
     try {
@@ -228,7 +238,7 @@ function EstimatorWorkflow({project, initialData}: {project: CrmProjectRecord; i
 
   const estimatorPages = [
     ['estimator-data', 'Ievade'],
-    ['estimator-data', 'Tāme'],
+    ['tame', 'Tāme'],
     ['materialu-cenas', 'Materiālu cenas'],
     ['ch-pozicijas', 'Ch pozīcijas'],
     ['skarda-detalas', 'Skārda detaļas'],
@@ -249,6 +259,7 @@ function EstimatorWorkflow({project, initialData}: {project: CrmProjectRecord; i
     {error ? <p className="mt-3 text-sm text-rose-600">{error}</p> : null}{message ? <p className="mt-3 text-sm text-emerald-700">{message}</p> : null}
     {rows.length > 0 ? <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4"><div className="flex flex-wrap items-center justify-between gap-3"><div><h3 className="text-sm font-bold text-slate-900">Processed output</h3><p className="mt-1 text-xs text-slate-500">Edit the rows before finalising the client documents.</p></div><button type="button" onClick={() => void finalise()} className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700">{finalised ? 'Finalised' : 'Finalise estimate'}</button></div><div className="mt-4 overflow-x-auto"><table className="min-w-full"><thead><tr>{['Description', 'Quantity', 'Unit', 'Unit price', 'Total'].map((heading) => <th key={heading} className="px-2 py-2 text-left text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">{heading}</th>)}</tr></thead><tbody>{rows.map((row, index) => <tr key={`${row.description}-${index}`}><td className="px-2 py-2"><input value={row.description} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, description: event.target.value} : entry))} className="h-9 min-w-52 rounded border border-slate-200 px-2 text-sm" /></td><td className="px-2 py-2"><input value={row.quantity} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, quantity: event.target.value} : entry))} className="h-9 w-24 rounded border border-slate-200 px-2 text-sm" /></td><td className="px-2 py-2"><input value={row.unit} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, unit: event.target.value} : entry))} className="h-9 w-24 rounded border border-slate-200 px-2 text-sm" /></td><td className="px-2 py-2"><input value={row.price} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, price: event.target.value, total: event.target.value && row.quantity ? String(Number(event.target.value) * Number(row.quantity)) : ''} : entry))} className="h-9 w-28 rounded border border-slate-200 px-2 text-sm" /></td><td className="px-2 py-2"><input value={row.total} onChange={(event) => setRows((current) => current.map((entry, rowIndex) => rowIndex === index ? {...entry, total: event.target.value} : entry))} className="h-9 w-28 rounded border border-slate-200 px-2 text-sm" /></td></tr>)}</tbody></table></div>{finalised ? <div className="mt-4 flex flex-wrap gap-2"><a href={`/api/estimator/${encodeURIComponent(project.leadId)}/pdf?kind=f2`} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700">Download F2 forma</a><a href={`/api/estimator/${encodeURIComponent(project.leadId)}/pdf?kind=offer`} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700">Download Piedāvājums</a><a href={`mailto:?subject=${encodeURIComponent(`Piedāvājums - ${project.title}`)}`} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700">Send to client email</a></div> : null}</div> : null}
   </Module>
+  <TameInputModule rows={tameRows} onChange={updateTameRow} onAdd={addTameRow} />
   <WorkbookOutputSections leadId={project.leadId} outputs={engineOutputs} onChange={updateEngineOutput} />
   <ReferenceSettingsPanels outputs={engineOutputs} onChange={updateEngineOutput} onSave={() => void saveUniversalSettings()} />
   </>;

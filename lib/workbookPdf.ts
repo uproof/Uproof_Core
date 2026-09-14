@@ -88,3 +88,32 @@ export function createWorkbookPdfBuffer(output: EstimatorOutput, kind: 'offer' |
     doc.end();
   });
 }
+
+export function createWorkbookListPdfBuffer(title: string, rows: Array<Record<string, unknown>>): Promise<Buffer> {
+  return new Promise((resolve, reject) => {
+    const doc = new PDFDocument({size: 'A4', margin: 38});
+    const chunks: Buffer[] = [];
+    doc.on('data', (chunk) => chunks.push(Buffer.from(chunk)));
+    doc.on('end', () => resolve(Buffer.concat(chunks)));
+    doc.on('error', reject);
+    doc.registerFont('Arial', regularFont).registerFont('Arial-Bold', boldFont);
+    doc.image(logoPath, 450, 25, {fit: [105, 42], align: 'right', valign: 'center'});
+    doc.font('Arial-Bold').fontSize(16).text(title, 38, 82);
+    doc.font('Arial').fontSize(8).fillColor('#333333');
+    let y = 115;
+    rows.forEach((row, index) => {
+      if (y > 770) { doc.addPage(); y = 45; }
+      const label = String(row.description || row.name || row.item || row.task || row.tasks || '');
+      const quantity = String(row.quantity || row.hours || '');
+      const unit = String(row.unit || '');
+      const total = money(row.total || row.totalExVat || row.totalLaborAndMaterials);
+      doc.rect(38, y, 519, 18).strokeColor('#cccccc').lineWidth(0.3).stroke();
+      doc.text(String(row.position || row.row || row.day || index + 1), 42, y + 5, {width: 24});
+      doc.text(label, 68, y + 5, {width: 325});
+      doc.text(`${quantity} ${unit}`, 395, y + 5, {width: 65, align: 'right'});
+      doc.text(total, 465, y + 5, {width: 85, align: 'right'});
+      y += 18;
+    });
+    doc.end();
+  });
+}

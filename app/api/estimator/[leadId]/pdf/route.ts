@@ -4,10 +4,10 @@ import {getCrmLeadById} from '@/lib/crmLeadsStore';
 import {canPerform} from '@/lib/permissions';
 import {generateEstimatorOutput} from '@/lib/estimatorEngine';
 import {normalizeCrmEstimatorData} from '@/lib/crmEstimator';
-import {createWorkbookPdfBuffer} from '@/lib/workbookPdf';
+import {createWorkbookListPdfBuffer, createWorkbookPdfBuffer} from '@/lib/workbookPdf';
 import {z} from 'zod';
 
-const querySchema = z.object({kind: z.enum(['f2', 'offer', 'materials', 'work-plan', 'daily-plan']).default('offer')});
+const querySchema = z.object({kind: z.enum(['f2', 'offer', 'materials', 'work-plan', 'daily-plan', 'mechanisms']).default('offer')});
 
 export async function GET(request: NextRequest, {params}: {params: Promise<{leadId: string}>}) {
   const session = await getAdminSession();
@@ -33,11 +33,21 @@ export async function GET(request: NextRequest, {params}: {params: Promise<{lead
   }
 
   const saved = savedOutputs as Record<string, Record<string, unknown>>;
-  if (kind !== 'offer' && kind !== 'f2') {
-    return NextResponse.json({ok: false, error: 'Workbook PDF downloads are available for Piedāvājums and F2 forma only'}, {status: 400});
-  }
-
-  const pdf = await createWorkbookPdfBuffer(generated, kind, lead.customer, lead.projectAddress || lead.address || 'nav norādīts');
+  const outputRows = kind === 'offer'
+    ? generated.piedāvājums.rows
+    : kind === 'f2'
+      ? generated.f2Forma.rows
+      : kind === 'materials'
+        ? generated.materials
+        : kind === 'daily-plan'
+          ? generated.dailyPlan || []
+            : kind === 'mechanisms'
+              ? generated.f2Forma.rows.map((row) => ({description: row.description, quantity: row.mechanisms || 0, unit: 'kpl', total: row.mechanisms || 0}))
+              : generated.workPlan;
+    const titles = {offer: 'Piedāvājums', f2: 'Lokālā tāme Nr.1 - F2 forma', materials: 'Materiālu saraksts', 'work-plan': 'Darbu plāns', 'daily-plan': 'Dienas plāns', mechanisms: 'Mehānismu saraksts'};
+  const pdf = kind === 'offer' || kind === 'f2'
+    ? await createWorkbookPdfBuffer(generated, kind, lead.customer, lead.projectAddress || lead.address || 'nav norādīts')
+    : await createWorkbookListPdfBuffer(titles[kind], outputRows as Array<Record<string, unknown>>);
 
   return new NextResponse(new Uint8Array(pdf), {
     headers: {
