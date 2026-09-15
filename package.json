@@ -9,6 +9,7 @@
     "lint": "next lint",
     "test:auth-guards": "node scripts/test-auth-guards.mjs",
     "test:crm": "node scripts/test-crm-flows.mjs",
+    "test:estimator-pdfs": "npx --yes tsx scripts/generate-estimator-test-pdfs.ts",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio"

@@ -96,13 +96,15 @@ export type EstimatorOutput = {
     total: number;
   }>;
   workPlan: Array<{
-    day: number;
-    task: string;
-    hours: number;
-    crew: number;
-    date?: string;
+    position: string;
+    quantity: number;
+    workDurationHours: number;
+    people: number;
+    workDurationDays: number;
+    startDay: number;
+    endDay: number;
   }>;
-  dailyPlan?: Array<{day: number; date: string; tasks: string; crew: number; hours: number; completed: boolean; comments: string}>;
+  dailyPlan?: Array<{dayNo: number; dailyPlan: string; date: string; workWeek: number; execution: string; participants: number; hoursAtFacility: number; completed: boolean; comments: string}>;
 };
 
 /**
@@ -456,16 +458,16 @@ export function generateEstimatorOutput(data: CrmEstimatorFormData): EstimatorOu
     }));
 
   // Work plan (simplified)
-  const workPlan = [
-    {day: 1, task: 'Būvobjekta iekārtošana un drošības pasākumi', hours: 4, crew: 2},
-    {day: 2, task: 'Esošā jumta seguma demontāža', hours: 6, crew: 3},
-    {day: 3, task: 'Jumta konstrukciju pārbaude un latojums', hours: 8, crew: 3},
-    {day: 4, task: 'Siltināšana un tvaika barjeras ieklāšana', hours: 8, crew: 2},
-    {day: 5, task: 'Difūzijas membrāna un valcprofila segums', hours: 8, crew: 3},
-    {day: 6, task: 'Teknes, skārda detaļas un vēja kastes', hours: 6, crew: 2},
-    {day: 7, task: 'Pārbaude, utilizācija un objekta nodošana', hours: 4, crew: 2},
-  ];
-  const dailyPlan = workPlan.map((item) => ({day: item.day, date: '', tasks: item.task, crew: item.crew, hours: item.hours, completed: false, comments: ''}));
+  let accumulatedDays = 0;
+  const workPlan = items.map((item) => {
+    const people = 3;
+    const workDurationHours = Math.max(0, item.laborHours ?? item.quantity * 0.2);
+    const workDurationDays = workDurationHours / (people * 8);
+    const startDay = accumulatedDays;
+    accumulatedDays += workDurationDays;
+    return {position: item.description, quantity: item.quantity, workDurationHours: parseFloat(workDurationHours.toFixed(2)), people, workDurationDays: parseFloat(workDurationDays.toFixed(2)), startDay: parseFloat(startDay.toFixed(1)), endDay: parseFloat(accumulatedDays.toFixed(1))};
+  });
+  const dailyPlan = workPlan.map((item, index) => ({dayNo: index + 1, dailyPlan: item.position, date: '', workWeek: Math.ceil((index + 1) / 5), execution: '', participants: item.people, hoursAtFacility: Math.min(8, item.workDurationHours), completed: false, comments: ''}));
 
   return {
     piedāvājums: {

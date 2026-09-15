@@ -5,10 +5,51 @@ import type {EstimatorOutput} from './estimatorEngine';
 const regularFont = path.join(process.cwd(), 'public/fonts/Arial.ttf');
 const boldFont = path.join(process.cwd(), 'public/fonts/Arial-Bold.ttf');
 const logoPath = path.join(process.cwd(), 'public/logo-pdf.png');
+const referenceImagePaths = [0, 1, 2, 3, 4, 5].map((index) =>
+  path.join(process.cwd(), 'public/pdf-assets', `image_314318712_${index}.jpg`),
+);
 
 function money(value: unknown) {
   const amount = Number(value);
   return Number.isFinite(amount) ? `${amount.toFixed(2)} €` : '0.00 €';
+}
+
+function drawCostPieChart(doc: PDFKit.PDFDocument, output: EstimatorOutput, x: number, y: number, size: number) {
+  const values = output.piedāvājums.rows.map((row) => Math.max(0, row.total));
+  const total = values.reduce((sum, value) => sum + value, 0);
+  if (!total) return;
+  const colors = ['#ea4335', '#fbbc04', '#34a853', '#ff6d01', '#46bdc6', '#7baaf7', '#f07b72', '#fcd04f'];
+  const centerX = x + size / 2;
+  const centerY = y + size / 2;
+  const radius = size / 2;
+  let angle = -Math.PI / 2;
+  values.forEach((value, index) => {
+    const nextAngle = angle + (value / total) * Math.PI * 2;
+    doc.save().fillColor(colors[index % colors.length]);
+    doc.moveTo(centerX, centerY).lineTo(centerX + Math.cos(angle) * radius, centerY + Math.sin(angle) * radius);
+    const segments = Math.max(4, Math.ceil(Math.abs(nextAngle - angle) * 16));
+    for (let segment = 1; segment <= segments; segment += 1) {
+      const pointAngle = angle + ((nextAngle - angle) * segment) / segments;
+      doc.lineTo(centerX + Math.cos(pointAngle) * radius, centerY + Math.sin(pointAngle) * radius);
+    }
+    doc.lineTo(centerX, centerY).fill();
+    doc.restore();
+    angle = nextAngle;
+  });
+  doc.font(boldFont).fontSize(12).fillColor('#757575').text('Izmaksu sadalījums', x, y - 22, {width: size, align: 'center'});
+}
+
+function drawReferenceImages(doc: PDFKit.PDFDocument) {
+  doc.addPage({size: 'A4', layout: 'portrait', margin: 38});
+  doc.font(boldFont).fontSize(14).fillColor('#222222').text('Jumta mezglu un darbu piemēri', 38, 48);
+  referenceImagePaths.forEach((imagePath, index) => {
+    const column = index % 2;
+    const row = Math.floor(index / 2);
+    const x = 38 + column * 265;
+    const y = 82 + row * 235;
+    doc.image(imagePath, x, y, {fit: [245, 205], align: 'center', valign: 'center'});
+    doc.font(regularFont).fontSize(7).fillColor('#555555').text(`Attēls ${index + 1}`, x, y + 209, {width: 245, align: 'center'});
+  });
 }
 
 function renderDocument(doc: PDFKit.PDFDocument, output: EstimatorOutput, kind: 'offer' | 'f2', customer: string, address: string) {
@@ -57,6 +98,15 @@ function renderDocument(doc: PDFKit.PDFDocument, output: EstimatorOutput, kind: 
     doc.font(boldFont).fontSize(10).text('IZMANTOJAM BŪVNIECĪBAS METODI - M-I-E-R-S', margin, y + 48);
     doc.font(regularFont).fontSize(8).text('M - materiālu ilgmūžība\nI - izpildījuma kvalitāte ar sertificētiem speciālistiem\nE - estētiski pievilcīgi risinājumi\nR - rezultāta garantija un pilna atbildības uzņemšanās\nS - serviss un attieksme visos būvniecības posmos', margin, y + 66, {lineGap: 2});
     doc.font(regularFont).fontSize(8).fillColor('#555555').text('Izmaksās ir iekļauti visi nepieciešamie materiāli, palīglīdzekļi un darbs pilnvērtīgu jumta renovācijas darbu veikšanai.', margin, 785, {width: tableWidth});
+    doc.addPage({size: 'A4', layout: 'portrait', margin});
+    drawCostPieChart(doc, output, 60, 115, 250);
+    doc.font(boldFont).fontSize(10).fillColor('#222222').text('Izmaksu pozīcijas', 350, 120);
+    output.piedāvājums.rows.forEach((row, index) => {
+      const legendY = 145 + index * 18;
+      doc.rect(350, legendY + 2, 9, 9).fill(['#ea4335', '#fbbc04', '#34a853', '#ff6d01', '#46bdc6', '#7baaf7', '#f07b72', '#fcd04f'][index % 8]);
+      doc.font(regularFont).fontSize(7).fillColor('#222222').text(`${row.description} - ${money(row.total)}`, 365, legendY, {width: 185});
+    });
+    drawReferenceImages(doc);
   } else {
     doc.font(boldFont).fontSize(17).fillColor('#222222').text('Lokālā tāme Nr.1', margin, 82);
     doc.font(regularFont).fontSize(9).text(`Jumta renovācija | Klients: ${customer} | Objekts: ${address}`, margin, 108);
@@ -101,18 +151,59 @@ export function createWorkbookListPdfBuffer(title: string, rows: Array<Record<st
     doc.font('Arial-Bold').fontSize(16).text(title, 38, 82);
     doc.font('Arial').fontSize(8).fillColor('#333333');
     let y = 115;
+    const isWorkPlan = title === 'Darbu plāns';
+    const isMechanisms = title === 'Mehānismu saraksts';
+    if (isWorkPlan) {
+      const headers = ['Pozīcija', 'Daudzums', 'Darba ilgums, h', 'Cilvēki', 'Darba ilgums, D', 'Sākuma diena', 'Beigu diena'];
+      const widths = [190, 58, 70, 48, 70, 62, 62];
+      let x = 38;
+      doc.font('Arial-Bold').fontSize(7);
+      headers.forEach((header, index) => { doc.rect(x, y, widths[index], 28).fill('#eeeeee').strokeColor('#cccccc').stroke(); doc.fillColor('#222222').text(header, x + 2, y + 7, {width: widths[index] - 4, align: index ? 'center' : 'left'}); x += widths[index]; });
+      y += 28;
+      rows.forEach((row) => {
+        const position = String(row.position || row.description || '');
+        const height = Math.max(20, doc.heightOfString(position, {width: widths[0] - 6}) + 8);
+        if (y + height > 770) { doc.addPage(); y = 45; }
+        const values = [position, row.quantity, row.workDurationHours, row.people, row.workDurationDays, row.startDay, row.endDay];
+        x = 38;
+        values.forEach((value, index) => { doc.rect(x, y, widths[index], height).strokeColor('#cccccc').lineWidth(0.3).stroke(); doc.font('Arial').fontSize(7).fillColor('#222222').text(String(value ?? ''), x + 3, y + 5, {width: widths[index] - 6, align: index ? 'right' : 'left'}); x += widths[index]; });
+        y += height;
+      });
+      doc.end();
+      return;
+    }
+    if (isMechanisms) {
+      const headers = ['Veicamie darbi', 'Mehānismi', 'Nepieciešamie instrumenti'];
+      const widths = [245, 125, 149];
+      let x = 38;
+      doc.font('Arial-Bold').fontSize(8);
+      headers.forEach((header, index) => { doc.rect(x, y, widths[index], 24).fill('#eeeeee').strokeColor('#cccccc').stroke(); doc.fillColor('#222222').text(header, x + 3, y + 7, {width: widths[index] - 6}); x += widths[index]; });
+      y += 24;
+      rows.forEach((row) => {
+        const values = [row.description || row.work || row.name || '', row.mechanism || row.mechanisms || row.quantity || '', row.tools || row.instruments || ''];
+        const height = Math.max(19, ...values.map((value, index) => doc.heightOfString(String(value), {width: widths[index] - 6}) + 8));
+        if (y + height > 770) { doc.addPage(); y = 45; }
+        x = 38;
+        values.forEach((value, index) => { doc.rect(x, y, widths[index], height).strokeColor('#cccccc').lineWidth(0.3).stroke(); doc.font('Arial').fontSize(7).fillColor('#222222').text(String(value), x + 3, y + 4, {width: widths[index] - 6}); x += widths[index]; });
+        y += height;
+      });
+      doc.end();
+      return;
+    }
     rows.forEach((row, index) => {
       if (y > 770) { doc.addPage(); y = 45; }
       const label = String(row.description || row.name || row.item || row.task || row.tasks || '');
       const quantity = String(row.quantity || row.hours || '');
       const unit = String(row.unit || '');
       const total = money(row.total || row.totalExVat || row.totalLaborAndMaterials);
-      doc.rect(38, y, 519, 18).strokeColor('#cccccc').lineWidth(0.3).stroke();
+      const height = Math.max(18, doc.heightOfString(label, {width: 325}) + 8);
+      if (y + height > 770) { doc.addPage(); y = 45; }
+      doc.rect(38, y, 519, height).strokeColor('#cccccc').lineWidth(0.3).stroke();
       doc.text(String(row.position || row.row || row.day || index + 1), 42, y + 5, {width: 24});
       doc.text(label, 68, y + 5, {width: 325});
       doc.text(`${quantity} ${unit}`, 395, y + 5, {width: 65, align: 'right'});
       doc.text(total, 465, y + 5, {width: 85, align: 'right'});
-      y += 18;
+      y += height;
     });
     doc.end();
   });

@@ -12,6 +12,16 @@ export const dynamic = 'force-dynamic';
 
 const querySchema = z.object({kind: z.enum(['f2', 'offer', 'materials', 'work-plan', 'daily-plan', 'mechanisms']).default('offer')});
 
+const workbookMechanisms = [
+  {description: 'Šīfera demontāža 12kg/m2', mechanism: 'lauznis', tools: 'lauznis'},
+  {description: 'Nocelšana', mechanism: 'fleksis', tools: 'Rācija, štropes'},
+  {description: 'Latojuma un valcprofila uzcelšana', mechanism: 'Rācija, štropes', tools: 'Vates nazis, skrūvmašīna un uzgaļi'},
+  {description: 'Jumta siltinājuma montāža', mechanism: 'vates nazis, skavotājs', tools: 'Respirators, nazis un asmeņi'},
+  {description: 'Starplatojums un šķērslatojums', mechanism: 'cirkulārais zāģis, naglu pistole', tools: 'Līmeņrādis, striķis un krīts'},
+  {description: 'Apakšlāsene un skārda detaļas', mechanism: 'skārdnieka instrumenti, aizvalcētājs', tools: 'Kniedētājs, āķu locāmais'},
+  {description: 'Teknes un noteksistēmas', mechanism: 'frēze, skārdnieka instrumenti', tools: 'Līmeņrādis, skrūvmašīna un uzgaļi'},
+];
+
 export async function GET(request: NextRequest, {params}: {params: Promise<{leadId: string}>}) {
   const session = await getAdminSession();
   if (!session) return NextResponse.json({ok: false, error: 'Unauthorized'}, {status: 401});
@@ -66,17 +76,31 @@ export async function GET(request: NextRequest, {params}: {params: Promise<{lead
       total: Number(row.totalLaborAndMaterials || row.total || 0),
     }));
   }
+  const savedMaterialRows = Array.isArray(saved.materialsToUse?.consolidatedMaterials)
+    ? saved.materialsToUse.consolidatedMaterials as Array<Record<string, unknown>>
+    : [];
+  const savedWorkPlanRows = Array.isArray(saved.workPlan?.tasks)
+    ? saved.workPlan.tasks as Array<Record<string, unknown>>
+    : [];
+  const savedDailyPlanRows = Array.isArray(saved.dailyWorkLog?.tasks)
+    ? saved.dailyWorkLog.tasks as Array<Record<string, unknown>>
+    : [];
+  const savedMechanismRows = Array.isArray(saved.mechanismsAndTools?.rows) ? saved.mechanismsAndTools.rows as Array<Record<string, unknown>> : [];
+  const generatedMechanismRows = generated.f2Forma.rows
+    .filter((row) => Number(row.mechanisms || 0) > 0)
+    .map((row) => ({description: row.description, mechanism: row.mechanisms, tools: ''}));
+  const mechanismRows = savedMechanismRows.length > 0 ? savedMechanismRows : generatedMechanismRows.length > 0 ? generatedMechanismRows : workbookMechanisms;
   const outputRows = kind === 'offer'
     ? generated.piedāvājums.rows
     : kind === 'f2'
       ? generated.f2Forma.rows
       : kind === 'materials'
-        ? generated.materials
+        ? savedMaterialRows.length > 0 ? savedMaterialRows : generated.materials
         : kind === 'daily-plan'
-          ? generated.dailyPlan || []
+          ? savedDailyPlanRows.length > 0 ? savedDailyPlanRows : generated.dailyPlan || []
             : kind === 'mechanisms'
-              ? generated.f2Forma.rows.map((row) => ({description: row.description, quantity: row.mechanisms || 0, unit: 'kpl', total: row.mechanisms || 0}))
-              : generated.workPlan;
+              ? mechanismRows
+              : savedWorkPlanRows.length > 0 ? savedWorkPlanRows : generated.workPlan;
     const titles = {offer: 'Piedāvājums', f2: 'Lokālā tāme Nr.1 - F2 forma', materials: 'Materiālu saraksts', 'work-plan': 'Darbu plāns', 'daily-plan': 'Dienas plāns', mechanisms: 'Mehānismu saraksts'};
   let pdf: Buffer;
   try {

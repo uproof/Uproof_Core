@@ -7,6 +7,8 @@ uproof-complete-engine/
 .DS_Store
 dist
 build
+.tmp/
+tmp/estimator-test-output/
 .vercel
 .turbo
 tsconfig.tsbuildinfo

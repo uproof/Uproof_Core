@@ -22,7 +22,7 @@ function displayValue(entry: unknown) {
 
 function Module({title, subtitle, children, defaultOpen = false}: ModuleProps) {
   const [open, setOpen] = useState(defaultOpen);
-  if (['Materiālu cenas', 'Ch pozīcijas', 'Skārda detaļas', 'Slīpuma koeficients'].includes(title)) return null;
+  if (['Materiālu cenas', 'Ch pozīcijas', 'Skārda detaļas', 'Slīpuma koeficients', 'Darbu plāns', 'Dienas plāns'].includes(title)) return null;
   return (
     <section id={title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-')} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
       <button type="button" onClick={() => setOpen((current) => !current)} className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left hover:bg-slate-50">
@@ -90,6 +90,20 @@ function F2Table({rows, onChange}: {rows: Array<Record<string, unknown>>; onChan
 
 function OutputTable({title, rows, nameKey, onChange, columns: _columns}: {title: string; rows: Array<Record<string, unknown>>; nameKey: string; onChange: (index: number, key: string, value: string) => void; columns?: string[]}) {
   return <div className="overflow-x-auto border border-slate-200 bg-white"><table className="min-w-full text-sm"><thead><tr><th className="border border-slate-200 px-2 py-2 text-left">Apraksts</th><th className="border border-slate-200 px-2 py-2 text-left">Daudzums</th><th className="border border-slate-200 px-2 py-2 text-left">Mērvienība</th><th className="border border-slate-200 px-2 py-2 text-left">Kopā EUR</th></tr></thead><tbody>{rows.length > 0 ? rows.map((row, index) => <tr key={`${title}-${index}`}><td className="border border-slate-200 px-2 py-1"><EditableText value={row[nameKey] ?? row.name ?? row.description ?? row.item ?? row.task ?? row.tasks} onChange={(value) => onChange(index, nameKey, value)} className="w-full" /></td><td className="border border-slate-200 px-2 py-1">{String(row.quantity ?? row.hours ?? '')}</td><td className="border border-slate-200 px-2 py-1">{String(row.unit ?? '')}</td><td className="border border-slate-200 px-2 py-1 text-right">{eur(row.total ?? row.totalExVat ?? row.totalLaborAndMaterials)}</td></tr>) : <tr><td colSpan={4} className="px-2 py-4 text-slate-500">Nospiediet “Apstrādāt tāmi”, lai ģenerētu pozīcijas.</td></tr>}</tbody></table></div>;
+}
+
+function WorkPlanTable({rows}: {rows: Array<Record<string, unknown>>}) {
+  return <div className="overflow-x-auto border border-slate-300 bg-white"><table className="min-w-[900px] w-full border-collapse text-sm"><thead className="bg-slate-100"><tr>{['Pozīcija', 'Daudzums', 'Darba ilgums, h', 'Cilvēku skaits objektā', 'Darba ilgums, D', 'Sākuma diena', 'Beigu diena'].map((label) => <th key={label} className="border border-slate-300 px-2 py-2 text-left text-xs font-bold">{label}</th>)}</tr></thead><tbody>{rows.map((row, index) => <tr key={index}><td className="border border-slate-200 px-2 py-1">{String(row.position || '')}</td><td className="border border-slate-200 px-2 py-1 text-right">{String(row.quantity || '')}</td><td className="border border-slate-200 px-2 py-1 text-right">{String(row.workDurationHours || '')}</td><td className="border border-slate-200 px-2 py-1 text-right">{String(row.people || '')}</td><td className="border border-slate-200 px-2 py-1 text-right">{String(row.workDurationDays || '')}</td><td className="border border-slate-200 px-2 py-1 text-right">{String(row.startDay || '')}</td><td className="border border-slate-200 px-2 py-1 text-right">{String(row.endDay || '')}</td></tr>)}</tbody></table></div>;
+}
+
+function DailyPlanTable({rows}: {rows: Array<Record<string, unknown>>}) {
+  return <div className="overflow-x-auto border border-slate-300 bg-white"><table className="min-w-[1000px] w-full border-collapse text-sm"><thead className="bg-slate-100"><tr>{['Dienas Nr.', 'Dienas plāns', 'Datums', 'Darba nedēļa', 'Izpilde', 'Dalībnieki', 'Stundas objektā', 'Pabeigts 100%', 'Komentāri'].map((label) => <th key={label} className="border border-slate-300 px-2 py-2 text-left text-xs font-bold">{label}</th>)}</tr></thead><tbody>{rows.map((row, index) => <tr key={index}><td className="border border-slate-200 px-2 py-1">{String(row.dayNo || index + 1)}</td><td className="border border-slate-200 px-2 py-1">{String(row.dailyPlan || '')}</td><td className="border border-slate-200 px-2 py-1">{String(row.date || '')}</td><td className="border border-slate-200 px-2 py-1">{String(row.workWeek || '')}</td><td className="border border-slate-200 px-2 py-1">{String(row.execution || '')}</td><td className="border border-slate-200 px-2 py-1">{String(row.participants || '')}</td><td className="border border-slate-200 px-2 py-1">{String(row.hoursAtFacility || '')}</td><td className="border border-slate-200 px-2 py-1 text-center">{row.completed ? '✓' : ''}</td><td className="border border-slate-200 px-2 py-1">{String(row.comments || '')}</td></tr>)}</tbody></table></div>;
+}
+
+function WorkbookPlanSections({outputs}: {outputs: CrmEstimatorEngineOutputs}) {
+  const workPlan = Array.isArray(outputs.workPlan?.tasks) ? outputs.workPlan.tasks as Array<Record<string, unknown>> : [];
+  const dailyPlan = Array.isArray(outputs.dailyWorkLog?.tasks) ? outputs.dailyWorkLog.tasks as Array<Record<string, unknown>> : [];
+  return <div className="mt-5 space-y-3"><Module title="Darbu plāns" subtitle="Pozīcija, apjoms, stundas, cilvēki un dienu intervāls"><WorkPlanTable rows={workPlan} /></Module><Module title="Dienas plāns" subtitle="Dienas Nr., plāns, datums, darba nedēļa, izpilde un dalībnieki"><DailyPlanTable rows={dailyPlan} /></Module></div>;
 }
 
 function ReferenceTable({rows, fields, settingsKey, onChange}: {rows: Array<Record<string, unknown>>; fields: Array<{key: string; label: string}>; settingsKey: string; onChange: (index: number, key: string, value: string) => void}) {
@@ -261,6 +275,7 @@ function EstimatorWorkflow({project, initialData}: {project: CrmProjectRecord; i
   </Module>
   <TameInputModule rows={tameRows} onChange={updateTameRow} onAdd={addTameRow} />
   <WorkbookOutputSections leadId={project.leadId} outputs={engineOutputs} onChange={updateEngineOutput} />
+  <WorkbookPlanSections outputs={engineOutputs} />
   <ReferenceSettingsPanels outputs={engineOutputs} onChange={updateEngineOutput} onSave={() => void saveUniversalSettings()} />
   </>;
 }
