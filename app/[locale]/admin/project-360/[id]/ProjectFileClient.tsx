@@ -148,18 +148,19 @@ function EstimatorWorkflow({project, initialData}: {project: CrmProjectRecord; i
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [engineOutputs, setEngineOutputs] = useState<CrmEstimatorEngineOutputs>(initialData.engineOutputs || {});
+  const initialSettingsRevision = String(initialData.engineOutputs?.settingsRevision || initialData.engineOutputs?.settings?.revision || '');
+  const initialProcessingStatus = initialData.processingStatus;
 
   useEffect(() => {
     fetch('/api/estimator/settings', {cache: 'no-store'}).then((response) => response.json()).then((result) => {
       if (result.ok) {
-        const previousRevision = String(initialData.engineOutputs?.settingsRevision || initialData.engineOutputs?.settings?.revision || '');
-        if (previousRevision && result.revision && previousRevision !== result.revision && initialData.processingStatus !== 'draft') {
+        if (initialSettingsRevision && result.revision && initialSettingsRevision !== result.revision && initialProcessingStatus !== 'draft') {
           setMessage('Universālie iestatījumi ir mainīti. Pārstrādājiet tāmi; iepriekšējā versija paliks pieejama PDF lejupielādei.');
         }
         setEngineOutputs((current) => ({...current, settings: result.settings}));
       }
     }).catch(() => undefined);
-  }, []);
+  }, [initialProcessingStatus, initialSettingsRevision]);
 
   const update = <K extends keyof CrmEstimatorFormData>(key: K, value: CrmEstimatorFormData[K]) => setData((current) => ({...current, [key]: value}));
   const missing = requiredEstimatorKeys.filter((key) => data[key] === '' || data[key] === null || data[key] === undefined);
