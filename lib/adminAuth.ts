@@ -205,20 +205,20 @@ export async function getAdminSession(): Promise<AdminSession | null> {
   const currentIp = headerStore.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
   const token = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
   const session = decodeToken(token);
-  if (!session) {
+  const getSupabaseFallback = async () => {
     const supabaseAccessToken = getSupabaseAccessToken(cookieStore);
-    if (supabaseAccessToken) {
-      return await resolveSupabaseAdminSession(supabaseAccessToken);
-    }
-    return null;
+    return supabaseAccessToken ? resolveSupabaseAdminSession(supabaseAccessToken) : null;
+  };
+  if (!session) {
+    return await getSupabaseFallback();
   }
 
   if (!cookieStore.get(ADMIN_ACTIVITY_COOKIE)?.value) {
-    return null;
+    return await getSupabaseFallback();
   }
 
   if (session.ip && currentIp !== 'unknown' && session.ip !== currentIp) {
-    return null;
+    return await getSupabaseFallback();
   }
 
   const supabase = createSupabaseAdminClient();
@@ -236,11 +236,11 @@ export async function getAdminSession(): Promise<AdminSession | null> {
     if (session.role === 'superadmin' && isApprovedSuperadminEmail(session.email)) {
       return session;
     }
-    return null;
+    return await getSupabaseFallback();
   }
 
   if (!isSessionStillValid(session, data.session_valid_after)) {
-    return null;
+    return await getSupabaseFallback();
   }
 
   const role = normalizeCrmRole(data.role);
@@ -248,7 +248,7 @@ export async function getAdminSession(): Promise<AdminSession | null> {
     if (session.role === 'superadmin' && isApprovedSuperadminEmail(session.email)) {
       return session;
     }
-    return null;
+    return await getSupabaseFallback();
   }
 
   return {
