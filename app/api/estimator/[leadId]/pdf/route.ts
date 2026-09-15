@@ -37,6 +37,36 @@ export async function GET(request: NextRequest, {params}: {params: Promise<{lead
   }
 
   const saved = savedOutputs as Record<string, Record<string, unknown>>;
+  const savedOfferRows = Array.isArray(saved.customerOffer?.activeLineItems) ? saved.customerOffer.activeLineItems as Array<Record<string, unknown>> : [];
+  const savedF2Rows = Array.isArray(saved.f2Estimate?.activeRows) ? saved.f2Estimate.activeRows as Array<Record<string, unknown>> : [];
+  if (savedOfferRows.length > 0) {
+    generated.piedāvājums.rows = savedOfferRows.map((row, index) => ({
+      position: Number(row.position || index + 1),
+      description: String(row.description || ''),
+      specification: String(row.specification || ''),
+      unit: String(row.unit || ''),
+      quantity: Number(row.quantity || 0),
+      unitPrice: Number(row.unitPrice || 0),
+      total: Number(row.total || row.totalExVat || 0),
+    }));
+  }
+  if (savedF2Rows.length > 0) {
+    generated.f2Forma.rows = savedF2Rows.map((row, index) => ({
+      row: Number(row.row || index + 1),
+      description: String(row.description || row.name || ''),
+      unit: String(row.unit || ''),
+      quantity: Number(row.quantity || 0),
+      unitPrice: Number(row.unitPriceExVat || row.unitPrice || 0),
+      unitLabor: Number(row.unitLabor || 0),
+      laborHours: Number(row.laborHours || 0),
+      totalMaterial: Number(row.materialTotal || 0),
+      totalLabor: Number(row.laborTotal || 0),
+      mechanisms: Number(row.mechanisms || 0),
+      overhead: Number(row.overhead || 0),
+      profit: Number(row.profit || 0),
+      total: Number(row.totalLaborAndMaterials || row.total || 0),
+    }));
+  }
   const outputRows = kind === 'offer'
     ? generated.piedāvājums.rows
     : kind === 'f2'
