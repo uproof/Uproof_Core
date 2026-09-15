@@ -10,7 +10,7 @@ import {z} from 'zod';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-const querySchema = z.object({kind: z.enum(['f2', 'offer', 'materials', 'work-plan', 'daily-plan', 'mechanisms']).default('offer')});
+const querySchema = z.object({kind: z.enum(['f2', 'offer', 'materials', 'work-plan', 'daily-plan', 'mechanisms']).default('offer'), version: z.enum(['current', 'previous']).default('current')});
 
 const workbookMechanisms = [
   {description: 'Šīfera demontāža 12kg/m2', mechanism: 'lauznis', tools: 'lauznis'},
@@ -30,13 +30,17 @@ export async function GET(request: NextRequest, {params}: {params: Promise<{lead
   const lead = await getCrmLeadById(leadId);
   if (!lead) return NextResponse.json({ok: false, error: 'Lead not found'}, {status: 404});
 
-  const kind = querySchema.parse({kind: request.nextUrl.searchParams.get('kind') || 'offer'}).kind;
+  const {kind, version} = querySchema.parse({kind: request.nextUrl.searchParams.get('kind') || 'offer', version: request.nextUrl.searchParams.get('version') || 'current'});
 
   // Normalize estimator data
   const estimatorData = normalizeCrmEstimatorData(lead.estimatorData);
 
   // Generate the native estimate so every workbook page has a PDF source.
   const savedOutputs = lead.estimatorData?.engineOutputs || {};
+  const previousRuns = Array.isArray(savedOutputs.previousRuns) ? savedOutputs.previousRuns : [];
+  const selectedOutputs = version === 'previous' && previousRuns.length > 0
+    ? previousRuns[previousRuns.length - 1]?.outputs || savedOutputs
+    : savedOutputs;
   let generated;
   try {
     generated = generateEstimatorOutput(estimatorData);
@@ -45,7 +49,7 @@ export async function GET(request: NextRequest, {params}: {params: Promise<{lead
     return NextResponse.json({ok: false, error: 'Could not generate estimate'}, {status: 500});
   }
 
-  const saved = savedOutputs as Record<string, Record<string, unknown>>;
+  const saved = selectedOutputs as Record<string, Record<string, unknown>>;
   const savedOfferRows = Array.isArray(saved.customerOffer?.activeLineItems) ? saved.customerOffer.activeLineItems as Array<Record<string, unknown>> : [];
   const savedF2Rows = Array.isArray(saved.f2Estimate?.activeRows) ? saved.f2Estimate.activeRows as Array<Record<string, unknown>> : [];
   if (savedOfferRows.length > 0) {

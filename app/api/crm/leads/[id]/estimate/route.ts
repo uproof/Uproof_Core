@@ -100,6 +100,8 @@ export async function POST(request: NextRequest, {params}: {params: Promise<{id:
           tasks: output.dailyPlan,
         },
         settings: output.settings,
+        pricingPolicy: output.pricingPolicy,
+        schedulePolicy: output.schedulePolicy,
         projectOutputs: {
           tameInputs: estimatorData.tameInputs,
           summaryInputs: estimatorData.summaryInputs,

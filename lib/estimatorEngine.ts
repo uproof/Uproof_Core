@@ -55,6 +55,17 @@ export type F2EstimateRow = {
 };
 
 export type EstimatorOutput = {
+  pricingPolicy: {
+    vatRate: number;
+    discount: number;
+    slopeCoefficient: number;
+    ratioProfile: string;
+  };
+  schedulePolicy: {
+    startDate: string;
+    workDays: number | null;
+    people: number;
+  };
   piedāvājums: {
     title: string;
     rows: PiedāvājumsRow[];
@@ -412,9 +423,16 @@ export function calculateTotals(
  * Generate complete estimator output
  */
 export function generateEstimatorOutput(data: CrmEstimatorFormData): EstimatorOutput {
-  const items = generateBaseLineItems(data);
-  const totals = calculateTotals(items);
   const settings = referenceSettings(data);
+  const vatRate = Math.max(0, numeric(data.offerVatRate, ESTIMATOR_REFERENCE_DATA.overheadMargins.vat * 100)) / 100;
+  const discount = Math.max(0, numeric(data.offerDiscount, 0));
+  const slopeOverride = numeric(data.slopeCoefficientOverride, settings.slopeCoefficient);
+  settings.slopeCoefficient = slopeOverride > 0 ? slopeOverride : settings.slopeCoefficient;
+  const calculationData = {...data, engineOutputs: {...(data.engineOutputs || {}), settings: {...(data.engineOutputs?.settings || {}), slopeCoefficient: settings.slopeCoefficient}}};
+  const items = generateBaseLineItems(calculationData);
+  const totals = calculateTotals(items, vatRate > 0);
+  const offerSubtotal = Math.max(0, totals.subtotal - discount);
+  const offerVat = offerSubtotal * vatRate;
 
   // Piedāvājums rows (simplified for customer)
   const piedāvājumsRows: PiedāvājumsRow[] = items.map((item, index) => ({
@@ -459,10 +477,13 @@ export function generateEstimatorOutput(data: CrmEstimatorFormData): EstimatorOu
 
   // Work plan (simplified)
   let accumulatedDays = 0;
+  const people = Math.max(1, Math.round(numeric(data.schedulePeople, 3)));
+  const generatedWorkDays = items.reduce((sum, item) => sum + Math.max(0, item.laborHours ?? item.quantity * 0.2) / (people * 8), 0);
+  const manualWorkDays = numeric(data.scheduleWorkDays, 0);
+  const scheduleScale = manualWorkDays > 0 && generatedWorkDays > 0 ? manualWorkDays / generatedWorkDays : 1;
   const workPlan = items.map((item) => {
-    const people = 3;
     const workDurationHours = Math.max(0, item.laborHours ?? item.quantity * 0.2);
-    const workDurationDays = workDurationHours / (people * 8);
+    const workDurationDays = workDurationHours / (people * 8) * scheduleScale;
     const startDay = accumulatedDays;
     accumulatedDays += workDurationDays;
     return {position: item.description, quantity: item.quantity, workDurationHours: parseFloat(workDurationHours.toFixed(2)), people, workDurationDays: parseFloat(workDurationDays.toFixed(2)), startDay: parseFloat(startDay.toFixed(1)), endDay: parseFloat(accumulatedDays.toFixed(1))};
@@ -470,6 +491,8 @@ export function generateEstimatorOutput(data: CrmEstimatorFormData): EstimatorOu
   const dailyPlan = workPlan.map((item, index) => ({dayNo: index + 1, dailyPlan: item.position, date: '', workWeek: Math.ceil((index + 1) / 5), execution: '', participants: item.people, hoursAtFacility: Math.min(8, item.workDurationHours), completed: false, comments: ''}));
 
   return {
+    pricingPolicy: {vatRate, discount, slopeCoefficient: settings.slopeCoefficient, ratioProfile: data.ratioProfile || 'workbook'},
+    schedulePolicy: {startDate: data.scheduleStartDate || '', workDays: manualWorkDays > 0 ? manualWorkDays : null, people},
     piedāvājums: {
       title: `Piedāvājums jumta renovācijai - ${data.existingRoofArea} m²`,
       rows: piedāvājumsRows,
@@ -478,9 +501,9 @@ export function generateEstimatorOutput(data: CrmEstimatorFormData): EstimatorOu
         labor: parseFloat(totals.labor.toFixed(2)),
         overhead: parseFloat((totals.subtotal * ESTIMATOR_REFERENCE_DATA.overheadMargins.overhead).toFixed(2)),
         discount: 0,
-        subtotal: parseFloat(totals.subtotal.toFixed(2)),
-        vat: parseFloat(totals.vat.toFixed(2)),
-        total: parseFloat(totals.total.toFixed(2)),
+        subtotal: parseFloat(offerSubtotal.toFixed(2)),
+        vat: parseFloat(offerVat.toFixed(2)),
+        total: parseFloat((offerSubtotal + offerVat).toFixed(2)),
       },
     },
     f2Forma: {
@@ -492,7 +515,7 @@ export function generateEstimatorOutput(data: CrmEstimatorFormData): EstimatorOu
         profit: parseFloat((totals.subtotal * ESTIMATOR_REFERENCE_DATA.overheadMargins.profit).toFixed(2)),
         employerTax: parseFloat((totals.subtotal * ESTIMATOR_REFERENCE_DATA.overheadMargins.employerTax).toFixed(2)),
         subtotalExVat: parseFloat(totals.subtotal.toFixed(2)),
-        vat: parseFloat(totals.vat.toFixed(2)),
+        vat: parseFloat((totals.subtotal * vatRate).toFixed(2)),
         totalIncVat: parseFloat(totals.total.toFixed(2)),
       },
     },

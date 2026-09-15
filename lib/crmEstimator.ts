@@ -132,6 +132,8 @@ export type CrmEstimatorEngineOutputs = {
   crewProgress?: Record<string, unknown>;
   projectOutputs?: Record<string, unknown>;
   cashFlow?: Record<string, unknown>;
+  settingsRevision?: string;
+  previousRuns?: Array<{savedAt: string; settingsRevision?: string; outputs: Record<string, unknown>}>;
 };
 
 export type CrmChimneyEntry = {
@@ -195,6 +197,14 @@ export type CrmEstimatorFormData = {
   comment2: string;
   comment3: string;
   plannedExecutionTime: string;
+  offerVatRate: string;
+  offerDiscount: string;
+  slopeCoefficientOverride: string;
+  scheduleStartDate: string;
+  scheduleWorkDays: string;
+  schedulePeople: string;
+  ratioProfile: string;
+  ratioProfileNote: string;
   legacyRows: CrmEstimatorLegacyRow[];
   processedRows: CrmEstimatorOutputRow[];
   processingStatus: 'draft' | 'processed' | 'finalised';
@@ -339,6 +349,18 @@ export const CRM_ESTIMATOR_FIELD_DEFINITIONS: CrmEstimatorFieldDefinition[] = [
   {section: 'Comments', key: 'comment2', label: 'Citis komentāri', type: 'text', placeholder: 'Komentārs 2'},
   {section: 'Comments', key: 'comment3', label: 'Cits', type: 'text', placeholder: 'Komentārs 3'},
   {section: 'Comments', key: 'plannedExecutionTime', label: 'Plānotais/vēlamais izpildes laiks', type: 'text', placeholder: 'Laika periods'},
+  {section: 'Estimator policy', key: 'offerVatRate', label: 'PVN likme piedāvājumā, %', type: 'number', placeholder: '21'},
+  {section: 'Estimator policy', key: 'offerDiscount', label: 'Atlaide PDF dokumentā, EUR', type: 'number', placeholder: 'Atstāt tukšu, ja nav'},
+  {section: 'Estimator policy', key: 'slopeCoefficientOverride', label: 'Manuāls slīpuma koeficients', type: 'number', placeholder: 'Piemēram, 1.305'},
+  {section: 'Estimator policy', key: 'scheduleStartDate', label: 'Darbu sākuma datums', type: 'text', placeholder: 'YYYY-MM-DD'},
+  {section: 'Estimator policy', key: 'scheduleWorkDays', label: 'Manuālais darba dienu skaits', type: 'number', placeholder: 'Atstāt tukšu automātiskam plānam'},
+  {section: 'Estimator policy', key: 'schedulePeople', label: 'Cilvēku skaits objektā', type: 'number', placeholder: '3'},
+  {section: 'Estimator policy', key: 'ratioProfile', label: 'Attiecību profils', type: 'select', options: [
+    {label: 'Workbook noklusējums', value: 'workbook'},
+    {label: 'Konservatīvs', value: 'conservative'},
+    {label: 'Pielāgots', value: 'custom'},
+  ]},
+  {section: 'Estimator policy', key: 'ratioProfileNote', label: 'Attiecību profila piezīme', type: 'textarea', placeholder: 'Manuāli izvēlētie koeficienti un pamatojums'},
 ];
 
 export const CRM_ESTIMATOR_FIELD_SECTIONS = Array.from(new Set(CRM_ESTIMATOR_FIELD_DEFINITIONS.map((definition) => definition.section)));
@@ -399,6 +421,14 @@ export function createEmptyCrmEstimatorData(): CrmEstimatorFormData {
     comment2: '',
     comment3: '',
     plannedExecutionTime: '',
+    offerVatRate: '21',
+    offerDiscount: '',
+    slopeCoefficientOverride: '',
+    scheduleStartDate: '',
+    scheduleWorkDays: '',
+    schedulePeople: '3',
+    ratioProfile: 'workbook',
+    ratioProfileNote: '',
     legacyRows: [],
     processedRows: [],
     processingStatus: 'draft',
@@ -623,6 +653,14 @@ export function normalizeCrmEstimatorData(value: unknown, fallback: CrmEstimator
     comment2: normalizeText(candidate.comment2),
     comment3: normalizeText(candidate.comment3),
     plannedExecutionTime: normalizeText(candidate.plannedExecutionTime),
+    offerVatRate: normalizeText(candidate.offerVatRate) || '21',
+    offerDiscount: normalizeText(candidate.offerDiscount),
+    slopeCoefficientOverride: normalizeText(candidate.slopeCoefficientOverride),
+    scheduleStartDate: normalizeText(candidate.scheduleStartDate),
+    scheduleWorkDays: normalizeText(candidate.scheduleWorkDays),
+    schedulePeople: normalizeText(candidate.schedulePeople) || '3',
+    ratioProfile: normalizeText(candidate.ratioProfile) || 'workbook',
+    ratioProfileNote: normalizeText(candidate.ratioProfileNote),
     legacyRows: normalizeLegacyRows(candidate.legacyRows),
     processedRows: Array.isArray(candidate.processedRows) ? candidate.processedRows.map((row) => ({
       description: normalizeText((row as Record<string, unknown>).description),

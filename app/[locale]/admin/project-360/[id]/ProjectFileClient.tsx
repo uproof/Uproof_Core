@@ -151,7 +151,13 @@ function EstimatorWorkflow({project, initialData}: {project: CrmProjectRecord; i
 
   useEffect(() => {
     fetch('/api/estimator/settings', {cache: 'no-store'}).then((response) => response.json()).then((result) => {
-      if (result.ok) setEngineOutputs((current) => ({...current, settings: result.settings}));
+      if (result.ok) {
+        const previousRevision = String(initialData.engineOutputs?.settingsRevision || initialData.engineOutputs?.settings?.revision || '');
+        if (previousRevision && result.revision && previousRevision !== result.revision && initialData.processingStatus !== 'draft') {
+          setMessage('Universālie iestatījumi ir mainīti. Pārstrādājiet tāmi; iepriekšējā versija paliks pieejama PDF lejupielādei.');
+        }
+        setEngineOutputs((current) => ({...current, settings: result.settings}));
+      }
     }).catch(() => undefined);
   }, []);
 
@@ -160,7 +166,7 @@ function EstimatorWorkflow({project, initialData}: {project: CrmProjectRecord; i
 
   const updateEngineOutput = (output: keyof CrmEstimatorEngineOutputs, index: number, key: string, value: string) => {
     setEngineOutputs((current) => {
-      const section = current[output];
+      const section = current[output] as Record<string, unknown> | undefined;
       if (!section || typeof section !== 'object') return current;
       const [settingsKey, settingsField] = key.split('.', 2);
       const inferredSettingsKey = settingsKey || (section.workRates && ['category', 'hoursPerUnit', 'rate', 'markup'].includes(key) ? 'workRates' : section.sheetMetalDetails && ['width', 'priceRukki', 'priceZn'].includes(key) ? 'sheetMetalDetails' : 'materialPrices');
@@ -226,7 +232,13 @@ function EstimatorWorkflow({project, initialData}: {project: CrmProjectRecord; i
           }))
         : createProcessedRows(data);
       
-      const nextOutputs = result.outputs as CrmEstimatorEngineOutputs;
+      const nextOutputs = {
+        ...(result.outputs as CrmEstimatorEngineOutputs),
+        settingsRevision: String(result.outputs?.settings?.revision || result.outputs?.settingsRevision || ''),
+        previousRuns: engineOutputs.customerOffer
+          ? [...(engineOutputs.previousRuns || []), {savedAt: new Date().toISOString(), settingsRevision: engineOutputs.settingsRevision, outputs: engineOutputs as Record<string, unknown>}].slice(-5)
+          : engineOutputs.previousRuns,
+      } as CrmEstimatorEngineOutputs;
       await save(nextRows, 'processed', nextOutputs, tameRows);
       setRows(nextRows);
       setEngineOutputs(nextOutputs);
