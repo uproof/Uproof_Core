@@ -96,7 +96,6 @@ export default async function middleware(request: NextRequest) {
   let sessionRole: CrmRole | null = null;
   const sessionCookie = cookies.get('admin_session')?.value;
   const activityCookie = cookies.get(ADMIN_ACTIVITY_COOKIE)?.value;
-  const expiredActivitySession = !!sessionCookie && !activityCookie;
   const wrap = (response: NextResponse) => {
     if (sessionRole && sessionCookie && activityCookie) {
       response.cookies.set(ADMIN_ACTIVITY_COOKIE, 'active', {
@@ -106,10 +105,6 @@ export default async function middleware(request: NextRequest) {
         path: '/',
         maxAge: SESSION_IDLE_TIMEOUT_SECONDS,
       });
-    }
-    if (expiredActivitySession) {
-      response.cookies.set('admin_session', '', {httpOnly: true, path: '/', maxAge: 0});
-      response.cookies.set(ADMIN_ACTIVITY_COOKIE, '', {httpOnly: true, path: '/', maxAge: 0});
     }
     return applySupabaseCookies(response, supabaseResponse);
   };
@@ -138,10 +133,6 @@ export default async function middleware(request: NextRequest) {
     cookies.get('admin_session')?.value,
     cookies.get(SUPABASE_ACCESS_TOKEN_COOKIE)?.value,
   );
-  if (expiredActivitySession) {
-    sessionRole = null;
-  }
-
   if (isLegacyInternalHost(host)) return redirectToHost(request, getCmsRedirectHost(host), undefined, supabaseResponse);
   if (!crmHost && !cmsHost && internalPath) return redirectToHost(request, isAdminPath || isAdminLoginPath ? getCmsRedirectHost(host) : getCrmRedirectHost(host), undefined, supabaseResponse);
 
