@@ -228,7 +228,12 @@ export async function getAdminSession(): Promise<AdminSession | null> {
     .eq('email', session.email)
     .maybeSingle();
 
-  if (error || !data || !data.is_active) {
+  if (error) {
+    console.warn('Admin profile validation unavailable; accepting valid signed session', error.message);
+    return session;
+  }
+
+  if (!data || !data.is_active) {
     if (session.role === 'superadmin' && isApprovedSuperadminEmail(session.email)) {
       return session;
     }
