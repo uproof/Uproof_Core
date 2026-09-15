@@ -1,5 +1,4 @@
 import {cookies} from 'next/headers';
-import {headers} from 'next/headers';
 import crypto from 'crypto';
 import {createSupabaseAdminClient} from '@/lib/supabase/server';
 import {getSupabaseAccessToken, resolveSupabaseAdminSession} from '@/lib/supabase/session';
@@ -201,8 +200,6 @@ export async function isSuperadminAuthenticated(): Promise<boolean> {
 
 export async function getAdminSession(): Promise<AdminSession | null> {
   const cookieStore = await cookies();
-  const headerStore = await headers();
-  const currentIp = headerStore.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
   const token = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
   const session = decodeToken(token);
   const getSupabaseFallback = async () => {
@@ -210,10 +207,6 @@ export async function getAdminSession(): Promise<AdminSession | null> {
     return supabaseAccessToken ? resolveSupabaseAdminSession(supabaseAccessToken) : null;
   };
   if (!session) {
-    return await getSupabaseFallback();
-  }
-
-  if (session.ip && currentIp !== 'unknown' && session.ip !== currentIp) {
     return await getSupabaseFallback();
   }
 
