@@ -213,10 +213,6 @@ export async function getAdminSession(): Promise<AdminSession | null> {
     return await getSupabaseFallback();
   }
 
-  if (!cookieStore.get(ADMIN_ACTIVITY_COOKIE)?.value) {
-    return await getSupabaseFallback();
-  }
-
   if (session.ip && currentIp !== 'unknown' && session.ip !== currentIp) {
     return await getSupabaseFallback();
   }
