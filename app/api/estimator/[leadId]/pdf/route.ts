@@ -5,7 +5,6 @@ import {canPerform} from '@/lib/permissions';
 import {generateEstimatorOutput} from '@/lib/estimatorEngine';
 import {normalizeCrmEstimatorData} from '@/lib/crmEstimator';
 import {createWorkbookListPdfBuffer, createWorkbookPdfBuffer} from '@/lib/workbookPdf';
-import {createStampedPdfBuffer} from '@/lib/simplePdf';
 import {z} from 'zod';
 
 export const runtime = 'nodejs';
@@ -87,7 +86,7 @@ export async function GET(request: NextRequest, {params}: {params: Promise<{lead
   } catch (error) {
     console.error('Estimator PDF renderer failed; using emergency PDF fallback', error);
     const fallbackRows = (outputRows as Array<Record<string, unknown>>).slice(0, 200).map((row) => `${row.position || row.row || row.day || ''} | ${row.description || row.name || row.item || row.task || row.tasks || ''} | ${row.quantity || row.hours || ''} ${row.unit || ''} | €${row.totalExVat || row.total || row.totalLaborAndMaterials || ''}`);
-    pdf = createStampedPdfBuffer({title: `${titles[kind]} - ${lead.title || lead.customer}`, lines: [`Klients: ${lead.customer}`, `Objekts: ${lead.projectAddress || lead.address || 'nav norādīts'}`, ...fallbackRows], watermark: ''});
+    pdf = await createWorkbookListPdfBuffer(`${titles[kind]} - ${lead.title || lead.customer}`, fallbackRows.map((line) => ({description: line})));
   }
 
   return new NextResponse(new Uint8Array(pdf), {
