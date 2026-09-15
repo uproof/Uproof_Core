@@ -7,6 +7,9 @@ import {normalizeCrmEstimatorData} from '@/lib/crmEstimator';
 import {createWorkbookListPdfBuffer, createWorkbookPdfBuffer} from '@/lib/workbookPdf';
 import {z} from 'zod';
 
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 const querySchema = z.object({kind: z.enum(['f2', 'offer', 'materials', 'work-plan', 'daily-plan', 'mechanisms']).default('offer')});
 
 export async function GET(request: NextRequest, {params}: {params: Promise<{leadId: string}>}) {
