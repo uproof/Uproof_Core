@@ -204,15 +204,16 @@ export async function getAdminSession(): Promise<AdminSession | null> {
   const headerStore = await headers();
   const currentIp = headerStore.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
   const token = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
-  if (!cookieStore.get(ADMIN_ACTIVITY_COOKIE)?.value) {
-    return null;
-  }
   const session = decodeToken(token);
   if (!session) {
     const supabaseAccessToken = getSupabaseAccessToken(cookieStore);
     if (supabaseAccessToken) {
       return await resolveSupabaseAdminSession(supabaseAccessToken);
     }
+    return null;
+  }
+
+  if (!cookieStore.get(ADMIN_ACTIVITY_COOKIE)?.value) {
     return null;
   }
 
