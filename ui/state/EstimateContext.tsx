@@ -29,6 +29,8 @@ interface EstimateContextValue {
   publishOverrides(note: string): Promise<void>;
   saveEstimate(): Promise<SavedEstimate>;
   reloadLead(): Promise<void>;
+  setDayTracking(dayNo: number, value: {crew?: string; hours?: string; done?: boolean; note?: string}): void;
+  setToolPacked(key: string, packed: boolean): void;
 }
 
 const Ctx = createContext<EstimateContextValue | null>(null);
@@ -117,12 +119,14 @@ export function EstimateProvider({ leadId, children }: { leadId: string; childre
   }, [lead, leadId]);
 
   const reloadLead = useCallback(async () => { setLead(await api.getLead(leadId)); }, [leadId]);
+  const setDayTracking = useCallback((dayNo: number, value: {crew?: string; hours?: string; done?: boolean; note?: string}) => update((l) => ({...l, dayTracking: {...(l.dayTracking || {}), [dayNo]: value} })), [update]);
+  const setToolPacked = useCallback((key: string, packed: boolean) => update((l) => ({...l, toolsPacked: {...(l.toolsPacked || {}), [key]: packed} })), [update]);
 
   const overrideCount = useMemo(() => (lead ? Object.values(lead.overrides).reduce((a, bag) => a + Object.keys(bag).length, 0) : 0), [lead]);
 
   const value: EstimateContextValue = {
     leadId, status, error, settings, schema, offerTemplate, lead, overrides: lead?.overrides ?? emptyOverrides(), overrideCount, outputs, savedEstimates,
-    setInput, setTerm, setOverride, resetOverrides, setLeadTime, publishOverrides, saveEstimate, reloadLead,
+    setInput, setTerm, setOverride, resetOverrides, setLeadTime, publishOverrides, saveEstimate, reloadLead, setDayTracking, setToolPacked,
   };
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

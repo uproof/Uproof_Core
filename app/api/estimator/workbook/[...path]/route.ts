@@ -4,7 +4,7 @@ import {canPerform} from '@/lib/permissions';
 import {getCrmLeadById, updateCrmLead} from '@/lib/crmLeadsStore';
 import {calculateWorkbookEstimate, defaultWorkbookInputs, leadToWorkbook, workbookInputSchema, workbookSettingsResponse} from '@/lib/workbookEstimator';
 import type {SettingsOverrides} from '@/lib/workbook-engine/settings';
-import type {CrmWorkbookInputValue} from '@/lib/crmEstimator';
+import type {CrmEstimatorFormData, CrmWorkbookInputValue} from '@/lib/crmEstimator';
 import f2Layout from '@/lib/workbook-engine/f2/layout.json';
 
 type RouteContext = {params: Promise<{path: string[]}>};
@@ -32,7 +32,7 @@ export async function GET(_request: NextRequest, {params}: RouteContext) {
     if (!lead) return errorResponse('Lead not found', 404);
     if (path[2] === 'estimates') return NextResponse.json([]);
     const {inputs, terms, overrides} = leadToWorkbook(lead);
-    return NextResponse.json({id: lead.id, terms, inputs, leadTimes: {}, overrides: overrides || {materials: {}, norms: {}, coil: {}, constants: {}, materialLeadTimes: {}}});
+    return NextResponse.json({id: lead.id, terms, inputs, leadTimes: {}, dayTracking: lead.estimatorData?.engineOutputs?.dayTracking || {}, toolsPacked: lead.estimatorData?.engineOutputs?.toolsPacked || {}, overrides: overrides || {materials: {}, norms: {}, coil: {}, constants: {}, materialLeadTimes: {}}});
   }
   return errorResponse('Workbook estimator route not found', 404);
 }
@@ -43,13 +43,13 @@ export async function PUT(request: NextRequest, {params}: RouteContext) {
   if (path[0] !== 'leads' || !path[1]) return errorResponse('Lead route not found', 404);
   const lead = await getCrmLeadById(path[1]);
   if (!lead) return errorResponse('Lead not found', 404);
-  const body = await request.json().catch(() => ({})) as {inputs?: Record<string, unknown>; terms?: Record<string, unknown>; overrides?: SettingsOverrides};
+  const body = await request.json().catch(() => ({})) as {inputs?: Record<string, unknown>; terms?: Record<string, unknown>; overrides?: SettingsOverrides; dayTracking?: Record<number, unknown>; toolsPacked?: Record<string, boolean>};
   const inputs = Object.fromEntries(Object.entries(body.inputs || {}).filter(([, value]) => value === null || typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean')) as Record<string, CrmWorkbookInputValue>;
   const current = lead.estimatorData || {};
   const updated = await updateCrmLead(path[1], {estimatorData: {
     ...current,
     workbookInputs: {...(current.workbookInputs || {}), ...inputs},
-    engineOutputs: {...(current.engineOutputs || {}), workbookOverrides: body.overrides || current.engineOutputs?.workbookOverrides},
+    engineOutputs: {...(current.engineOutputs || {}), workbookOverrides: body.overrides || current.engineOutputs?.workbookOverrides, dayTracking: (body.dayTracking as CrmEstimatorFormData['engineOutputs']['dayTracking']) || current.engineOutputs?.dayTracking, toolsPacked: body.toolsPacked || current.engineOutputs?.toolsPacked},
     offerDiscount: String(body.terms?.discount ?? current.offerDiscount ?? ''),
     offerVatRate: String(body.terms?.vatRate ?? current.offerVatRate ?? '0'),
     scheduleStartDate: String(body.terms?.startDate ?? current.scheduleStartDate ?? ''),

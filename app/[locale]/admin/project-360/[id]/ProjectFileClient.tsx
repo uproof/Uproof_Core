@@ -440,7 +440,6 @@ export default function ProjectFileClient({locale, project, documents}: Props) {
             <a href={`/${locale}/admin/project-360/${encodeURIComponent(project.leadId)}/workbook`} className="mt-4 inline-flex rounded-lg bg-sky-700 px-4 py-2 text-sm font-semibold text-white">Atvērt pilno workbook estimator</a>
           </Module>
 
-          <ProjectProgressModule project={project} estimatorData={estimator} />
 
           <ProjectDocumentsModule project={project} initialDocuments={documents} />
 

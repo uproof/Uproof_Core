@@ -69,6 +69,8 @@ export interface Lead {
   leadTimes: Record<string, number>;   // line id -> days (procurement)
   overrides: SettingsOverrides;
   updatedAt?: string | null;
+  dayTracking?: Record<number, {crew?: string; hours?: string; done?: boolean; note?: string}>;
+  toolsPacked?: Record<string, boolean>;
 }
 
 export interface PreviewRequest {

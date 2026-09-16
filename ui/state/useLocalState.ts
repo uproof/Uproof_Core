@@ -1,11 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { storage } from '@/ui/lib/storage';
-
-/** useState persisted to local storage (day tracking, tool checklist, UI toggles). */
+import { useState } from 'react';
+/** Volatile UI state only. Estimator data is persisted through the CRM API. */
 export function useLocalState<T>(key: string, initial: T): [T, (v: T | ((p: T) => T)) => void] {
-  const [value, setValue] = useState<T>(() => storage.get<T>(key) ?? initial);
-  useEffect(() => { storage.set(key, value); }, [key, value]);
-  return [value, setValue];
+  void key;
+  return useState<T>(initial);
 }
