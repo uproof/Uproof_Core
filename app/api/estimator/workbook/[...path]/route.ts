@@ -2,7 +2,7 @@ import {NextRequest, NextResponse} from 'next/server';
 import {getAdminSession} from '@/lib/adminAuth';
 import {canPerform} from '@/lib/permissions';
 import {getCrmLeadById, updateCrmLead} from '@/lib/crmLeadsStore';
-import {calculateWorkbookEstimate, defaultWorkbookInputs, leadToWorkbook, workbookInputSchema, workbookSettings} from '@/lib/workbookEstimator';
+import {calculateWorkbookEstimate, defaultWorkbookInputs, leadToWorkbook, workbookInputSchema, workbookSettingsResponse} from '@/lib/workbookEstimator';
 import type {SettingsOverrides} from '@/lib/workbook-engine/settings';
 import type {CrmWorkbookInputValue} from '@/lib/crmEstimator';
 import f2Layout from '@/lib/workbook-engine/f2/layout.json';
@@ -22,7 +22,7 @@ export async function GET(_request: NextRequest, {params}: RouteContext) {
   if (!await authorize('viewEstimates')) return errorResponse('Unauthorized', 401);
   const path = (await params).path || [];
   if (path[0] === 'settings' && path[1] === 'active') {
-    return NextResponse.json({version: {id: workbookSettings.versionId, importedAt: '2026-09-16', note: 'Workbook parity engine'}, values: workbookSettings});
+    return NextResponse.json(workbookSettingsResponse());
   }
   if (path[0] === 'inputs' && path[1] === 'schema') return NextResponse.json(workbookInputSchema());
   if (path[0] === 'templates' && path[1] === 'offer') return NextResponse.json({});
@@ -31,8 +31,8 @@ export async function GET(_request: NextRequest, {params}: RouteContext) {
     const lead = await getCrmLeadById(path[1]);
     if (!lead) return errorResponse('Lead not found', 404);
     if (path[2] === 'estimates') return NextResponse.json([]);
-    const {inputs, terms} = leadToWorkbook(lead);
-    return NextResponse.json({id: lead.id, terms, inputs, overrides: {materials: {}, norms: {}, coil: {}, constants: {}, materialLeadTimes: {}}});
+    const {inputs, terms, overrides} = leadToWorkbook(lead);
+    return NextResponse.json({id: lead.id, terms, inputs, leadTimes: {}, overrides: overrides || {materials: {}, norms: {}, coil: {}, constants: {}, materialLeadTimes: {}}});
   }
   return errorResponse('Workbook estimator route not found', 404);
 }

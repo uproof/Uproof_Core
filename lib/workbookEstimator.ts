@@ -17,7 +17,23 @@ export function workbookInputSchema() {
 
 export function leadToWorkbook(lead: CrmLead) {
   const data = lead.estimatorData || {};
-  const inputs = {...defaultWorkbookInputs(), ...(data.workbookInputs || {})} as InputValues;
+  const stored = {...defaultWorkbookInputs(), ...(data.workbookInputs || {})} as InputValues;
+  const numeric = (value: unknown) => {
+    const parsed = Number(String(value ?? '').replace(',', '.'));
+    return Number.isFinite(parsed) ? parsed : 0;
+  };
+  const area = numeric(data.existingRoofArea);
+  const pitch = numeric(data.roofPitch);
+  const inputs: InputValues = {
+    ...stored,
+    seam_rukki_m2: stored.seam_rukki_m2 || area,
+    batten_area_m2: stored.batten_area_m2 || area,
+    membrane_area_m2: stored.membrane_area_m2 || area,
+    roof_slope_deg: stored.roof_slope_deg || pitch,
+    crew_size: stored.crew_size || 3,
+    rafter_spacing_m: stored.rafter_spacing_m || 0.6,
+    cross_batten_width_m: stored.cross_batten_width_m || 0.1,
+  };
   const terms: LeadTerms = {
     client: lead.customer,
     address: lead.projectAddress || lead.address,
@@ -28,6 +44,29 @@ export function leadToWorkbook(lead: CrmLead) {
     procurementIncludeLabor: true,
   };
   return {inputs, terms, overrides: data.engineOutputs?.workbookOverrides};
+}
+
+export function workbookSettingsResponse() {
+  return {
+    version: {id: workbookSettings.versionId, importedAt: '2026-09-16', note: 'Workbook parity engine'},
+    values: {
+      materials: Object.values(workbookSettings.materials).map((m) => ({id: m.key, name: m.name, price: m.price, vat: m.vatFactor, supplier: m.supplier, isService: m.isService, leadTimeDays: m.leadTimeDays})),
+      norms: Object.values(workbookSettings.laborNorms).map((n) => ({id: n.key, cat: n.category, name: n.name, op: n.operation, unit: n.unit, hours: n.hoursPerUnit})),
+      sd: Object.values(workbookSettings.sheetMetal).map((d) => ({
+        id: d.key,
+        grp: d.group,
+        name: d.name,
+        w: d.blankWidthM,
+        folds: d.folds,
+        has: Object.fromEntries(Object.keys(workbookSettings.coilPrices).map((variant) => [variant, d.variants.includes(variant)])),
+      })),
+      coil: workbookSettings.coilPrices,
+      fold_cost: workbookSettings.foldCostPerM,
+      slope: workbookSettings.slopeAreaFactors,
+      gaps: workbookSettings.battenGapRules,
+      k: workbookSettings.constants,
+    },
+  };
 }
 
 export function calculateWorkbookEstimate(lead: CrmLead, inputs: InputValues, terms: LeadTerms, overrides?: SettingsOverrides | null): EstimateOutputs & {leadId: string} {
