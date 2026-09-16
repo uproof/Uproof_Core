@@ -1,0 +1,27 @@
+/*
+ * Design tokens. Deliberately neutral: system colors only, no brand palette, no fonts.
+ * Replace this file (or map these variables) when the visual design is decided.
+ */
+:root {
+  color-scheme: light dark;
+  --font-ui: system-ui, sans-serif;
+  --font-numbers: system-ui, sans-serif;
+
+  --color-bg: Canvas;
+  --color-text: CanvasText;
+  --color-muted: GrayText;
+  --color-border: color-mix(in srgb, CanvasText 18%, Canvas);
+  --color-border-soft: color-mix(in srgb, CanvasText 9%, Canvas);
+  --color-surface-alt: color-mix(in srgb, CanvasText 4%, Canvas);
+  --color-accent: Highlight;
+  --color-accent-text: HighlightText;
+  --color-warning-bg: color-mix(in srgb, CanvasText 8%, Canvas);
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --radius: 6px;
+  --sidebar-width: 240px;
+}
