@@ -316,6 +316,57 @@ function CustomKpiModule() {
   </Module>;
 }
 
+function ProjectWorkProgress({project}: {project: CrmProjectRecord}) {
+  const [open, setOpen] = useState(false);
+  const [outputs, setOutputs] = useState<any>(null);
+  const [extraKpis, setExtraKpis] = useState<Array<{name: string; value: string}>>([]);
+  const [kpiName, setKpiName] = useState('');
+  const [kpiValue, setKpiValue] = useState('');
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch(`/api/estimator/workbook/leads/${encodeURIComponent(project.leadId)}`)
+      .then((response) => response.json())
+      .then((lead) => fetch(`/api/estimator/workbook/leads/${encodeURIComponent(project.leadId)}/estimates/preview`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({inputs: lead.inputs, terms: lead.terms, overrides: lead.overrides}),
+      }))
+      .then((response) => response.json())
+      .then((result) => { if (!cancelled && result?.offer) setOutputs(result); })
+      .catch(() => undefined);
+    return () => { cancelled = true; };
+  }, [project.leadId]);
+
+  const summary = outputs?.summary;
+  const f2 = outputs?.f2;
+  const offer = outputs?.offer;
+  const laborCost = summary?.lines?.reduce((total: number, line: {labor: number}) => total + line.labor, 0) || 0;
+  const kpis = [
+    ['Project phase', project.phase || project.status || '—'],
+    ['Work entries', String(project.workLog.length)],
+    ['Total value', offer ? eur(offer.total) : '—'],
+    ['Estimated profit', summary ? eur(summary.profit) : '—'],
+    ['Man hours', f2 ? `${Number(f2.hours || 0).toFixed(2)} h` : '—'],
+    ['Scheduled time', offer ? `${offer.days} days` : '—'],
+    ['Bidpoint average', project.budget || '—'],
+    ['Time to complete', offer ? `${offer.days} days` : '—'],
+    ['Materials', summary ? eur(summary.materials) : '—'],
+    ['Transport', summary ? eur(summary.transport) : '—'],
+    ['Mechanisms', summary ? eur(summary.mechanisms) : '—'],
+    ['Labor cost', summary ? eur(laborCost) : '—'],
+    ['Tax / VSAOI', summary ? eur(summary.vsaoi) : '—'],
+    ['Profit %', summary?.profit && offer?.total ? `${((summary.profit / offer.total) * 100).toFixed(1)}%` : '—'],
+    ['Profit per day', summary?.profit && offer?.days ? eur(summary.profit / offer.days) : '—'],
+    ['Price / m²', offer && summary?.roofM2 ? eur(offer.total / summary.roofM2) : '—'],
+  ];
+
+  return <Module title="Project Work Progress" subtitle="Estimator-driven project KPIs" defaultOpen={false}>
+    <button type="button" onClick={() => setOpen((value) => !value)} className="mb-4 text-sm font-semibold text-sky-700">{open ? 'Collapse KPIs' : 'Show KPIs'}</button>
+    {open ? <><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{kpis.map(([label, value]) => <div key={label} className="rounded-xl border border-slate-200 bg-slate-50 p-3"><p className="text-xs text-slate-500">{label}</p><p className="mt-1 text-sm font-bold text-slate-900">{value}</p></div>)}</div><div className="mt-4 flex flex-wrap gap-2"><input value={kpiName} onChange={(event) => setKpiName(event.target.value)} placeholder="KPI name" className="h-9 rounded border border-slate-200 px-2 text-sm" /><input value={kpiValue} onChange={(event) => setKpiValue(event.target.value)} placeholder="KPI value" className="h-9 rounded border border-slate-200 px-2 text-sm" /><button type="button" onClick={() => { if (kpiName.trim()) { setExtraKpis((items) => [...items, {name: kpiName.trim(), value: kpiValue.trim() || '—'}]); setKpiName(''); setKpiValue(''); } }} className="rounded bg-sky-700 px-3 py-2 text-xs font-semibold text-white">Add other KPI</button></div>{extraKpis.length ? <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{extraKpis.map((item) => <div key={`${item.name}-${item.value}`} className="rounded-xl border border-slate-200 bg-white p-3"><p className="text-xs text-slate-500">{item.name}</p><p className="mt-1 text-sm font-bold">{item.value}</p></div>)}</div> : null}</> : null}
+  </Module>;
+}
+
 function ProjectDocumentsModule({project, initialDocuments}: {project: CrmProjectRecord; initialDocuments: Array<{name: string; url: string}>}) {
   const [documents, setDocuments] = useState<ProjectDocument[]>(initialDocuments.map((document, index) => ({id: `legacy-${index}`, category: 'other', file_name: document.name, mime_type: 'application/octet-stream', file_size: 0, uploaded_at: '', url: document.url})));
   const [category, setCategory] = useState('contract');
@@ -437,13 +488,14 @@ export default function ProjectFileClient({locale, project, documents}: Props) {
 
           <Module title="Workbook estimator" subtitle="Pilns workbook ievades, iestatījumu, aprēķinu un izvades process" defaultOpen>
             <p className="text-sm text-slate-600">Izmantojiet pilno workbook estimator, lai ievadītu visas 215 Ievade pozīcijas, pārvaldītu iestatījumus un ģenerētu visas workbook izvades. Tāmes lapa paliek pieejama jaunu manuālu darbu pozīciju pievienošanai.</p>
-            <a href={`/${locale}/admin/project-360/${encodeURIComponent(project.leadId)}/workbook`} className="mt-4 inline-flex rounded-lg bg-sky-700 px-4 py-2 text-sm font-semibold text-white">Atvērt pilno workbook estimator</a>
+            <a href={`/${locale}/admin/project-360/${encodeURIComponent(project.leadId)}/workbook/settings`} className="mt-4 inline-flex rounded-lg bg-sky-700 px-4 py-2 text-sm font-semibold text-white">Atvērt pilno workbook estimator</a>
           </Module>
+
+          <ProjectWorkProgress project={project} />
 
 
           <ProjectDocumentsModule project={project} initialDocuments={documents} />
 
-          <CustomKpiModule />
         </div>
       </div>
     </div>

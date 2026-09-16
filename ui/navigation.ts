@@ -31,5 +31,11 @@ export const NAV_GROUPS: { id: NavGroupId; label: string }[] = [
   { id: 'internal', label: 'Internal' },
 ];
 
-export const leadPath = (leadId: string, path: string) => `/admin/project-360/${encodeURIComponent(leadId)}/workbook/${path}`;
-export const printPath = (leadId: string, path: string) => `/admin/project-360/${encodeURIComponent(leadId)}/workbook/print/${path}`;
+function localePrefix() {
+  if (typeof window === 'undefined') return '/en';
+  const locale = window.location.pathname.match(/^\/(lv|en|nl-BE)(?:\/|$)/)?.[1] || 'en';
+  return `/${locale}`;
+}
+
+export const leadPath = (leadId: string, path: string) => `${localePrefix()}/admin/project-360/${encodeURIComponent(leadId)}/workbook/${path}`;
+export const printPath = (leadId: string, path: string) => `${localePrefix()}/admin/project-360/${encodeURIComponent(leadId)}/workbook/print/${path}`;
