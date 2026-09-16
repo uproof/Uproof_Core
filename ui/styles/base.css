@@ -137,7 +137,7 @@ button, .button { display: inline-flex; align-items: center; gap: var(--space-2)
 .gantt-track { position: relative; height: 100%; min-height: 30px; }
 .gantt-axis .gantt-track span { position: absolute; transform: translateX(-50%); font-size: 0.75rem; color: var(--color-muted); }
 .gantt-bar { position: absolute; top: 8px; bottom: 8px; min-width: 2px; background: currentColor; border-radius: 2px; }
-.day-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--space-3); align-items: start; }
+.day-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); align-items: start; }
 .day-card { border: 1px solid var(--color-border); border-radius: var(--radius); padding: var(--space-3); display: grid; gap: var(--space-2); }
 .day-card.is-weekend { background: var(--color-surface-alt); }
 .day-card header { display: flex; justify-content: space-between; }

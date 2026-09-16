@@ -31,6 +31,10 @@ interface EstimateContextValue {
   reloadLead(): Promise<void>;
   setDayTracking(dayNo: number, value: {crew?: string; hours?: string; done?: boolean; note?: string}): void;
   setToolPacked(key: string, packed: boolean): void;
+  offerEdits: Record<number, {description?: string; specification?: string; unit?: string; quantity?: number; amount?: number}>;
+  offerFinalised: boolean;
+  setOfferEdit(line: number, edit: {description?: string; specification?: string; unit?: string; quantity?: number; amount?: number}): void;
+  finaliseOffer(): void;
 }
 
 const Ctx = createContext<EstimateContextValue | null>(null);
@@ -45,6 +49,8 @@ export function EstimateProvider({ leadId, children }: { leadId: string; childre
   const [lead, setLead] = useState<Lead | null>(null);
   const [outputs, setOutputs] = useState<EstimateOutputs | null>(null);
   const [savedEstimates, setSavedEstimates] = useState<SavedEstimate[]>([]);
+  const [offerEdits, setOfferEdits] = useState<EstimateContextValue['offerEdits']>({});
+  const [offerFinalised, setOfferFinalised] = useState(false);
   const requestId = useRef(0);
   const loaded = useRef(false);
 
@@ -58,6 +64,14 @@ export function EstimateProvider({ leadId, children }: { leadId: string; childre
         if (cancelled) return;
         setSettings(s); setSchema(sc); setOfferTemplate(tpl); setSavedEstimates(runs);
         setLead({ ...l, overrides: { ...emptyOverrides(), ...(l.overrides ?? {}) } });
+        try {
+          const saved = JSON.parse(window.localStorage.getItem(`roof-estimate-offer:${leadId}`) || '{}') as {edits?: EstimateContextValue['offerEdits']; finalised?: boolean};
+          setOfferEdits(saved.edits || {});
+          setOfferFinalised(saved.finalised === true);
+        } catch {
+          setOfferEdits({});
+          setOfferFinalised(false);
+        }
       })
       .catch((e: ApiError) => { if (!cancelled) { setError(e); setStatus('error'); } });
     return () => { cancelled = true; };
@@ -121,12 +135,25 @@ export function EstimateProvider({ leadId, children }: { leadId: string; childre
   const reloadLead = useCallback(async () => { setLead(await api.getLead(leadId)); }, [leadId]);
   const setDayTracking = useCallback((dayNo: number, value: {crew?: string; hours?: string; done?: boolean; note?: string}) => update((l) => ({...l, dayTracking: {...(l.dayTracking || {}), [dayNo]: value} })), [update]);
   const setToolPacked = useCallback((key: string, packed: boolean) => update((l) => ({...l, toolsPacked: {...(l.toolsPacked || {}), [key]: packed} })), [update]);
+  const setOfferEdit = useCallback((line: number, edit: EstimateContextValue['offerEdits'][number]) => {
+    setOfferEdits((current) => {
+      const next = {...current, [line]: {...current[line], ...edit}};
+      window.localStorage.setItem(`roof-estimate-offer:${leadId}`, JSON.stringify({edits: next, finalised: false}));
+      return next;
+    });
+    setOfferFinalised(false);
+  }, [leadId]);
+  const finaliseOffer = useCallback(() => {
+    setOfferFinalised(true);
+    window.localStorage.setItem(`roof-estimate-offer:${leadId}`, JSON.stringify({edits: offerEdits, finalised: true}));
+  }, [leadId, offerEdits]);
 
   const overrideCount = useMemo(() => (lead ? Object.values(lead.overrides).reduce((a, bag) => a + Object.keys(bag).length, 0) : 0), [lead]);
 
   const value: EstimateContextValue = {
     leadId, status, error, settings, schema, offerTemplate, lead, overrides: lead?.overrides ?? emptyOverrides(), overrideCount, outputs, savedEstimates,
     setInput, setTerm, setOverride, resetOverrides, setLeadTime, publishOverrides, saveEstimate, reloadLead, setDayTracking, setToolPacked,
+    offerEdits, offerFinalised, setOfferEdit, finaliseOffer,
   };
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

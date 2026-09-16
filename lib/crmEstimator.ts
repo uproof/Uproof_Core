@@ -201,7 +201,7 @@ export type CrmEstimatorFormData = {
   meltingSystemZones: string;
   atticHatchFromStairwell: boolean | null;
   atticHatchCount: number | null;
-  ventilatedRoof: boolean;
+  ventilatedRoof: boolean | null;
   comment1: string;
   comment2: string;
   comment3: string;
@@ -210,6 +210,8 @@ export type CrmEstimatorFormData = {
   offerDiscount: string;
   slopeCoefficientOverride: string;
   scheduleStartDate: string;
+  scheduleSkipWeekends: boolean | null;
+  procurementIncludeLabor: boolean | null;
   scheduleWorkDays: string;
   schedulePeople: string;
   ratioProfile: string;
@@ -425,18 +427,20 @@ export function createEmptyCrmEstimatorData(): CrmEstimatorFormData {
     meltingSystemZones: '',
     atticHatchFromStairwell: null,
     atticHatchCount: null,
-    ventilatedRoof: true,
+    ventilatedRoof: null,
     comment1: '',
     comment2: '',
     comment3: '',
     plannedExecutionTime: '',
-    offerVatRate: '21',
+    offerVatRate: '',
     offerDiscount: '',
     slopeCoefficientOverride: '',
     scheduleStartDate: '',
+    scheduleSkipWeekends: null,
+    procurementIncludeLabor: null,
     scheduleWorkDays: '',
-    schedulePeople: '3',
-    ratioProfile: 'workbook',
+    schedulePeople: '',
+    ratioProfile: '',
     ratioProfileNote: '',
     legacyRows: [],
     processedRows: [],
@@ -444,7 +448,7 @@ export function createEmptyCrmEstimatorData(): CrmEstimatorFormData {
     workbookInputs: {},
     tameInputs: [],
     summaryInputs: [],
-    ievaInputs: createDefaultIevadeRows(),
+    ievaInputs: [],
     tameRows: [],
     engineOutputs: {},
   };
@@ -657,18 +661,20 @@ export function normalizeCrmEstimatorData(value: unknown, fallback: CrmEstimator
     meltingSystemZones: normalizeText(candidate.meltingSystemZones),
     atticHatchFromStairwell: normalizeBoolean(candidate.atticHatchFromStairwell),
     atticHatchCount: normalizeNumber(candidate.atticHatchCount),
-    ventilatedRoof: typeof candidate.ventilatedRoof === 'boolean' ? candidate.ventilatedRoof : normalizeBoolean(candidate.ventilatedRoof) ?? true,
+    ventilatedRoof: typeof candidate.ventilatedRoof === 'boolean' ? candidate.ventilatedRoof : normalizeBoolean(candidate.ventilatedRoof),
     comment1: normalizeText(candidate.comment1),
     comment2: normalizeText(candidate.comment2),
     comment3: normalizeText(candidate.comment3),
     plannedExecutionTime: normalizeText(candidate.plannedExecutionTime),
-    offerVatRate: normalizeText(candidate.offerVatRate) || '21',
+    offerVatRate: normalizeText(candidate.offerVatRate),
     offerDiscount: normalizeText(candidate.offerDiscount),
     slopeCoefficientOverride: normalizeText(candidate.slopeCoefficientOverride),
     scheduleStartDate: normalizeText(candidate.scheduleStartDate),
+    scheduleSkipWeekends: normalizeBoolean(candidate.scheduleSkipWeekends),
+    procurementIncludeLabor: normalizeBoolean(candidate.procurementIncludeLabor),
     scheduleWorkDays: normalizeText(candidate.scheduleWorkDays),
-    schedulePeople: normalizeText(candidate.schedulePeople) || '3',
-    ratioProfile: normalizeText(candidate.ratioProfile) || 'workbook',
+    schedulePeople: normalizeText(candidate.schedulePeople),
+    ratioProfile: normalizeText(candidate.ratioProfile),
     ratioProfileNote: normalizeText(candidate.ratioProfileNote),
     legacyRows: normalizeLegacyRows(candidate.legacyRows),
     processedRows: Array.isArray(candidate.processedRows) ? candidate.processedRows.map((row) => ({

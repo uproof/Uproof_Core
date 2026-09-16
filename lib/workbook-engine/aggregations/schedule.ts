@@ -34,8 +34,14 @@ export function buildDayPlan(workPlan: WorkPlanItem[], startIso: string, skipWee
   let d = parseIsoDate(startIso);
   const isWeekend = (x: Date) => x.getUTCDay() === 0 || x.getUTCDay() === 6;
   const days: DayPlanDay[] = [];
-  for (let n = 1; n <= totalDays; n++) {
-    if (skipWeekends) while (isWeekend(d)) d = addDays(d, 1);
+  let workDayNo = 0;
+  while (workDayNo < totalDays) {
+    if (skipWeekends && isWeekend(d)) {
+      d = addDays(d, 1);
+      continue;
+    }
+    workDayNo += 1;
+    const n = workDayNo;
     const active = workPlan.filter((t) => t.start < n && t.end > n - 1);
     days.push({ dayNo: n, date: toIsoDate(d), isWeekend: isWeekend(d), tasks: active.map((t) => t.task), blockIds: active.map((t) => t.blockId) });
     d = addDays(d, 1);

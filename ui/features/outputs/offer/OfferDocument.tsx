@@ -7,11 +7,15 @@ import { buildOfferLines, offerFooter } from './offerLayout';
 
 /** Client offer document (Piedāvājums). Printable on its own. */
 export function OfferDocument() {
-  const { outputs, lead, offerTemplate } = useEstimate();
+  const { outputs, lead, offerTemplate, offerEdits } = useEstimate();
   if (!outputs || !lead || !offerTemplate) return null;
   const o = outputs.offer;
   const k = outputs.constants;
-  const lines = buildOfferLines(o, outputs.inputs, offerTemplate);
+  const lines = buildOfferLines(o, outputs.inputs, offerTemplate).map((line) => ({...line, ...offerEdits[line.line]}));
+  const materialTotal = lines.reduce((sum, line) => sum + Number(line.amount || 0), 0);
+  const subtotal = materialTotal + o.labor + o.vsaoi + o.overhead - o.discount;
+  const vat = subtotal * o.vatRate;
+  const total = subtotal + vat;
   return (
     <Paper>
       <header className="doc-header">
@@ -35,9 +39,9 @@ export function OfferDocument() {
           <tr><td>Darba devēja VSAOI {formatPct(k.employer_social_tax_vsaoi)}</td><td className="num">{format2(o.vsaoi)}</td></tr>
           <tr><td>Virsizdevumi {formatPct(k.offer_overhead_share)}</td><td className="num">{format2(o.overhead)}</td></tr>
           {o.discount > 0 && <tr><td>Atlaide</td><td className="num">−{format2(o.discount)}</td></tr>}
-          <tr><td>Starpsumma</td><td className="num">{format2(o.subtotal)}</td></tr>
-          <tr><td>PVN {formatPct(o.vatRate)}{o.vatRate === 0 ? ' (apgrieztā maksāšana)' : ''}</td><td className="num">{format2(o.vat)}</td></tr>
-          <tr className="grand"><td>Gala summa</td><td className="num">{formatEur(o.total)}</td></tr>
+          <tr><td>Starpsumma</td><td className="num">{format2(subtotal)}</td></tr>
+          <tr><td>PVN {formatPct(o.vatRate)}{o.vatRate === 0 ? ' (apgrieztā maksāšana)' : ''}</td><td className="num">{format2(vat)}</td></tr>
+          <tr className="grand"><td>Gala summa</td><td className="num">{formatEur(total)}</td></tr>
         </tbody>
       </table>
       <p><strong>Darbu ilgums:</strong> {o.days} darba dienas.</p>

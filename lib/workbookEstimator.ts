@@ -18,30 +18,20 @@ export function workbookInputSchema() {
 export function leadToWorkbook(lead: CrmLead) {
   const data = lead.estimatorData || {};
   const stored = {...defaultWorkbookInputs(), ...(data.workbookInputs || {})} as InputValues;
-  const numeric = (value: unknown) => {
-    const parsed = Number(String(value ?? '').replace(',', '.'));
-    return Number.isFinite(parsed) ? parsed : 0;
-  };
-  const area = numeric(data.existingRoofArea);
-  const pitch = numeric(data.roofPitch);
   const inputs: InputValues = {
     ...stored,
-    seam_rukki_m2: stored.seam_rukki_m2 || area,
-    batten_area_m2: stored.batten_area_m2 || area,
-    membrane_area_m2: stored.membrane_area_m2 || area,
-    roof_slope_deg: stored.roof_slope_deg || pitch,
-    crew_size: stored.crew_size || 3,
-    rafter_spacing_m: stored.rafter_spacing_m || 0.6,
-    cross_batten_width_m: stored.cross_batten_width_m || 0.1,
+    crew_size: stored.crew_size,
+    rafter_spacing_m: stored.rafter_spacing_m,
+    cross_batten_width_m: stored.cross_batten_width_m,
   };
   const terms: LeadTerms = {
     client: lead.customer,
     address: lead.projectAddress || lead.address,
-    discount: Number(data.offerDiscount || 2000),
+    discount: Number(data.offerDiscount || 0),
     vatRate: Number(data.offerVatRate || 0),
     startDate: data.scheduleStartDate || null,
-    skipWeekends: false,
-    procurementIncludeLabor: true,
+    skipWeekends: data.scheduleSkipWeekends === true,
+    procurementIncludeLabor: data.procurementIncludeLabor !== false,
   };
   return {inputs, terms, overrides: data.engineOutputs?.workbookOverrides};
 }

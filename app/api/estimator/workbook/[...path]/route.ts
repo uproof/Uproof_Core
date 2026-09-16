@@ -53,6 +53,8 @@ export async function PUT(request: NextRequest, {params}: RouteContext) {
     offerDiscount: String(body.terms?.discount ?? current.offerDiscount ?? ''),
     offerVatRate: String(body.terms?.vatRate ?? current.offerVatRate ?? '0'),
     scheduleStartDate: String(body.terms?.startDate ?? current.scheduleStartDate ?? ''),
+    scheduleSkipWeekends: typeof body.terms?.skipWeekends === 'boolean' ? body.terms.skipWeekends : current.scheduleSkipWeekends,
+    procurementIncludeLabor: typeof body.terms?.procurementIncludeLabor === 'boolean' ? body.terms.procurementIncludeLabor : current.procurementIncludeLabor,
   }});
   return NextResponse.json({ok: true, lead: updated});
 }
