@@ -475,20 +475,41 @@ export function generateEstimatorOutput(data: CrmEstimatorFormData): EstimatorOu
       total: parseFloat(item.totalMaterial.toFixed(2)),
     }));
 
-  // Work plan (simplified)
+  // Workbook Darbu plāns: only work-bearing Tāme rows, sequentially scheduled.
   let accumulatedDays = 0;
   const people = Math.max(1, Math.round(numeric(data.schedulePeople, 3)));
-  const generatedWorkDays = items.reduce((sum, item) => sum + Math.max(0, item.laborHours ?? item.quantity * 0.2) / (people * 8), 0);
+  const scheduleProductivityFactor = 0.8;
+  const workItems = items.filter((item) => Math.max(0, item.laborHours ?? item.quantity * 0.2) > 0);
+  const generatedWorkDays = workItems.reduce((sum, item) => sum + Math.max(0, item.laborHours ?? item.quantity * 0.2) / (people * 8) * scheduleProductivityFactor, 0);
   const manualWorkDays = numeric(data.scheduleWorkDays, 0);
   const scheduleScale = manualWorkDays > 0 && generatedWorkDays > 0 ? manualWorkDays / generatedWorkDays : 1;
-  const workPlan = items.map((item) => {
+  const workPlan = workItems.map((item) => {
     const workDurationHours = Math.max(0, item.laborHours ?? item.quantity * 0.2);
-    const workDurationDays = workDurationHours / (people * 8) * scheduleScale;
+    const workDurationDays = workDurationHours / (people * 8) * scheduleProductivityFactor * scheduleScale;
     const startDay = accumulatedDays;
     accumulatedDays += workDurationDays;
     return {position: item.description, quantity: item.quantity, workDurationHours: parseFloat(workDurationHours.toFixed(2)), people, workDurationDays: parseFloat(workDurationDays.toFixed(2)), startDay: parseFloat(startDay.toFixed(1)), endDay: parseFloat(accumulatedDays.toFixed(1))};
   });
-  const dailyPlan = workPlan.map((item, index) => ({dayNo: index + 1, dailyPlan: item.position, date: '', workWeek: Math.ceil((index + 1) / 5), execution: '', participants: item.people, hoursAtFacility: Math.min(8, item.workDurationHours), completed: false, comments: ''}));
+  const totalPlanDays = Math.max(0, Math.ceil(accumulatedDays));
+  const scheduleStart = data.scheduleStartDate ? new Date(`${data.scheduleStartDate}T00:00:00`) : null;
+  const dailyPlan = Array.from({length: totalPlanDays}, (_, index) => {
+    const dayNo = index + 1;
+    const activeTasks = workPlan.filter((item) => item.startDay < dayNo && item.endDay > dayNo - 1);
+    const date = scheduleStart && !Number.isNaN(scheduleStart.getTime())
+      ? new Date(scheduleStart.getTime() + index * 86400000).toISOString().slice(0, 10)
+      : '';
+    return {
+      dayNo,
+      dailyPlan: activeTasks.map((item) => item.position).join('; '),
+      date,
+      workWeek: Math.ceil(dayNo / 5),
+      execution: '',
+      participants: people,
+      hoursAtFacility: parseFloat(Math.min(8, activeTasks.reduce((sum, item) => sum + item.workDurationHours, 0)).toFixed(2)),
+      completed: false,
+      comments: '',
+    };
+  });
 
   return {
     pricingPolicy: {vatRate, discount, slopeCoefficient: settings.slopeCoefficient, ratioProfile: data.ratioProfile || 'workbook'},

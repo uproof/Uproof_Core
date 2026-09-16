@@ -58,7 +58,8 @@ export async function checkRateLimit(
 
   const stored = await writeRateLimitRecord(identifier, nextCount, resetTime);
   if (process.env.NODE_ENV === 'production' && !stored) {
-    return {allowed: false, remaining: 0, resetTime};
+    console.warn('Rate-limit storage unavailable; allowing request', identifier);
+    return {allowed: true, remaining: config.maxRequests - nextCount, resetTime};
   }
 
   return {

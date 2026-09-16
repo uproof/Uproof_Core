@@ -23,7 +23,13 @@ const workbookMechanisms = [
 ];
 
 export async function GET(request: NextRequest, {params}: {params: Promise<{leadId: string}>}) {
-  const session = await getAdminSession();
+  let session;
+  try {
+    session = await getAdminSession();
+  } catch (error) {
+    console.error('Estimator PDF authentication failed:', error);
+    return NextResponse.json({ok: false, error: 'Unauthorized'}, {status: 401});
+  }
   if (!session) return NextResponse.json({ok: false, error: 'Unauthorized'}, {status: 401});
   if (!canPerform(session.role, 'viewEstimates')) return NextResponse.json({ok: false, error: 'Forbidden'}, {status: 403});
   const {leadId} = await params;

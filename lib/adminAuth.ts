@@ -65,15 +65,15 @@ export function isApprovedSuperadminEmail(email: string) {
 
 function decodeToken(token: string | undefined): AdminSession | null {
   if (!token) return null;
-  const parts = token.split('.');
-  if (parts.length !== 2) return null;
-
-  const [payloadB64, sig] = parts;
-  const expected = crypto.createHmac('sha256', getSecret()).update(payloadB64).digest('base64url');
-  if (sig.length !== expected.length) return null;
-  if (!crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) return null;
-
   try {
+    const parts = token.split('.');
+    if (parts.length !== 2) return null;
+
+    const [payloadB64, sig] = parts;
+    const expected = crypto.createHmac('sha256', getSecret()).update(payloadB64).digest('base64url');
+    if (sig.length !== expected.length) return null;
+    if (!crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) return null;
+
     const payload = JSON.parse(Buffer.from(payloadB64, 'base64url').toString()) as AdminSession;
     if (payload.sub !== 'admin') return null;
     if (!payload.email || !payload.sid) return null;
