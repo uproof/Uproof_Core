@@ -120,6 +120,13 @@ export function calculateEstimatorSummaryRow(row: CrmEstimatorSummaryRow): CrmEs
 export type CrmWorkbookInputValue = string | number | boolean | null;
 
 export type CrmEstimatorEngineOutputs = {
+  workbookOverrides?: {
+    materials?: Record<string, number | null>;
+    norms?: Record<string, number | null>;
+    coil?: Record<string, number>;
+    constants?: Record<string, number>;
+    materialLeadTimes?: Record<string, number | null>;
+  };
   detailedEstimate?: Record<string, unknown>;
   costSummary?: Record<string, unknown>;
   customerOffer?: Record<string, unknown>;

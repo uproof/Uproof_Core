@@ -3,8 +3,8 @@ import {getMessages} from 'next-intl/server';
 import {Inter} from 'next/font/google';
 import type {Metadata} from 'next';
 import '../globals.css';
-import '../workbook-estimator-tokens.css';
-import '../workbook-estimator-base.css';
+import '@/ui/styles/tokens.css';
+import '@/ui/styles/base.css';
 import ErrorBoundary from '@/components/ErrorBoundary';
 
 const inter = Inter({

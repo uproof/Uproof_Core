@@ -1,6 +1,5 @@
-import WorkbookApp from '@/workbook-ui/WorkbookApp';
+import {redirect} from 'next/navigation';
 
-export default async function WorkbookEstimatorPage({params}: {params: Promise<{id: string}>}) {
-  const {id} = await params;
-  return <WorkbookApp leadId={id} />;
+export default function WorkbookEstimatorPage() {
+  redirect('./settings');
 }

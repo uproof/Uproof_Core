@@ -1,0 +1,3210 @@
+{
+ "note": "Imported from workbook",
+ "materials": [
+  {
+   "key": "valcprofils_rukki",
+   "legacy_row": 2,
+   "name": "Valcprofils Rukki",
+   "price": 11.4,
+   "vat_factor": 1.0,
+   "supplier": "Lebens",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "valcprofils_zn",
+   "legacy_row": 3,
+   "name": "Valcprofils ZN",
+   "price": 7.1,
+   "vat_factor": 1.0,
+   "supplier": "C95",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "rulla_materials_cena_m_rukki",
+   "legacy_row": 4,
+   "name": "Ruļļa materiāls cena/m Rukki",
+   "price": 14.25,
+   "vat_factor": 1.0,
+   "supplier": "Lebens",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "rulla_materials_cena_m_zn",
+   "legacy_row": 5,
+   "name": "Ruļļa materiāls cena/m ZN",
+   "price": 7.5,
+   "vat_factor": 1.0,
+   "supplier": "C95",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "klemmeri",
+   "legacy_row": 6,
+   "name": "Klemmeri",
+   "price": 0.045,
+   "vat_factor": 1.21,
+   "supplier": "AVR",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "klemmeri_slidosie",
+   "legacy_row": 7,
+   "name": "Klemmeri slīdošie",
+   "price": 0.09,
+   "vat_factor": 1.21,
+   "supplier": "AVR",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "klemmeru_skruves_pz_4_5x25",
+   "legacy_row": 8,
+   "name": "Klemmeru skrūves PZ 4.5x25",
+   "price": 0.00876,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "valcgels",
+   "legacy_row": 9,
+   "name": "Valcgēls",
+   "price": 13.0,
+   "vat_factor": 1.21,
+   "supplier": "E-Roof",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "teknes_apalas_125_zn",
+   "legacy_row": 10,
+   "name": "Teknes apaļās 125 ZN",
+   "price": 2.99,
+   "vat_factor": 1.21,
+   "supplier": "C95",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "aki_garie_125_zn",
+   "legacy_row": 11,
+   "name": "Āķi, garie 125 ZN",
+   "price": 4.485,
+   "vat_factor": 1.21,
+   "supplier": "C95",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "frezes_uzgali_1gb_30_aki",
+   "legacy_row": 12,
+   "name": "Frēzes uzgaļi, 1gb/30 āķi",
+   "price": 3.9,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "teknes_arejie_sturi_zn_125",
+   "legacy_row": 13,
+   "name": "Teknes ārējie stūri ZN 125",
+   "price": 8.84,
+   "vat_factor": 1.21,
+   "supplier": "C95",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "teknes_ieksejie_sturi_zn_125",
+   "legacy_row": 14,
+   "name": "Teknes iekšējie stūri ZN 125",
+   "price": 8.84,
+   "vat_factor": 1.21,
+   "supplier": "C95",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "teknes_gali_zn_125",
+   "legacy_row": 15,
+   "name": "Teknes gali ZN 125",
+   "price": 2.73,
+   "vat_factor": 1.21,
+   "supplier": "C95",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "teknes_piltuves_125_100",
+   "legacy_row": 16,
+   "name": "Teknes piltuves 125/100",
+   "price": 3.705,
+   "vat_factor": 1.21,
+   "supplier": "C95",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "noteces_caurule_d100_zn",
+   "legacy_row": 17,
+   "name": "Noteces caurule D100 Zn",
+   "price": 3.77,
+   "vat_factor": 1.21,
+   "supplier": "C95",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "sienas_stiprinajumu_komplekts_zn_100mm",
+   "legacy_row": 18,
+   "name": "Sienas stiprinājumu komplekts, Zn 100mm",
+   "price": 3.25,
+   "vat_factor": 1.21,
+   "supplier": "C95",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "augsejo_likumu_komplekts_zn_100mm",
+   "legacy_row": 19,
+   "name": "Augšējo līkumu komplekts ZN 100mm",
+   "price": 8.58,
+   "vat_factor": 1.21,
+   "supplier": "C95",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "apaksejais_likums_zn_100mm",
+   "legacy_row": 20,
+   "name": "Apakšējais līkums ZN 100mm",
+   "price": 4.29,
+   "vat_factor": 1.21,
+   "supplier": "C95",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "tapskruves_200mm",
+   "legacy_row": 21,
+   "name": "Tapskrūves 200mm",
+   "price": 0.43,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "kniedes_3_2mm",
+   "legacy_row": 22,
+   "name": "Kniedes 3.2mm",
+   "price": 0.02,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "hermetikis_sika",
+   "legacy_row": 23,
+   "name": "Hermētiķis SIKA",
+   "price": 6.45,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "regulejosa_skruve_6x80",
+   "legacy_row": 24,
+   "name": "Regulējošā skrūve 6x80",
+   "price": 0.12,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "kokskruve_t_5x50",
+   "legacy_row": 25,
+   "name": "Kokskrūve T 5x50",
+   "price": 0.029,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "kokskruve_t_5x70",
+   "legacy_row": 26,
+   "name": "Kokskrūve T 5x70",
+   "price": 0.04,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "kokskruve_t_5x100",
+   "legacy_row": 27,
+   "name": "Kokskrūve T 5x100",
+   "price": 0.065,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "kokskruve_t_4_5x45",
+   "legacy_row": 28,
+   "name": "Kokskrūve T 4.5x45",
+   "price": 0.024,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "kokskruve_t_5x80",
+   "legacy_row": 29,
+   "name": "Kokskrūve T 5x80",
+   "price": 0.049,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "kokskruve_t_5x120",
+   "legacy_row": 30,
+   "name": "Kokskrūve T 5x120",
+   "price": 0.076,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "kokskruve_t_4x45",
+   "legacy_row": 31,
+   "name": "Kokskrūve T 4x45",
+   "price": 0.021,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "kokskruve_t_8x300",
+   "legacy_row": 32,
+   "name": "Kokskrūve T 8x300",
+   "price": 0.5312,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "kokskruve_t_8x200",
+   "legacy_row": 33,
+   "name": "Kokskrūve T 8x200",
+   "price": 0.343,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "pastiprinats_stura_lenkis_90x90x65x2m",
+   "legacy_row": 34,
+   "name": "Pastiprināts stūra leņķis 90x90x65x2m",
+   "price": 0.52,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "stura_lenkis_50x50x40x2mm",
+   "legacy_row": 35,
+   "name": "Stūra leņķis 50x50x40x2mm",
+   "price": 0.31,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "kokmateriali_impregneti",
+   "legacy_row": 36,
+   "name": "Kokmateriāli impregnēti",
+   "price": 330.0,
+   "vat_factor": 1.0,
+   "supplier": "MDD grupa",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "apdares_deli",
+   "legacy_row": 37,
+   "name": "Apdares dēļi",
+   "price": 460.0,
+   "vat_factor": 1.0,
+   "supplier": "MDD grupa",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "sniega_barjeras_stienu_pari_pe_2m",
+   "legacy_row": 38,
+   "name": "Sniega barjeras stieņu pāri, PE, 2m",
+   "price": 36.0,
+   "vat_factor": 1.21,
+   "supplier": "C95",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "sniega_barjera_stiprinajums_valcprofilam_pe",
+   "legacy_row": 39,
+   "name": "Sniega barjera stiprinājums Valcprofilam, PE (ik pa 1.5m)",
+   "price": 7.5,
+   "vat_factor": 1.21,
+   "supplier": "C95",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "stienu_posmu_savienojumu_pari",
+   "legacy_row": 40,
+   "name": "Stieņu Posmu savienojumu pāri",
+   "price": 6.6,
+   "vat_factor": 1.21,
+   "supplier": "C95",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "stienu_posmu_fiksatoru_pari_pe",
+   "legacy_row": 41,
+   "name": "Stieņu Posmu fiksatoru pāri, PE",
+   "price": 4.5,
+   "vat_factor": 1.21,
+   "supplier": "C95",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "basic_naglu_lenta",
+   "legacy_row": 42,
+   "name": "Basic naglu lenta",
+   "price": 0.3,
+   "vat_factor": 1.21,
+   "supplier": "Rīgas Būvservis",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "naglas_pneimatiskai_pistolei_3_1xl90mm_34",
+   "legacy_row": 43,
+   "name": "Naglas pneimatiskai pistolei Ø3.1xL90mm 34°",
+   "price": 0.018,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "distanceris_kilis",
+   "legacy_row": 44,
+   "name": "Distanceris/ķīlis",
+   "price": 0.05,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "difuzijas_membrana_rukki_145g_75m2_rullis",
+   "legacy_row": 45,
+   "name": "Difūzijas membrāna Rukki 145g 75m2 rullis",
+   "price": 85.12,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "skavas_10mm",
+   "legacy_row": 46,
+   "name": "Skavas 10mm",
+   "price": 0.0006,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "difuzijas_limlente_gerlinger_gerband_outside",
+   "legacy_row": 47,
+   "name": "Difūzijas līmlente Gerlinger Gerband Outside DM Tape (386) 50mm/25m",
+   "price": 17.8,
+   "vat_factor": 1.21,
+   "supplier": "Kurši",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "piebriestosa_poliuretana_lenta",
+   "legacy_row": 48,
+   "name": "Piebriestoša poliuretāna lenta",
+   "price": 2.0,
+   "vat_factor": 1.21,
+   "supplier": null,
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "jumta_skruves_4_8x50",
+   "legacy_row": 49,
+   "name": "Jumta skrūves 4.8x50",
+   "price": 0.057,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "jumta_skruves_4_8x35",
+   "legacy_row": 50,
+   "name": "Jumta skrūves 4.8x35",
+   "price": 0.041,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "dibelnaglas_ar_gremdgalvu_6x50mm",
+   "legacy_row": 51,
+   "name": "Dībeļnaglas ar gremdgalvu 6x50mm",
+   "price": 0.013,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "urbis_betonam_7mm",
+   "legacy_row": 52,
+   "name": "Urbis betonam 7mm",
+   "price": 2.0,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "dibelnaglas_ar_gremdgalvu_8x100mm",
+   "legacy_row": 53,
+   "name": "Dībeļnaglas ar gremdgalvu 8x100mm",
+   "price": 0.063,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "urbis_betonam_9mm",
+   "legacy_row": 54,
+   "name": "Urbis betonam 9mm",
+   "price": 3.0,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "vitnstieni_m12_30cm_komplekts_ar_uzgriezniem",
+   "legacy_row": 55,
+   "name": "Vītņstieņi M12 30cm komplekts ar uzgriežņiem",
+   "price": 1.3,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "koka_urbis_d14_1gb_50gb",
+   "legacy_row": 56,
+   "name": "Koka urbis D14, 1gb/50gb",
+   "price": 5.5,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "kimiskais_enkurs",
+   "legacy_row": 57,
+   "name": "Ķīmiskais Enkurs",
+   "price": 15.0,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "enkurnaglas_70mm",
+   "legacy_row": 58,
+   "name": "Enkurnaglas 70mm",
+   "price": 0.02,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "platsmasas_ventilacijas_izvada_komplekts",
+   "legacy_row": 59,
+   "name": "Platsmasas ventilācijas izvada komplekts",
+   "price": 75.0,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "skurstena_jumtins_bez_ekrana_cena_m2",
+   "legacy_row": 60,
+   "name": "Skursteņa jumtiņš bez ekrāna cena/m2",
+   "price": 250.0,
+   "vat_factor": 1.21,
+   "supplier": "AVR",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "skurstena_jumtins_ar_ekranu_cena_m2",
+   "legacy_row": 61,
+   "name": "Skursteņa jumtiņš ar ekrānu cena/m2",
+   "price": 350.0,
+   "vat_factor": 1.21,
+   "supplier": null,
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "saplaksnis_mitrumizturigs_12mm",
+   "legacy_row": 62,
+   "name": "Saplāksnis Mitrumizturīgs 12mm",
+   "price": 24.0,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "jumta_luka_bez_pamatnes_zn",
+   "legacy_row": 63,
+   "name": "Jumta lūka bez pamatnes, Zn",
+   "price": 75.0,
+   "vat_factor": 1.21,
+   "supplier": "C95",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "jumta_luka_ar_pamatni_625x130_zn",
+   "legacy_row": 64,
+   "name": "Jumta lūka ar pamatni 625x130, Zn",
+   "price": 100.0,
+   "vat_factor": 1.21,
+   "supplier": "C95",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "pvc_hidroizolacija_25cm",
+   "legacy_row": 65,
+   "name": "PVC hidroizolācija 25cm",
+   "price": 0.18,
+   "vat_factor": 1.21,
+   "supplier": "Kurši",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "dibelnaglas_ar_gremdgalvu_6x80mm",
+   "legacy_row": 66,
+   "name": "Dībeļnaglas ar gremdgalvu 6x80mm",
+   "price": 0.051,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "jumta_laipa_600mm",
+   "legacy_row": 67,
+   "name": "Jumta laipa 600mm",
+   "price": 26.35,
+   "vat_factor": 1.21,
+   "supplier": "Lebens",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "jumta_laipa_1400mm",
+   "legacy_row": 68,
+   "name": "Jumta laipa 1400mm",
+   "price": 62.9,
+   "vat_factor": 1.21,
+   "supplier": "Lebens",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "jumta_laipa_3000mm",
+   "legacy_row": 69,
+   "name": "Jumta laipa 3000mm",
+   "price": 104.8,
+   "vat_factor": 1.21,
+   "supplier": "Lebens",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "jumta_laipas_stiprinajums_valcprofils",
+   "legacy_row": 70,
+   "name": "Jumta laipas stiprinājums,\n valcprofils",
+   "price": 18.75,
+   "vat_factor": 1.21,
+   "supplier": "Lebens",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "jumta_laipas_slipuma_regulesanas_plaksne",
+   "legacy_row": 71,
+   "name": "Jumta laipas slīpuma regulešanas plāksne",
+   "price": 6.7,
+   "vat_factor": 1.21,
+   "supplier": "Lebens",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "drosibas_troses_8mm",
+   "legacy_row": 72,
+   "name": "Drošības troses 8mm",
+   "price": null,
+   "vat_factor": 1.21,
+   "supplier": null,
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "gala_balsti_ar_spriegotajiem_posmu_skaits_x",
+   "legacy_row": 73,
+   "name": "Gala balsti ar spriegotājiem posmu skaits x 2",
+   "price": null,
+   "vat_factor": 1.21,
+   "supplier": null,
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "vidusbalsti_ik_pa_5m",
+   "legacy_row": 74,
+   "name": "Vidusbalsti,  ik pa 5m",
+   "price": null,
+   "vat_factor": 1.21,
+   "supplier": null,
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "jumta_nozogojuma_barjera_ar_stiprinajumiem_k",
+   "legacy_row": 75,
+   "name": "Jumta nožogojuma barjera ar stiprinājumiem komplektā, m",
+   "price": 76.0,
+   "vat_factor": 1.21,
+   "supplier": "ORIMA",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "jumta_kapnes_1_2m_400mm",
+   "legacy_row": 76,
+   "name": "Jumta kāpnes 1.2m 400mm",
+   "price": 41.2,
+   "vat_factor": 1.21,
+   "supplier": "Lebens",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "jumta_kapnes_2_7m_400mm",
+   "legacy_row": 77,
+   "name": "Jumta kāpnes 2.7m 400mm",
+   "price": 80.6,
+   "vat_factor": 1.21,
+   "supplier": "Lebens",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "jumta_kapnes_3_3m_400mm",
+   "legacy_row": 78,
+   "name": "Jumta kāpnes 3.3m 400mm",
+   "price": 98.4,
+   "vat_factor": 1.21,
+   "supplier": "Lebens",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "jumt_kapnu_balstu_paris",
+   "legacy_row": 79,
+   "name": "Jumt kāpņu balstu pāris",
+   "price": 11.4,
+   "vat_factor": 1.21,
+   "supplier": "Lebens",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "sienas_kapnes_700mm_karsti_cinkotas_komplekt",
+   "legacy_row": 80,
+   "name": "Sienas kāpnes 700mm karsti cinkotas komplekts ar stiprinājumiem un margām /m",
+   "price": 120.0,
+   "vat_factor": 1.21,
+   "supplier": "ORIMA",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "urbis_betonam_14mm",
+   "legacy_row": 81,
+   "name": "Urbis Betonam 14mm",
+   "price": 5.0,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "zibens_novedejs_pasivais",
+   "legacy_row": 82,
+   "name": "Zibens novedējs pasīvais",
+   "price": null,
+   "vat_factor": 1.21,
+   "supplier": null,
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "stiprinajumi_pie_jumta",
+   "legacy_row": 83,
+   "name": "Stiprinājumi pie jumta",
+   "price": null,
+   "vat_factor": 1.21,
+   "supplier": null,
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "novadisana_lidz_zemei",
+   "legacy_row": 84,
+   "name": "Novadīšana līdz zemei",
+   "price": null,
+   "vat_factor": 1.21,
+   "supplier": null,
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "ugunsdrosa_ei30_necaurspidiga_jumta_luka_600",
+   "legacy_row": 85,
+   "name": "Ugunsdroša EI30, necaurspīdīga jumta lūka 600X800",
+   "price": 1195.0,
+   "vat_factor": 1.21,
+   "supplier": "?",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "cementa_skiedras_plaksne_m2",
+   "legacy_row": 86,
+   "name": "Cementa šķiedras plāksne /m2",
+   "price": 15.0,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "koka_fasades_krasa_l",
+   "legacy_row": 87,
+   "name": "Koka fasādes krāsa/ L",
+   "price": 13.0,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "nosegsanas_pleve_m2",
+   "legacy_row": 88,
+   "name": "Nosegšanas plēve m2",
+   "price": 0.2,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "krasosanas_paligmaterialu_komplekts_30m2",
+   "legacy_row": 89,
+   "name": "Krāsošanas palīgmateriālu komplekts 30m2",
+   "price": 19.0,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "pvc_limlenta_nosegsanai",
+   "legacy_row": 90,
+   "name": "PVC līmlenta nosegšanai",
+   "price": 4.5,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "ota_akrila_krasai_maza",
+   "legacy_row": 91,
+   "name": "Ota akrila krāsai mazā",
+   "price": 2.0,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "ota_akrila_krasai_liela",
+   "legacy_row": 92,
+   "name": "Ota akrila krāsai lielā",
+   "price": 4.0,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "rullis_ar_rokturi",
+   "legacy_row": 93,
+   "name": "Rullis ar rokturi",
+   "price": 7.0,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "vannite",
+   "legacy_row": 94,
+   "name": "Vannīte",
+   "price": 3.0,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "spainitis",
+   "legacy_row": 95,
+   "name": "Spainītis",
+   "price": 3.0,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "lodes_kiegeli_250x120x65mm",
+   "legacy_row": 96,
+   "name": "Lodes ķieģeļi 250x120x65mm",
+   "price": 1.03,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "muresanas_java_sakret_zm_25kg",
+   "legacy_row": 97,
+   "name": "Mūrēšanas java Sakret ZM 25kg,",
+   "price": 3.6,
+   "vat_factor": 1.21,
+   "supplier": "Būvniecības ABC",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "spainis_16l",
+   "legacy_row": 98,
+   "name": "Spainis 16L",
+   "price": 2.12,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "javas_maisitajs_1gb_30_maisi",
+   "legacy_row": 99,
+   "name": "Javas maisītājs, 1gb 30 maisi",
+   "price": 4.0,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "kelle_1gb_10_maisi",
+   "legacy_row": 100,
+   "name": "Ķelle, 1gb/10 maisi",
+   "price": 4.0,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "stiklskiedras_siets_ct_gewebe_650_caparol_m2",
+   "legacy_row": 101,
+   "name": "Stiklšķiedras siets CT Gewebe 650 Caparol, m2",
+   "price": 1.1,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "dzilumgrunts_cena_l",
+   "legacy_row": 102,
+   "name": "Dziļumgrunts, cena/l",
+   "price": 1.2,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "siets_sturisi_m",
+   "legacy_row": 103,
+   "name": "Siets stūrīši, m",
+   "price": 0.5,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "limjava_bak_25kg_3m2_gb",
+   "legacy_row": 104,
+   "name": "Līmjava BAK 25kg 3m2/ gb",
+   "price": 7.0,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "apmetums_sakret_clp_25kg_1_maiss_2m2",
+   "legacy_row": 105,
+   "name": "Apmetums Sakret CLP+25kg,  1 maiss 2m2",
+   "price": 4.5,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "sturu_kelle_1gb_10_maisi",
+   "legacy_row": 106,
+   "name": "Stūru ķelle, 1gb/10 maisi",
+   "price": 10.0,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "rive_1gb_10_maisi",
+   "legacy_row": 107,
+   "name": "Rīve 1gb/10 maisi",
+   "price": 4.0,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "spakteles_lapsitina",
+   "legacy_row": 108,
+   "name": "Špakteles lāpsitiņa",
+   "price": 3.0,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "vate_paroc_ultra_150mm",
+   "legacy_row": 109,
+   "name": "Vate Paroc Ultra 150mm",
+   "price": 6.6,
+   "vat_factor": 1.21,
+   "supplier": "Kurši",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "vate_paroc_ultra_200mm",
+   "legacy_row": 110,
+   "name": "Vate Paroc Ultra 200mm",
+   "price": 8.1,
+   "vat_factor": 1.21,
+   "supplier": "Kurši",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "tvaika_barjera_200mkr",
+   "legacy_row": 111,
+   "name": "Tvaika barjera 200mkr",
+   "price": 0.6,
+   "vat_factor": 1.21,
+   "supplier": "Būvniecības ABC",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "tvaika_bareras_limelnta_gerlinger_gerband_ou",
+   "legacy_row": 112,
+   "name": "Tvaika bareras līmelnta Gerlinger Gerband Outside DM Tape (386) 50mm/25m",
+   "price": 17.8,
+   "vat_factor": 1.21,
+   "supplier": "Kurši",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "toaletes_noma_apkalposana_menesi",
+   "legacy_row": 113,
+   "name": "Toaletes noma+apkalpošana/mēnesī",
+   "price": 100.0,
+   "vat_factor": 1.21,
+   "supplier": "https://tualetes.lv/noma",
+   "is_service": true,
+   "lead_time_days": 0
+  },
+  {
+   "key": "koku_aizsardzibas_komplekts_kokmateriali_un",
+   "legacy_row": 114,
+   "name": "Koku aizsardzības komplekts, kokmateriāli un gofra",
+   "price": 165.0,
+   "vat_factor": 1.21,
+   "supplier": "Dēļi ~0.3m3 un citi materiāli",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "koku_aizsardzibas_specialists_atzinuma_akti",
+   "legacy_row": 115,
+   "name": "Koku aizsardzības speciālists, atzinuma akti",
+   "price": 200.0,
+   "vat_factor": 1.21,
+   "supplier": null,
+   "is_service": true,
+   "lead_time_days": 0
+  },
+  {
+   "key": "buvtafele",
+   "legacy_row": 116,
+   "name": "Būvtāfele",
+   "price": 145.0,
+   "vat_factor": 1.21,
+   "supplier": null,
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "iebrauktuves_sagatvosana_gumijas_paklaji_nom",
+   "legacy_row": 117,
+   "name": "Iebrauktuves sagatvošana, Gumijas paklāji, noma/dienā",
+   "price": 2.9,
+   "vat_factor": 1.21,
+   "supplier": "Ātrais torņu serviss",
+   "is_service": true,
+   "lead_time_days": 0
+  },
+  {
+   "key": "buvgruzu_konteiners_8m3",
+   "legacy_row": 118,
+   "name": "Būvgružu konteiners 8m3",
+   "price": 425.0,
+   "vat_factor": 1.21,
+   "supplier": null,
+   "is_service": true,
+   "lead_time_days": 0
+  },
+  {
+   "key": "sifera_utilizacija_eur_m2",
+   "legacy_row": 119,
+   "name": "Šīfera utilizācija EUR/m2",
+   "price": 6.8,
+   "vat_factor": 1.21,
+   "supplier": "Asbestos.lv",
+   "is_service": true,
+   "lead_time_days": 0
+  },
+  {
+   "key": "buvgruzu_maisi_polipropilena_maiss_55x100cm",
+   "legacy_row": 120,
+   "name": "Būvgružu maisi Polipropilēna maiss 55x100cm",
+   "price": 0.27,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "big_bag_90x90x110cm",
+   "legacy_row": 121,
+   "name": "Big bag 90x90x110cm",
+   "price": 6.0,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "fleksa_ripa_125mm",
+   "legacy_row": 122,
+   "name": "Flekša ripa 125mm",
+   "price": 1.0,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "apgerbs_sifera_demontazai_vienreizejas_lieto",
+   "legacy_row": 123,
+   "name": "Apģērbs šīfera demontāžai, vienreizējās lietošanas virsvalks, cimdi, respirators P3, mazgājami apavi",
+   "price": 9.5,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "materialu_parklajs_120g_m2_4x6m",
+   "legacy_row": 124,
+   "name": "Materiālu Pārklājs 120g/m2, 4x6m",
+   "price": 19.0,
+   "vat_factor": 1.21,
+   "supplier": "Kurši",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "ugunsdzesibas_inventars_ik_pa_20m",
+   "legacy_row": 125,
+   "name": "Ugunsdzēsības inventārs, ik pa 20m",
+   "price": 15.0,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "parvietojams_konteiners_stradniekiem_un_inve",
+   "legacy_row": 126,
+   "name": "Pārvietojams konteiners strādniekiem un inventāram, 1 gab noma/mēn+piegāde",
+   "price": 110.0,
+   "vat_factor": 1.21,
+   "supplier": "ToiToi",
+   "is_service": true,
+   "lead_time_days": 0
+  },
+  {
+   "key": "konteinera_piegade_km",
+   "legacy_row": 127,
+   "name": "Konteinera piegāde km",
+   "price": 1.8,
+   "vat_factor": 1.21,
+   "supplier": "ToiToi",
+   "is_service": true,
+   "lead_time_days": 0
+  },
+  {
+   "key": "aizsardzibas_zimes",
+   "legacy_row": 128,
+   "name": "Aizsardzības zīmes",
+   "price": 1.1,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "nozogojums_2x3_5m_gb_noma_diena",
+   "legacy_row": 129,
+   "name": "Nožogojums, 2x3.5m gb, noma, dienā",
+   "price": 0.2,
+   "vat_factor": 1.21,
+   "supplier": "Arsenāls",
+   "is_service": true,
+   "lead_time_days": 0
+  },
+  {
+   "key": "aizsargtikls_eur_m2",
+   "legacy_row": 130,
+   "name": "Aizsargtīkls EUR/m2",
+   "price": 1.2,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "celtniecibas_lifts",
+   "legacy_row": 131,
+   "name": "Celtniecības lifts",
+   "price": null,
+   "vat_factor": 1.21,
+   "supplier": null,
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "darba_galds_kokmateriali_un_stiprinajumi",
+   "legacy_row": 132,
+   "name": "Darba galds, kokmateriāli un stiprinājumi",
+   "price": 60.0,
+   "vat_factor": 1.21,
+   "supplier": "Kokmateriāli",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "apgaismojums_gb",
+   "legacy_row": 133,
+   "name": "Apgaismojums, gb",
+   "price": 32.0,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "sastatnes_noma_eur_m2_men",
+   "legacy_row": 134,
+   "name": "Sastatnes noma EUR/m2/mēn",
+   "price": 1.6,
+   "vat_factor": 1.21,
+   "supplier": "ALFA rent",
+   "is_service": true,
+   "lead_time_days": 0
+  },
+  {
+   "key": "sastatnes_aizsargtikls_m2_eur",
+   "legacy_row": 135,
+   "name": "Sastatnes aizsargtīkls, m2/EUR",
+   "price": 1.1,
+   "vat_factor": 1.21,
+   "supplier": "ALFA rent",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "sastatnes_montaza_pakalpojums",
+   "legacy_row": 136,
+   "name": "Sastatnes montāža, pakalpojums",
+   "price": 2.8,
+   "vat_factor": 1.21,
+   "supplier": "ALFA rent",
+   "is_service": true,
+   "lead_time_days": 0
+  },
+  {
+   "key": "sastatnes_demontaza_pakalpojums",
+   "legacy_row": 137,
+   "name": "Sastatnes demontāža, pakalpojums",
+   "price": 1.9,
+   "vat_factor": 1.21,
+   "supplier": "ALFA rent",
+   "is_service": true,
+   "lead_time_days": 0
+  },
+  {
+   "key": "sastatnes_piegade_pakalpojums",
+   "legacy_row": 138,
+   "name": "Sastatnes piegāde, pakalpojums",
+   "price": 1.25,
+   "vat_factor": 1.21,
+   "supplier": "ALFA rent",
+   "is_service": true,
+   "lead_time_days": 0
+  },
+  {
+   "key": "gajeju_tunela_izbuve_m",
+   "legacy_row": 139,
+   "name": "Gājēju tuneļa izbūve, m",
+   "price": null,
+   "vat_factor": 1.21,
+   "supplier": "ALFA rent",
+   "is_service": true,
+   "lead_time_days": 0
+  },
+  {
+   "key": "materialu_nocelsana_gb",
+   "legacy_row": 140,
+   "name": "Materiālu nocelšana, gb",
+   "price": 35.0,
+   "vat_factor": 1.21,
+   "supplier": "Manipulātors 15m",
+   "is_service": true,
+   "lead_time_days": 0
+  },
+  {
+   "key": "materialu_uzcelsana",
+   "legacy_row": 141,
+   "name": "Materiālu uzcelšana",
+   "price": 35.0,
+   "vat_factor": 1.21,
+   "supplier": "Manipulātors 15m",
+   "is_service": true,
+   "lead_time_days": 0
+  },
+  {
+   "key": "manipulatora_transporta_pakalpojumi_eur_km",
+   "legacy_row": 142,
+   "name": "Manipulātora transporta pakalpojumi, EUR/km",
+   "price": 1.8,
+   "vat_factor": 1.21,
+   "supplier": "Manipulātors 15m",
+   "is_service": true,
+   "lead_time_days": 0
+  },
+  {
+   "key": "transports_uz_objektu_eur_km",
+   "legacy_row": 143,
+   "name": "Transports uz objektu EUR/km",
+   "price": 0.3,
+   "vat_factor": 1.21,
+   "supplier": "Mūsu transports",
+   "is_service": true,
+   "lead_time_days": 0
+  },
+  {
+   "key": "dzivosana_nakts_1_cilveks_lv",
+   "legacy_row": 144,
+   "name": "Dzīvošana/nakts 1 cilvēks LV",
+   "price": 30.0,
+   "vat_factor": 1.21,
+   "supplier": null,
+   "is_service": true,
+   "lead_time_days": 0
+  },
+  {
+   "key": "dzivosana_nakts_1_cilveks_zviedrija",
+   "legacy_row": 145,
+   "name": "Dzīvošana/ nakts 1 cilvēks, Zviedrija",
+   "price": 40.0,
+   "vat_factor": 1.21,
+   "supplier": null,
+   "is_service": true,
+   "lead_time_days": 0
+  },
+  {
+   "key": "buvdarbu_vaditaja_izmaksas_1men",
+   "legacy_row": 146,
+   "name": "Būvdarbu vadītāja izmaksas 1mēn",
+   "price": 400.0,
+   "vat_factor": 1.21,
+   "supplier": "Valdis",
+   "is_service": true,
+   "lead_time_days": 0
+  },
+  {
+   "key": "jumta_luka_taisnstura_600x800m_ar_koka_karka",
+   "legacy_row": 147,
+   "name": "Jumta lūka taisnstūŗa 600x800m ar koka karkasu",
+   "price": 95.0,
+   "vat_factor": 1.21,
+   "supplier": "AVR",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "kores_lenta_m",
+   "legacy_row": 148,
+   "name": "Kores lenta, m",
+   "price": 2.4,
+   "vat_factor": 1.21,
+   "supplier": "DEpo",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "koka_laipas_izbuve_beninos_80cm_platuma_ar_b",
+   "legacy_row": 149,
+   "name": "Koka laipas izbūve bēniņos 80cm platumā ar balstiem 55cm. Uz vienu metru 0.12m3 kokmateriāli + stiprinājumi",
+   "price": 52.0,
+   "vat_factor": 1.21,
+   "supplier": "Detaļas, kokmateriāli",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "beramvate_1m3",
+   "legacy_row": 150,
+   "name": "Beramvate 1m3",
+   "price": 31.55,
+   "vat_factor": 1.21,
+   "supplier": "Rīgas Būvservis",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "beramvates_iestrade_pakalpojums_1m3",
+   "legacy_row": 151,
+   "name": "Beramvates iestrāde pakalpojums 1m3",
+   "price": 15.7,
+   "vat_factor": 1.21,
+   "supplier": "Rīgas Būvservis",
+   "is_service": true,
+   "lead_time_days": 0
+  },
+  {
+   "key": "caparol_fasades_krasa_universala_akrilata_kr",
+   "legacy_row": 152,
+   "name": "Caparol fasādes krāsa Universāla akrilāta krāsa Amphibolin Capamix ar tonešanu",
+   "price": 13.85,
+   "vat_factor": 1.21,
+   "supplier": "DEPO",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "velux_jumta_logs_ar_rokturi_vertnes_apaksa_d",
+   "legacy_row": 153,
+   "name": "Velux jumta logs ar rokturi vērtnes apakšā, divkameru stikla pakete 94x140cm",
+   "price": 484.0,
+   "vat_factor": 1.21,
+   "supplier": "Rīgas Būvservis",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "difuzijas_memranas_ramis",
+   "legacy_row": 154,
+   "name": "Difūzijas memrānas rāmis",
+   "price": 105.0,
+   "vat_factor": 1.21,
+   "supplier": "Rīgas Būvservis",
+   "is_service": false,
+   "lead_time_days": 0
+  },
+  {
+   "key": "difuzijas_membrana_ar_sietu_eurovent_metalic",
+   "legacy_row": 155,
+   "name": "Difūzijas membrāna ar sietu. Eurovent Metalic Sk EUR/m2",
+   "price": 4.2,
+   "vat_factor": 1.21,
+   "supplier": "Produss",
+   "is_service": false,
+   "lead_time_days": 0
+  }
+ ],
+ "labor_norms": [
+  {
+   "key": "valcprofils.valcprofils_rukki_klemmeri_aizvalcesana",
+   "legacy_row": 2,
+   "category": "Valcprofils",
+   "name": "Valcprofils Rukki",
+   "operation": "klemmeri, aizvalcēšana",
+   "unit": "m2",
+   "hours_per_unit": 0.55
+  },
+  {
+   "key": "valcprofils.valcgels_ja_slipums_zem_18_gradiem_1gb_2",
+   "legacy_row": 3,
+   "category": "Valcprofils",
+   "name": "Valcgēls, ja slīpums zem 18 grādiem, 1gb/25m bāņu garums",
+   "operation": "iespiešana valcē",
+   "unit": "gb",
+   "hours_per_unit": 0.5
+  },
+  {
+   "key": "teknes.teknes_apalas_125_zn_teknu_montaza",
+   "legacy_row": 4,
+   "category": "Teknes",
+   "name": "Teknes apaļās 125 ZN",
+   "operation": "tekņu montāža",
+   "unit": "m",
+   "hours_per_unit": 0.3
+  },
+  {
+   "key": "teknes.aki_garie_solis_60_ar_frezesanu_un_locis",
+   "legacy_row": 5,
+   "category": "Teknes",
+   "name": "Āķi, garie solis 60",
+   "operation": "ar frēzēšanu un locīšanu",
+   "unit": "gb",
+   "hours_per_unit": 0.15
+  },
+  {
+   "key": "teknes.teknes_arejie_sturi_montaza",
+   "legacy_row": 6,
+   "category": "Teknes",
+   "name": "Teknes ārējie stūri",
+   "operation": "montāža",
+   "unit": "gb",
+   "hours_per_unit": 0.2
+  },
+  {
+   "key": "teknes.teknes_ieksejie_sturi_montaza",
+   "legacy_row": 7,
+   "category": "Teknes",
+   "name": "Teknes iekšējie stūri",
+   "operation": "montāža",
+   "unit": "gb",
+   "hours_per_unit": 0.2
+  },
+  {
+   "key": "teknes.teknes_gali_125_zn_ar_gumijas_blivi",
+   "legacy_row": 8,
+   "category": "Teknes",
+   "name": "Teknes gali 125 Zn",
+   "operation": "ar gumijas blīvi",
+   "unit": "gb",
+   "hours_per_unit": 0.07
+  },
+  {
+   "key": "teknes.teknes_piltuves_montaza",
+   "legacy_row": 9,
+   "category": "Teknes",
+   "name": "Teknes piltuves",
+   "operation": "montāža",
+   "unit": "gb",
+   "hours_per_unit": 0.2
+  },
+  {
+   "key": "teknes.noteces_d100_dibelojot_stiprinajumus",
+   "legacy_row": 10,
+   "category": "Teknes",
+   "name": "Noteces D100",
+   "operation": "Dībeļojot stiprinājumus",
+   "unit": "m",
+   "hours_per_unit": 0.5
+  },
+  {
+   "key": "teknes.augsejo_likumu_komplekts_kniedesana_grie",
+   "legacy_row": 11,
+   "category": "Teknes",
+   "name": "Augšējo līkumu komplekts",
+   "operation": "kniedēšana, griešana",
+   "unit": "gb",
+   "hours_per_unit": 0.3
+  },
+  {
+   "key": "teknes.apaksejais_likums_kniedesana",
+   "legacy_row": 12,
+   "category": "Teknes",
+   "name": "Apakšējais līkums",
+   "operation": "kniedēšana",
+   "unit": "gb",
+   "hours_per_unit": 0.1
+  },
+  {
+   "key": "latojums.starplatojums_zagesana_pienaglosana",
+   "legacy_row": 13,
+   "category": "Latojums",
+   "name": "Starplatojums",
+   "operation": "zāģēšana, pienaglošana",
+   "unit": "m",
+   "hours_per_unit": 0.12
+  },
+  {
+   "key": "latojums.naglu_lenta_m",
+   "legacy_row": 14,
+   "category": "Latojums",
+   "name": "Naglu lenta",
+   "operation": "m",
+   "unit": "m",
+   "hours_per_unit": 0.02
+  },
+  {
+   "key": "latojums.skerslatojums_sprauga_100mm_zagesana_pie",
+   "legacy_row": 15,
+   "category": "Latojums",
+   "name": "Šķērslatojums sprauga 100mm",
+   "operation": "zāģēšana, pienaglošana",
+   "unit": "m2",
+   "hours_per_unit": 0.22
+  },
+  {
+   "key": "latojums.limenosana_starplatas_ar_distanceriem_ev",
+   "legacy_row": 16,
+   "category": "Latojums",
+   "name": "Līmeņošana starplatas ",
+   "operation": "ar distanceriem, ēvelēšanu un regulējamām skrūvēm",
+   "unit": "m2",
+   "hours_per_unit": 0.22
+  },
+  {
+   "key": "difuzijas_membrana.rukki_145g_skavosana_griesana",
+   "legacy_row": 17,
+   "category": "Difūzijas membrāna",
+   "name": "Rukki 145g",
+   "operation": "skavošana, griešana",
+   "unit": "m2",
+   "hours_per_unit": 0.08
+  },
+  {
+   "key": "difuzijas_membrana.membranas_limlenta_limesana_griesana",
+   "legacy_row": 18,
+   "category": "Difūzijas membrāna",
+   "name": "Membrānas līmlenta",
+   "operation": "Līmēšana, griešana",
+   "unit": "m",
+   "hours_per_unit": 0.02
+  },
+  {
+   "key": "dzega.apakslasne_5_15_2_2_24cm_griesana_skruve",
+   "legacy_row": 19,
+   "category": "Dzega",
+   "name": "Apakšlāsne (5+15+2+2=24cm)",
+   "operation": "griešana, skrūvēšana, membrānas līmēšana",
+   "unit": "m",
+   "hours_per_unit": 0.15
+  },
+  {
+   "key": "dzega.kaiteku_siets_perferets_5_8_13cm_griesan",
+   "legacy_row": 20,
+   "category": "Dzega",
+   "name": "Kaitēku siets Perferēts (5+8=13cm)",
+   "operation": "griešana, skrūvēšana",
+   "unit": "m",
+   "hours_per_unit": 0.1
+  },
+  {
+   "key": "dzega.lasene_13_3_15_2_2_35cm_griesana_skruves",
+   "legacy_row": 21,
+   "category": "Dzega",
+   "name": "Lāsene (13+3+15+2+2=35cm",
+   "operation": "griešana, skrūvēšana",
+   "unit": "m",
+   "hours_per_unit": 0.15
+  },
+  {
+   "key": "ventilejama_kore.banu_uzlocisana_un_griesana_banu_uzlocis",
+   "legacy_row": 22,
+   "category": "Ventilējama kore",
+   "name": "Bāņu uzlocīšana un griešana",
+   "operation": "Bāņu uzlocīšana un griešana",
+   "unit": "gb",
+   "hours_per_unit": 0.2
+  },
+  {
+   "key": "ventilejama_kore.brusas_50x50_kores_garums_x_2_zagesana_s",
+   "legacy_row": 23,
+   "category": "Ventilējama kore",
+   "name": "Brusas 50x50, Kores garums x 2",
+   "operation": "zāģēšana, skrūvēšana",
+   "unit": "m",
+   "hours_per_unit": 0.15
+  },
+  {
+   "key": "ventilejama_kore.perferets_skards_2_5_7cm_kores_garums_x",
+   "legacy_row": 24,
+   "category": "Ventilējama kore",
+   "name": "Perferēts skārds (2+5=7cm) Kores garums x 2",
+   "operation": null,
+   "unit": "m",
+   "hours_per_unit": 0.1
+  },
+  {
+   "key": "ventilejama_kore.delis_25x100_kores_garums_x_2_zagesana_s",
+   "legacy_row": 25,
+   "category": "Ventilējama kore",
+   "name": "Dēlis 25x100, Kores garums x 2",
+   "operation": "zāģēšana, skrūvēšana",
+   "unit": "m",
+   "hours_per_unit": 0.1
+  },
+  {
+   "key": "ventilejama_kore.lasene_90_gradi_13_3_5_2_2_25cm_kores_ga",
+   "legacy_row": 26,
+   "category": "Ventilējama kore",
+   "name": "Lāsene 90 grādi (13+3+5+2+2=25cm) Kores garums x 2",
+   "operation": "skrūvēšana, griešana",
+   "unit": "m",
+   "hours_per_unit": 0.15
+  },
+  {
+   "key": "ventilejama_kore.kores_nosegelemnts_2_20_20_2_44cm_kores",
+   "legacy_row": 27,
+   "category": "Ventilējama kore",
+   "name": "Kores nosegelemnts (2+20+20+2=44cm)",
+   "operation": "Kores garums",
+   "unit": "m",
+   "hours_per_unit": 0.1
+  },
+  {
+   "key": "skruvejamajai_kore.apakskores_profils_kores_garums_x_2_grie",
+   "legacy_row": 28,
+   "category": "Skrūvējamajai korei",
+   "name": "Apakškores profils, Kores garums x 2",
+   "operation": "griešana, skrūvēšana",
+   "unit": "m",
+   "hours_per_unit": 0.15
+  },
+  {
+   "key": "skruvejamajai_kore.kores_profils_2_20_20_2_44cm_griesana_sk",
+   "legacy_row": 29,
+   "category": "Skrūvējamajai korei",
+   "name": "Kores profils (2+20+20+2= 44cm)",
+   "operation": "griešana, skrūvēšana",
+   "unit": "m",
+   "hours_per_unit": 0.1
+  },
+  {
+   "key": "vejmalu_montaza_uz.aizkabes_2_8_10cm_griesana_skruvesana",
+   "legacy_row": 30,
+   "category": "Vējmalu montāža uz aizkabēm",
+   "name": "Aizkabes (2+8=10cm)",
+   "operation": "griešana, skrūvēšana",
+   "unit": "m",
+   "hours_per_unit": 0.1
+  },
+  {
+   "key": "vejmalu_montaza_uz.vejmalas_1",
+   "legacy_row": 31,
+   "category": "Vējmalu montāža uz aizkabēm",
+   "name": "Vējmalas 1",
+   "operation": null,
+   "unit": "m",
+   "hours_per_unit": 0.4
+  },
+  {
+   "key": "sateknes_montaza.sateknes_profils_2_30_30_2_64cm_griesana",
+   "legacy_row": 32,
+   "category": "Sateknes montāža",
+   "name": "Sateknes profils (2+30+30+2=64cm)",
+   "operation": "griešana, aizkabes, blīvlenta",
+   "unit": "m",
+   "hours_per_unit": 0.9
+  },
+  {
+   "key": "sienas_pieslegums.uzlocits_skards_30cm_locisana_dibelosana",
+   "legacy_row": 33,
+   "category": "Sienas pieslēgums",
+   "name": "Uzlocīts skārds ~30cm",
+   "operation": "locīšana, dībeļošana, hermēšana",
+   "unit": "m",
+   "hours_per_unit": 0.5
+  },
+  {
+   "key": "sienas_pieslegums.skarda_nosegliste_2_2_10_2_16cm_dibelosa",
+   "legacy_row": 34,
+   "category": "Sienas pieslēgums",
+   "name": "Skārda noseglīste (2+2+10+2=16cm)",
+   "operation": "dībeļošana, griešana, hermēšana",
+   "unit": "m",
+   "hours_per_unit": 0.2
+  },
+  {
+   "key": "skurstena_apdare_v.cementa_skiedras_plaksne_griesana_dibelo",
+   "legacy_row": 35,
+   "category": "Skursteņa apdare, valcētas loksnes",
+   "name": "Cementa šķiedras plāksne",
+   "operation": "griešana, dībeļošana",
+   "unit": "m2",
+   "hours_per_unit": 0.5
+  },
+  {
+   "key": "skurstena_apdare_v.starplatojums_25x50_vertikali_ik_pa_40cm",
+   "legacy_row": 36,
+   "category": "Skursteņa apdare, valcētas loksnes",
+   "name": "Starplatojums 25x50, Vertikāli Ik pa 40cm",
+   "operation": "zāģēšana, dībeļošana",
+   "unit": "m2",
+   "hours_per_unit": 0.4
+  },
+  {
+   "key": "skurstena_apdare_v.skerslatojums_25x100_sprauga_20cm_zagesa",
+   "legacy_row": 37,
+   "category": "Skursteņa apdare, valcētas loksnes",
+   "name": "Šķērslatojums 25x100, sprauga 20cm)",
+   "operation": "zāģēšana, skrūvēšana",
+   "unit": "m2",
+   "hours_per_unit": 0.4
+  },
+  {
+   "key": "skurstena_apdare_v.valcprofila_loksnes_klemmeri_aizvalcesan",
+   "legacy_row": 38,
+   "category": "Skursteņa apdare, valcētas loksnes",
+   "name": "Valcprofila loksnes",
+   "operation": "klemmeri, aizvalcēšana",
+   "unit": "m2",
+   "hours_per_unit": 0.6
+  },
+  {
+   "key": "skurstena_apdare_v.sturu_listes_ar_mazajam_valcem_3_5_10_10",
+   "legacy_row": 39,
+   "category": "Skursteņa apdare, valcētas loksnes",
+   "name": "stūru līstes ar mazajām valcēm (3.5+10+10+3.5= 27cm), 4gb x skursteņa augstums",
+   "operation": "locīšana, griešana, skrūvēšana",
+   "unit": "m",
+   "hours_per_unit": 0.3
+  },
+  {
+   "key": "skurstena_jumtina.skurstena_jumtins_uzcelsana_dibelosana",
+   "legacy_row": 40,
+   "category": "Skursteņa jumtiņa montāža",
+   "name": "skursteņa jumtiņs",
+   "operation": "uzcelšana, dībeļošana",
+   "unit": "gb",
+   "hours_per_unit": 2.0
+  },
+  {
+   "key": "skurstena_pieslegu.loksnu_materials_125cm_skurstena_perimet",
+   "legacy_row": 41,
+   "category": "Skursteņa pieslēgums",
+   "name": "Lokšņu materiāls 125cm, skursteņa perimetrs +4m",
+   "operation": "locīšana, valcēšana",
+   "unit": "gb",
+   "hours_per_unit": 12.0
+  },
+  {
+   "key": "ventilejams_sienas.vetikali_piedibelotas_brusas_50x50_ik_pa",
+   "legacy_row": 42,
+   "category": "Ventilējams sienas pieslēgums bāņu galā",
+   "name": "Vetikāli piedībeļotas brusas 50x50, Ik pa 60cm 20cm garas",
+   "operation": "zāģēšana, dībeļošana",
+   "unit": "gb",
+   "hours_per_unit": 0.08
+  },
+  {
+   "key": "ventilejams_sienas.deli_25x100_2x_piesleguma_garums_zagesan",
+   "legacy_row": 43,
+   "category": "Ventilējams sienas pieslēgums bāņu galā",
+   "name": "Dēļi 25x100, 2x pieslēguma garums",
+   "operation": "zāģēšana, skrūvēšana",
+   "unit": "m",
+   "hours_per_unit": 0.1
+  },
+  {
+   "key": "ventilejams_sienas.kaiteklu_siets_50mm_skruvesana_griesana",
+   "legacy_row": 44,
+   "category": "Ventilējams sienas pieslēgums bāņu galā",
+   "name": "Kaitēkļu siets 50mm",
+   "operation": "skrūvēšana, griešana",
+   "unit": "m",
+   "hours_per_unit": 0.1
+  },
+  {
+   "key": "ventilejams_sienas.uzlociti_banu_gali_20cm_locisana_griesan",
+   "legacy_row": 45,
+   "category": "Ventilējams sienas pieslēgums bāņu galā",
+   "name": "Uzlocīti bāņu gali ~20cm",
+   "operation": "locīšana, griešana",
+   "unit": "m",
+   "hours_per_unit": 0.4
+  },
+  {
+   "key": "ventilejams_sienas.apakseja_aizkabe_0_6mm_10_15_25cm_skruve",
+   "legacy_row": 46,
+   "category": "Ventilējams sienas pieslēgums bāņu galā",
+   "name": "Apakšējā aizkabe 0.6mm (10+15=25cm)",
+   "operation": "skrūvēšana, griešana",
+   "unit": "m",
+   "hours_per_unit": 0.1
+  },
+  {
+   "key": "ventilejams_sienas.nosedzosa_detala_2_15_10_5_32cm_dibelosa",
+   "legacy_row": 47,
+   "category": "Ventilējams sienas pieslēgums bāņu galā",
+   "name": "Nosedzošā detaļa 2+15+10+5=32cm",
+   "operation": "dībeļošana, griešana, hermēšana",
+   "unit": "m",
+   "hours_per_unit": 0.2
+  },
+  {
+   "key": "jumta_logu_piesleg.loksnu_materials_125cm_loga_perimetrs_5",
+   "legacy_row": 48,
+   "category": "Jumta logu pieslēgumu montāža",
+   "name": "Lokšņu materiāls 125cm, loga perimetrs +5",
+   "operation": null,
+   "unit": "gb",
+   "hours_per_unit": 16.0
+  },
+  {
+   "key": "jumta_logu_montaza.jumta_logs_komplekts_veids_izmers",
+   "legacy_row": 49,
+   "category": "Jumta logu montāža",
+   "name": "Jumta logs, komplekts",
+   "operation": "veids, izmērs",
+   "unit": "gb",
+   "hours_per_unit": 4.0
+  },
+  {
+   "key": "jumta_logu_montaza.difuzijas_membranas_ramis",
+   "legacy_row": 50,
+   "category": "Jumta logu montāža",
+   "name": "Difūzijas membrānas rāmis",
+   "operation": null,
+   "unit": "gb",
+   "hours_per_unit": 2.0
+  },
+  {
+   "key": "ventilacijas_izvad.skarda_caurule_d100_150_1m_uz_gb_valcesa",
+   "legacy_row": 51,
+   "category": "Ventilācijas izvads Skārda, ievalcēts",
+   "name": "Skārda caurule D100-150, 1m uz gb",
+   "operation": "valcēšana, membrnānas līmēšana",
+   "unit": "gb",
+   "hours_per_unit": 5.0
+  },
+  {
+   "key": "ventilacijas_izvad.cauruma_zagesana_zagesana_griesana",
+   "legacy_row": 52,
+   "category": "Ventilācijas izvads Skārda, ievalcēts",
+   "name": "Cauruma zāģēšana",
+   "operation": "zāģēšana, griešana",
+   "unit": "gb",
+   "hours_per_unit": 0.2
+  },
+  {
+   "key": "ventilacijas_izvad.skarda_cepurite_kniedesana",
+   "legacy_row": 53,
+   "category": "Ventilācijas izvads Skārda, ievalcēts",
+   "name": "Skārda cepurīte",
+   "operation": "kniedēšana",
+   "unit": "gb",
+   "hours_per_unit": 0.1
+  },
+  {
+   "key": "ventilacijas_izvad.ventilacijas_izvada_komplekts_skruvesana",
+   "legacy_row": 54,
+   "category": "Ventilācijas izvads Plastmasas, skrūvējama",
+   "name": "Ventilācijas izvada komplekts",
+   "operation": "skrūvēšana, membrnānas līmēšana",
+   "unit": "gb",
+   "hours_per_unit": 2.0
+  },
+  {
+   "key": "ventilacijas_izvad.cauruma_zagesana_zagesana_griesana_2",
+   "legacy_row": 55,
+   "category": "Ventilācijas izvads Plastmasas, skrūvējama",
+   "name": "Cauruma zāģēšana",
+   "operation": "zāģēšana, griešana",
+   "unit": "gb",
+   "hours_per_unit": 0.2
+  },
+  {
+   "key": "jumta_lukas_montaz.jumta_luka_bez_pamatnes_ovala_valcesana",
+   "legacy_row": 56,
+   "category": "Jumta lūkas montāža Ievalcējot pa vidu loksnei",
+   "name": "Jumta lūka bez pamatnes, ovāla",
+   "operation": "valcēšana",
+   "unit": "gb",
+   "hours_per_unit": 6.0
+  },
+  {
+   "key": "jumta_lukas_montaz.membranas_limlenta_10m_gb_membranas_lime",
+   "legacy_row": 57,
+   "category": "Jumta lūkas montāža Ievalcējot pa vidu loksnei",
+   "name": "Membrānas līmlenta, 10m/gb",
+   "operation": "membrānas līmēšana",
+   "unit": "m",
+   "hours_per_unit": 0.5
+  },
+  {
+   "key": "jumta_lukas_montaz.jumta_luka_ar_pamatni_62_5x_30_60_lidz_k",
+   "legacy_row": 58,
+   "category": "Jumta lūkas montāža Ievalcējot starp divām loksnēm",
+   "name": "Jumta lūka ar pamatni (62.5x (30+60+līdz korei), ovāla",
+   "operation": "valcēšana",
+   "unit": "gb",
+   "hours_per_unit": 6.0
+  },
+  {
+   "key": "jumta_lukas_montaz.membranas_limlenta_membranas_limesana",
+   "legacy_row": 59,
+   "category": "Jumta lūkas montāža Ievalcējot starp divām loksnēm",
+   "name": "Membrānas līmlenta",
+   "operation": "membrānas līmēšana",
+   "unit": "m",
+   "hours_per_unit": 0.5
+  },
+  {
+   "key": "parapeta_montaza.pvc_hidroizolacija_uz_3_skautnem_rulla_p",
+   "legacy_row": 60,
+   "category": "Parapeta montāža",
+   "name": "PVC hidroizolācija, uz 3 šķautnēm. Ruļļa platums 25cm",
+   "operation": "PVC ieklāšana",
+   "unit": "m",
+   "hours_per_unit": 0.05
+  },
+  {
+   "key": "parapeta_montaza.mitrumizturigs_saplaksnis_12mm_zagesana",
+   "legacy_row": 61,
+   "category": "Parapeta montāža",
+   "name": "Mitrumizturīgs saplāksnis 12mm",
+   "operation": "Zāģēšana, dībeļošana",
+   "unit": "m2",
+   "hours_per_unit": 0.3
+  },
+  {
+   "key": "parapeta_montaza.aizkabes_15cm_platuma_2x_parapeta_garums",
+   "legacy_row": 62,
+   "category": "Parapeta montāža",
+   "name": "Aizkabes 15cm platumā, 2x parapeta garums",
+   "operation": "griešana, skrūvēšana",
+   "unit": "m",
+   "hours_per_unit": 0.15
+  },
+  {
+   "key": "parapeta_montaza.skarda_parapets_izmeri_atkarigi_daba_mon",
+   "legacy_row": 63,
+   "category": "Parapeta montāža",
+   "name": "Skārda parapets (izmēri atkarīgi dabā)",
+   "operation": "montēšana, griešana",
+   "unit": "m",
+   "hours_per_unit": 0.2
+  },
+  {
+   "key": "murlatas_montaza.murlatas_montaza_zagesana_ubrsana_kimisk",
+   "legacy_row": 64,
+   "category": "Mūrlatas montāža",
+   "name": "Mūrlatas montāža",
+   "operation": "zāģēšana, ubršana, ķīmiskais enkurs un vītņstienis",
+   "unit": "m",
+   "hours_per_unit": 1.0
+  },
+  {
+   "key": "murlatas_montaza.hidroizolacija_pvc_25cm_plata_murlatas_g",
+   "legacy_row": 65,
+   "category": "Mūrlatas montāža",
+   "name": "Hidroizolācija PVC 25cm plata",
+   "operation": "mūrlatas garums",
+   "unit": "m",
+   "hours_per_unit": 0.05
+  },
+  {
+   "key": "sparu_montaza.sparu_montaza_iezagis_zagesana_montaza_s",
+   "legacy_row": 66,
+   "category": "Spāru montāža",
+   "name": "Spāru montāža",
+   "operation": "iezāģis, zāģēšana, montāža, skrūvēšana",
+   "unit": "gb",
+   "hours_per_unit": 1.5
+  },
+  {
+   "key": "sparu_montaza.starpsparu_balsti_galos_150x50_60cm_2gb",
+   "legacy_row": 67,
+   "category": "Spāru montāža",
+   "name": "Starpspāru balsti galos 150x50, 60cm, 2gb x spāres",
+   "operation": "zāģēšana, skrūvēšana",
+   "unit": "gb",
+   "hours_per_unit": 0.2
+  },
+  {
+   "key": "jumta_kopnu_montaz.jumta_kopnes_pasutitas_projektetas_monta",
+   "legacy_row": 68,
+   "category": "Jumta kopņu montāža",
+   "name": "Jumta kopnes pasūtītas, projektētas.",
+   "operation": "montāža ar pacēlāju, skrūvēšana, savstarpēja sastiprināšana",
+   "unit": "gb",
+   "hours_per_unit": 2.6
+  },
+  {
+   "key": "jumta_kopnu_montaz.diognales_atkariba_no_projekta",
+   "legacy_row": 69,
+   "category": "Jumta kopņu montāža",
+   "name": "Diognāles",
+   "operation": "Atkarībā no projekta",
+   "unit": "m3",
+   "hours_per_unit": null
+  },
+  {
+   "key": "jumta_kopnu_montaz.skerssijas_atkariba_no_projekta",
+   "legacy_row": 70,
+   "category": "Jumta kopņu montāža",
+   "name": "Škērssijas",
+   "operation": "Atkarībā no projekta",
+   "unit": "m3",
+   "hours_per_unit": null
+  },
+  {
+   "key": "protezes.proteze_garums_1_5m_videji_zagesana_ieza",
+   "legacy_row": 71,
+   "category": "Protēzes ",
+   "name": "Protēze, garums 1.5m (vidēji)",
+   "operation": "zāģēšana, iezāģis",
+   "unit": "gb",
+   "hours_per_unit": 0.7
+  },
+  {
+   "key": "protezes.vitnstieni_m12_30cm_komplekts_ar_uzgriez",
+   "legacy_row": 72,
+   "category": "Protēzes ",
+   "name": "Vītnstieņi M12 30cm komplekts ar uzgriežņiem  3gb/ gb",
+   "operation": "urbšana, skrūēšana",
+   "unit": "gb",
+   "hours_per_unit": 0.1
+  },
+  {
+   "key": "veja_kastes_izbuve.veja_kastes_karkas_solis_60cm_50x50_brus",
+   "legacy_row": 73,
+   "category": "Vēja kastes izbūve",
+   "name": "Vēja kastes karkas, solis 60cm, 50x50 brusas",
+   "operation": "zāģēšana, skrūēšana, montāža",
+   "unit": "m",
+   "hours_per_unit": 0.8
+  },
+  {
+   "key": "veja_kastes_izbuve.apdares_deli_ar_vienu_spundi_20x95_zages",
+   "legacy_row": 74,
+   "category": "Vēja kastes izbūve",
+   "name": "Apdares dēļi ar vienu spundi, 20x95",
+   "operation": "zāģēšana, skrūvēšana",
+   "unit": "m2",
+   "hours_per_unit": 1.7
+  },
+  {
+   "key": "veja_kastes_izbuve.koka_fasades_krasa_1_slanis_objekta_8m2",
+   "legacy_row": 75,
+   "category": "Vēja kastes izbūve",
+   "name": "Koka fasādes krāsa 1 slānis objektā, 8m2/l",
+   "operation": "krāsošana savienojumu vietās un skrūves",
+   "unit": "m2",
+   "hours_per_unit": 0.07
+  },
+  {
+   "key": "veja_kastes_izbuve.nosegsanas_pleves_materiali_nosegsana",
+   "legacy_row": 76,
+   "category": "Vēja kastes izbūve",
+   "name": "Nosegšanas plēves materiāli",
+   "operation": "nosegšana",
+   "unit": "m2",
+   "hours_per_unit": 0.01
+  },
+  {
+   "key": "veja_kastes_izbuve.koka_fasades_krasa_2_slani_darbnica_4m2",
+   "legacy_row": 77,
+   "category": "Vēja kastes izbūve",
+   "name": "Koka fasādes krāsa 2 slāņi darbnīcā, 4m2/l",
+   "operation": "krāsošana ar krāsošanas iekārtu stumjot cauri",
+   "unit": "m2",
+   "hours_per_unit": 0.18
+  },
+  {
+   "key": "sniega_barjeras.apalas_caurulveida_skruvesana",
+   "legacy_row": 78,
+   "category": "Sniega barjeras",
+   "name": "Apaļās cauruļveida",
+   "operation": "skrūvēšana",
+   "unit": "m",
+   "hours_per_unit": 0.4
+  },
+  {
+   "key": "jumta_drosibas_ele.jumta_kapnes_komplekts_m_montaza",
+   "legacy_row": 79,
+   "category": "Jumta drošības elementi",
+   "name": "Jumta kāpnes komplekts, m",
+   "operation": "montāža",
+   "unit": "gb",
+   "hours_per_unit": 2.0
+  },
+  {
+   "key": "jumta_drosibas_ele.sienas_kapnes_700mm_dibelosana_montaza",
+   "legacy_row": 80,
+   "category": "Jumta drošības elementi",
+   "name": "Sienas kāpnes 700mm",
+   "operation": "dībeļošana, montāža",
+   "unit": "m",
+   "hours_per_unit": 1.3
+  },
+  {
+   "key": "jumta_drosibas_ele.jumta_laipas_viena_posma_montaza_vienalg",
+   "legacy_row": 81,
+   "category": "Jumta drošības elementi",
+   "name": "Jumta laipas viena posma montāža, vienalga cik garšs",
+   "operation": "montāža, skrūvēšana",
+   "unit": "gb",
+   "hours_per_unit": 1.5
+  },
+  {
+   "key": "jumta_drosibas_ele.drosibas_troses_8mm_stiprinajumu_montaza",
+   "legacy_row": 82,
+   "category": "Jumta drošības elementi",
+   "name": "Drošības troses 8mm",
+   "operation": "stiprinājumu montāža, troses montāža, spriegošana",
+   "unit": "m",
+   "hours_per_unit": 0.2
+  },
+  {
+   "key": "jumta_drosibas_ele.jumta_nozogojuma_barjera_m_montaza_skruv",
+   "legacy_row": 83,
+   "category": "Jumta drošības elementi",
+   "name": "Jumta nožogojuma barjera, m",
+   "operation": "montāža, skrūvēšana",
+   "unit": "m",
+   "hours_per_unit": 0.7
+  },
+  {
+   "key": "jumta_drosibas_ele.zibens_novedejs_pasivais",
+   "legacy_row": 84,
+   "category": "Jumta drošības elementi",
+   "name": "Zibens novedējs pasīvais",
+   "operation": null,
+   "unit": null,
+   "hours_per_unit": null
+  },
+  {
+   "key": "jumta_drosibas_ele.stiprinajumi_pie_jumta_3gb_m",
+   "legacy_row": 85,
+   "category": "Jumta drošības elementi",
+   "name": "Stiprinājumi pie jumta",
+   "operation": "3gb/m",
+   "unit": null,
+   "hours_per_unit": null
+  },
+  {
+   "key": "jumta_drosibas_ele.novadisana_lidz_zemei",
+   "legacy_row": 86,
+   "category": "Jumta drošības elementi",
+   "name": "Novadīšana līdz zemei",
+   "operation": null,
+   "unit": null,
+   "hours_per_unit": null
+  },
+  {
+   "key": "jumta_drosibas_ele.jumta_beninu_ugunsdrosa_luka_montaza_ar",
+   "legacy_row": 87,
+   "category": "Jumta drošības elementi",
+   "name": "Jumta/ bēniņu Ugunsdroša lūka",
+   "operation": "montāža, ar skārda pieslēgumu",
+   "unit": "gb",
+   "hours_per_unit": 18.0
+  },
+  {
+   "key": "skurstenu_mura_atj.lodes_kiegeli_250x120x65mm_0_03m2",
+   "legacy_row": 88,
+   "category": "Skursteņu mūra atjaunošana",
+   "name": "Lodes ķieģeļi 250x120x65mm=0.03m2",
+   "operation": null,
+   "unit": "gb",
+   "hours_per_unit": 0.1
+  },
+  {
+   "key": "skurstenu_mura_atj.maisu_uzcelsana_un_javas_maisisana_maisu",
+   "legacy_row": 89,
+   "category": "Skursteņu mūra atjaunošana",
+   "name": "Maisu uzcelšana un javas maisīšana",
+   "operation": "Maisu uzcelšana un javas maisīšana",
+   "unit": "gb",
+   "hours_per_unit": 0.4
+  },
+  {
+   "key": "skurstenu_mura_atj.nosegsanas_materiali_1m2_1m2_nosegsana",
+   "legacy_row": 90,
+   "category": "Skursteņu mūra atjaunošana",
+   "name": "Nosegšanas materiāli 1m2=1m2",
+   "operation": "nosegšana",
+   "unit": "m2",
+   "hours_per_unit": 0.05
+  },
+  {
+   "key": "skurstenu_apmetuma.apmesanas_siets_stiklskiedras_sieta_lime",
+   "legacy_row": 91,
+   "category": "Skursteņu apmetuma atjaunošana",
+   "name": "Apmešanas siets stiklšķiedras",
+   "operation": "sieta līmēšana ar stūriem",
+   "unit": "m2",
+   "hours_per_unit": 0.7
+  },
+  {
+   "key": "skurstenu_apmetuma.maisu_uzcelsana_un_javas_maisisana_maisu",
+   "legacy_row": 92,
+   "category": "Skursteņu apmetuma atjaunošana",
+   "name": "Maisu uzcelšana un javas maisīšana",
+   "operation": "Maisu uzcelšana un javas maisīšana",
+   "unit": "gb",
+   "hours_per_unit": 0.4
+  },
+  {
+   "key": "skurstenu_apmetuma.nosegsanas_materiali_1m2_1m2_nosegsana",
+   "legacy_row": 93,
+   "category": "Skursteņu apmetuma atjaunošana",
+   "name": "Nosegšanas materiāli 1m2=1m2",
+   "operation": "nosegšana",
+   "unit": "m2",
+   "hours_per_unit": 0.05
+  },
+  {
+   "key": "skurstenu_apmetuma.apmetums_sakret_clp_25kg_1_maiss_2m2_apm",
+   "legacy_row": 94,
+   "category": "Skursteņu apmetuma atjaunošana",
+   "name": "Apmetums Sakret CLP+25kg,  1 maiss 2m2",
+   "operation": "apmešana, līdzināšana",
+   "unit": "m2",
+   "hours_per_unit": 0.7
+  },
+  {
+   "key": "skurstenu_apmetuma.maisu_uzcelsana_un_javas_maisisana_maisu_2",
+   "legacy_row": 95,
+   "category": "Skursteņu apmetuma atjaunošana",
+   "name": "Maisu uzcelšana un javas maisīšana",
+   "operation": "Maisu uzcelšana un javas maisīšana",
+   "unit": "gb",
+   "hours_per_unit": 0.4
+  },
+  {
+   "key": "skurstenu_apmetuma.apstrade_rivesana_sturu_izveide_lizinasa",
+   "legacy_row": 96,
+   "category": "Skursteņu apmetuma atjaunošana",
+   "name": "Apstrāde",
+   "operation": "rīvēšana, stūru izveide, līzināšana",
+   "unit": "m2",
+   "hours_per_unit": 0.7
+  },
+  {
+   "key": "skurstenu_apmetuma.nosegsanas_materiali_1m2_1m2_nosegsana_2",
+   "legacy_row": 97,
+   "category": "Skursteņu apmetuma atjaunošana",
+   "name": "Nosegšanas materiāli 1m2=1m2",
+   "operation": "nosegšana",
+   "unit": "m2",
+   "hours_per_unit": 0.05
+  },
+  {
+   "key": "siltinasana.vate_150mm_m2_vates_griesana_ieklasana",
+   "legacy_row": 98,
+   "category": "Siltināšana",
+   "name": "Vate 150mm, m2",
+   "operation": "vates griešana, ieklāšana",
+   "unit": "m2",
+   "hours_per_unit": 0.12
+  },
+  {
+   "key": "siltinasana.tvaika_barjera_ieklasana_kniedesana_grie",
+   "legacy_row": 99,
+   "category": "Siltināšana",
+   "name": "Tvaika barjera",
+   "operation": "ieklāšana, kniedēšana, griešana",
+   "unit": "m2",
+   "hours_per_unit": 0.1
+  },
+  {
+   "key": "siltinasana.tvaika_bareras_limelnta_1m_m2_25m_rulli",
+   "legacy_row": 100,
+   "category": "Siltināšana",
+   "name": "Tvaika bareras līmelnta, 1m/m2, 25m rullī",
+   "operation": "griešana, līmēšana",
+   "unit": "m",
+   "hours_per_unit": 0.03
+  },
+  {
+   "key": "siltinasana.skerslatas_50x50_vates_noturesanai_zages",
+   "legacy_row": 101,
+   "category": "Siltināšana",
+   "name": "Šķērslatas 50x50 vates noturēšanai",
+   "operation": "zāģēšana, skrūvēšana",
+   "unit": "m",
+   "hours_per_unit": 0.1
+  },
+  {
+   "key": "buvobjekta_iekarto.koka_aizsardziba_ar_deliem_monteti_uz_go",
+   "legacy_row": 102,
+   "category": "Būvobjekta iekārtošana",
+   "name": "Koka aizsardzība",
+   "operation": "Ar dēļiem montēti uz gofras",
+   "unit": "gb",
+   "hours_per_unit": 4.0
+  },
+  {
+   "key": "buvobjekta_iekarto.buvtafele_montaza",
+   "legacy_row": 103,
+   "category": "Būvobjekta iekārtošana",
+   "name": "Būvtāfele",
+   "operation": "montāža",
+   "unit": "gb",
+   "hours_per_unit": 0.5
+  },
+  {
+   "key": "buvobjekta_iekarto.buvgruzu_konteinera_8m3_piebildisana_pie",
+   "legacy_row": 104,
+   "category": "Būvobjekta iekārtošana",
+   "name": "Būvgružu konteinera 8m3 piebildīšana",
+   "operation": " piebildīšana",
+   "unit": "gb",
+   "hours_per_unit": 13.0
+  },
+  {
+   "key": "buvobjekta_iekarto.nozogojums_montaza_ar_sietu",
+   "legacy_row": 105,
+   "category": "Būvobjekta iekārtošana",
+   "name": "Nožogojums",
+   "operation": "montāža ar sietu",
+   "unit": "gb",
+   "hours_per_unit": 0.3
+  },
+  {
+   "key": "buvobjekta_iekarto.darba_galds_izveide",
+   "legacy_row": 106,
+   "category": "Būvobjekta iekārtošana",
+   "name": "Darba galds",
+   "operation": "Izveide",
+   "unit": "gb",
+   "hours_per_unit": 2.0
+  },
+  {
+   "key": "buvobjekta_iekarto.apgaismojums_uzstadisana",
+   "legacy_row": 107,
+   "category": "Būvobjekta iekārtošana",
+   "name": "Apgaismojums",
+   "operation": "Uzstādīšana",
+   "unit": "gb",
+   "hours_per_unit": 1.0
+  },
+  {
+   "key": "buvobjekta_iekarto.objekta_satirisana_pec_darbiem_satirisan",
+   "legacy_row": 108,
+   "category": "Būvobjekta iekārtošana",
+   "name": "Objekta satīrīšana pēc darbiem",
+   "operation": "satīrīšana h/maiss",
+   "unit": "gb",
+   "hours_per_unit": 0.1
+  },
+  {
+   "key": "demontaza.sifera_demontaza_demontaza",
+   "legacy_row": 109,
+   "category": "Demontāža",
+   "name": "Šīfera demontāža",
+   "operation": "demontāža",
+   "unit": "m2",
+   "hours_per_unit": 0.1
+  },
+  {
+   "key": "demontaza.valcprofila_demontaza_demontaza",
+   "legacy_row": 110,
+   "category": "Demontāža",
+   "name": "Valcprofila demontāža",
+   "operation": "demontāža",
+   "unit": "m2",
+   "hours_per_unit": 0.2
+  },
+  {
+   "key": "demontaza.skarda_loksnu_demontaza_demontaza",
+   "legacy_row": 111,
+   "category": "Demontāža",
+   "name": "Skārda loksņu demontāža",
+   "operation": "demontāža",
+   "unit": "m2",
+   "hours_per_unit": 0.1
+  },
+  {
+   "key": "demontaza.sindelu_demontaza_demontaza",
+   "legacy_row": 112,
+   "category": "Demontāža",
+   "name": "Šindeļu demontāža",
+   "operation": "demontāža",
+   "unit": "m2",
+   "hours_per_unit": 0.1
+  },
+  {
+   "key": "demontaza.dakstinu_demontaza_demontaza",
+   "legacy_row": 113,
+   "category": "Demontāža",
+   "name": "Dakstiņu demontāža",
+   "operation": "demontāža",
+   "unit": "m2",
+   "hours_per_unit": 0.15
+  },
+  {
+   "key": "demontaza.latojuma_demontaza_demontaza",
+   "legacy_row": 114,
+   "category": "Demontāža",
+   "name": "Latojuma demontāža",
+   "operation": "demontāža",
+   "unit": "m2",
+   "hours_per_unit": 0.1
+  },
+  {
+   "key": "demontaza.jumta_konstrukcijas_demontaza_demontaza",
+   "legacy_row": 115,
+   "category": "Demontāža",
+   "name": "Jumta konstrukcijas demontāža",
+   "operation": "demontāža",
+   "unit": "m2",
+   "hours_per_unit": 0.1
+  },
+  {
+   "key": "demontaza.noteksistemas_demontaza_m_demontaza",
+   "legacy_row": 116,
+   "category": "Demontāža",
+   "name": "Noteksistēmas demontāža, m",
+   "operation": "demontāža",
+   "unit": "m",
+   "hours_per_unit": 0.1
+  },
+  {
+   "key": "uzcelsana_nocelsan.uzcelsana_gb_palidzet_celamkranam",
+   "legacy_row": 117,
+   "category": "Uzcelšana/nocelšana",
+   "name": "Uzcelšana gb",
+   "operation": "palīdzēt ceļamkrānam",
+   "unit": "gb",
+   "hours_per_unit": 1.0
+  },
+  {
+   "key": "uzcelsana_nocelsan.nocelsana_gb_palidzet_celamkranam",
+   "legacy_row": 118,
+   "category": "Uzcelšana/nocelšana",
+   "name": "Nocelšana gb",
+   "operation": "palīdzēt ceļamkrānam",
+   "unit": "gb",
+   "hours_per_unit": 1.0
+  },
+  {
+   "key": "citi.koka_laipas_izbuve_beninos_koka_darbi",
+   "legacy_row": 119,
+   "category": "Citi",
+   "name": "Koka laipas izbūve bēniņos",
+   "operation": "Koka darbi",
+   "unit": "m",
+   "hours_per_unit": 1.6
+  },
+  {
+   "key": "bezasbesta_siferis.bezasbesta_siferis_montaza",
+   "legacy_row": 120,
+   "category": "Bezasbesta šīferis",
+   "name": "Bezasbesta šīferis",
+   "operation": "montāža",
+   "unit": "m2",
+   "hours_per_unit": 0.17
+  },
+  {
+   "key": "bezasbesta_siferis.pieres_dela_montaza_montaza",
+   "legacy_row": 121,
+   "category": "Bezasbesta šīferis",
+   "name": "Pieres dēļa montāža",
+   "operation": "montāža",
+   "unit": "m",
+   "hours_per_unit": 0.07
+  },
+  {
+   "key": "krasosana.koka_fasades_krasosana_1_kartas_krasosan",
+   "legacy_row": 123,
+   "category": "Krāsošana",
+   "name": "Koka fasādes krāsošana 1 kārtas",
+   "operation": "Krāsošana",
+   "unit": "m2",
+   "hours_per_unit": 0.3
+  },
+  {
+   "key": "krasosana.veja_kastes_krasosana_1_kartas_krasosana",
+   "legacy_row": 124,
+   "category": "Krāsošana",
+   "name": "Vēja kastes krāsošana 1 kārtas",
+   "operation": "Krāsošana",
+   "unit": "m2",
+   "hours_per_unit": 0.4
+  },
+  {
+   "key": "krasosana.mura_fasades_krasosana_1_kartas_krasosan",
+   "legacy_row": 125,
+   "category": "Krāsošana",
+   "name": "Mūra fasādes krāsošana 1 kārtas",
+   "operation": "Krāsošana",
+   "unit": "m2",
+   "hours_per_unit": 0.3
+  },
+  {
+   "key": "krasosana.tirisana_pirms_krasosanas_tirisana",
+   "legacy_row": 126,
+   "category": "Krāsošana",
+   "name": "Tīrīšana pirms krāsošanas",
+   "operation": "Tīrīšana",
+   "unit": "m2",
+   "hours_per_unit": 0.15
+  },
+  {
+   "key": "krasosana.gruntesana_gruntesana",
+   "legacy_row": 127,
+   "category": "Krāsošana",
+   "name": "Gruntēšana",
+   "operation": "Gruntēšana",
+   "unit": "m2",
+   "hours_per_unit": 0.2
+  },
+  {
+   "key": "ledus_kausesanas_k.kabela_instalacija_ar_stiprinajumiem_mon",
+   "legacy_row": 128,
+   "category": "Ledus kausēšanas kabelis",
+   "name": "Kabeļa instalācija ar stiprinājumiem",
+   "operation": "Montāza",
+   "unit": "m2",
+   "hours_per_unit": 0.2
+  }
+ ],
+ "sheet_metal_details": [
+  {
+   "key": "apakslasne_5_15_2_2_24cm",
+   "legacy_row": 2,
+   "group": null,
+   "name": "Apakšlāsne (5+15+2+2=24cm)",
+   "blank_width_m": 0.24,
+   "folds": 3.0,
+   "variants": [
+    "rukki_05",
+    "zn_05",
+    "rukki_06"
+   ]
+  },
+  {
+   "key": "kaiteku_siets_perferets_5_8_13cm",
+   "legacy_row": 3,
+   "group": null,
+   "name": "Kaitēku siets Perferēts (5+8=13cm)",
+   "blank_width_m": 0.13,
+   "folds": 1.0,
+   "variants": [
+    "perforated_07"
+   ]
+  },
+  {
+   "key": "lasene_13_3_15_2_2_35cm",
+   "legacy_row": 4,
+   "group": null,
+   "name": "Lāsene (13+3+15+2+2=35cm",
+   "blank_width_m": 0.35,
+   "folds": 4.0,
+   "variants": [
+    "rukki_05",
+    "zn_05",
+    "rukki_06"
+   ]
+  },
+  {
+   "key": "lasene_90_gradi_13_3_5_2_2_25cm_kore",
+   "legacy_row": 5,
+   "group": "Ventilējama kore",
+   "name": "Lāsene 90 grādi (13+3+5+2+2=25cm) Kores garums x 2",
+   "blank_width_m": 0.25,
+   "folds": 4.0,
+   "variants": [
+    "rukki_05",
+    "zn_05",
+    "rukki_06"
+   ]
+  },
+  {
+   "key": "perferets_skards_2_5_7cm_kores_garum",
+   "legacy_row": 6,
+   "group": "Ventilējama kore",
+   "name": "Perferēts skārds (2+5=7cm) Kores garums x 2",
+   "blank_width_m": 0.07,
+   "folds": 1.0,
+   "variants": [
+    "perforated_07"
+   ]
+  },
+  {
+   "key": "kores_nosegelemnts_2_20_20_2_44cm",
+   "legacy_row": 7,
+   "group": "Ventilējama kore",
+   "name": "Kores nosegelemnts (2+20+20+2=44cm)",
+   "blank_width_m": 0.44,
+   "folds": 3.0,
+   "variants": [
+    "rukki_05",
+    "zn_05",
+    "rukki_06"
+   ]
+  },
+  {
+   "key": "apakskores_profils_2_5_2_5_5_1_11cm",
+   "legacy_row": 8,
+   "group": "Skrūvējamajai korei",
+   "name": "Apakškores profils, (2.5+2.5+5+1=11cm) Kores garums x 2",
+   "blank_width_m": 0.11,
+   "folds": 3.0,
+   "variants": [
+    "rukki_05",
+    "zn_05",
+    "rukki_06"
+   ]
+  },
+  {
+   "key": "kores_profils_2_20_20_2_44cm",
+   "legacy_row": 9,
+   "group": "Skrūvējamajai korei",
+   "name": "Kores profils (2+20+20+2= 44cm)",
+   "blank_width_m": 0.44,
+   "folds": 3.0,
+   "variants": [
+    "rukki_05",
+    "zn_05",
+    "rukki_06"
+   ]
+  },
+  {
+   "key": "aizkabes_2_8_10cm",
+   "legacy_row": 10,
+   "group": "Vējmalu montāža uz aizkabēm",
+   "name": "Aizkabes (2+8=10cm)",
+   "blank_width_m": 0.1,
+   "folds": 1.0,
+   "variants": [
+    "rukki_05",
+    "zn_05",
+    "rukki_06"
+   ]
+  },
+  {
+   "key": "vejmalas_1_1_1_25_1_5_28_5cm",
+   "legacy_row": 11,
+   "group": "Vējmalu montāža uz aizkabēm",
+   "name": "Vējmalas 1 (1+1+25+1.5=28.5cm)",
+   "blank_width_m": 0.285,
+   "folds": 3.0,
+   "variants": [
+    "rukki_05",
+    "zn_05",
+    "rukki_06"
+   ]
+  },
+  {
+   "key": "vejmalas_2_1_1_20_1_5_23_5cm",
+   "legacy_row": 12,
+   "group": "Vējmalu montāža uz aizkabēm",
+   "name": "Vējmalas 2 (1+1+20+1.5=23.5cm)",
+   "blank_width_m": 0.235,
+   "folds": 3.0,
+   "variants": [
+    "rukki_05",
+    "zn_05",
+    "rukki_06"
+   ]
+  },
+  {
+   "key": "vejmalas_3",
+   "legacy_row": 13,
+   "group": "Vējmalu montāža uz aizkabēm",
+   "name": "Vējmalas 3",
+   "blank_width_m": null,
+   "folds": null,
+   "variants": [
+    "rukki_05",
+    "zn_05",
+    "rukki_06"
+   ]
+  },
+  {
+   "key": "vejmalas_4",
+   "legacy_row": 14,
+   "group": "Vējmalu montāža uz aizkabēm",
+   "name": "Vējmalas 4",
+   "blank_width_m": null,
+   "folds": null,
+   "variants": [
+    "rukki_05",
+    "zn_05",
+    "rukki_06"
+   ]
+  },
+  {
+   "key": "sateknes_profils_2_30_30_2_64cm",
+   "legacy_row": 15,
+   "group": "Sateknes montāža",
+   "name": "Sateknes profils (2+30+30+2=64cm)",
+   "blank_width_m": 0.64,
+   "folds": 3.0,
+   "variants": [
+    "rukki_05",
+    "zn_05",
+    "rukki_06"
+   ]
+  },
+  {
+   "key": "aizkabes_paraleli_15cm_sateknes_garu",
+   "legacy_row": 16,
+   "group": "Sateknes montāža",
+   "name": "Aizkabes paralēli (15cm), Sateknes garums x 2",
+   "blank_width_m": 0.15,
+   "folds": 1.0,
+   "variants": [
+    "rukki_05",
+    "zn_05",
+    "rukki_06"
+   ]
+  },
+  {
+   "key": "skarda_nosegliste_2_2_10_2_16cm",
+   "legacy_row": 17,
+   "group": "Sienas pieslēgums",
+   "name": "Skārda noseglīste (2+2+10+2=16cm)",
+   "blank_width_m": 0.16,
+   "folds": 3.0,
+   "variants": [
+    "rukki_05",
+    "zn_05",
+    "rukki_06"
+   ]
+  },
+  {
+   "key": "sturu_listes_ar_mazajam_valcem_3_5_1",
+   "legacy_row": 18,
+   "group": "Skurstenim",
+   "name": "stūru līstes ar mazajām valcēm (3.5+10+10+3.5= 27cm), 4gb x skursteņa augstums",
+   "blank_width_m": 0.27,
+   "folds": 3.0,
+   "variants": [
+    "rukki_05",
+    "zn_05",
+    "rukki_06"
+   ]
+  },
+  {
+   "key": "nosegelemnts_zem_skurstena_jumtina_1",
+   "legacy_row": 19,
+   "group": "Skurstenim",
+   "name": "nosegelemnts zem skursteņa jumtiņa(17+3=20cm)",
+   "blank_width_m": 0.2,
+   "folds": 1.0,
+   "variants": [
+    "rukki_05",
+    "zn_05",
+    "rukki_06"
+   ]
+  },
+  {
+   "key": "kaiteklu_siets_5_2_7cm",
+   "legacy_row": 20,
+   "group": "Ventilējams sienas pieslēgums",
+   "name": "Kaitēkļu siets (5+2=7cm)",
+   "blank_width_m": 0.07,
+   "folds": 1.0,
+   "variants": [
+    "perforated_07"
+   ]
+  },
+  {
+   "key": "apakseja_aizkabe_0_6mm_10_15_25cm",
+   "legacy_row": 21,
+   "group": "Ventilējams sienas pieslēgums",
+   "name": "Apakšējā aizkabe 0.6mm (10+15=25cm)",
+   "blank_width_m": 0.25,
+   "folds": 1.0,
+   "variants": [
+    "rukki_06"
+   ]
+  },
+  {
+   "key": "nosedzosa_detala_2_15_10_5_32cm",
+   "legacy_row": 22,
+   "group": "Ventilējams sienas pieslēgums",
+   "name": "Nosedzošā detaļa 2+15+10+5=32cm",
+   "blank_width_m": 0.32,
+   "folds": 3.0,
+   "variants": [
+    "rukki_05",
+    "zn_05",
+    "rukki_06"
+   ]
+  },
+  {
+   "key": "skarda_parapets_izmeri_atkarigi_daba",
+   "legacy_row": 23,
+   "group": "Parapeta detaļas",
+   "name": "Skārda parapets (izmēri atkarīgi dabā) (1+1.5+20+35+20+1.5+1=80cm)",
+   "blank_width_m": 0.8,
+   "folds": 4.0,
+   "variants": [
+    "rukki_05",
+    "zn_05",
+    "rukki_06"
+   ]
+  },
+  {
+   "key": "aizkabes_15cm_platuma_2x_parapeta_ga",
+   "legacy_row": 24,
+   "group": "Parapeta detaļas",
+   "name": "Aizkabes 15cm platumā, 2x parapeta garums",
+   "blank_width_m": 0.15,
+   "folds": 1.0,
+   "variants": [
+    "rukki_05",
+    "zn_05",
+    "rukki_06"
+   ]
+  },
+  {
+   "key": "skarda_caurule_d100",
+   "legacy_row": 25,
+   "group": "Parapeta detaļas",
+   "name": "Skārda caurule D100",
+   "blank_width_m": 0.4,
+   "folds": 4.0,
+   "variants": [
+    "rukki_05",
+    "zn_05",
+    "rukki_06"
+   ]
+  },
+  {
+   "key": "skarda_cepurite",
+   "legacy_row": 26,
+   "group": "Parapeta detaļas",
+   "name": "Skārda cepurīte",
+   "blank_width_m": 0.2,
+   "folds": 4.0,
+   "variants": [
+    "rukki_05",
+    "zn_05",
+    "rukki_06"
+   ]
+  }
+ ],
+ "coil_prices": {
+  "rukki_05": 10.0,
+  "zn_05": 6.0,
+  "perforated_07": 8.0,
+  "rukki_06": 11.0
+ },
+ "fold_cost_per_m": 1.0,
+ "slope_area_factors": [
+  {
+   "angle_deg": 0,
+   "area_multiplier": 1.0
+  },
+  {
+   "angle_deg": 5,
+   "area_multiplier": 1.004
+  },
+  {
+   "angle_deg": 10,
+   "area_multiplier": 1.015
+  },
+  {
+   "angle_deg": 15,
+   "area_multiplier": 1.035
+  },
+  {
+   "angle_deg": 20,
+   "area_multiplier": 1.064
+  },
+  {
+   "angle_deg": 25,
+   "area_multiplier": 1.103
+  },
+  {
+   "angle_deg": 30,
+   "area_multiplier": 1.155
+  },
+  {
+   "angle_deg": 35,
+   "area_multiplier": 1.221
+  },
+  {
+   "angle_deg": 40,
+   "area_multiplier": 1.305
+  },
+  {
+   "angle_deg": 45,
+   "area_multiplier": 1.414
+  },
+  {
+   "angle_deg": 50,
+   "area_multiplier": 1.556
+  },
+  {
+   "angle_deg": 55,
+   "area_multiplier": 1.743
+  },
+  {
+   "angle_deg": 60,
+   "area_multiplier": 2.0
+  }
+ ],
+ "batten_gap_rules": [
+  {
+   "from_deg": 0,
+   "to_deg": 25,
+   "gap_mm": "5-15 (full board deck)"
+  },
+  {
+   "from_deg": 26,
+   "to_deg": 35,
+   "gap_mm": 50
+  },
+  {
+   "from_deg": 36,
+   "to_deg": 45,
+   "gap_mm": 100
+  },
+  {
+   "from_deg": 46,
+   "to_deg": 70,
+   "gap_mm": 200
+  },
+  {
+   "from_deg": 71,
+   "to_deg": 90,
+   "gap_mm": 300
+  }
+ ],
+ "constants": [
+  {
+   "key": "labor_rate_eur_h",
+   "value": 18,
+   "description": "Hourly labor rate, EUR"
+  },
+  {
+   "key": "labor_markup_factor",
+   "value": 1.7,
+   "description": "Markup on labor hours"
+  },
+  {
+   "key": "employer_social_tax_vsaoi",
+   "value": 0.2359,
+   "description": "Employer VSAOI share"
+  },
+  {
+   "key": "mechanisms_share_of_materials",
+   "value": 0.03,
+   "description": "Mechanisms as share of materials"
+  },
+  {
+   "key": "vat_rate_standard",
+   "value": 0.21,
+   "description": "Standard VAT"
+  },
+  {
+   "key": "workday_hours",
+   "value": 8,
+   "description": "Hours per workday"
+  },
+  {
+   "key": "schedule_productivity_factor",
+   "value": 0.8,
+   "description": "Work plan productivity factor"
+  },
+  {
+   "key": "procurement_share",
+   "value": 0.01,
+   "description": "Procurement share of materials"
+  },
+  {
+   "key": "kops_profit_extra_eur",
+   "value": 0,
+   "description": "Extra profit in summary, EUR"
+  },
+  {
+   "key": "offer_overhead_share",
+   "value": 0.04,
+   "description": "Offer overhead share"
+  },
+  {
+   "key": "offer_discount_eur",
+   "value": 2000,
+   "description": "Default offer discount, EUR"
+  },
+  {
+   "key": "offer_vat_rate",
+   "value": 0.0,
+   "description": "Default offer VAT"
+  },
+  {
+   "key": "offer_duration_buffer_days",
+   "value": 7,
+   "description": "Days added to offer duration"
+  },
+  {
+   "key": "f2_overhead_share",
+   "value": 0.02,
+   "description": "F2 overhead share"
+  },
+  {
+   "key": "f2_labor_safety_share_of_overhead",
+   "value": 0.3,
+   "description": "F2 labor safety part of overhead"
+  },
+  {
+   "key": "f2_profit_share",
+   "value": 0.02,
+   "description": "F2 profit share"
+  },
+  {
+   "key": "f2_vat_rate",
+   "value": 0.21,
+   "description": "F2 VAT"
+  },
+  {
+   "key": "info_income_tax_iin",
+   "value": 0.255,
+   "description": "IIN share (info)"
+  },
+  {
+   "key": "info_employee_vsaoi",
+   "value": 0.105,
+   "description": "Employee VSAOI share (info)"
+  },
+  {
+   "key": "final_payment_share",
+   "value": 0.1,
+   "description": "Final payment share"
+  },
+  {
+   "key": "payment_stages",
+   "value": 3,
+   "description": "Number of payment stages"
+  },
+  {
+   "key": "valcgels_slope_threshold_deg",
+   "value": 18.5,
+   "description": "Slope below which seam gel is used (info)"
+  },
+  {
+   "key": "seam_panel_width_m",
+   "value": 0.55,
+   "description": "Standing seam panel width (info)"
+  },
+  {
+   "key": "coil_width_m",
+   "value": 1.25,
+   "description": "Coil width (info)"
+  }
+ ]
+}
