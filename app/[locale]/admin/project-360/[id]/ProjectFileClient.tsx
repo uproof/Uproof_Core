@@ -130,7 +130,7 @@ function EngineOutputSections({outputs, leadId, onChange}: {outputs: CrmEstimato
   return <div className="mt-5 space-y-3"><div className="flex flex-wrap gap-2">{downloads.map(([kind, label]) => <a key={kind} href={`/api/estimator/${encodeURIComponent(leadId)}/pdf?kind=${kind}`} className="rounded-lg bg-sky-700 px-3 py-2 text-xs font-semibold text-white hover:bg-sky-800">{label} PDF</a>)}</div><Module title="Piedāvājums" subtitle="Klientam paredzētais piedāvājums"><OutputTable title="Materiālu un izmaksu saraksts" rows={outputRows(outputs.customerOffer, 'activeLineItems')} nameKey="description" onChange={(index, key, value) => onChange('customerOffer', index, key, value)} columns={['Daudz.', 'Apraksts', 'Specifikācija', 'Mērvienība', 'Daudzums', 'Kopā EUR']} /></Module><Module title="F2 forma" subtitle="Lokālā tāme Nr.1"><OutputTable title="Lokālā tāme Nr.1" rows={outputRows(outputs.f2Estimate, 'activeRows')} nameKey="name" onChange={(index, key, value) => onChange('f2Estimate', index, key, value)} columns={['Nr.p.k.', 'Darba nosaukums', 'Mērvienība', 'Daudzums', 'Vienības izmaksas EUR', 'Darba alga EUR', 'Materiāli EUR', 'Mehānismi EUR', 'Kopā EUR']} /></Module><Module title="Materiālu cenas" subtitle="Rediģējami cenu iestatījumi"><OutputTable title="Materiālu cenas" rows={(outputs.settings?.materialPrices as Array<Record<string, unknown>> | undefined) || materials} nameKey="name" onChange={(index, key, value) => onChange('settings', index, key, value)} /></Module><Module title="Ch pozīcijas" subtitle="Darba likmes un uzcenojums"><OutputTable title="Ch pozīcijas" rows={(outputs.settings?.workRates as Array<Record<string, unknown>> | undefined) || []} nameKey="category" onChange={(index, key, value) => onChange('settings', index, key, value)} /></Module><Module title="Skārda detaļas" subtitle="Skārda detaļu aprēķina cenas"><OutputTable title="Skārda detaļas" rows={(outputs.settings?.sheetMetalDetails as Array<Record<string, unknown>> | undefined) || []} nameKey="name" onChange={(index, key, value) => onChange('settings', index, key, value)} /></Module><Module title="Slīpuma koeficients" subtitle="Jumta slīpuma reizinātājs"><div className="rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-700">Aktīvais koeficients: <strong>{String(outputs.settings?.slopeCoefficient ?? '1.000')}</strong>. Tas reizina 2D jumta platību, lai aprēķinātu slīpo plakni.</div></Module><Module title="Darbu plāns" subtitle="Kopējais darbu grafiks"><OutputTable title="Darbu plāns" rows={tasks} nameKey="task" onChange={(index, key, value) => onChange('workPlan', index, key, value)} /></Module><Module title="Dienas plāns" subtitle="Darbu izpildes uzskaite"><OutputTable title="Dienas plāns" rows={outputRows(outputs.dailyWorkLog, 'tasks')} nameKey="tasks" onChange={(index, key, value) => onChange('dailyWorkLog', index, key, value)} /></Module></div>;
 }
 
-function EstimatorWorkflow({locale, project, initialData}: {locale: string; project: CrmProjectRecord; initialData: CrmEstimatorFormData}) {
+function EstimatorWorkflow({project, initialData}: {project: CrmProjectRecord; initialData: CrmEstimatorFormData}) {
   const [data, setData] = useState<CrmEstimatorFormData>(initialData || createEmptyCrmEstimatorData());
   const [tameRows, setTameRows] = useState<CrmEstimatorTameRow[]>(initialData.tameRows || []);
   const [version, setVersion] = useState(project.updatedAtUtc);
@@ -268,7 +268,7 @@ function EstimatorWorkflow({locale, project, initialData}: {locale: string; proj
   ];
 
   return <>
-  <div className="mb-3 flex flex-wrap gap-2 rounded-xl border border-slate-200 bg-slate-50 p-3"><a href={`/${locale}/admin/project-360/${encodeURIComponent(project.leadId)}/workbook`} className="rounded-lg bg-sky-700 px-3 py-2 text-xs font-semibold text-white">Atvērt pilno workbook estimator</a>{estimatorPages.map(([id, label]) => <button key={id} type="button" onClick={() => document.getElementById(id)?.scrollIntoView({behavior: 'smooth', block: 'start'})} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-sky-400 hover:text-sky-700">{label}</button>)}</div>
+  <div className="mb-3 flex flex-wrap gap-2 rounded-xl border border-slate-200 bg-slate-50 p-3">{estimatorPages.map(([id, label]) => <button key={id} type="button" onClick={() => document.getElementById(id)?.scrollIntoView({behavior: 'smooth', block: 'start'})} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-sky-400 hover:text-sky-700">{label}</button>)}</div>
   <Module title="Estimator data" subtitle="Lead inputs, processing and final outputs">
     <div className="mb-5 rounded-xl border border-sky-100 bg-sky-50 p-4 text-sm text-slate-700">Enter or update the CRM lead data points below, then click &quot;Process estimate&quot; to generate the output documents.</div>
     <div className="rounded-xl border border-slate-200 bg-white p-4"><h3 className="text-sm font-bold text-slate-900">Lead data points</h3><p className="mt-1 text-xs text-slate-500">Values collected in Sales CRM.</p>{CRM_ESTIMATOR_FIELD_SECTIONS.map((section) => <div key={section} className="border-b border-slate-200 py-4 last:border-b-0"><h4 className="text-xs font-bold uppercase tracking-[0.16em] text-sky-700">{section}</h4><div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{CRM_ESTIMATOR_FIELD_DEFINITIONS.filter((definition) => definition.section === section).map((definition) => { const fieldValue = data[definition.key]; const inputId = `project-estimator-${String(definition.key)}`; const isRequired = requiredEstimatorKeys.includes(definition.key); return <label key={definition.key} htmlFor={inputId} className="flex flex-col gap-1 text-sm font-medium text-slate-700"><span>{definition.label}{isRequired ? <span className="text-rose-600"> *</span> : null}</span>{definition.type === 'select' ? <select id={inputId} value={formatEstimatorValue(fieldValue)} onChange={(event) => update(definition.key, event.target.value as never)} className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-slate-900"><option value="">Select</option>{definition.options?.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select> : definition.type === 'boolean' ? <select id={inputId} value={fieldValue === null ? '' : fieldValue ? 'true' : 'false'} onChange={(event) => update(definition.key, event.target.value === 'true' ? true : event.target.value === 'false' ? false : null as never)} className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-slate-900"><option value="">Select</option>{CRM_ESTIMATOR_BOOLEAN_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select> : definition.type === 'number' ? <input id={inputId} type="number" value={fieldValue === null ? '' : String(fieldValue)} onChange={(event) => update(definition.key, event.target.value ? Number(event.target.value) as never : null as never)} className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-slate-900" /> : definition.type === 'textarea' ? <textarea id={inputId} value={formatEstimatorValue(fieldValue)} onChange={(event) => update(definition.key, event.target.value as never)} rows={2} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-900" /> : <input id={inputId} value={formatEstimatorValue(fieldValue)} onChange={(event) => update(definition.key, event.target.value as never)} className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-slate-900" />}</label>; })}</div></div>)}</div>
@@ -296,57 +296,43 @@ function FinancialModule({project}: {project: CrmProjectRecord}) {
   </Module>;
 }
 
-function CustomKpiModule() {
-  const [kpis, setKpis] = useState<Array<{name: string; target: string; format: string}>>([]);
-  const [name, setName] = useState('');
-  const [target, setTarget] = useState('');
-  const [format, setFormat] = useState('Number');
-  return <Module title="Custom KPIs" subtitle="">
-    <div className="grid gap-3 md:grid-cols-[1fr_1fr_160px_auto]"><input value={name} onChange={(event) => setName(event.target.value)} placeholder="KPI name" className="h-10 rounded-xl border border-slate-200 px-3 text-sm" /><input value={target} onChange={(event) => setTarget(event.target.value)} placeholder="Target or formula" className="h-10 rounded-xl border border-slate-200 px-3 text-sm" /><select value={format} onChange={(event) => setFormat(event.target.value)} className="h-10 rounded-xl border border-slate-200 px-3 text-sm"><option>Number</option><option>Percent</option><option>Currency</option><option>Duration</option></select><button type="button" onClick={() => { if (name.trim()) { setKpis((current) => [...current, {name: name.trim(), target: target.trim(), format}]); setName(''); setTarget(''); } }} className="h-10 rounded-xl bg-sky-500 px-4 text-sm font-semibold text-white">Add KPI</button></div>
-    {kpis.length > 0 ? <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{kpis.map((kpi) => <div key={`${kpi.name}-${kpi.target}`} className="rounded-xl border border-slate-200 bg-slate-50 p-4"><p className="font-semibold text-slate-900">{kpi.name}</p><p className="mt-1 text-sm text-slate-500">Target: {kpi.target || '—'} · {kpi.format}</p></div>)}</div> : <p className="mt-4 text-sm text-slate-500">No custom KPIs configured.</p>}
+function EstimateOptionsModule({leadId}: {leadId: string}) {
+  const options = ['ECO', 'OPTIMAL', 'LUX'];
+  const [descriptions, setDescriptions] = useState<Record<string, string>>({});
+  return <Module title="Estimates" subtitle="Prepare and send one of three workbook-based offer options" defaultOpen>
+    <div className="grid gap-4 md:grid-cols-3">
+      {options.map((option) => <div key={option} className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+        <div className="flex items-center justify-between gap-3"><h3 className="text-sm font-bold text-slate-900">{option}</h3><span className="text-xs text-slate-500">Offer PDF</span></div>
+        <label className="mt-3 block text-xs font-semibold text-slate-500">Description<textarea value={descriptions[option] || ''} onChange={(event) => setDescriptions((current) => ({...current, [option]: event.target.value}))} rows={3} placeholder={`Describe the ${option} option`} className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-2 py-2 text-sm font-normal text-slate-900" /></label>
+        <div className="mt-3 flex flex-wrap gap-2"><a href={`/api/estimator/${encodeURIComponent(leadId)}/pdf?kind=offer`} className="button primary text-xs">Download PDF</a><label className="button cursor-pointer text-xs">Attach PDF<input type="file" accept="application/pdf" className="hidden" /></label></div>
+      </div>)}
+    </div>
   </Module>;
 }
 
-function ProjectWorkProgress({project}: {project: CrmProjectRecord}) {
-  const [outputs, setOutputs] = useState<any>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    fetch(`/api/estimator/workbook/leads/${encodeURIComponent(project.leadId)}`)
-      .then((response) => response.json())
-      .then((lead) => fetch(`/api/estimator/workbook/leads/${encodeURIComponent(project.leadId)}/estimates/preview`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({inputs: lead.inputs, terms: lead.terms, overrides: lead.overrides}),
-      }))
-      .then((response) => response.json())
-      .then((result) => { if (!cancelled && result?.offer) setOutputs(result); })
-      .catch(() => undefined);
-    return () => { cancelled = true; };
-  }, [project.leadId]);
-
-  const summary = outputs?.summary;
-  const f2 = outputs?.f2;
-  const offer = outputs?.offer;
-  const laborCost = summary?.lines?.reduce((total: number, line: {labor: number}) => total + line.labor, 0) || 0;
-  const kpis = [
-    ['Project phase', project.phase || project.status || '—'],
-    ['Work entries', String(project.workLog.length)],
-    ['Total value', offer ? eur(offer.total) : '—'],
-    ['Estimated profit', summary ? eur(summary.profit) : '—'],
-    ['Man hours', f2 ? `${Number(f2.hours || 0).toFixed(2)} h` : '—'],
-    ['Scheduled time', offer ? `${offer.days} days` : '—'],
-    ['Bidpoint average', project.budget || '—'],
-    ['Time to complete', offer ? `${offer.days} days` : '—'],
-    ['Tax / VSAOI', summary ? eur(summary.vsaoi) : '—'],
-    ['Profit %', summary?.profit && offer?.total ? `${((summary.profit / offer.total) * 100).toFixed(1)}%` : '—'],
-    ['Profit per day', summary?.profit && offer?.days ? eur(summary.profit / offer.days) : '—'],
-    ['Price / m²', offer && summary?.roofM2 ? eur(offer.total / summary.roofM2) : '—'],
-  ];
-
-  return <Module title="Project Overview" subtitle="Estimator-driven project KPIs" defaultOpen>
-    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{kpis.map(([label, value]) => <div key={label} className="rounded-xl border border-slate-200 bg-slate-50 p-3"><p className="text-xs text-slate-500">{label}</p><p className="mt-1 text-sm font-bold text-slate-900">{value}</p></div>)}</div>
+function ProjectManagementModule() {
+  return <Module title="Project management" subtitle="" defaultOpen>
+    <div className="grid gap-3 md:grid-cols-3">
+      {['Work plan by position', 'Daily work plan', 'Work progress'].map((title) => <details key={title} className="rounded-xl border border-slate-200 bg-slate-50 p-4"><summary className="cursor-pointer text-sm font-bold text-slate-900">{title}</summary></details>)}
+    </div>
   </Module>;
+}
+
+function SupplyManagementModule() {
+  return <Module title="Supply management" subtitle="" defaultOpen>
+    <div className="grid gap-3 md:grid-cols-3">{['Material list', 'Total lines', 'Production list'].map((title) => <div key={title} className="rounded-xl border border-slate-200 bg-slate-50 p-4"><span className="block text-sm font-bold text-slate-900">{title}</span><span className="mt-2 block text-xs text-slate-500">No entries yet</span></div>)}</div>
+  </Module>;
+}
+
+function ProjectCashFlowModule({locale, project}: {locale: string; project: CrmProjectRecord}) {
+  const cashFlow = project.estimatorData.engineOutputs?.cashFlow as Record<string, unknown> | undefined;
+  return <Module title="Project cash flow" subtitle="" defaultOpen><div className="grid gap-3 md:grid-cols-3"><div className="rounded-xl border border-slate-200 bg-slate-50 p-4"><span className="text-xs text-slate-500">Project value</span><strong className="mt-1 block text-sm text-slate-900">{project.budget || '—'}</strong></div><div className="rounded-xl border border-slate-200 bg-slate-50 p-4"><span className="text-xs text-slate-500">Cash flow data</span><strong className="mt-1 block text-sm text-slate-900">{cashFlow ? 'Available' : '—'}</strong></div></div></Module>;
+}
+
+function ProfitabilityModule({project}: {project: CrmProjectRecord}) {
+  const summary = project.estimatorData.engineOutputs?.costSummary as Record<string, unknown> | undefined;
+  const metrics: Array<[string, string]> = [['Estimated materials', displayValue(summary?.materials)], ['Estimated labor', displayValue(summary?.labor)], ['Actual OCR costs', displayValue(summary?.actualCosts)], ['Result', displayValue(summary?.profit)]];
+  return <Module title="Profitability" subtitle="Estimate and OCR actuals" defaultOpen><div className="grid gap-3 md:grid-cols-4">{metrics.map(([label, value]) => <div key={label} className="rounded-xl border border-slate-200 bg-slate-50 p-4"><span className="text-xs text-slate-500">{label}</span><strong className="mt-1 block text-sm text-slate-900">{displayValue(value)}</strong></div>)}</div></Module>;
 }
 
 function ProjectDocumentsModule({project, initialDocuments}: {project: CrmProjectRecord; initialDocuments: Array<{name: string; url: string}>}) {
@@ -453,7 +439,7 @@ export default function ProjectFileClient({locale, project, documents}: Props) {
 
         <div className="grid gap-4 lg:grid-cols-[1.35fr_0.65fr]">
           <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="flex flex-wrap items-start justify-between gap-4"><div><p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-600">{project.id}</p><h1 className="mt-2 text-2xl font-bold text-slate-900">{project.title}</h1><p className="mt-2 text-sm text-slate-600">{project.customer}{project.company ? ` · ${project.company}` : ''}</p></div><span className="rounded-full bg-sky-100 px-3 py-1 text-xs font-bold text-sky-700">{project.phase}</span></div>
+            <div className="flex flex-wrap items-start justify-between gap-4"><div><p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Lead info</p><p className="mt-2 text-xs font-semibold uppercase tracking-[0.18em] text-sky-600">{project.id}</p><h1 className="mt-2 text-2xl font-bold text-slate-900">{project.title}</h1><p className="mt-2 text-sm text-slate-600">{project.customer}{project.company ? ` · ${project.company}` : ''}</p></div><span className="rounded-full bg-sky-100 px-3 py-1 text-xs font-bold text-sky-700">{project.phase}</span></div>
             <div className="mt-5 grid gap-3 md:grid-cols-2"><label className="block text-sm"><span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Overview</span><input value={projectOverview} onChange={(event) => setProjectOverview(event.target.value)} className="mt-1 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900" /></label><label className="block text-sm"><span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Description</span><textarea value={description} onChange={(event) => setDescription(event.target.value)} rows={2} className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" /></label></div>
             <div className="mt-5 grid gap-3 sm:grid-cols-4">{[['Client', project.customer], ['Location', project.location], ['Owner', project.owner], ['Value', project.budget]].map(([label, entry]) => <div key={label} className="rounded-xl border border-slate-200 bg-slate-50 p-3"><p className="text-xs text-slate-500">{label}</p><p className="mt-1 text-sm font-semibold text-slate-900">{entry || '—'}</p></div>)}</div>
           </section>
@@ -464,17 +450,14 @@ export default function ProjectFileClient({locale, project, documents}: Props) {
             <div className="grid gap-4 md:grid-cols-2"><div className="rounded-xl border border-slate-200 bg-slate-50 p-4"><h2 className="text-sm font-bold text-slate-900">Client data</h2><div className="mt-3 space-y-3">{[['Full name / company', project.customer + (project.company ? ` / ${project.company}` : '')], ['Legal address', project.location], ['ID No.', '—'], ['Primary contact', project.owner]].map(([label, entry]) => <label key={label} className="block text-sm"><span className="text-xs text-slate-500">{label}</span><input value={entry || ''} readOnly className="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-2 text-sm text-slate-900" /></label>)}</div></div><div className="rounded-xl border border-slate-200 bg-slate-50 p-4"><h2 className="text-sm font-bold text-slate-900">Project data</h2><div className="mt-3 space-y-3"><label className="block text-sm"><span className="text-xs text-slate-500">Project name</span><input value={projectTitle} onChange={(event) => setProjectTitle(event.target.value)} className="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-2 text-sm text-slate-900" /></label><label className="block text-sm"><span className="text-xs text-slate-500">Status</span><select value={projectStatus} onChange={(event) => setProjectStatus(event.target.value)} className="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-2 text-sm text-slate-900"><option>In Progress</option><option>Scheduled</option><option>Completed</option></select></label><label className="block text-sm"><span className="text-xs text-slate-500">Start date</span><input type="date" value={startDate} onChange={(event) => setStartDate(event.target.value)} className="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-2 text-sm text-slate-900" /></label><label className="block text-sm"><span className="text-xs text-slate-500">End date</span><input type="date" value={endDate} onChange={(event) => setEndDate(event.target.value)} className="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-2 text-sm text-slate-900" /></label><label className="block text-sm"><span className="text-xs text-slate-500">Commercial source</span><input value="Sales CRM — Won" readOnly className="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-slate-100 px-2 text-sm text-slate-700" /></label></div></div></div>
           </Module>
 
-          <FinancialModule project={project} />
+          <EstimatorWorkflow project={project} initialData={estimator} />
 
-          <Module title="Workbook estimator" subtitle="Pilns workbook ievades, iestatījumu, aprēķinu un izvades process" defaultOpen>
-            <p className="text-sm text-slate-600">Izmantojiet pilno workbook estimator, lai ievadītu visas 215 Ievade pozīcijas, pārvaldītu iestatījumus un ģenerētu visas workbook izvades. Tāmes lapa paliek pieejama jaunu manuālu darbu pozīciju pievienošanai.</p>
-            <a href={`/${locale}/admin/project-360/${encodeURIComponent(project.leadId)}/workbook/settings`} className="mt-4 inline-flex rounded-lg bg-sky-700 px-4 py-2 text-sm font-semibold text-white">Atvērt pilno workbook estimator</a>
-          </Module>
-
-          <ProjectWorkProgress project={project} />
-
-
+          <EstimateOptionsModule leadId={project.leadId} />
+          <ProjectManagementModule />
+          <SupplyManagementModule />
           <ProjectDocumentsModule project={project} initialDocuments={documents} />
+          <ProjectCashFlowModule locale={locale} project={project} />
+          <ProfitabilityModule project={project} />
 
         </div>
       </div>

@@ -17,17 +17,18 @@ small { color: var(--color-muted); }
 .workbook-toolbar-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
 .shell.is-compact .sidebar { display: none; }
 .shell.is-compact .page { max-width: none; }
-.sidebar { position: sticky; top: 0; z-index: 5; overflow-x: auto; padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border); background: var(--color-bg); display: flex; align-items: center; gap: var(--space-4); }
+.sidebar { position: sticky; top: 0; z-index: 5; overflow-x: auto; padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border); background: var(--color-bg); display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); }
 .sidebar-product { font-weight: 600; }
 .sidebar-lead { min-width: 160px; }
 .sidebar-lead small { display: block; }
 .nav-group { display: flex; align-items: center; gap: var(--space-2); }
-.nav-group + .nav-group { border-left: 1px solid var(--color-border-soft); padding-left: var(--space-3); }
+.nav-group + .nav-group { margin-left: var(--space-1); }
 .nav-group h4 { margin: 0; font-size: 0.75rem; font-weight: 600; color: var(--color-muted); white-space: nowrap; }
-.nav-group ul { list-style: none; margin: 0; padding: 0; display: flex; gap: var(--space-1); }
-.nav-link { display: flex; gap: var(--space-2); align-items: flex-start; padding: var(--space-1) var(--space-2); border-radius: var(--radius); color: inherit; text-decoration: none; }
+.nav-group ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.nav-link { display: flex; gap: var(--space-2); align-items: flex-start; min-height: 40px; padding: var(--space-2) var(--space-3); border: 1px solid var(--color-border); border-radius: 999px; background: var(--color-bg); color: inherit; text-decoration: none; }
 .nav-link small { display: block; }
-.nav-link.active { background: var(--color-surface-alt); font-weight: 600; }
+.nav-link:hover { border-color: var(--color-accent); background: var(--color-surface-alt); }
+.nav-link.active { border-color: var(--color-accent); background: var(--color-surface-alt); font-weight: 600; }
 .nav-step { width: 1.4em; height: 1.4em; border: 1px solid currentColor; border-radius: 50%; display: grid; place-items: center; font-size: 0.75rem; flex: none; }
 .sidebar-footer { margin-left: auto; font-size: 0.8rem; color: var(--color-muted); white-space: nowrap; }
 
