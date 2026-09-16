@@ -12,11 +12,17 @@ small { color: var(--color-muted); }
 /* ---- shell ---- */
 .shell { display: block; min-height: 100vh; }
 .shell-main { min-width: 0; }
+.workbook-toolbar { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-5); border-bottom: 1px solid var(--color-border-soft); background: var(--color-bg); }
+.workbook-toolbar-title { font-size: 0.85rem; font-weight: 600; color: var(--color-muted); }
+.workbook-toolbar-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
+.shell.is-compact .sidebar { display: none; }
+.shell.is-compact .page { max-width: none; }
 .sidebar { position: sticky; top: 0; z-index: 5; overflow-x: auto; padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border); background: var(--color-bg); display: flex; align-items: center; gap: var(--space-4); }
 .sidebar-product { font-weight: 600; }
 .sidebar-lead { min-width: 160px; }
 .sidebar-lead small { display: block; }
 .nav-group { display: flex; align-items: center; gap: var(--space-2); }
+.nav-group + .nav-group { border-left: 1px solid var(--color-border-soft); padding-left: var(--space-3); }
 .nav-group h4 { margin: 0; font-size: 0.75rem; font-weight: 600; color: var(--color-muted); white-space: nowrap; }
 .nav-group ul { list-style: none; margin: 0; padding: 0; display: flex; gap: var(--space-1); }
 .nav-link { display: flex; gap: var(--space-2); align-items: flex-start; padding: var(--space-1) var(--space-2); border-radius: var(--radius); color: inherit; text-decoration: none; }
@@ -160,6 +166,7 @@ meter { width: 100%; }
   .topbar { position: static; }
   .two-columns, .two-columns.main-aside, .card-grid.three { grid-template-columns: 1fr; }
   .page { padding: var(--space-3); }
+  .workbook-toolbar { padding: var(--space-2) var(--space-3); }
 }
 @media print {
   .sidebar, .topbar, .page-actions, .no-print, .print-toolbar { display: none !important; }

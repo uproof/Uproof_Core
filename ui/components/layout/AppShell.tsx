@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
@@ -7,11 +9,35 @@ import { useEstimate } from '@/ui/state/EstimateContext';
 
 /** Sidebar + sticky totals bar + routed page. */
 export function AppShell({ children }: { children: ReactNode }) {
-  const { status, error } = useEstimate();
+  const { status, error, leadId, saveLeadData } = useEstimate();
+  const pathname = usePathname();
+  const [compact, setCompact] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const locale = pathname.match(/^\/(lv|en|nl-BE)(?:\/|$)/)?.[1] || 'en';
+  const projectPath = `/${locale}/admin/project-360/${encodeURIComponent(leadId)}`;
+  const save = async () => {
+    setSaving(true);
+    setSaved(false);
+    try {
+      await saveLeadData();
+      setSaved(true);
+    } finally {
+      setSaving(false);
+    }
+  };
   return (
-    <div className="shell">
+    <div className={compact ? 'shell is-compact' : 'shell'}>
       <Sidebar />
       <div className="shell-main">
+        <div className="workbook-toolbar no-print">
+          <div className="workbook-toolbar-title">Workbook estimator</div>
+          <div className="workbook-toolbar-actions">
+            <button type="button" onClick={() => setCompact((value) => !value)}>{compact ? 'Show navigation' : 'Expand workspace'}</button>
+            <button type="button" onClick={() => void save()} disabled={saving}>{saving ? 'Saving…' : saved ? 'Saved' : 'Save data'}</button>
+            <a href={projectPath} className="button">Back to project</a>
+          </div>
+        </div>
         <TopBar />
         <main className="page">
           {status === 'error' && error && (

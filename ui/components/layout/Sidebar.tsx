@@ -16,8 +16,7 @@ export function Sidebar() {
         <div>{lead?.terms.address ?? leadId}</div>
       </div>
       {NAV_GROUPS.map((group) => (
-        <div className="nav-group" key={group.id}>
-          <h4>{group.label}</h4>
+        <div className="nav-group" key={group.id} aria-label={group.label}>
           <ul>
             {NAV_ITEMS.filter((i) => i.group === group.id).map((item) => {
               const href = leadPath(leadId, item.path);
@@ -37,7 +36,6 @@ export function Sidebar() {
           </ul>
         </div>
       ))}
-      <div className="sidebar-footer">Engine v2, compat mode</div>
     </nav>
   );
 }

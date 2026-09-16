@@ -28,6 +28,7 @@ interface EstimateContextValue {
   setLeadTime(lineId: string, days: number | null): void;
   publishOverrides(note: string): Promise<void>;
   saveEstimate(): Promise<SavedEstimate>;
+  saveLeadData(): Promise<void>;
   reloadLead(): Promise<void>;
   setDayTracking(dayNo: number, value: {crew?: string; hours?: string; done?: boolean; note?: string}): void;
   setToolPacked(key: string, packed: boolean): void;
@@ -39,6 +40,7 @@ interface EstimateContextValue {
 
 const Ctx = createContext<EstimateContextValue | null>(null);
 const RECALC_DELAY_MS = 250;
+const REQUIRED_INPUT_KEYS = ['crew_size', 'rafter_spacing_m', 'cross_batten_width_m'];
 
 export function EstimateProvider({ leadId, children }: { leadId: string; children: ReactNode }) {
   const [status, setStatus] = useState<Status>('loading');
@@ -83,6 +85,20 @@ export function EstimateProvider({ leadId, children }: { leadId: string; childre
     const id = ++requestId.current;
     setStatus((s) => (s === 'loading' ? s : 'calculating'));
     const timer = setTimeout(() => {
+      const hasRequiredInputs = REQUIRED_INPUT_KEYS.every((key) => {
+        const value = lead.inputs[key];
+        return typeof value === 'number' && value > 0;
+      });
+      if (!hasRequiredInputs) {
+        if (id === requestId.current) {
+          setOutputs(null);
+          setError(null);
+          setStatus('ready');
+        }
+        if (loaded.current) api.saveLead(lead).catch((e: ApiError) => setError(e));
+        loaded.current = true;
+        return;
+      }
       api.previewEstimate(leadId, { overrides: lead.overrides, inputs: lead.inputs, terms: lead.terms, leadTimes: lead.leadTimes })
         .then((out) => { if (id === requestId.current) { setOutputs(out); setError(null); setStatus('ready'); } })
         .catch((e: ApiError) => { if (id === requestId.current) { setError(e); setStatus('error'); } });
@@ -131,6 +147,9 @@ export function EstimateProvider({ leadId, children }: { leadId: string; childre
     setSavedEstimates((s) => [saved, ...s]);
     return saved;
   }, [lead, leadId]);
+  const saveLeadData = useCallback(async () => {
+    if (lead) await api.saveLead(lead);
+  }, [lead]);
 
   const reloadLead = useCallback(async () => { setLead(await api.getLead(leadId)); }, [leadId]);
   const setDayTracking = useCallback((dayNo: number, value: {crew?: string; hours?: string; done?: boolean; note?: string}) => update((l) => ({...l, dayTracking: {...(l.dayTracking || {}), [dayNo]: value} })), [update]);
@@ -152,7 +171,7 @@ export function EstimateProvider({ leadId, children }: { leadId: string; childre
 
   const value: EstimateContextValue = {
     leadId, status, error, settings, schema, offerTemplate, lead, overrides: lead?.overrides ?? emptyOverrides(), overrideCount, outputs, savedEstimates,
-    setInput, setTerm, setOverride, resetOverrides, setLeadTime, publishOverrides, saveEstimate, reloadLead, setDayTracking, setToolPacked,
+    setInput, setTerm, setOverride, resetOverrides, setLeadTime, publishOverrides, saveEstimate, saveLeadData, reloadLead, setDayTracking, setToolPacked,
     offerEdits, offerFinalised, setOfferEdit, finaliseOffer,
   };
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

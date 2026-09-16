@@ -34,15 +34,6 @@ function Module({title, subtitle, children, defaultOpen = false}: ModuleProps) {
   );
 }
 
-function projectProgressPercent(status: string, workLogCount: number) {
-  const normalized = String(status || '').toLowerCase();
-  if (normalized.includes('frozen') || normalized.includes('completed')) return 100;
-  if (workLogCount > 0) return Math.min(95, 35 + workLogCount * 10);
-  if (normalized.includes('estimate_done') || normalized.includes('project_started')) return 67;
-  if (normalized.includes('estimating') || normalized.includes('quote_sent')) return 35;
-  return 15;
-}
-
 type ProcessedEstimatorRow = CrmEstimatorOutputRow;
 
 function TameInputModule({rows, onChange, onAdd}: {rows: CrmEstimatorTameRow[]; onChange: (index: number, key: keyof CrmEstimatorTameRow, value: string) => void; onAdd: () => void}) {
@@ -317,11 +308,7 @@ function CustomKpiModule() {
 }
 
 function ProjectWorkProgress({project}: {project: CrmProjectRecord}) {
-  const [open, setOpen] = useState(false);
   const [outputs, setOutputs] = useState<any>(null);
-  const [extraKpis, setExtraKpis] = useState<Array<{name: string; value: string}>>([]);
-  const [kpiName, setKpiName] = useState('');
-  const [kpiValue, setKpiValue] = useState('');
 
   useEffect(() => {
     let cancelled = false;
@@ -351,19 +338,14 @@ function ProjectWorkProgress({project}: {project: CrmProjectRecord}) {
     ['Scheduled time', offer ? `${offer.days} days` : '—'],
     ['Bidpoint average', project.budget || '—'],
     ['Time to complete', offer ? `${offer.days} days` : '—'],
-    ['Materials', summary ? eur(summary.materials) : '—'],
-    ['Transport', summary ? eur(summary.transport) : '—'],
-    ['Mechanisms', summary ? eur(summary.mechanisms) : '—'],
-    ['Labor cost', summary ? eur(laborCost) : '—'],
     ['Tax / VSAOI', summary ? eur(summary.vsaoi) : '—'],
     ['Profit %', summary?.profit && offer?.total ? `${((summary.profit / offer.total) * 100).toFixed(1)}%` : '—'],
     ['Profit per day', summary?.profit && offer?.days ? eur(summary.profit / offer.days) : '—'],
     ['Price / m²', offer && summary?.roofM2 ? eur(offer.total / summary.roofM2) : '—'],
   ];
 
-  return <Module title="Project Work Progress" subtitle="Estimator-driven project KPIs" defaultOpen={false}>
-    <button type="button" onClick={() => setOpen((value) => !value)} className="mb-4 text-sm font-semibold text-sky-700">{open ? 'Collapse KPIs' : 'Show KPIs'}</button>
-    {open ? <><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{kpis.map(([label, value]) => <div key={label} className="rounded-xl border border-slate-200 bg-slate-50 p-3"><p className="text-xs text-slate-500">{label}</p><p className="mt-1 text-sm font-bold text-slate-900">{value}</p></div>)}</div><div className="mt-4 flex flex-wrap gap-2"><input value={kpiName} onChange={(event) => setKpiName(event.target.value)} placeholder="KPI name" className="h-9 rounded border border-slate-200 px-2 text-sm" /><input value={kpiValue} onChange={(event) => setKpiValue(event.target.value)} placeholder="KPI value" className="h-9 rounded border border-slate-200 px-2 text-sm" /><button type="button" onClick={() => { if (kpiName.trim()) { setExtraKpis((items) => [...items, {name: kpiName.trim(), value: kpiValue.trim() || '—'}]); setKpiName(''); setKpiValue(''); } }} className="rounded bg-sky-700 px-3 py-2 text-xs font-semibold text-white">Add other KPI</button></div>{extraKpis.length ? <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{extraKpis.map((item) => <div key={`${item.name}-${item.value}`} className="rounded-xl border border-slate-200 bg-white p-3"><p className="text-xs text-slate-500">{item.name}</p><p className="mt-1 text-sm font-bold">{item.value}</p></div>)}</div> : null}</> : null}
+  return <Module title="Project Overview" subtitle="Estimator-driven project KPIs" defaultOpen>
+    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{kpis.map(([label, value]) => <div key={label} className="rounded-xl border border-slate-200 bg-slate-50 p-3"><p className="text-xs text-slate-500">{label}</p><p className="mt-1 text-sm font-bold text-slate-900">{value}</p></div>)}</div>
   </Module>;
 }
 
@@ -452,7 +434,6 @@ function ProjectProgressModule({project, estimatorData}: {project: CrmProjectRec
 }
 
 export default function ProjectFileClient({locale, project, documents}: Props) {
-  const percent = projectProgressPercent(project.status, project.workLog.length);
   const estimator = project.estimatorData;
   const [projectStatus, setProjectStatus] = useState(project.status || project.phase);
   const [projectTitle, setProjectTitle] = useState(project.title);
@@ -476,7 +457,6 @@ export default function ProjectFileClient({locale, project, documents}: Props) {
             <div className="mt-5 grid gap-3 md:grid-cols-2"><label className="block text-sm"><span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Overview</span><input value={projectOverview} onChange={(event) => setProjectOverview(event.target.value)} className="mt-1 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900" /></label><label className="block text-sm"><span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Description</span><textarea value={description} onChange={(event) => setDescription(event.target.value)} rows={2} className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" /></label></div>
             <div className="mt-5 grid gap-3 sm:grid-cols-4">{[['Client', project.customer], ['Location', project.location], ['Owner', project.owner], ['Value', project.budget]].map(([label, entry]) => <div key={label} className="rounded-xl border border-slate-200 bg-slate-50 p-3"><p className="text-xs text-slate-500">{label}</p><p className="mt-1 text-sm font-semibold text-slate-900">{entry || '—'}</p></div>)}</div>
           </section>
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Project work progress</p><p className="mt-3 text-3xl font-bold text-slate-900">{percent}%</p><div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full bg-sky-500" style={{width: `${percent}%`}} /></div><div className="mt-4 grid grid-cols-2 gap-3 text-sm"><div><span className="text-slate-500">Project phase</span><strong className="mt-1 block text-slate-900">{project.phase}</strong></div><div><span className="text-slate-500">Work entries</span><strong className="mt-1 block text-slate-900">{project.workLog.length}</strong></div></div></section>
         </div>
 
         <div className="mt-5 space-y-3">
