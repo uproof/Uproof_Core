@@ -4,10 +4,11 @@ import { KeyValueList, Panel } from '@/ui/components/common';
 import { format2 } from '@/ui/lib/format';
 import { useOutputs } from '@/ui/state/EstimateContext';
 import { Gantt } from './Gantt';
+import { EmptyOutputState } from '@/ui/components/EmptyOutputState';
 
 export function WorkPlanDocument() {
   const outputs = useOutputs();
-  if (!outputs) return null;
+  if (!outputs) return <EmptyOutputState title="Work plan" columns={['Task', 'Quantity', 'Hours', 'Days', 'Start', 'End']} />;
   const plan = outputs.workPlan;
   return (
     <Panel>

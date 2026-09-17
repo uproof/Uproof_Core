@@ -4,10 +4,11 @@ import { DataTable, Panel } from '@/ui/components/common';
 import type { MaterialsListItem } from '@/ui/api';
 import { formatEur, format2, formatNum } from '@/ui/lib/format';
 import { useOutputs } from '@/ui/state/EstimateContext';
+import { EmptyOutputState } from '@/ui/components/EmptyOutputState';
 
 export function MaterialsListDocument() {
   const outputs = useOutputs();
-  if (!outputs) return null;
+  if (!outputs) return <EmptyOutputState title="Purchase list" columns={['Item', 'Quantity', 'Unit', 'Cost €', 'Used in']} />;
   const groups = outputs.materialsList;
   const total = groups.reduce((a, g) => a + g.total, 0);
   return (

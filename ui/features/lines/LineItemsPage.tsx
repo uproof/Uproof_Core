@@ -4,6 +4,7 @@ import { Fragment, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { leadPath } from '@/ui/navigation';
 import { PageHeader, SearchBox, Toggle } from '@/ui/components/common';
+import { EmptyOutputState } from '@/ui/components/EmptyOutputState';
 import { format2, formatNum } from '@/ui/lib/format';
 import { useEstimate } from '@/ui/state/EstimateContext';
 import { groupLines, isActiveLine } from './groupLines';
@@ -18,7 +19,7 @@ export function LineItemsPage() {
   const [activeOnly, setActiveOnly] = useState(true);
   const [closed, setClosed] = useState<Set<number>>(new Set());
   const blocks = useMemo(() => (outputs ? groupLines(outputs.lines, { query, activeOnly }) : []), [outputs, query, activeOnly]);
-  if (!outputs) return null;
+  if (!outputs) return <><PageHeader title="Line items" titleLv="Tāme" /><EmptyOutputState title="Line items" columns={['Line', 'Qty', 'Reserve', 'Unit price €', 'Materials €', 'Hours', 'Labor €']} /></>;
 
   const toggle = (row: number) => setClosed((s) => { const n = new Set(s); n.has(row) ? n.delete(row) : n.add(row); return n; });
   const next = async () => {

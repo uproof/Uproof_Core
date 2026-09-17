@@ -4,6 +4,7 @@ import { Fragment } from 'react';
 import { NumberInput } from '@/ui/components/common';
 import { formatDate, formatNum } from '@/ui/lib/format';
 import { useEstimate } from '@/ui/state/EstimateContext';
+import { EmptyOutputState } from '@/ui/components/EmptyOutputState';
 
 const fmtDate = (iso: string) => formatDate(new Date(`${iso}T00:00:00`));
 
@@ -13,7 +14,7 @@ const fmtDate = (iso: string) => formatDate(new Date(`${iso}T00:00:00`));
  */
 export function ProcurementDocument({ editable = false }: { editable?: boolean }) {
   const { outputs, setLeadTime } = useEstimate();
-  if (!outputs) return null;
+  if (!outputs) return <EmptyOutputState title="Materials plan" columns={['Day', 'Date', 'Material', 'Amount', 'Lead time', 'Order by']} />;
   const days = outputs.procurement.days;
   return (
     <div className="table-wrap">

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { leadPath } from '@/ui/navigation';
 import { Notice, PageHeader } from '@/ui/components/common';
+import { EmptyOutputState } from '@/ui/components/EmptyOutputState';
 import { DocumentActions } from '@/ui/components/documents/DocumentActions';
 import { formatEur } from '@/ui/lib/format';
 import { useEstimate } from '@/ui/state/EstimateContext';
@@ -15,7 +16,7 @@ export function OfferPage() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [advancing, setAdvancing] = useState(false);
-  if (!outputs) return null;
+  if (!outputs) return <><PageHeader title="Offer" titleLv="Piedāvājums" /><EmptyOutputState title="Offer" columns={['Description', 'Specification', 'Unit', 'Quantity', 'Total EUR']} /></>;
   if (!offerTemplate || !lead) return null;
   const lines = buildOfferLines(outputs.offer, outputs.inputs, offerTemplate).map((line) => ({...line, ...offerEdits[line.line]}));
   const lineTotal = lines.reduce((sum, line) => sum + Number(line.amount || 0), 0);

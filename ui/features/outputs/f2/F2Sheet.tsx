@@ -4,6 +4,7 @@ import { useEffect, useState, type CSSProperties } from 'react';
 import { api } from '@/ui/api';
 import { BORDER_PX, cellValue, formatCell, heightToPx, isRowFiltered, widthToPx, type F2Layout, type F2Style } from '@/shared/f2Sheet';
 import { useEstimate } from '@/ui/state/EstimateContext';
+import { EmptyOutputState } from '@/ui/components/EmptyOutputState';
 
 let layoutCache: Promise<F2Layout> | null = null;
 const loadLayout = () => (layoutCache ??= api.getF2Layout());
@@ -51,7 +52,7 @@ export function F2Sheet({ date, showFiltered = false }: { date?: string; showFil
   const [error, setError] = useState<string | null>(null);
   useEffect(() => { loadLayout().then(setLayout).catch((e) => setError(String(e?.message ?? e))); }, []);
   if (error) return <p role="alert">Could not load the F2 layout: {error}</p>;
-  if (!layout || !outputs || !lead) return <p>Preparing F2 forma…</p>;
+  if (!layout || !outputs || !lead) return <EmptyOutputState title="F2 forma" columns={['Nr.', 'Darba nosaukums', 'Mērv.', 'Daudzums', 'Kopā EUR']} />;
 
   const data = { f2: outputs.f2 as never, constants: outputs.constants, address: lead.terms.address, date: date ?? new Date().toISOString().slice(0, 10) };
   const tops: number[] = [];

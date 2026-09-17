@@ -1,12 +1,13 @@
 'use client';
 
 import { useEstimate } from '@/ui/state/EstimateContext';
+import { EmptyOutputState } from '@/ui/components/EmptyOutputState';
 
 /** Packing checklist of unique tools. */
 export function ToolsDocument() {
   const { outputs, lead, setToolPacked } = useEstimate();
   const packed = lead?.toolsPacked || {};
-  if (!outputs) return null;
+  if (!outputs) return <EmptyOutputState title="Tools" columns={['Tool', 'Used in']} />;
   return (
     <ul className="checklist">
       {outputs.tools.map((t) => (

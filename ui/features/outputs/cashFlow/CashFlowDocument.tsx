@@ -3,12 +3,13 @@
 import { Notice } from '@/ui/components/common';
 import { formatEur, format2, formatPct } from '@/ui/lib/format';
 import { useOutputs } from '@/ui/state/EstimateContext';
+import { EmptyOutputState } from '@/ui/components/EmptyOutputState';
 
 const STAGE_NAMES = ['Stage 1: up to gutters', 'Stage 2: sheet metal', 'Stage 3: additional elements'];
 
 export function CashFlowDocument() {
   const outputs = useOutputs();
-  if (!outputs) return null;
+  if (!outputs) return <EmptyOutputState title="Payments" columns={['Stage', 'Client pays €', 'Cost €', 'Difference €']} />;
   const { cashFlow: c, offer, constants: k } = outputs;
   const costTotal = c.stages.reduce((a, s) => a + s.cost, 0);
   const first = c.stages[0];

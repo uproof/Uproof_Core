@@ -92,6 +92,22 @@ button, .button { display: inline-flex; align-items: center; gap: var(--space-2)
 
 .notice { padding: var(--space-2) var(--space-4); border-radius: var(--radius); background: var(--color-surface-alt); }
 .notice-warning { background: var(--color-warning-bg); border-left: 4px solid currentColor; }
+.output-empty { display: grid; gap: var(--space-4); padding: var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-bg); }
+.output-empty-header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); }
+.output-empty-header h3 { margin: 0; font-size: 1rem; }
+.output-empty-header p { margin: 4px 0 0; color: var(--color-muted); font-size: 0.85rem; }
+.output-empty-header > span { padding: 3px 8px; border: 1px solid var(--color-border); border-radius: 999px; color: var(--color-muted); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; }
+.output-empty-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--space-2); }
+.output-empty-card { display: grid; gap: 8px; min-height: 70px; padding: var(--space-3); border: 1px solid var(--color-border-soft); border-radius: var(--radius); background: var(--color-surface-alt); }
+.output-empty-card span { color: var(--color-muted); font-size: 0.78rem; }
+.output-empty-card strong { color: var(--color-border); font-size: 1.25rem; }
+.output-empty-table { overflow: hidden; border: 1px solid var(--color-border-soft); border-radius: var(--radius); }
+.output-empty-row { display: grid; grid-template-columns: repeat(var(--output-columns, 4), minmax(0, 1fr)); min-height: 42px; border-bottom: 1px solid var(--color-border-soft); }
+.output-empty-row:last-child { border-bottom: 0; }
+.output-empty-row > span { padding: 11px 12px; border-right: 1px solid var(--color-border-soft); color: var(--color-muted); font-size: 0.8rem; }
+.output-empty-row > span:last-child { border-right: 0; }
+.output-empty-heading { background: var(--color-surface-alt); font-weight: 600; }
+.output-empty-cell { color: var(--color-border) !important; }
 
 .tabs { display: flex; gap: var(--space-1); border-bottom: 1px solid var(--color-border); overflow-x: auto; }
 .tabs button { border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: none; }

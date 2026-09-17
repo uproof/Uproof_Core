@@ -1,6 +1,7 @@
 'use client';
 
 import { DataTable, PageHeader, Toggle, type Column } from '@/ui/components/common';
+import { EmptyOutputState } from '@/ui/components/EmptyOutputState';
 import type { SummaryLine } from '@/ui/api';
 import { format2, formatEur, formatNum, formatPct } from '@/ui/lib/format';
 import { useEstimate } from '@/ui/state/EstimateContext';
@@ -21,7 +22,7 @@ const COLUMNS: Column<SummaryLine>[] = [
 export function SummaryPage() {
   const { outputs, leadId } = useEstimate();
   const [hideEmpty, setHideEmpty] = useLocalState(`summaryHideEmpty:${leadId}`, true);
-  if (!outputs) return null;
+  if (!outputs) return <><PageHeader title="Summary" titleLv="Kopsavilkums" /><EmptyOutputState title="Summary" cards={['Materials', 'Labor', 'Total', 'Profit']} /></>;
   const s = outputs.summary;
   const f2 = outputs.f2;
   const rows = s.lines.filter((l) => !hideEmpty || l.total || l.qty);
