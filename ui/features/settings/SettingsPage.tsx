@@ -20,6 +20,7 @@ export function SettingsPage() {
   const [tab, setTab] = useState<TabId>('materials');
   const [publishing, setPublishing] = useState(false);
   const [advancing, setAdvancing] = useState(false);
+  const [nextError, setNextError] = useState<string | null>(null);
   const publish = async () => {
     const note = window.prompt('Describe this settings change (for example "Rukki price update September")');
     if (!note) return;
@@ -28,12 +29,10 @@ export function SettingsPage() {
   };
   const next = async () => {
     setAdvancing(true);
-    try {
-      await saveLeadData();
-      router.push(leadPath(leadId, 'inputs'));
-    } finally {
-      setAdvancing(false);
-    }
+    setNextError(null);
+    try { await saveLeadData(); router.push(leadPath(leadId, 'inputs')); }
+    catch (error) { setNextError(error instanceof Error ? error.message : 'Could not save settings.'); }
+    finally { setAdvancing(false); }
   };
   if (!settings) return null;
   const v = settings.values;
@@ -54,6 +53,7 @@ export function SettingsPage() {
           <button type="button" className="button primary" onClick={() => void next()} disabled={advancing}>{advancing ? 'Saving…' : 'Next →'}</button>
         </>}
       />
+      {nextError && <p className="notice notice-warning">{nextError}</p>}
       <Tabs label="Settings sections" items={tabs} active={tab} onChange={setTab} />
       {tab === 'materials' && <MaterialsTab />}
       {tab === 'norms' && <LaborNormsTab />}

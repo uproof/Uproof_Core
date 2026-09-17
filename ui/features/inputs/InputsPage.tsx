@@ -1,6 +1,7 @@
 'use client';
 
-import Link from 'next/link';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { leadPath } from '@/ui/navigation';
 import { PageHeader, Panel } from '@/ui/components/common';
 import { useEstimate } from '@/ui/state/EstimateContext';
@@ -14,7 +15,17 @@ import { SnowMeltTable } from './sections/SnowMeltTable';
 
 /** Step 2: lead measurements (Ievade). Every change triggers a debounced recalculation. */
 export function InputsPage() {
-  const { schema, reloadLead, status, leadId } = useEstimate();
+  const { schema, reloadLead, status, leadId, saveLeadData } = useEstimate();
+  const router = useRouter();
+  const [advancing, setAdvancing] = useState(false);
+  const [nextError, setNextError] = useState<string | null>(null);
+  const next = async () => {
+    setAdvancing(true);
+    setNextError(null);
+    try { await saveLeadData(); router.push(leadPath(leadId, 'lines')); }
+    catch (error) { setNextError(error instanceof Error ? error.message : 'Could not save inputs.'); }
+    finally { setAdvancing(false); }
+  };
   const renderSection = (id: string, layout: SectionLayout) => {
     switch (layout) {
       case 'chimneys': return <ChimneyTables />;
@@ -32,9 +43,10 @@ export function InputsPage() {
         actions={<>
           <span>{status === 'calculating' ? 'Saving and recalculating…' : 'Saved'}</span>
           <button type="button" onClick={() => reloadLead()}>Reload saved lead</button>
-          <Link href={leadPath(leadId, 'lines')} className="button primary">Review line items</Link>
+          <button type="button" className="button primary" onClick={() => void next()} disabled={advancing}>{advancing ? 'Saving…' : 'Next →'}</button>
         </>}
       />
+      {nextError && <p className="notice notice-warning">{nextError}</p>}
       <nav className="jump-links" aria-label="Input sections">
         <a href="#section-terms">Offer terms</a>
         {INPUT_SECTIONS.map((s) => <a key={s.id} href={`#section-${s.id}`}>{s.title}</a>)}

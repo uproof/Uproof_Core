@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { leadPath } from '@/ui/navigation';
 import { Notice, PageHeader } from '@/ui/components/common';
 import { DocumentActions } from '@/ui/components/documents/DocumentActions';
 import { formatEur } from '@/ui/lib/format';
@@ -8,9 +10,11 @@ import { useEstimate } from '@/ui/state/EstimateContext';
 import { buildOfferLines } from './offerLayout';
 
 export function OfferPage() {
-  const { outputs, saveEstimate, savedEstimates, offerEdits, offerFinalised, setOfferEdit, finaliseOffer, offerTemplate, lead } = useEstimate();
+  const { outputs, saveEstimate, savedEstimates, offerEdits, offerFinalised, setOfferEdit, finaliseOffer, offerTemplate, lead, leadId } = useEstimate();
+  const router = useRouter();
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [advancing, setAdvancing] = useState(false);
   if (!outputs) return null;
   if (!offerTemplate || !lead) return null;
   const lines = buildOfferLines(outputs.offer, outputs.inputs, offerTemplate).map((line) => ({...line, ...offerEdits[line.line]}));
@@ -29,10 +33,17 @@ export function OfferPage() {
       setSaving(false);
     }
   };
+  const next = async () => {
+    setAdvancing(true);
+    setMessage(null);
+    try { await saveEstimate(); router.push(leadPath(leadId, 'f2')); }
+    catch (error) { setMessage(`Could not save: ${error instanceof Error ? error.message : 'unknown error'}`); }
+    finally { setAdvancing(false); }
+  };
   return (
     <>
       <PageHeader title="Offer" titleLv="Piedāvājums" description="What the client receives."
-        actions={<><button type="button" onClick={onSave} disabled={saving}>{saving ? 'Saving…' : 'Save estimate'}</button><button type="button" onClick={finaliseOffer} disabled={offerFinalised}>{offerFinalised ? 'Finalised' : 'Finalise offer'}</button><DocumentActions doc="offer" /></>} />
+        actions={<><button type="button" onClick={onSave} disabled={saving}>{saving ? 'Saving…' : 'Save estimate'}</button><button type="button" onClick={finaliseOffer} disabled={offerFinalised}>{offerFinalised ? 'Finalised' : 'Finalise offer'}</button><DocumentActions doc="offer" /><button type="button" className="button primary" onClick={() => void next()} disabled={advancing}>{advancing ? 'Saving…' : 'Next →'}</button></>} />
       {message && <Notice>{message}</Notice>}
       {!message && savedEstimates.length > 0 && <Notice>Last saved estimate #{savedEstimates[0].id}: {formatEur(savedEstimates[0].offerTotal)}.</Notice>}
       {outputs.offer.omittedMaterials > 0.5 && (

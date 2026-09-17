@@ -1,7 +1,7 @@
 'use client';
 
 import { Fragment, useMemo, useState } from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { leadPath } from '@/ui/navigation';
 import { PageHeader, SearchBox, Toggle } from '@/ui/components/common';
 import { format2, formatNum } from '@/ui/lib/format';
@@ -10,7 +10,10 @@ import { groupLines, isActiveLine } from './groupLines';
 
 /** Step 3: every Tāme line, grouped by block. Read-only; edits happen in Inputs or Settings. */
 export function LineItemsPage() {
-  const { outputs, leadId } = useEstimate();
+  const { outputs, leadId, saveLeadData } = useEstimate();
+  const router = useRouter();
+  const [advancing, setAdvancing] = useState(false);
+  const [nextError, setNextError] = useState<string | null>(null);
   const [query, setQuery] = useState('');
   const [activeOnly, setActiveOnly] = useState(true);
   const [closed, setClosed] = useState<Set<number>>(new Set());
@@ -18,12 +21,20 @@ export function LineItemsPage() {
   if (!outputs) return null;
 
   const toggle = (row: number) => setClosed((s) => { const n = new Set(s); n.has(row) ? n.delete(row) : n.add(row); return n; });
+  const next = async () => {
+    setAdvancing(true);
+    setNextError(null);
+    try { await saveLeadData(); router.push(leadPath(leadId, 'offer')); }
+    catch (error) { setNextError(error instanceof Error ? error.message : 'Could not save line items.'); }
+    finally { setAdvancing(false); }
+  };
   const totals = outputs.lines.reduce((a, l) => ({ m: a.m + l.materials, h: a.h + l.hours, l: a.l + l.labor }), { m: 0, h: 0, l: 0 });
 
   return (
     <>
       <PageHeader title="Line items" titleLv="Tāme" description="Quantities, waste reserve, prices and labor produced from the inputs."
-        actions={<Link href={leadPath(leadId, 'offer')} className="button primary">Open offer</Link>} />
+        actions={<button type="button" className="button primary" onClick={() => void next()} disabled={advancing}>{advancing ? 'Saving…' : 'Next →'}</button>} />
+      {nextError && <p className="notice notice-warning">{nextError}</p>}
       <div className="toolbar">
         <SearchBox value={query} onChange={setQuery} placeholder="Search line items" />
         <Toggle checked={activeOnly} onChange={setActiveOnly} label="Only lines in this job" />
