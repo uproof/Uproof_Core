@@ -1,5 +1,6 @@
 import {notFound, redirect} from 'next/navigation';
 import {getAdminSession} from '@/lib/adminAuth';
+import {canPerform} from '@/lib/permissions';
 import {getCrmLeads} from '@/lib/crmLeadsStore';
 import {getCrmUserByEmail} from '@/lib/crmUsersStore';
 import {createEmptyCrmEstimatorData} from '@/lib/crmEstimator';
@@ -11,6 +12,7 @@ export default async function EstimatorEnginePage({params}: Props) {
   const {locale, leadId} = await params;
   const session = await getAdminSession();
   if (!session) redirect(`/${locale}/crm/login`);
+  if (!canPerform(session.role, 'viewEstimates')) redirect(`/${locale}/crm`);
 
   let leads = await getCrmLeads();
   if (session.role === 'sales') {

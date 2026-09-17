@@ -54,7 +54,7 @@ const PERMISSIONS: Record<AdminRole, Record<PermissionAction, boolean>> = {
     createLeads: false,
     viewProjects: true,
     manageProjects: false,
-    viewEstimates: true,
+    viewEstimates: false,
     manageEstimates: false,
     viewQuotes: true,
     manageQuotes: true,
