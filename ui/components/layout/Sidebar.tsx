@@ -6,15 +6,11 @@ import { NAV_GROUPS, NAV_ITEMS, leadPath } from '@/ui/navigation';
 import { useEstimate } from '@/ui/state/EstimateContext';
 
 export function Sidebar() {
-  const { leadId, lead } = useEstimate();
+  const { leadId } = useEstimate();
   const pathname = usePathname();
   return (
     <nav className="sidebar" aria-label="Estimate navigation">
       <div className="sidebar-product">Roof Estimator</div>
-      <div className="sidebar-lead">
-        <small>Lead</small>
-        <div>{lead?.terms.address ?? leadId}</div>
-      </div>
       {NAV_GROUPS.map((group) => (
         <div className="nav-group" key={group.id} aria-label={group.label}>
           <ul>

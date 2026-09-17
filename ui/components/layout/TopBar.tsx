@@ -9,7 +9,6 @@ export function TopBar() {
   return (
     <header className="topbar" aria-live="polite" aria-busy={status === 'calculating'}>
       <div className="topbar-title">
-        <small>{lead?.terms.client}</small>
         <h1>{lead?.terms.address}</h1>
       </div>
       {outputs && (
