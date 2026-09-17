@@ -5,12 +5,10 @@ import { formatEur, formatNum, format2 } from '@/ui/lib/format';
 
 /** Always-visible totals. Updates live after each recalculation. */
 export function TopBar() {
-  const { lead, outputs, status } = useEstimate();
+  const { outputs, status } = useEstimate();
+  if (!outputs) return null;
   return (
     <header className="topbar" aria-live="polite" aria-busy={status === 'calculating'}>
-      <div className="topbar-title">
-        <h1>{lead?.terms.address}</h1>
-      </div>
       {outputs && (
         <dl className="topbar-kpis">
           <Kpi label="Roof area" value={`${formatNum(outputs.summary.roofM2)} m²`} />
