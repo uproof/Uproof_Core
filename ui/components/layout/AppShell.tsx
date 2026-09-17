@@ -6,10 +6,11 @@ import type { ReactNode } from 'react';
 import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
 import { useEstimate } from '@/ui/state/EstimateContext';
+import { CrmLeadSummaryNavigator } from '@/ui/components/CrmLeadSummaryNavigator';
 
 /** Sidebar + sticky totals bar + routed page. */
 export function AppShell({ children }: { children: ReactNode }) {
-  const { status, error, leadId, saveLeadData } = useEstimate();
+  const { status, error, leadId, lead, saveLeadData } = useEstimate();
   const pathname = usePathname();
   const [compact, setCompact] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -46,7 +47,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               {error.fields && <ul>{Object.entries(error.fields).map(([k, v]) => <li key={k}>{v} ({k})</li>)}</ul>}
             </div>
           )}
-          {status === 'loading' && !error ? <p>Loading estimate…</p> : children}
+          {status === 'loading' && !error ? <p>Loading estimate…</p> : <><CrmLeadSummaryNavigator data={lead?.crmEstimatorData} />{children}</>}
         </main>
       </div>
     </div>

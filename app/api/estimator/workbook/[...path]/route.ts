@@ -32,7 +32,7 @@ export async function GET(_request: NextRequest, {params}: RouteContext) {
     if (!lead) return errorResponse('Lead not found', 404);
     if (path[2] === 'estimates') return NextResponse.json([]);
     const {inputs, terms, overrides} = leadToWorkbook(lead);
-    return NextResponse.json({id: lead.id, terms, inputs, leadTimes: {}, dayTracking: lead.estimatorData?.engineOutputs?.dayTracking || {}, toolsPacked: lead.estimatorData?.engineOutputs?.toolsPacked || {}, overrides: overrides || {materials: {}, norms: {}, coil: {}, constants: {}, materialLeadTimes: {}}});
+    return NextResponse.json({id: lead.id, terms, inputs, crmEstimatorData: lead.estimatorData, leadTimes: {}, dayTracking: lead.estimatorData?.engineOutputs?.dayTracking || {}, toolsPacked: lead.estimatorData?.engineOutputs?.toolsPacked || {}, overrides: overrides || {materials: {}, norms: {}, coil: {}, constants: {}, materialLeadTimes: {}}});
   }
   return errorResponse('Workbook estimator route not found', 404);
 }

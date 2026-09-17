@@ -3,6 +3,8 @@
  * these types describe what it returns.
  */
 
+import type { CrmEstimatorFormData } from '@/lib/crmEstimator';
+
 // ---------- inputs & terms ----------
 export type InputValue = number | string | null;
 export type InputValues = Record<string, InputValue>;
@@ -71,6 +73,7 @@ export interface Lead {
   updatedAt?: string | null;
   dayTracking?: Record<number, {crew?: string; hours?: string; done?: boolean; note?: string}>;
   toolsPacked?: Record<string, boolean>;
+  crmEstimatorData?: CrmEstimatorFormData;
 }
 
 export interface PreviewRequest {
