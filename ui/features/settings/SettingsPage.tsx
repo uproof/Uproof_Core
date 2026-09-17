@@ -48,8 +48,9 @@ export function SettingsPage() {
         </>}
       />
       <Notice>
-        Settings version {settings.version.id} ({settings.version.note}), created {settings.version.importedAt}. {versions.length} version{versions.length === 1 ? '' : 's'} in the database.{' '}
-        {overrideCount ? `${overrideCount} value${overrideCount > 1 ? 's' : ''} changed for this estimate only.` : 'No changes for this estimate.'}
+        <strong>Active workbook settings</strong>
+        <span className="settings-status-detail">Version {settings.version.id} · {settings.version.note} · created {settings.version.importedAt}</span>
+        <span className="settings-status-detail">{versions.length === 0 ? 'Using the built-in workbook baseline.' : `${versions.length} saved version${versions.length === 1 ? '' : 's'} available.`} {overrideCount ? `${overrideCount} estimate-only change${overrideCount > 1 ? 's' : ''}.` : 'No estimate-only changes.'}</span>
       </Notice>
       <Tabs label="Settings sections" items={tabs} active={tab} onChange={setTab} />
       {tab === 'materials' && <MaterialsTab />}

@@ -34,9 +34,9 @@ export function AppShell({ children }: { children: ReactNode }) {
         <div className="workbook-toolbar no-print">
           <div className="workbook-toolbar-title">Workbook estimator</div>
           <div className="workbook-toolbar-actions">
-            <button type="button" onClick={() => setCompact((value) => !value)}>{compact ? 'Show navigation' : 'Expand workspace'}</button>
-            <button type="button" onClick={() => void save()} disabled={saving}>{saving ? 'Saving…' : saved ? 'Saved' : 'Save data'}</button>
-            <a href={projectPath} className="button">Back to project</a>
+            <button type="button" className="toolbar-control" onClick={() => setCompact((value) => !value)}>{compact ? 'Show navigation' : 'Expand workspace'}</button>
+            <button type="button" className="toolbar-control toolbar-control-primary" onClick={() => void save()} disabled={saving}>{saving ? 'Saving…' : saved ? 'Saved' : 'Save data'}</button>
+            <a href={projectPath} className="button toolbar-control">Back to project</a>
           </div>
         </div>
         <TopBar />
