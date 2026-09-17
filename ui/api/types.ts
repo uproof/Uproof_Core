@@ -74,6 +74,8 @@ export interface Lead {
   dayTracking?: Record<number, {crew?: string; hours?: string; done?: boolean; note?: string}>;
   toolsPacked?: Record<string, boolean>;
   crmEstimatorData?: CrmEstimatorFormData;
+  offerEdits?: Record<number, {description?: string; specification?: string; unit?: string; quantity?: number; amount?: number}>;
+  offerFinalised?: boolean;
 }
 
 export interface PreviewRequest {

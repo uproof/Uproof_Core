@@ -141,6 +141,9 @@ export type CrmEstimatorEngineOutputs = {
   crewProgress?: Record<string, unknown>;
   projectOutputs?: Record<string, unknown>;
   cashFlow?: Record<string, unknown>;
+  offerEdits?: Record<number, {description?: string; specification?: string; unit?: string; quantity?: number; amount?: number}>;
+  offerFinalised?: boolean;
+  leadTimes?: Record<string, number>;
   settingsRevision?: string;
   previousRuns?: Array<{savedAt: string; settingsRevision?: string; outputs: Record<string, unknown>}>;
 };

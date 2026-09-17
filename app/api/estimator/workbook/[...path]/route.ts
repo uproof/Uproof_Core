@@ -31,8 +31,8 @@ export async function GET(_request: NextRequest, {params}: RouteContext) {
     const lead = await getCrmLeadById(path[1]);
     if (!lead) return errorResponse('Lead not found', 404);
     if (path[2] === 'estimates') return NextResponse.json([]);
-    const {inputs, terms, overrides} = leadToWorkbook(lead);
-    return NextResponse.json({id: lead.id, terms, inputs, crmEstimatorData: lead.estimatorData, leadTimes: {}, dayTracking: lead.estimatorData?.engineOutputs?.dayTracking || {}, toolsPacked: lead.estimatorData?.engineOutputs?.toolsPacked || {}, overrides: overrides || {materials: {}, norms: {}, coil: {}, constants: {}, materialLeadTimes: {}}});
+    const {inputs, terms, leadTimes, overrides} = leadToWorkbook(lead);
+    return NextResponse.json({id: lead.id, terms, inputs, crmEstimatorData: lead.estimatorData, offerEdits: lead.estimatorData?.engineOutputs?.offerEdits || {}, offerFinalised: lead.estimatorData?.engineOutputs?.offerFinalised === true, leadTimes: lead.estimatorData?.engineOutputs?.leadTimes || {}, dayTracking: lead.estimatorData?.engineOutputs?.dayTracking || {}, toolsPacked: lead.estimatorData?.engineOutputs?.toolsPacked || {}, overrides: overrides || {materials: {}, norms: {}, coil: {}, constants: {}, materialLeadTimes: {}}});
   }
   return errorResponse('Workbook estimator route not found', 404);
 }
@@ -43,13 +43,13 @@ export async function PUT(request: NextRequest, {params}: RouteContext) {
   if (path[0] !== 'leads' || !path[1]) return errorResponse('Lead route not found', 404);
   const lead = await getCrmLeadById(path[1]);
   if (!lead) return errorResponse('Lead not found', 404);
-  const body = await request.json().catch(() => ({})) as {inputs?: Record<string, unknown>; terms?: Record<string, unknown>; overrides?: SettingsOverrides; dayTracking?: Record<number, unknown>; toolsPacked?: Record<string, boolean>};
+  const body = await request.json().catch(() => ({})) as {inputs?: Record<string, unknown>; terms?: Record<string, unknown>; overrides?: SettingsOverrides; dayTracking?: Record<number, unknown>; toolsPacked?: Record<string, boolean>; leadTimes?: Record<string, number>; offerEdits?: Record<number, {description?: string; specification?: string; unit?: string; quantity?: number; amount?: number}>; offerFinalised?: boolean};
   const inputs = Object.fromEntries(Object.entries(body.inputs || {}).filter(([, value]) => value === null || typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean')) as Record<string, CrmWorkbookInputValue>;
   const current = lead.estimatorData || {};
   const updated = await updateCrmLead(path[1], {estimatorData: {
     ...current,
     workbookInputs: {...(current.workbookInputs || {}), ...inputs},
-    engineOutputs: {...(current.engineOutputs || {}), workbookOverrides: body.overrides || current.engineOutputs?.workbookOverrides, dayTracking: (body.dayTracking as CrmEstimatorFormData['engineOutputs']['dayTracking']) || current.engineOutputs?.dayTracking, toolsPacked: body.toolsPacked || current.engineOutputs?.toolsPacked},
+    engineOutputs: {...(current.engineOutputs || {}), workbookOverrides: body.overrides || current.engineOutputs?.workbookOverrides, leadTimes: body.leadTimes || current.engineOutputs?.leadTimes, dayTracking: (body.dayTracking as CrmEstimatorFormData['engineOutputs']['dayTracking']) || current.engineOutputs?.dayTracking, toolsPacked: body.toolsPacked || current.engineOutputs?.toolsPacked, offerEdits: body.offerEdits || current.engineOutputs?.offerEdits, offerFinalised: typeof body.offerFinalised === 'boolean' ? body.offerFinalised : current.engineOutputs?.offerFinalised},
     offerDiscount: String(body.terms?.discount ?? current.offerDiscount ?? ''),
     offerVatRate: String(body.terms?.vatRate ?? current.offerVatRate ?? '0'),
     scheduleStartDate: String(body.terms?.startDate ?? current.scheduleStartDate ?? ''),
@@ -65,12 +65,12 @@ export async function POST(request: NextRequest, {params}: RouteContext) {
   if (path[0] !== 'leads' || !path[1] || path[2] !== 'estimates') return errorResponse('Estimate route not found', 404);
   const lead = await getCrmLeadById(path[1]);
   if (!lead) return errorResponse('Lead not found', 404);
-  const body = await request.json().catch(() => ({})) as {inputs?: Record<string, unknown>; terms?: Parameters<typeof calculateWorkbookEstimate>[2]; overrides?: SettingsOverrides};
+  const body = await request.json().catch(() => ({})) as {inputs?: Record<string, unknown>; terms?: Parameters<typeof calculateWorkbookEstimate>[2]; overrides?: SettingsOverrides; leadTimes?: Record<string, number>};
   const stored = leadToWorkbook(lead);
   const inputs = (body.inputs || stored.inputs) as Parameters<typeof calculateWorkbookEstimate>[1];
   const terms = body.terms || stored.terms;
   try {
-    const result = calculateWorkbookEstimate(lead, inputs, terms, body.overrides);
+    const result = calculateWorkbookEstimate(lead, inputs, terms, body.overrides, body.leadTimes || stored.leadTimes);
     if (path[3] !== 'preview') return NextResponse.json({id: Date.now(), createdAt: new Date().toISOString(), settingsVersionId: result.settingsVersionId, offerTotal: result.offer.total});
     return NextResponse.json(result);
   } catch (error) {

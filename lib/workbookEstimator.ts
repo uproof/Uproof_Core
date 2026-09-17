@@ -28,12 +28,12 @@ export function leadToWorkbook(lead: CrmLead) {
     client: lead.customer,
     address: lead.projectAddress || lead.address,
     discount: Number(data.offerDiscount || 0),
-    vatRate: Number(data.offerVatRate || 0),
+    vatRate: data.offerVatRate ? Number(data.offerVatRate) / 100 : 0.21,
     startDate: data.scheduleStartDate || null,
     skipWeekends: data.scheduleSkipWeekends === true,
     procurementIncludeLabor: data.procurementIncludeLabor !== false,
   };
-  return {inputs, terms, overrides: data.engineOutputs?.workbookOverrides};
+  return {inputs, terms, leadTimes: data.engineOutputs?.leadTimes || {}, overrides: data.engineOutputs?.workbookOverrides};
 }
 
 export function workbookSettingsResponse() {
@@ -59,8 +59,8 @@ export function workbookSettingsResponse() {
   };
 }
 
-export function calculateWorkbookEstimate(lead: CrmLead, inputs: InputValues, terms: LeadTerms, overrides?: SettingsOverrides | null): EstimateOutputs & {leadId: string} {
-  return {...runEstimate(workbookSettings, inputs, terms, {overrides}), leadId: lead.id};
+export function calculateWorkbookEstimate(lead: CrmLead, inputs: InputValues, terms: LeadTerms, overrides?: SettingsOverrides | null, leadTimes?: Record<string, number>): EstimateOutputs & {leadId: string} {
+  return {...runEstimate(workbookSettings, inputs, terms, {overrides, leadTimes}), leadId: lead.id};
 }
 
 export type WorkbookEstimate = ReturnType<typeof calculateWorkbookEstimate>;

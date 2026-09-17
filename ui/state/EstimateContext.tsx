@@ -55,6 +55,7 @@ export function EstimateProvider({ leadId, children }: { leadId: string; childre
   const [offerFinalised, setOfferFinalised] = useState(false);
   const requestId = useRef(0);
   const loaded = useRef(false);
+  const offerStateLoaded = useRef(false);
 
   // Load settings, schema, template and the lead from the backend.
   useEffect(() => {
@@ -66,14 +67,9 @@ export function EstimateProvider({ leadId, children }: { leadId: string; childre
         if (cancelled) return;
         setSettings(s); setSchema(sc); setOfferTemplate(tpl); setSavedEstimates(runs);
         setLead({ ...l, overrides: { ...emptyOverrides(), ...(l.overrides ?? {}) } });
-        try {
-          const saved = JSON.parse(window.localStorage.getItem(`roof-estimate-offer:${leadId}`) || '{}') as {edits?: EstimateContextValue['offerEdits']; finalised?: boolean};
-          setOfferEdits(saved.edits || {});
-          setOfferFinalised(saved.finalised === true);
-        } catch {
-          setOfferEdits({});
-          setOfferFinalised(false);
-        }
+        setOfferEdits(l.offerEdits || l.crmEstimatorData?.engineOutputs?.offerEdits || {});
+        setOfferFinalised(l.offerFinalised === true || l.crmEstimatorData?.engineOutputs?.offerFinalised === true);
+        offerStateLoaded.current = true;
       })
       .catch((e: ApiError) => { if (!cancelled) { setError(e); setStatus('error'); } });
     return () => { cancelled = true; };
@@ -142,14 +138,14 @@ export function EstimateProvider({ leadId, children }: { leadId: string; childre
   }, [lead, update]);
 
   const saveEstimate = useCallback(async () => {
-    if (lead) await api.saveLead(lead);
+    if (lead) await api.saveLead({...lead, offerEdits, offerFinalised});
     const saved = await api.saveEstimate(leadId);
     setSavedEstimates((s) => [saved, ...s]);
     return saved;
-  }, [lead, leadId]);
+  }, [lead, leadId, offerEdits, offerFinalised]);
   const saveLeadData = useCallback(async () => {
-    if (lead) await api.saveLead(lead);
-  }, [lead]);
+    if (lead) await api.saveLead({...lead, offerEdits, offerFinalised});
+  }, [lead, offerEdits, offerFinalised]);
 
   const reloadLead = useCallback(async () => { setLead(await api.getLead(leadId)); }, [leadId]);
   const setDayTracking = useCallback((dayNo: number, value: {crew?: string; hours?: string; done?: boolean; note?: string}) => update((l) => ({...l, dayTracking: {...(l.dayTracking || {}), [dayNo]: value} })), [update]);
@@ -157,15 +153,18 @@ export function EstimateProvider({ leadId, children }: { leadId: string; childre
   const setOfferEdit = useCallback((line: number, edit: EstimateContextValue['offerEdits'][number]) => {
     setOfferEdits((current) => {
       const next = {...current, [line]: {...current[line], ...edit}};
-      window.localStorage.setItem(`roof-estimate-offer:${leadId}`, JSON.stringify({edits: next, finalised: false}));
       return next;
     });
     setOfferFinalised(false);
-  }, [leadId]);
+  }, []);
   const finaliseOffer = useCallback(() => {
     setOfferFinalised(true);
-    window.localStorage.setItem(`roof-estimate-offer:${leadId}`, JSON.stringify({edits: offerEdits, finalised: true}));
-  }, [leadId, offerEdits]);
+  }, []);
+
+  useEffect(() => {
+    if (!offerStateLoaded.current || !lead) return;
+    api.saveLead({...lead, offerEdits, offerFinalised}).catch((e: ApiError) => setError(e));
+  }, [lead, offerEdits, offerFinalised]);
 
   const overrideCount = useMemo(() => (lead ? Object.values(lead.overrides).reduce((a, bag) => a + Object.keys(bag).length, 0) : 0), [lead]);
 
