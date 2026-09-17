@@ -360,6 +360,9 @@ export const CRM_ESTIMATOR_FIELD_DEFINITIONS: CrmEstimatorFieldDefinition[] = [
   {section: 'Comments', key: 'comment2', label: 'Citis komentāri', type: 'text', placeholder: 'Komentārs 2'},
   {section: 'Comments', key: 'comment3', label: 'Cits', type: 'text', placeholder: 'Komentārs 3'},
   {section: 'Comments', key: 'plannedExecutionTime', label: 'Plānotais/vēlamais izpildes laiks', type: 'text', placeholder: 'Laika periods'},
+];
+
+export const CRM_ESTIMATOR_POLICY_FIELD_DEFINITIONS: CrmEstimatorFieldDefinition[] = [
   {section: 'Estimator policy', key: 'offerVatRate', label: 'PVN likme piedāvājumā, %', type: 'number', placeholder: '21'},
   {section: 'Estimator policy', key: 'offerDiscount', label: 'Atlaide PDF dokumentā, EUR', type: 'number', placeholder: 'Atstāt tukšu, ja nav'},
   {section: 'Estimator policy', key: 'slopeCoefficientOverride', label: 'Manuāls slīpuma koeficients', type: 'number', placeholder: 'Piemēram, 1.305'},
