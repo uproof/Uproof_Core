@@ -10,10 +10,11 @@ import { CrmLeadSummaryNavigator } from '@/ui/components/CrmLeadSummaryNavigator
 
 /** Sidebar + sticky totals bar + routed page. */
 export function AppShell({ children }: { children: ReactNode }) {
-  const { status, error, leadId, lead, saveLeadData } = useEstimate();
+  const { status, error, leadId, lead, saveLeadData, reloadLead } = useEstimate();
   const pathname = usePathname();
   const [compact, setCompact] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [processing, setProcessing] = useState(false);
   const [saved, setSaved] = useState(false);
   const locale = pathname.match(/^\/(lv|en|nl-BE)(?:\/|$)/)?.[1] || 'en';
   const projectPath = `/${locale}/admin/project-360/${encodeURIComponent(leadId)}`;
@@ -27,6 +28,15 @@ export function AppShell({ children }: { children: ReactNode }) {
       setSaving(false);
     }
   };
+  const process = async () => {
+    setProcessing(true);
+    try {
+      await saveLeadData();
+      await reloadLead();
+    } finally {
+      setProcessing(false);
+    }
+  };
   return (
     <div className={compact ? 'shell is-compact' : 'shell'}>
       <Sidebar />
@@ -36,6 +46,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <div className="workbook-toolbar-actions">
             <button type="button" className="toolbar-control" onClick={() => setCompact((value) => !value)}>{compact ? 'Show navigation' : 'Expand workspace'}</button>
             <button type="button" className="toolbar-control toolbar-control-primary" onClick={() => void save()} disabled={saving}>{saving ? 'Saving…' : saved ? 'Saved' : 'Save data'}</button>
+            <button type="button" className="toolbar-control" onClick={() => void process()} disabled={processing}>{processing ? 'Processing…' : 'Process'}</button>
             <a href={projectPath} className="button toolbar-control">Back to project</a>
           </div>
         </div>
