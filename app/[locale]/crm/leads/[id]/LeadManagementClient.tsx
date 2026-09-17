@@ -678,7 +678,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
 
           </Card>
 
-          {!isSalesScope ? <Card variant="outlined" hover={false} className="border-sky-100 bg-white">
+          <Card variant="outlined" hover={false} className="border-sky-100 bg-white">
             <div className="mb-4">
               <div className="text-sm font-semibold text-sky-500">{isLv ? 'Estimator forma' : 'Estimator form'}</div>
               <a href={`/${locale}/estimator/${encodeURIComponent(lead.id)}`} className="mt-3 inline-flex items-center rounded-xl border border-sky-200 bg-white px-3 py-2 text-sm font-semibold text-sky-700 hover:bg-sky-50">Open Estimator Engine</a>
@@ -853,7 +853,7 @@ export default function LeadManagementClient({locale, lead, signedAttachments, s
                 </div>
               ))}
             </div>
-          </Card> : null}
+          </Card>
 
           <Card variant="outlined" hover={false} className="border-sky-100 bg-white">
             <div className="mb-4 text-sm font-semibold text-sky-500">{isLv ? 'Atvērta piezīme' : 'Open note'}</div>
