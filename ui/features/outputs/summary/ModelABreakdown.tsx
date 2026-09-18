@@ -7,7 +7,7 @@ import type { EstimateOutputs } from '@/ui/api';
 export function ModelABreakdown({ outputs }: { outputs: EstimateOutputs }) {
   const { summary: s, constants: k, inputs } = outputs;
   return (
-    <Panel title="Model A breakdown" titleLv="Izmaksas un peļņa">
+    <Panel title="Kopsavilkuma sadalījums" titleLv="Izmaksas un peļņa">
       <KeyValueList items={[
         { label: 'Materials', value: formatEur(s.materials) },
         { label: 'Transport', value: formatEur(s.transport) },

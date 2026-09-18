@@ -21,7 +21,8 @@ export const INPUT_SECTIONS: InputSection[] = [
 ];
 
 /** Inputs present in the workbook but not used by any formula (spec section 3). */
-export const UNUSED_INPUTS = new Set(['verge_1_width_mm', 'verge_2_width_mm', 'batten_gap_mm', 'snow_guard_sheet_m', 'lightning_rod', 'site_pedestrian_tunnel_m', 'site_construction_lift_days']);
+export const UNUSED_INPUTS = new Set(['verge_1_width_mm', 'verge_2_width_mm', 'batten_gap_mm', 'snow_guard_sheet_m', 'lightning_rod', 'site_pedestrian_tunnel_m', 'site_construction_lift_days', 'counter_batten_thickness_m', 'counter_batten_width_m', 'cross_batten_thickness_m', 'cross_batten_width_m']);
+export const HIDDEN_INPUTS = new Set(['counter_batten_thickness_m', 'counter_batten_width_m', 'cross_batten_thickness_m', 'cross_batten_width_m']);
 
 export const UNIT_LABELS: Record<string, string> = { pcs: 'gb', fraction: 'daļa', deg: '°', people: 'cilv.', nights: 'naktis', months: 'mēn.', days: 'dienas', coats: 'kārtas', x: '×' };
 export const unitLabel = (u: string) => UNIT_LABELS[u] ?? u.replace(/ \(.*\)/, '').replace('EUR ex VAT', '€');

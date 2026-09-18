@@ -8,7 +8,16 @@ import type {CrmLead} from './crmMockData';
 export const workbookSettings: SettingsSnapshot = snapshotFromSeed(settingsSeed as never, 1);
 
 export function defaultWorkbookInputs(): InputValues {
-  return Object.fromEntries(INPUT_FIELDS.map((input) => [input.key, null]));
+  const defaults: InputValues = Object.fromEntries(INPUT_FIELDS.map((input) => [input.key, null]));
+  return {
+    ...defaults,
+    counter_batten_thickness_m: 0.025,
+    counter_batten_width_m: 0.05,
+    cross_batten_thickness_m: 0.025,
+    cross_batten_width_m: 0.1,
+    batten_gap_mm: 100,
+    cross_batten_coverage_ratio: 0.5,
+  };
 }
 
 export function workbookInputSchema() {

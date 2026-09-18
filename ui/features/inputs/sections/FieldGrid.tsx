@@ -2,11 +2,11 @@
 
 import { NumberInput } from '@/ui/components/common';
 import type { InputDef } from '@/ui/api';
-import { UNUSED_INPUTS, unitLabel } from '../sectionsConfig';
+import { HIDDEN_INPUTS, UNUSED_INPUTS, unitLabel } from '../sectionsConfig';
 import { useInputField } from '../useInputField';
 
 export function FieldGrid({ defs }: { defs: InputDef[] }) {
-  return <div className="field-grid">{defs.filter((d) => d.u !== 'text').map((d) => <InputField key={d.k} def={d} />)}</div>;
+  return <div className="field-grid">{defs.filter((d) => d.u !== 'text' && !HIDDEN_INPUTS.has(d.k)).map((d) => <InputField key={d.k} def={d} />)}</div>;
 }
 
 function InputField({ def }: { def: InputDef }) {

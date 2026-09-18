@@ -3,13 +3,13 @@
 import { formatEur, formatNum } from '@/ui/lib/format';
 import type { EstimateOutputs } from '@/ui/api';
 
-/** The three totals the workbook produces side by side (spec section 7.1). */
+/** The three workbook totals shown side by side. */
 export function PricingModels({ outputs }: { outputs: EstimateOutputs }) {
   const { summary: s, f2, offer: o, constants: k } = outputs;
   const models = [
-    { id: 'A', title: 'Model A: summary', total: s.offer, note: 'excl. VAT, base labor + profit', points: ['Uses slope and travel coefficients', 'VSAOI on base labor only'] },
-    { id: 'B', title: 'Model B: F2 form', total: f2.exVat, note: `excl. VAT, labor ×${formatNum(k.labor_markup_factor)} + overhead + profit`, points: ['All materials included', `VAT adds ${formatEur(f2.vat)}`] },
-    { id: 'C', title: 'Model C: client offer', total: o.total, note: `after ${formatEur(o.discount)} discount`, points: ['Shown to the client', o.omittedMaterials > 0.5 ? `Leaves out ${formatEur(o.omittedMaterials)} of materials` : 'All material groups covered'], selected: true },
+    { id: 'A', title: 'Kopsavilkums', total: s.offer, note: 'Bez PVN, pamatdarbs un peļņa', points: ['Izmanto slīpuma un komandējuma koeficientus', 'VSAOI tikai pamatdarbam'] },
+    { id: 'B', title: 'F2 forma', total: f2.exVat, note: `Bez PVN, darbs ×${formatNum(k.labor_markup_factor)} + virsizdevumi + peļņa`, points: ['Iekļauti visi materiāli', `PVN: ${formatEur(f2.vat)}`] },
+    { id: 'C', title: 'Piedāvājums', total: o.total, note: `Pēc ${formatEur(o.discount)} atlaides`, points: ['Klientam paredzēts', o.omittedMaterials > 0.5 ? `Neietver ${formatEur(o.omittedMaterials)} materiālus` : 'Iekļautas visas materiālu grupas'], selected: true },
   ];
   return (
     <div className="card-grid three">
