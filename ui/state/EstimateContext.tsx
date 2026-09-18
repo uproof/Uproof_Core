@@ -61,6 +61,7 @@ export function EstimateProvider({ leadId, children }: { leadId: string; childre
   useEffect(() => {
     let cancelled = false;
     loaded.current = false;
+    offerStateLoaded.current = false;
     setStatus('loading');
     Promise.all([api.getActiveSettings(), api.getInputSchema(), api.getOfferTemplate(), api.getLead(leadId), api.listEstimates(leadId)])
       .then(([s, sc, tpl, l, runs]) => {
@@ -147,7 +148,13 @@ export function EstimateProvider({ leadId, children }: { leadId: string; childre
     if (lead) await api.saveLead({...lead, offerEdits, offerFinalised});
   }, [lead, offerEdits, offerFinalised]);
 
-  const reloadLead = useCallback(async () => { setLead(await api.getLead(leadId)); }, [leadId]);
+  const reloadLead = useCallback(async () => {
+    const savedLead = await api.getLead(leadId);
+    setLead(savedLead);
+    setOfferEdits(savedLead.offerEdits || savedLead.crmEstimatorData?.engineOutputs?.offerEdits || {});
+    setOfferFinalised(savedLead.offerFinalised === true || savedLead.crmEstimatorData?.engineOutputs?.offerFinalised === true);
+    offerStateLoaded.current = true;
+  }, [leadId]);
   const setDayTracking = useCallback((dayNo: number, value: {crew?: string; hours?: string; done?: boolean; note?: string}) => update((l) => ({...l, dayTracking: {...(l.dayTracking || {}), [dayNo]: value} })), [update]);
   const setToolPacked = useCallback((key: string, packed: boolean) => update((l) => ({...l, toolsPacked: {...(l.toolsPacked || {}), [key]: packed} })), [update]);
   const setOfferEdit = useCallback((line: number, edit: EstimateContextValue['offerEdits'][number]) => {
