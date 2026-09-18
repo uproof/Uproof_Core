@@ -20,6 +20,13 @@ function redirectToHost(request: NextRequest, hostname: string, pathname?: strin
   if (pathname) url.pathname = pathname;
   const response = NextResponse.redirect(url, 308);
   if (request.cookies.get('admin_session')?.value && request.cookies.get(ADMIN_ACTIVITY_COOKIE)?.value) {
+    response.cookies.set('admin_session', request.cookies.get('admin_session')!.value, {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
+      maxAge: SESSION_IDLE_TIMEOUT_SECONDS,
+    });
     response.cookies.set(ADMIN_ACTIVITY_COOKIE, 'active', {
       httpOnly: true,
       sameSite: 'strict',
@@ -98,6 +105,13 @@ export default async function middleware(request: NextRequest) {
   const activityCookie = cookies.get(ADMIN_ACTIVITY_COOKIE)?.value;
   const wrap = (response: NextResponse) => {
     if (sessionRole && sessionCookie && activityCookie) {
+      response.cookies.set('admin_session', sessionCookie, {
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+        path: '/',
+        maxAge: SESSION_IDLE_TIMEOUT_SECONDS,
+      });
       response.cookies.set(ADMIN_ACTIVITY_COOKIE, 'active', {
         httpOnly: true,
         sameSite: 'strict',
