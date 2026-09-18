@@ -366,7 +366,7 @@ export const LINES: LineRule[] = [
     unit: "m",
     laborUnit: "gb",
     param: 1,
-    qty: (c) => c.inp.chimney_flashing_perimeter_m+(c.inp.chimney_flashing_count*c.this.param),
+    qty: (c) => (c.inp.chimney_flashing_perimeter_m*c.inp.chimney_flashing_count+(c.inp.chimney_flashing_count*c.this.param))/2,
     reserve: 1.05,
     unitPrice: (c) => c.price('rulla_materials_cena_m_rukki'),
     hoursPerUnit: (c) => c.norm('skurstena_pieslegu.loksnu_materials_125cm_skurstena_perimet'),

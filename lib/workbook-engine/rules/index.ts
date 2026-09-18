@@ -13,6 +13,7 @@ import { LINES as soffitPainting } from './soffit_painting';
 import { LINES as roofSafetySnowMelt } from './roof_safety_snow_melt';
 import { LINES as chimneyMasonry } from './chimney_masonry';
 import { LINES as siteLogistics } from './site_logistics';
+import { LINES as repairs } from './repairs';
 
 export const LINES: LineRule[] = [
   ...demolitionLifting,
@@ -28,6 +29,7 @@ export const LINES: LineRule[] = [
   ...roofSafetySnowMelt,
   ...chimneyMasonry,
   ...siteLogistics,
+  ...repairs,
 ];
 
 /** Display names of blocks (workbook column A). Values starting with "in." come from an input label. */
@@ -85,5 +87,6 @@ export const BLOCK_NAMES: Record<string, string> = {
   "buvobjekta_iekartosana": "Būvobjekta iekārtošana",
   "transporta_izmaksas": "Transporta izmaksas ",
   "citi": "Citi",
+  "labosanas_darbi": "Labošanas darbi",
   "kopa": "Kopā:"
 };

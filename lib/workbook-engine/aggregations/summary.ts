@@ -78,6 +78,7 @@ export const GROUPS_END: Group[] = [
 ];
 const NO_LABOR_GROUPS: [string, string][] = [['Komandējuma naktsmītne', 'citi.komandejuma_naktsmitnes_izmaksas'],
   ['Būvdarbu vadītājs', 'citi.buvdarbu_vaditajs'], ['Apdrošināšana', 'citi.apdrosinasana']];
+const REPAIR_LINES = ['labosanas_darbi.darba_ilgums_dienas'];
 const TRANSPORT_LINE = 'transporta_izmaksas.skarda_piegade_1gb_400m2';
 
 export function summarize(c: Context) {
@@ -97,6 +98,7 @@ export function summarize(c: Context) {
   add('Sniega kausēšana', 'm', total([1, 2, 3].map((i) => c.inp[`snow_melt_kit_${i}_length_m`])),
     c.sumField(SNOW_MELT_LINES, 'qtyRes'), c.sumField(SNOW_MELT_LINES, 'labor'), c.sumField(SNOW_MELT_LINES, 'hours'));
   GROUPS_END.forEach(addGroup);
+  add('Labošanas darbi', 'dienas', c.inp.repair_work_days, c.sumField(REPAIR_LINES, 'blockMaterials'), c.sumField(REPAIR_LINES, 'blockLabor'), c.sumField(REPAIR_LINES, 'blockHours'));
   for (const [name, id] of NO_LABOR_GROUPS) add(name, 'kpl', 0, c.value(id, 'blockMaterials'), 0, 0);
 
   const materials = out.reduce((a, g) => a + g.materials, 0);
